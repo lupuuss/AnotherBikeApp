@@ -1,0 +1,28 @@
+<ScrollView
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view_info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
+    android:animateLayoutChanges="true">
+    <LinearLayout
+        android:id="@+id/statsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:divider="@drawable/stats_divider_vertical"
+        android:showDividers="middle"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/emptyStatsText"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/empty_statistics_message"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+</ScrollView>

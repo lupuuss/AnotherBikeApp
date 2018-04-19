@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_finish_tracking"
+        android:title="@string/menu_finish_tracking"
+        android:onClick="onClickFinishTracking"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_close_24dp"
+        android:contentDescription="@string/menu_finish_tracking"/>
+</menu>

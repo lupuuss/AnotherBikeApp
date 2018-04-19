@@ -1,0 +1,74 @@
+<resources>
+
+    <!-- Orange theme -->
+
+    <style name="OrangeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/orangeThemePrimaryColor</item>
+        <item name="colorPrimaryDark">@color/orangeThemePrimaryDarkColor</item>
+        <item name="colorAccent">@color/orangeThemePrimaryLightColor</item>
+        <item name="android:textColor">@color/orangeThemePrimaryTextColor</item>
+        <item name="android:textColorPrimary">@color/orangeThemePrimaryTextColor</item>
+        <item name="android:textColorSecondary">@color/orangeThemePrimaryTextColor</item>
+        <item name="alertDialogTheme">@style/OrangeDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/OrangeDialogTheme</item>
+        <item name="shortStatsBackground">@color/orangeThemePrimaryLightColor2</item>
+        <item name="trackLineColor">@color/defaultGoogleCurrentLocationColor</item>
+        <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
+        <item name="googleMapStyleJson">@string/map_style_retro</item>
+    </style>
+
+    <style name="OrangeDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/theme_orange_dialog_background</item>
+        <item name="android:colorAccent">@color/orangeThemePrimaryLightColor</item>
+        <item name="android:textColor">@color/orangeThemePrimaryTextColor</item>
+        <item name="android:textColorPrimary">@color/orangeThemePrimaryTextColor</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="buttonBarNegativeButtonStyle">@style/OrangeNegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/OrangePositiveButtonStyle</item>
+    </style>
+
+    <style name="OrangeNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/orangeThemePrimaryTextColor</item>
+    </style>
+
+    <style name="OrangePositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/orangeThemePrimaryTextColor</item>
+    </style>
+
+    <!-- Grey theme -->
+
+    <style name="GreyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/greyThemePrimaryColor</item>
+        <item name="colorPrimaryDark">@color/greyThemePrimaryDarkColor</item>
+        <item name="colorAccent">@color/greyThemePrimaryLightColor</item>
+        <item name="android:textColor">@color/greyThemePrimaryTextColor</item>
+        <item name="android:textColorPrimary">@color/greyThemePrimaryTextColor</item>
+        <item name="android:textColorSecondary">@color/greyThemePrimaryTextColor</item>
+        <item name="alertDialogTheme">@style/GreyDialogTheme</item>
+        <item name="shortStatsBackground">@color/greyThemePrimaryLightColor2</item>
+        <item name="trackLineColor">@color/defaultGoogleCurrentLocationColor</item>
+        <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
+        <item name="googleMapStyleJson">@string/map_style_basic_theme</item>
+    </style>
+
+    <style name="GreyDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/theme_grey_dialog_background</item>
+        <item name="android:colorAccent">@color/greyThemePrimaryLightColor</item>
+        <item name="android:textColor">@color/greyThemePrimaryTextColor</item>
+        <item name="android:textColorPrimary">@color/greyThemePrimaryTextColor</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="buttonBarNegativeButtonStyle">@style/GreyNegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/GreyPositiveButtonStyle</item>
+    </style>
+
+    <style name="GreyNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/greyThemePrimaryTextColor</item>
+    </style>
+
+    <style name="GreyPositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/greyThemePrimaryTextColor</item>
+    </style>
+
+</resources>

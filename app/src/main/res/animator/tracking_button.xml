@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set android:ordering="sequentially"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <set android:ordering="together">
+        <objectAnimator
+            android:propertyName="scaleX"
+            android:valueFrom="1"
+            android:valueTo="0.85"
+            android:duration="100"/>
+        <objectAnimator
+            android:propertyName="scaleY"
+            android:valueFrom="1"
+            android:valueTo="0.85"
+            android:duration="100"/>
+    </set>
+
+    <set>
+        <objectAnimator
+            android:propertyName="scaleX"
+            android:valueFrom="0.85"
+            android:valueTo="1"
+            android:duration="60"/>
+
+        <objectAnimator
+            android:propertyName="scaleY"
+            android:valueFrom="0.85"
+            android:valueTo="1"
+            android:duration="60"/>
+
+    </set>
+
+</set>
