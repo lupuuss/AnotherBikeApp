@@ -112,17 +112,19 @@ class TrackingService : Service() {
 
             lastLocationAvailability = ok
 
-            if (!ok && savedRoute.size != 0) {
+            backgroundThread.post {
 
-                statsManager.notifyLostLocation()
+                if (!ok && savedRoute.size != 0) {
 
-            } else if (ok) {
+                    statsManager.notifyLostLocation()
 
-                statsManager.notifyLocationOk()
+                } else if (ok) {
+
+                    statsManager.notifyLocationOk()
+                }
             }
 
             Log.d(TrackingService::class.qualifiedName, "Location availability: " + ok.toString())
-
             locationDataReceivers.forEach { it.onLocationAvailability(ok) }
         }
 
