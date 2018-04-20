@@ -23,7 +23,7 @@ import ga.lupuss.anotherbikeapp.presenters.TrackingPresenter
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
-import ga.lupuss.anotherbikeapp.ui.listeners.InfoContainerOnTouchListener
+import ga.lupuss.anotherbikeapp.ui.listeners.StatsContainerOnTouchListener
 import ga.lupuss.anotherbikeapp.ui.listeners.OnMapAndLayoutReady
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
@@ -194,7 +194,7 @@ class TrackingActivity : AppCompatActivity(),
 
     private fun setOnTouchInfoContainerExpandButton() {
         statsContainerExpandButton.setOnTouchListener( // handle show/hide animations
-                InfoContainerOnTouchListener(
+                StatsContainerOnTouchListener(
                         this,
                         (statsContainer as FrameLayout),
                         statsContainerExpandButton,

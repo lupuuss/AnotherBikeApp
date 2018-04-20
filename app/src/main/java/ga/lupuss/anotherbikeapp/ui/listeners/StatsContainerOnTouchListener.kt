@@ -15,25 +15,25 @@ import com.google.android.gms.maps.GoogleMap
 import ga.lupuss.anotherbikeapp.R
 
 /**
- * Handle infoContainer show/hide animations.
- * Animates google map padding changes, infoContainer moves, button's icon rotation and shortStatsContainer appearing.
+ * Handle statsContainer show/hide animations.
+ * Animates google map padding changes, statsContainer moves, button's icon rotation and shortStatsContainer appearing.
  */
-class InfoContainerOnTouchListener(context: Context,
-                                   private val infoContainer: FrameLayout,
-                                   private val infoContainerExpandButton: FrameLayout,
-                                   private val shortStatsContainer: LinearLayout,
-                                   private val map: GoogleMap,
-                                   isExpand: Boolean,
-                                   private var onExpandStateChanged: ((Boolean) -> Unit)? = null
+class StatsContainerOnTouchListener(context: Context,
+                                    private val statsContainer: FrameLayout,
+                                    private val statsContainerExpandButton: FrameLayout,
+                                    private val shortStatsContainer: LinearLayout,
+                                    private val map: GoogleMap,
+                                    isExpand: Boolean,
+                                    private var onExpandStateChanged: ((Boolean) -> Unit)? = null
 ) : View.OnTouchListener {
 
     private val isPortrait =
             context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
     private val icon: ImageView =
-            infoContainerExpandButton.findViewById(R.id.statsContainerExpandButtonIcon)
+            statsContainerExpandButton.findViewById(R.id.statsContainerExpandButtonIcon)
 
-    private val maxTranslation = if (isPortrait) infoContainer.height.toFloat() else infoContainer.width.toFloat()
+    private val maxTranslation = if (isPortrait) statsContainer.height.toFloat() else statsContainer.width.toFloat()
     private val minTranslation = 0F
     private var currentTranslation = 0F
 
@@ -44,11 +44,11 @@ class InfoContainerOnTouchListener(context: Context,
     private val minShortStatsAlpha = 0F
 
 
-    private val maxMapPadding = if (isPortrait) infoContainer.height else infoContainer.width
+    private val maxMapPadding = if (isPortrait) statsContainer.height else statsContainer.width
     private val minMapPadding = 0
     private var currentPadding: Int = if (isExpand) {
 
-        if (isPortrait) infoContainer.height else infoContainer.height
+        if (isPortrait) statsContainer.height else statsContainer.height
 
     } else {
         0
@@ -116,9 +116,9 @@ class InfoContainerOnTouchListener(context: Context,
 
                 var finalTranslation = if (isPortrait) {
 
-                    motionEvent.rawY - (infoContainerExpandButton.top + infoContainerExpandButton.height * 1.2F)
+                    motionEvent.rawY - (statsContainerExpandButton.top + statsContainerExpandButton.height * 1.2F)
                 } else {
-                    motionEvent.rawX - (infoContainerExpandButton.left + infoContainerExpandButton.width * 1.2F)
+                    motionEvent.rawX - (statsContainerExpandButton.left + statsContainerExpandButton.width * 1.2F)
                 }
 
                 if (finalTranslation > maxTranslation) {
@@ -139,13 +139,13 @@ class InfoContainerOnTouchListener(context: Context,
                 if (isPortrait) {
 
                     map.setPadding(0, 0, 0, currentPadding)
-                    infoContainerExpandButton.translationY = finalTranslation
-                    infoContainer.translationY = finalTranslation
+                    statsContainerExpandButton.translationY = finalTranslation
+                    statsContainer.translationY = finalTranslation
                 } else {
 
                     map.setPadding(0, 0, currentPadding, 0)
-                    infoContainerExpandButton.translationX = finalTranslation
-                    infoContainer.translationX = finalTranslation
+                    statsContainerExpandButton.translationX = finalTranslation
+                    statsContainer.translationX = finalTranslation
                 }
 
                 val factor = (finalTranslation / maxTranslation)
@@ -153,12 +153,12 @@ class InfoContainerOnTouchListener(context: Context,
                 icon.rotation = factor * maxIconRotation
                 shortStatsContainer.alpha = factor * maxShortStatsAlpha
                 currentTranslation =
-                        if (isPortrait) infoContainer.translationY else infoContainer.translationX
+                        if (isPortrait) statsContainer.translationY else statsContainer.translationX
             }
 
             onExpandStateChanged?.invoke(
-                    (isPortrait && infoContainerExpandButton.translationY == 0F)
-                            || (!isPortrait && infoContainerExpandButton.translationX == 0F)
+                    (isPortrait && statsContainerExpandButton.translationY == 0F)
+                            || (!isPortrait && statsContainerExpandButton.translationX == 0F)
             )
         }
 
@@ -170,13 +170,13 @@ class InfoContainerOnTouchListener(context: Context,
         val property = if (isPortrait) "translationY" else "translationX"
 
         val frameLayoutValueAnimator = ObjectAnimator.ofFloat(
-                infoContainer,
+                statsContainer,
                 property,
                 currentTranslation,
                 if (show) minTranslation else maxTranslation
         )
         val imageButtonValueAnimator = ObjectAnimator.ofFloat(
-                infoContainerExpandButton,
+                statsContainerExpandButton,
                 property, currentTranslation,
                 if (show) minTranslation else maxTranslation
         )
