@@ -2,6 +2,13 @@
     <string name="app_name" translatable="false">Another Bike App</string>
     <string name="title_activity_tracking">Route tracking</string>
 
+    <!-- units -->
+
+    <string name="unit_distance_m" translatable="false">m</string>
+    <string name="unit_distance_km" translatable="false">km</string>
+    <string name="unit_speed_ms" translatable="false">m/s</string>
+    <string name="unit_speed_kmh" translatable="false">k/h</string>
+
     <!-- Stats names -->
 
     <string name="speed">Speed</string>

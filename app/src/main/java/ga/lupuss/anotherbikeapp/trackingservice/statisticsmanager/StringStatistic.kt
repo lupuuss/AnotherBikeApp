@@ -1,12 +1,19 @@
 package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager
 
+import android.content.Context
+
 /**
  * [Statistic] basic implementation.
  */
-class StringStatistic(nameId: Int, private val status: String) : Statistic(nameId) {
+class StringStatistic(nameId: Int, private val str: String) : Statistic(nameId) {
 
+    private var resId: Int? = null
 
-    override val value: String
-        get() = status
+    constructor(nameId: Int, resId: Int) : this(nameId, "") {
+        this.resId = resId
+    }
+
+    override fun getValue(context: Context): String =
+            if (resId == null) str else context.getString(resId!!)
 
 }

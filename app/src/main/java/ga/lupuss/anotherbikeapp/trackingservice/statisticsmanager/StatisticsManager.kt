@@ -201,7 +201,7 @@ class StatisticsManager(private val context: Context) {
     private fun createStatsList(): Map<Statistic.Name, Statistic> {
 
         return linkedMapOf(
-                Statistic.Name.STATUS to StringStatistic(R.string.status, context.getString(status.descriptionId)),
+                Statistic.Name.STATUS to StringStatistic(R.string.status, status.descriptionId),
                 Statistic.Name.DURATION to TimeStatistic(R.string.duration, time),
                 Statistic.Name.SPEED to UnitStatistic(R.string.speed, speed, speedUnit),
                 Statistic.Name.DISTANCE to UnitStatistic(R.string.distance, distance, distanceUnit),
