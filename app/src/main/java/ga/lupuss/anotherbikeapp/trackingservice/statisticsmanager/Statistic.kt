@@ -42,6 +42,7 @@ abstract class Statistic(
     /** Returns statistic value. Some [Statistic] subclasses may need [context] to return proper value. */
     abstract fun getValue(context: Context): String
 
+    /** Contains methods to create statistic's views. */
     companion object {
 
         /** Set formatted statistic as text in passed TextView */
