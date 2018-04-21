@@ -111,7 +111,7 @@ class TrackingPresenter(
 
             if (!serviceBinder.isServiceInProgress()) {
 
-                trackingView.makeToast(R.string.location_not_available)
+                trackingView.makeToast(R.string.message_location_not_available)
             }
 
         } else {

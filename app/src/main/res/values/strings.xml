@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Another Bike App</string>
     <string name="title_activity_tracking">Route tracking</string>
-    <string name="no_permission_error">Route tracking is not possible without access to the device\'s location.</string>
 
     <!-- Stats names -->
 
@@ -9,23 +8,30 @@
     <string name="avg_speed">Avg speed</string>
     <string name="max_speed">Max speed</string>
     <string name="distance">Distance</string>
-    <string name="empty_statistics_message">Statistics will be displayed here.</string>
-    <string name="location_not_available">Location could not be obtained. Try again later.</string>
-    <string name="waiting_for_location">Waiting for location…</string>
-    <string name="hide">Hide</string>
-    <string name="menu_finish_tracking">Finish tracking</string>
-    <string name="warning">Warning</string>
-    <string name="message_finish_tracking">Are you sure you want to finish tracking?</string>
-    <string name="yes">Yes</string>
-    <string name="cancel">Cancel</string>
     <string name="duration">Duration</string>
+    <string name="status">Status</string>
+    <string name="start_time">Start time</string>
+
+    <!-- Statuses -->
     <string name="pause">Pause</string>
     <string name="tracking_in_progress">Tracking in progress…</string>
-    <string name="status">Status</string>
-    <string name="start">Start</string>
-    <string name="start_time">Start time</string>
-    <string name="start_tracking">Start tracking</string>
+    <string name="waiting_for_location">Waiting for location…</string>
 
+    <string name="message_no_permission_error">Route tracking is not possible without access to the device\'s location.</string>
+    <string name="message_empty_statistics">Statistics will be displayed here.</string>
+    <string name="message_location_not_available">Location could not be obtained. Try again later.</string>
+    <string name="message_finish_tracking">Are you sure you want to finish tracking?</string>
+    <string name="finish_tracking">Finish tracking</string>
+    <string name="start_tracking">Start tracking</string>
     <string name="continue_tracking">Continue tracking</string>
+
+    <string name="hide">Hide</string>
+
+    <string name="warning">Warning</string>
+
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="start">Start</string>
 
 </resources>

@@ -74,7 +74,7 @@ class MainPresenter(private val mainView: IView,
 
                 } else {
 
-                    mainView.makeToast(R.string.no_permission_error)
+                    mainView.makeToast(R.string.message_no_permission_error)
                 }
             }
         }
