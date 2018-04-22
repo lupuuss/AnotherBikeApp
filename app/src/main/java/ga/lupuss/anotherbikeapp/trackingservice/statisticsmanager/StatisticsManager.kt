@@ -36,7 +36,7 @@ class StatisticsManager(private val context: Context) {
     private var maxSpeed = 0.0
 
     private var lastTime = -1L
-    private var time = 0L
+    private var duration = 0L
 
     private var startTime: String = "-"
 
@@ -50,7 +50,7 @@ class StatisticsManager(private val context: Context) {
 
     val timer = Timer {
 
-        time = it
+        duration = it
         onNewStats?.invoke(createStatsList())
     }
 
@@ -202,7 +202,7 @@ class StatisticsManager(private val context: Context) {
 
         return linkedMapOf(
                 Statistic.Name.STATUS to StringStatistic(R.string.status, status.descriptionId),
-                Statistic.Name.DURATION to TimeStatistic(R.string.duration, time),
+                Statistic.Name.DURATION to TimeStatistic(R.string.duration, duration),
                 Statistic.Name.SPEED to UnitStatistic(R.string.speed, speed, speedUnit),
                 Statistic.Name.DISTANCE to UnitStatistic(R.string.distance, distance, distanceUnit),
                 Statistic.Name.AVG_SPEED to UnitStatistic(R.string.avg_speed, avgSpeed, speedUnit),
