@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.ui.listeners
+package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 class OnMapAndLayoutReady(private val onMapAndLayoutReady: () -> Unit) {
 

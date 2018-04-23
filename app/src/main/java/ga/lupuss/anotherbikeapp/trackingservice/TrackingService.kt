@@ -10,8 +10,10 @@ import android.support.v4.content.PermissionChecker
 import android.util.Log
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.StatisticsManager
+import javax.inject.Inject
 
 
 /** Receives location from GPS and shares saved route and statistics.
@@ -21,38 +23,8 @@ import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.StatisticsMana
  */
 class TrackingService : Service() {
 
-    interface LocationDataReceiver {
-
-        fun onNewLocation(points: List<LatLng>)
-        fun onLocationAvailability(available: Boolean)
-    }
-
-    interface OnStatsUpdateListener {
-        fun onStatsUpdate(stats: Map<Statistic.Name, Statistic>)
-    }
-
-    inner class ServiceBinder : Binder() {
-
-        val lastLocationAvailability get() = this@TrackingService.lastLocationAvailability
-
-        val savedRoute get() = this@TrackingService.savedRoute
-
-        val lastStats get() = this@TrackingService.lastStats
-
-        fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
-
-        fun connectServiceDataReceiver(locationDataReceiver: LocationDataReceiver) =
-                this@TrackingService.connectLocationDataReceiver(locationDataReceiver)
-
-        fun disconnectServiceDataReceiver(locationDataReceiver: LocationDataReceiver) =
-                this@TrackingService.disconnectLocationDataReceiver(locationDataReceiver)
-
-        fun addOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) =
-                this@TrackingService.addOnStatsUpdateListener(onStatsUpdateListener)
-
-        fun removeOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) =
-                this@TrackingService.removeOnStatsUpdateListener(onStatsUpdateListener)
-    }
+    @Inject
+    lateinit var statsManager: StatisticsManager
 
     val savedRoute
         get() = statsManager.savedRoute
@@ -66,7 +38,6 @@ class TrackingService : Service() {
 
     private val locationDataReceivers = mutableListOf<LocationDataReceiver>()
     private val onStatsUpdateListeners = mutableListOf<OnStatsUpdateListener>()
-    private lateinit var statsManager: StatisticsManager
 
     private val thread = HandlerThread("Service HandleThread")
     private lateinit var backgroundThread: Handler
@@ -130,10 +101,48 @@ class TrackingService : Service() {
 
     }
 
+    interface LocationDataReceiver {
+
+        fun onNewLocation(points: List<LatLng>)
+        fun onLocationAvailability(available: Boolean)
+    }
+
+    interface OnStatsUpdateListener {
+        fun onStatsUpdate(stats: Map<Statistic.Name, Statistic>)
+    }
+
+    inner class ServiceBinder : Binder() {
+
+        val lastLocationAvailability get() = this@TrackingService.lastLocationAvailability
+
+        val savedRoute get() = this@TrackingService.savedRoute
+
+        val lastStats get() = this@TrackingService.lastStats
+
+        fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
+
+        fun connectServiceDataReceiver(locationDataReceiver: LocationDataReceiver) =
+                this@TrackingService.connectLocationDataReceiver(locationDataReceiver)
+
+        fun disconnectServiceDataReceiver(locationDataReceiver: LocationDataReceiver) =
+                this@TrackingService.disconnectLocationDataReceiver(locationDataReceiver)
+
+        fun addOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) =
+                this@TrackingService.addOnStatsUpdateListener(onStatsUpdateListener)
+
+        fun removeOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) =
+                this@TrackingService.removeOnStatsUpdateListener(onStatsUpdateListener)
+    }
+
     override fun onCreate() {
         super.onCreate()
 
-        statsManager = StatisticsManager(applicationContext)
+        DaggerTrackingServiceComponent
+                .builder()
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).component)
+                .build()
+                .inject(this)
+
         uiThread = Handler(mainLooper)
         thread.start()
         backgroundThread = Handler(thread.looper)

@@ -4,7 +4,7 @@
     android:id="@+id/scroll_view_info_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
+    tools:context="ga.lupuss.anotherbikeapp.ui.modules.tracking.StatsFragment"
     android:animateLayoutChanges="true">
     <LinearLayout
         android:id="@+id/statsContainer"

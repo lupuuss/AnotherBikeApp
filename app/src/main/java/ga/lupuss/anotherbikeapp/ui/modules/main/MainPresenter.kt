@@ -1,24 +1,24 @@
-package ga.lupuss.anotherbikeapp.presenters
+package ga.lupuss.anotherbikeapp.ui.modules.main
 
 import android.Manifest
 import android.content.ComponentName
 import android.content.ServiceConnection
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.ui.activities.MainActivity
-import ga.lupuss.anotherbikeapp.ui.activities.TrackingActivity
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
+
+import javax.inject.Inject
 
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainPresenter.IView].
- * @param serviceActiveArg previous (before recreate) service state
  */
-class MainPresenter(private val mainView: IView,
-                    serviceActiveArg: Boolean) : Presenter {
+class MainPresenter @Inject constructor() : Presenter {
 
     interface IView : Presenter.BaseView {
-        fun onServiceStatusChanged(status: Boolean)
         fun startTrackingActivity(serviceBinder: TrackingService.ServiceBinder?)
         fun checkPermission(permission: String): Boolean
         fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit)
@@ -26,13 +26,13 @@ class MainPresenter(private val mainView: IView,
         fun bindTrackingService(connection: ServiceConnection)
         fun unbindTrackingService(connection: ServiceConnection)
         fun stopTrackingService()
+        fun setTrackingButtonState(trackingInProgress: Boolean)
     }
 
-    private var isServiceActive = serviceActiveArg
-        set(value) {
-            mainView.onServiceStatusChanged(value)
-            field = value
-        }
+    @Inject
+    lateinit var mainView: IView
+
+    private var isServiceActive: Boolean = false
 
     private var serviceBinder: TrackingService.ServiceBinder? = null
 
@@ -80,13 +80,16 @@ class MainPresenter(private val mainView: IView,
         }
     }
 
-    override fun notifyOnCreate() {
+    override fun notifyOnCreate(savedInstanceState: Bundle?) {
+
+        savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE)
 
         if (isServiceActive) {
 
             mainView.bindTrackingService(serviceConnection)
         }
 
+        mainView.setTrackingButtonState(isServiceActive)
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -131,6 +134,11 @@ class MainPresenter(private val mainView: IView,
         mainView.stopTrackingService()
     }
 
+    override fun notifyOnSavedInstanceState(outState: Bundle) {
+        super.notifyOnSavedInstanceState(outState)
+        outState.putBoolean(IS_SERVICE_ACTIVE, isServiceActive)
+    }
+
     override fun notifyOnDestroy(isFinishing: Boolean) {
 
         if (isFinishing && isServiceActive) {
@@ -146,5 +154,9 @@ class MainPresenter(private val mainView: IView,
         } else {
             Log.d(MainPresenter::class.qualifiedName, "No service. Clean destroy.")
         }
+    }
+
+    companion object {
+        private const val IS_SERVICE_ACTIVE = "is service active"
     }
 }

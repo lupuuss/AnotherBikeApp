@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.ui.activities
+package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,19 +19,18 @@ import com.tinsuke.icekick.extension.serialState
 import com.tinsuke.icekick.extension.unfreezeInstanceState
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.presenters.TrackingPresenter
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
-import ga.lupuss.anotherbikeapp.ui.listeners.StatsContainerOnTouchListener
-import ga.lupuss.anotherbikeapp.ui.listeners.OnMapAndLayoutReady
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
+import javax.inject.Inject
 
 
 class TrackingActivity : AppCompatActivity(),
         OnMapReadyCallback, TrackingPresenter.IView {
-    private lateinit var trackingPresenter: TrackingPresenter
+
+    @Inject
+    lateinit var trackingPresenter: TrackingPresenter
 
     private val defaultMapZoom = 16.5F
     private lateinit var map: GoogleMap
@@ -72,10 +71,14 @@ class TrackingActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setResult(Result.NOT_DONE)
-
         setContentView(R.layout.activity_tracking)
         setSupportActionBar(toolbarMain)
+        setResult(Result.NOT_DONE)
+
+        DaggerTrackingComponent.builder().trackingModule(
+                TrackingModule(this, getIBinderFromIntent()
+                )
+        ).build().inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -83,8 +86,6 @@ class TrackingActivity : AppCompatActivity(),
         unfreezeInstanceState(savedInstanceState)
 
         toast = Toast.makeText(this, "", Toast.LENGTH_LONG)
-
-        trackingPresenter = TrackingPresenter(this, getIBinderFromIntent())
 
         //init google map
         (supportFragmentManager
@@ -124,9 +125,9 @@ class TrackingActivity : AppCompatActivity(),
 
     private fun getIBinderFromIntent(): TrackingService.ServiceBinder {
 
-        val bundle = intent.getBundleExtra(TrackingActivity.ARG_MAIN_BUNDLE)
+        val bundle = intent.getBundleExtra(ARG_MAIN_BUNDLE)
         bundle ?: throw IllegalStateException("No bundle")
-        return bundle.getBinder(TrackingActivity.ARG_BINDER) as TrackingService.ServiceBinder
+        return bundle.getBinder(ARG_BINDER) as TrackingService.ServiceBinder
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -373,8 +374,8 @@ class TrackingActivity : AppCompatActivity(),
             val intent = Intent(context, TrackingActivity::class.java)
             val bundle = Bundle()
 
-            bundle.putBinder(TrackingActivity.ARG_BINDER, serviceBinder)
-            intent.putExtra(TrackingActivity.ARG_MAIN_BUNDLE, bundle)
+            bundle.putBinder(ARG_BINDER, serviceBinder)
+            intent.putExtra(ARG_MAIN_BUNDLE, bundle)
 
             return intent
         }

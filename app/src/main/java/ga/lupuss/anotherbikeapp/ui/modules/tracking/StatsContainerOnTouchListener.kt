@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.ui.listeners
+package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator

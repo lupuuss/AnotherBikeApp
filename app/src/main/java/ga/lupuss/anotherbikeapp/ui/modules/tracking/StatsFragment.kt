@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.ui.fragments
+package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,6 +13,14 @@ import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
 
 /** Contains information about tracking. */
 class StatsFragment : Fragment() {
+
+    companion object {
+
+        fun newInstance(): StatsFragment {
+
+            return StatsFragment()
+        }
+    }
 
     private lateinit var layout: LinearLayout
 

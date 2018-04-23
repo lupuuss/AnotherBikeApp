@@ -1,19 +1,17 @@
-package ga.lupuss.anotherbikeapp.presenters
+package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import android.view.View
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
-import ga.lupuss.anotherbikeapp.ui.activities.TrackingActivity
+import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].
  * [TrackingActivity] must implement [TrackingPresenter.IView] */
-class TrackingPresenter(
-        private val trackingView: IView,
-        private val serviceBinder: TrackingService.ServiceBinder
-
-) : TrackingService.LocationDataReceiver, TrackingService.OnStatsUpdateListener, Presenter {
+class TrackingPresenter @Inject constructor()
+    : TrackingService.LocationDataReceiver, TrackingService.OnStatsUpdateListener, Presenter {
 
     interface IView : Presenter.BaseView {
 
@@ -31,6 +29,12 @@ class TrackingPresenter(
 
         fun finishActivityWithResult(result: Int)
     }
+
+    @Inject
+    lateinit var trackingView: IView
+
+    @Inject
+    lateinit var serviceBinder: TrackingService.ServiceBinder
 
     private var followMyLocation: Boolean = true
     private var isLocationAvailable: Boolean = false

@@ -1,8 +1,9 @@
-package ga.lupuss.anotherbikeapp.ui.activities
+package ga.lupuss.anotherbikeapp.ui.modules.main
 
 import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorInflater
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -15,28 +16,25 @@ import android.support.v4.content.PermissionChecker
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.tinsuke.icekick.extension.freezeInstanceState
-import com.tinsuke.icekick.extension.serialState
-import com.tinsuke.icekick.extension.unfreezeInstanceState
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.presenters.MainPresenter
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 
 import kotlinx.android.synthetic.main.activity_main.trackingButton
+import javax.inject.Inject
 
 /**
  * Main user's interface.
  */
 class MainActivity : AppCompatActivity(), MainPresenter.IView {
 
+    @Inject
+    lateinit var mainPresenter: MainPresenter
     private lateinit var toast: Toast
-    private lateinit var mainPresenter: MainPresenter
 
     private val locationPermissionRequestCode = 1
     private var onLocationPermissionRequestResult: ((Boolean) -> Unit)? = null
-
-    private var isServiceActive by serialState(false)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -48,31 +46,22 @@ class MainActivity : AppCompatActivity(), MainPresenter.IView {
 
     }
 
+    @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        unfreezeInstanceState(savedInstanceState)
+        toast = Toast.makeText(this, "", Toast.LENGTH_LONG)
 
-        toast = Toast(this)
-        mainPresenter = MainPresenter(this, isServiceActive)
+        mainPresenter.notifyOnCreate(savedInstanceState)
 
-        setTrackingButtonState(isServiceActive)
-
-        mainPresenter.notifyOnCreate()
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTrackingButtonState(isServiceActive)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
 
         super.onSaveInstanceState(outState)
-        freezeInstanceState(outState!!)
+        mainPresenter.notifyOnSavedInstanceState(outState!!)
     }
 
     override fun onDestroy() {
@@ -107,11 +96,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.IView {
 
     // MainPresenter.IView Impl
 
-    override fun onServiceStatusChanged(status: Boolean) {
-        isServiceActive = status
-    }
-
-    private fun setTrackingButtonState(trackingInProgress: Boolean) {
+    override fun setTrackingButtonState(trackingInProgress: Boolean) {
 
         trackingButton.setText(
                 if (trackingInProgress) R.string.continue_tracking else R.string.start_tracking
@@ -132,7 +117,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.IView {
 
         startActivityForResult(
                 TrackingActivity.newIntent(this@MainActivity, serviceBinder!!),
-                MainActivity.Request.TRACKING_ACTIVITY_REQUEST
+                Request.TRACKING_ACTIVITY_REQUEST
         )
     }
 

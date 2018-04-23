@@ -8,11 +8,12 @@ import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.R
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Saves current road, measures speed, makes statistics.
  */
-class StatisticsManager(private val context: Context) {
+class StatisticsManager @Inject constructor(private val context: Context) {
 
     val savedRoute = mutableListOf<LatLng>()
     var lastStats: Map<Statistic.Name, Statistic>? = null
