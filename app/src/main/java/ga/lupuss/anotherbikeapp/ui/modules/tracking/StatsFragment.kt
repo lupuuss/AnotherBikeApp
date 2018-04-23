@@ -10,6 +10,7 @@ import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
+import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 
 /** Contains information about tracking. */
 class StatsFragment : Fragment() {
@@ -52,7 +53,7 @@ class StatsFragment : Fragment() {
         for ((name, stat) in stats) {
 
             layout.addView(
-                    Statistic.createStatLineWithNameTag(
+                    ViewExtensions.createStatLineWithNameTag(
                             layoutInflater,
                             view!!.findViewById(R.id.statsContainer),
                             R.layout.activity_tracking_stat,
@@ -67,7 +68,7 @@ class StatsFragment : Fragment() {
 
         for ((name, stat) in stats) {
 
-            Statistic.updateStatLineByTag(this.context, layout, name, stat)
+            ViewExtensions.updateStatLineByTag(layout, name, stat)
         }
     }
 }

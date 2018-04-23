@@ -20,6 +20,8 @@ import com.tinsuke.icekick.extension.unfreezeInstanceState
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
+import ga.lupuss.anotherbikeapp.ui.extensions.setText
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
 import timber.log.Timber
@@ -32,6 +34,12 @@ class TrackingActivity : AppCompatActivity(),
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
 
+    private val shortStatsListToDisplay = listOf(
+            Statistic.Name.DURATION,
+            Statistic.Name.AVG_SPEED,
+            Statistic.Name.DISTANCE
+    )
+
     private val defaultMapZoom = 16.5F
     private lateinit var map: GoogleMap
 
@@ -43,12 +51,6 @@ class TrackingActivity : AppCompatActivity(),
     private var isInfoContainerExpand by serialState(true)
 
     private lateinit var toast: Toast
-
-    private val shortStatsListToDisplay = listOf(
-            Statistic.Name.DURATION,
-            Statistic.Name.AVG_SPEED,
-            Statistic.Name.DISTANCE
-    )
 
     private var infoContainerVisibility: Int = View.INVISIBLE
         set(value) {
@@ -256,7 +258,7 @@ class TrackingActivity : AppCompatActivity(),
 
         for (statName in shortStatsListToDisplay) {
 
-            (shortStatsContainer as ViewGroup).addView(Statistic.createStatLineWithNameTag(
+            (shortStatsContainer as ViewGroup).addView(ViewExtensions.createStatLineWithNameTag(
                     layoutInflater,
                     (shortStatsContainer as ViewGroup),
                     R.layout.activity_tracking_short_stat,
@@ -271,11 +273,7 @@ class TrackingActivity : AppCompatActivity(),
 
         for (statName in shortStatsListToDisplay) {
 
-            Statistic.setStatForTextView(
-                    this,
-                    shortStatsContainer.findViewWithTag(statName),
-                    stats[statName]!!
-            )
+            shortStatsContainer.findViewWithTag<TextView>(statName).setText(stats[statName]!!)
         }
     }
 
