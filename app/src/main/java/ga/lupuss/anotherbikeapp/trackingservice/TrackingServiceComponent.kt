@@ -4,10 +4,7 @@ import dagger.Component
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
 import javax.inject.Scope
 
-@Component(
-        modules = [TrackingServiceModule::class],
-        dependencies = [AnotherBikeAppComponent::class]
-)
+@Component(dependencies = [AnotherBikeAppComponent::class])
 @TrackingServiceScope
 interface TrackingServiceComponent {
 
