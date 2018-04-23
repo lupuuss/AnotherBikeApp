@@ -7,6 +7,7 @@ import android.location.Location
 import android.os.*
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.PermissionChecker
+import android.util.Log
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
@@ -70,7 +71,8 @@ class TrackingService : Service() {
                     locationDataReceivers.forEach { it.onNewLocation(savedRoute) }
                 }
 
-                Timber.v("NEW POINT = [${location.latitude}, ${location.longitude}]")
+                Timber.v(TrackingService::class.qualifiedName,
+                        "NEW POINT = [${location.latitude}, ${location.longitude}]")
             }
         }
 
@@ -94,7 +96,7 @@ class TrackingService : Service() {
                 }
             }
 
-            Timber.d("Location availability: " + ok.toString())
+            Timber.d(TrackingService::class.qualifiedName, "Location availability: " + ok.toString())
             locationDataReceivers.forEach { it.onLocationAvailability(ok) }
         }
 
@@ -155,6 +157,7 @@ class TrackingService : Service() {
         }
 
         Timber.d("Service started")
+        locationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun onBind(p0: Intent?): IBinder? {
