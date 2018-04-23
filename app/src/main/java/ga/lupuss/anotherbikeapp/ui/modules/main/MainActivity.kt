@@ -52,6 +52,11 @@ class MainActivity : AppCompatActivity(), MainPresenter.IView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        DaggerMainComponent.builder()
+                .mainModule(MainModule(this))
+                .build()
+                .inject(this)
+
         toast = Toast.makeText(this, "", Toast.LENGTH_LONG)
 
         mainPresenter.notifyOnCreate(savedInstanceState)

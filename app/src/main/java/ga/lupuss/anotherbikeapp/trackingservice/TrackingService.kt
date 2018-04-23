@@ -7,7 +7,6 @@ import android.location.Location
 import android.os.*
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.PermissionChecker
-import android.util.Log
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
