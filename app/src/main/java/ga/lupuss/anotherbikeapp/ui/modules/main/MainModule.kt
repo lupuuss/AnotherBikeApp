@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class MainModule(view: MainPresenter.IView) {
-    val view = view
+class MainModule(view: MainView) {
+    val mainView = view
         @Provides
         @MainComponentScope
         get

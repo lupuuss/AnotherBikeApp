@@ -9,6 +9,7 @@ annotation class MainComponentScope
 @MainComponentScope
 @Component(modules = [MainModule::class])
 interface MainComponent {
+
     fun inject(mainActivity: MainActivity)
 }
 

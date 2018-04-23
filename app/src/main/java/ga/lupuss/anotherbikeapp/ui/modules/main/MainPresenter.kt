@@ -14,23 +14,12 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * Presenter associated with [MainActivity]. [MainActivity] must implement [MainPresenter.IView].
+ * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
 class MainPresenter @Inject constructor() : Presenter {
 
-    interface IView : Presenter.BaseView {
-        fun startTrackingActivity(serviceBinder: TrackingService.ServiceBinder?)
-        fun checkPermission(permission: String): Boolean
-        fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit)
-        fun startTrackingService()
-        fun bindTrackingService(connection: ServiceConnection)
-        fun unbindTrackingService(connection: ServiceConnection)
-        fun stopTrackingService()
-        fun setTrackingButtonState(trackingInProgress: Boolean)
-    }
-
     @Inject
-    lateinit var mainView: IView
+    lateinit var mainView: MainView
 
     private var isServiceActive: Boolean = false
 

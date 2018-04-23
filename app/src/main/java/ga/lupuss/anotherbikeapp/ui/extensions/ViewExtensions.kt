@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
+import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
 
 @SuppressLint("SetTextI18n")
 

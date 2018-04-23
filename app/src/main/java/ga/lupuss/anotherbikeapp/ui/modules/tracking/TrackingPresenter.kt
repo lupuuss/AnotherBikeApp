@@ -5,33 +5,16 @@ import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
+import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
 import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].
- * [TrackingActivity] must implement [TrackingPresenter.IView] */
+ * [TrackingActivity] must implement [TrackingView] */
 class TrackingPresenter @Inject constructor()
     : TrackingService.LocationDataReceiver, TrackingService.OnStatsUpdateListener, Presenter {
 
-    interface IView : Presenter.BaseView {
-
-        fun updateStats(statistics: Map<Statistic.Name, Statistic>)
-        fun updateTrackLine(points: List<LatLng>)
-        fun prepareMapToTrack(points: List<LatLng>)
-
-        fun setInfoWaitForLocationVisibility(visibility: Int)
-
-        fun isTrackLineReady(): Boolean
-
-        fun moveMapCamera(latLng: LatLng)
-
-        fun showFinishTrackingDialog(onYesAction: () -> Unit)
-
-        fun finishActivityWithResult(result: Int)
-    }
-
     @Inject
-    lateinit var trackingView: IView
+    lateinit var trackingView: TrackingView
 
     @Inject
     lateinit var serviceBinder: TrackingService.ServiceBinder

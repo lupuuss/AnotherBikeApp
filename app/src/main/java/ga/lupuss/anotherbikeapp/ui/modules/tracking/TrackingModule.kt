@@ -5,10 +5,10 @@ import dagger.Provides
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 
 @Module
-class TrackingModule(view: TrackingPresenter.IView,
+class TrackingModule(view: TrackingView,
                      serviceBinder: TrackingService.ServiceBinder) {
 
-    val iView = view
+    val trackingView = view
         @TrackingScope
         @Provides
         get

@@ -27,7 +27,7 @@ import javax.inject.Inject
 /**
  * Main user's interface.
  */
-class MainActivity : AppCompatActivity(), MainPresenter.IView {
+class MainActivity : AppCompatActivity(), MainView {
 
     @Inject
     lateinit var mainPresenter: MainPresenter

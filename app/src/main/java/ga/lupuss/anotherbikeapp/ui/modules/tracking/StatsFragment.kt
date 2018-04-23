@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
+import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 
 /** Contains information about tracking. */

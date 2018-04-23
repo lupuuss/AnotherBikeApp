@@ -18,7 +18,7 @@ import com.tinsuke.icekick.extension.serialState
 import com.tinsuke.icekick.extension.unfreezeInstanceState
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
+import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.setText
@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 
 class TrackingActivity : AppCompatActivity(),
-        OnMapReadyCallback, TrackingPresenter.IView {
+        OnMapReadyCallback, TrackingView {
 
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
