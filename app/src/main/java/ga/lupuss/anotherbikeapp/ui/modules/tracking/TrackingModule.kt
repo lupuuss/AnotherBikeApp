@@ -14,6 +14,7 @@ class TrackingModule(view: TrackingView,
         get
 
     val serviceBinder = serviceBinder
+        @TrackingScope
         @Provides
         get
 }

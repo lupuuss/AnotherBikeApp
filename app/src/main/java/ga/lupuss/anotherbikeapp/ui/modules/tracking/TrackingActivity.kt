@@ -273,7 +273,7 @@ class TrackingActivity : AppCompatActivity(),
 
         for (statName in shortStatsListToDisplay) {
 
-            shortStatsContainer.findViewWithTag<TextView>(statName).setText(stats[statName]!!)
+            shortStatsContainer.findViewWithTag<TextView>(statName).setText(statName, stats[statName]!!)
         }
     }
 

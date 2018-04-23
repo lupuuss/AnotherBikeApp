@@ -6,11 +6,11 @@ import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Sta
 /**
  * [Statistic] basic implementation.
  */
-class StringStatistic(nameId: Int, private val str: String) : Statistic(nameId) {
+class StringStatistic(private val str: String) : Statistic() {
 
     private var resId: Int? = null
 
-    constructor(nameId: Int, resId: Int) : this(nameId, "") {
+    constructor(resId: Int) : this("") {
         this.resId = resId
     }
 

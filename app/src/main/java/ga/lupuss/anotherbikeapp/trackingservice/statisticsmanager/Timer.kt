@@ -1,11 +1,13 @@
 package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager
 
 import android.os.Handler
+import javax.inject.Inject
 
-class Timer(val tickTime: Long = 1000L,
-            onTimerTick: (Long) -> Unit) {
+class Timer @Inject constructor(val handler: Handler) {
 
-    val handler = Handler()
+    private val tickTime = 1000L
+
+    var onTimerTick: ((Long) -> Unit)? = null
     var isStarted = false
     var isPaused = false
     private var time = 0L
@@ -19,7 +21,7 @@ class Timer(val tickTime: Long = 1000L,
                 time += tickTime
             }
 
-            onTimerTick.invoke(time)
+            onTimerTick?.invoke(time)
 
             if (continueIt) handler.postDelayed(this, tickTime)
         }

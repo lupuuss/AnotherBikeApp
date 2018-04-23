@@ -6,13 +6,21 @@ import ga.lupuss.anotherbikeapp.R
 /**
  * Base class for any statistic.
  */
-abstract class Statistic(
-        /** resource id with localized statistic name */
-        private val nameId: Int
-) {
+abstract class Statistic {
     /** Names of possible statistics */
-    enum class Name {
-        SPEED, AVG_SPEED, MAX_SPEED, DISTANCE, DURATION, STATUS, START_TIME
+    enum class Name(private val nameId: Int) {
+
+        SPEED(R.string.speed),
+        AVG_SPEED(R.string.avg_speed),
+        MAX_SPEED(R.string.max_speed),
+        DISTANCE(R.string.distance),
+        DURATION(R.string.duration),
+        STATUS(R.string.status),
+        START_TIME(R.string.start_time);
+
+        fun getName(context: Context): String {
+            return context.getString(nameId)
+        }
     }
 
     /**
@@ -27,12 +35,6 @@ abstract class Statistic(
         KM_H(R.string.unit_speed_kmh, 3.6),
         M(R.string.unit_distance_m, 1.0), // SI unit
         KM(R.string.unit_distance_km, 0.001)
-    }
-
-    /** Statistics names are defined by resources so [context] is necessary. */
-    fun getName(context: Context): String {
-
-        return context.getString(nameId)
     }
 
     /** Returns statistic value. Some [Statistic] subclasses may need [context] to return proper value. */

@@ -1,13 +1,11 @@
 package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics
 
 import android.content.Context
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
 
 /** [Statistic] subclass that can contain [time] in milliseconds.
  * [time] might be converted to hours:minutes:seconds string.
- * @param nameId resource id to localized name
  * */
-class TimeStatistic(nameId: Int, val time: Long) : Statistic(nameId) {
+class TimeStatistic(val time: Long) : Statistic() {
 
 
     /** Converts time in milliseconds to string hours:minutes:seconds */
