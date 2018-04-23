@@ -4,6 +4,7 @@ import android.app.Application
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppModule
 import ga.lupuss.anotherbikeapp.di.DaggerAnotherBikeAppComponent
+import timber.log.Timber
 
 class AnotherBikeApp : Application() {
 
@@ -19,6 +20,9 @@ class AnotherBikeApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Timber.plant(Timber.DebugTree())
+
         component = DaggerAnotherBikeAppComponent
                 .builder()
                 .anotherBikeAppModule(AnotherBikeAppModule(applicationContext))

@@ -5,11 +5,11 @@ import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
+import timber.log.Timber
 
 import javax.inject.Inject
 
@@ -43,7 +43,7 @@ class MainPresenter @Inject constructor() : Presenter {
 
             p1 ?: throw IllegalStateException("Service should always return IBinder!")
 
-            Log.d(MainPresenter::class.qualifiedName, "Service connected")
+            Timber.d("Service connected")
 
             serviceBinder = p1 as TrackingService.ServiceBinder
 
@@ -99,19 +99,19 @@ class MainPresenter @Inject constructor() : Presenter {
             when (resultCode) {
                 TrackingActivity.Result.DONE -> {
 
-                    Log.d(MainPresenter::class.qualifiedName, "Service done. Data may be saved")
+                    Timber.d("Service done. Data may be saved")
                     stopTracking()
                 }
 
                 TrackingActivity.Result.NO_DATA_DONE -> {
 
-                    Log.d(MainPresenter::class.qualifiedName, "Service done, but no data")
+                    Timber.d("Service done, but no data")
                     stopTracking()
                 }
 
                 TrackingActivity.Result.NOT_DONE -> {
 
-                    Log.d(MainPresenter::class.qualifiedName, "Service is working...")
+                    Timber.d("Service is working...")
                 }
             }
         }
@@ -143,16 +143,16 @@ class MainPresenter @Inject constructor() : Presenter {
 
         if (isFinishing && isServiceActive) {
 
-            Log.d(MainPresenter::class.qualifiedName, "Finishing activity...")
+            Timber.d("Finishing activity...")
             stopTracking()
 
         } else if (isServiceActive) {
 
-            Log.d(MainPresenter::class.qualifiedName, "Recreating activity...")
+            Timber.d("Recreating activity...")
             unbindTrackingService()
 
         } else {
-            Log.d(MainPresenter::class.qualifiedName, "No service. Clean destroy.")
+            Timber.d("No service. Clean destroy.")
         }
     }
 

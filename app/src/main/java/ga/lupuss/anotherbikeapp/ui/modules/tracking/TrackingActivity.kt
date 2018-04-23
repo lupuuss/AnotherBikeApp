@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
@@ -23,6 +22,7 @@ import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -179,7 +179,7 @@ class TrackingActivity : AppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
 
-        Log.d(TrackingActivity::class.qualifiedName, "Tracking activity destroyed!")
+        Timber.d("Tracking activity destroyed!")
         trackingPresenter.notifyOnDestroy(isFinishing)
     }
 

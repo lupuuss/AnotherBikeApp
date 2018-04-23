@@ -7,12 +7,12 @@ import android.location.Location
 import android.os.*
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.PermissionChecker
-import android.util.Log
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.Statistic
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.StatisticsManager
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -70,8 +70,7 @@ class TrackingService : Service() {
                     locationDataReceivers.forEach { it.onNewLocation(savedRoute) }
                 }
 
-                Log.v(TrackingService::class.qualifiedName,
-                        "NEW POINT = [${location.latitude}, ${location.longitude}]")
+                Timber.v("NEW POINT = [${location.latitude}, ${location.longitude}]")
             }
         }
 
@@ -95,7 +94,7 @@ class TrackingService : Service() {
                 }
             }
 
-            Log.d(TrackingService::class.qualifiedName, "Location availability: " + ok.toString())
+            Timber.d("Location availability: " + ok.toString())
             locationDataReceivers.forEach { it.onLocationAvailability(ok) }
         }
 
@@ -155,13 +154,12 @@ class TrackingService : Service() {
             }
         }
 
-        Log.d(TrackingService::class.qualifiedName, "Service started")
-        locationClient = LocationServices.getFusedLocationProviderClient(this)
+        Timber.d("Service started")
     }
 
     override fun onBind(p0: Intent?): IBinder? {
 
-        Log.d(TrackingService::class.qualifiedName, "Bound " + p0.toString())
+        Timber.d("Bound " + p0.toString())
 
         if (!locationRequested) {
 
@@ -172,7 +170,7 @@ class TrackingService : Service() {
 
     override fun onUnbind(intent: Intent?): Boolean {
 
-        Log.d(TrackingService::class.qualifiedName, "Unbound > " + intent.toString())
+        Timber.d("Unbound > " + intent.toString())
         return super.onUnbind(intent)
     }
 
@@ -196,7 +194,7 @@ class TrackingService : Service() {
                     null
             )
 
-            Log.d(TrackingService::class.qualifiedName, "Location request send")
+            Timber.d("Location request send")
         }
 
         locationRequested = true
@@ -208,7 +206,7 @@ class TrackingService : Service() {
         locationClient.removeLocationUpdates(locationCallback)
         statsManager.timer.stop()
         thread.quit()
-        Log.d(TrackingService::class.qualifiedName, "Service destroyed.")
+        Timber.d("Service destroyed.")
     }
 
     fun connectLocationDataReceiver(locationDataReceiver: LocationDataReceiver) {

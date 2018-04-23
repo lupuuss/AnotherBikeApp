@@ -3,9 +3,9 @@ package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager
 import android.content.Context
 import android.location.Location
 import android.support.v4.os.ConfigurationCompat
-import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.R
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -90,7 +90,7 @@ class StatisticsManager @Inject constructor(private val context: Context) {
 
         if (mSpeed.isInfinite()) {
 
-            Log.d(StatisticsManager::class.qualifiedName, "Infinite speed!")
+            Timber.d("Infinite speed!")
 
         } else {
 

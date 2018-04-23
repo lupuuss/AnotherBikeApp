@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.PermissionChecker
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 
@@ -22,6 +21,7 @@ import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 
 import kotlinx.android.synthetic.main.activity_main.trackingButton
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.IView {
     override fun onDestroy() {
         super.onDestroy()
         mainPresenter.notifyOnDestroy(isFinishing)
-        Log.d(MainActivity::class.qualifiedName, "MainActivity destroyed!")
+        Timber.d("MainActivity destroyed!")
     }
 
     // onClicks
@@ -152,13 +152,13 @@ class MainActivity : AppCompatActivity(), MainPresenter.IView {
 
         // after bind onServiceStart is called by serviceConnection callback
 
-        Log.d(MainActivity::class.qualifiedName, "Starting service...")
+        Timber.d("Starting service...")
         startService(Intent(this, TrackingService::class.java))
     }
 
     override fun bindTrackingService(connection: ServiceConnection) {
 
-        Log.d(MainActivity::class.qualifiedName, "Binding service...")
+        Timber.d("Binding service...")
         bindService(
                 Intent(this, TrackingService::class.java),
                 connection,
@@ -168,13 +168,13 @@ class MainActivity : AppCompatActivity(), MainPresenter.IView {
 
     override fun stopTrackingService() {
 
-        Log.d(MainActivity::class.qualifiedName, "Stopping service...")
+        Timber.d("Stopping service...")
         stopService(Intent(this, TrackingService::class.java))
     }
 
     override fun unbindTrackingService(connection: ServiceConnection) {
 
-        Log.d(MainActivity::class.qualifiedName, "Unbinding service...")
+        Timber.d(MainActivity::class.qualifiedName, "Unbinding service...")
         unbindService(connection)
     }
 
