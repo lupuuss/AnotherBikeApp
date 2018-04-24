@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.PermissionChecker
 import android.view.View
 import android.widget.Toast
+import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity(), MainView {
         setContentView(R.layout.activity_main)
 
         DaggerMainComponent.builder()
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).component)
                 .mainModule(MainModule(this))
                 .build()
                 .inject(this)
@@ -60,7 +62,6 @@ class MainActivity : AppCompatActivity(), MainView {
         toast = Toast.makeText(this, "", Toast.LENGTH_LONG)
 
         mainPresenter.notifyOnCreate(savedInstanceState)
-
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -99,7 +100,7 @@ class MainActivity : AppCompatActivity(), MainView {
         animator.start()
     }
 
-    // MainPresenter.IView Impl
+    // MainView Impl
 
     override fun setTrackingButtonState(trackingInProgress: Boolean) {
 
@@ -124,14 +125,6 @@ class MainActivity : AppCompatActivity(), MainView {
                 TrackingActivity.newIntent(this@MainActivity, serviceBinder!!),
                 Request.TRACKING_ACTIVITY_REQUEST
         )
-    }
-
-    override fun checkPermission(permission: String): Boolean {
-
-        val permissionStatus = ContextCompat
-                .checkSelfPermission(this, permission)
-
-        return permissionStatus == PackageManager.PERMISSION_GRANTED
     }
 
     override fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {

@@ -2,12 +2,14 @@ package ga.lupuss.anotherbikeapp.ui.modules.main
 
 import android.Manifest
 import android.content.ComponentName
+import android.content.Context
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 
@@ -16,12 +18,17 @@ import javax.inject.Inject
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
-class MainPresenter @Inject constructor() : Presenter {
+class MainPresenter @Inject constructor(private val context: Context) : Presenter {
 
     @Inject
     lateinit var mainView: MainView
 
     private var isServiceActive: Boolean = false
+        set(value) {
+
+            if (::mainView.isInitialized) mainView.setTrackingButtonState(value)
+            field = value
+        }
 
     private var serviceBinder: TrackingService.ServiceBinder? = null
 
@@ -54,7 +61,7 @@ class MainPresenter @Inject constructor() : Presenter {
         when {
             serviceBinder != null -> mainView.startTrackingActivity(serviceBinder) // Tracking activity connected to existing service
 
-            mainView.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) -> startTracking() // Starting new tracking service and tracking activity
+            context.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) -> startTracking() // Starting new tracking service and tracking activity
 
             else -> mainView.requestLocationPermission {
                 if (it) {
@@ -71,14 +78,14 @@ class MainPresenter @Inject constructor() : Presenter {
 
     override fun notifyOnCreate(savedInstanceState: Bundle?) {
 
-        savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE)
+        savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE)?.let {
+            isServiceActive = it
+        }
 
         if (isServiceActive) {
 
             mainView.bindTrackingService(serviceConnection)
         }
-
-        mainView.setTrackingButtonState(isServiceActive)
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -124,6 +131,7 @@ class MainPresenter @Inject constructor() : Presenter {
     }
 
     override fun notifyOnSavedInstanceState(outState: Bundle) {
+
         super.notifyOnSavedInstanceState(outState)
         outState.putBoolean(IS_SERVICE_ACTIVE, isServiceActive)
     }
