@@ -14,15 +14,15 @@ import java.util.*
 
 class StatisticsManagerTest {
 
-    val handler = mock<Handler> {
+    private val handler = mock<Handler> {
         on { postDelayed(any(), any()) }.then { true }
     }
 
-    val mSingleLocation = mockLocation(52.237049, 21.017532)
+    private val mSingleLocation = mockLocation(52.237049, 21.017532)
 
-    lateinit var statisticsManager: StatisticsManager
+    private lateinit var statisticsManager: StatisticsManager
 
-    var lastTime = 0L
+    private var lastTime = 0L
 
     private fun mockLocation(lat: Double, lng: Double, alt: Double = 0.0): Location {
 
@@ -30,6 +30,12 @@ class StatisticsManagerTest {
             on { latitude }.thenReturn(lat)
             on { longitude }.thenReturn(lng)
             on { altitude }.thenReturn(alt)
+        }
+    }
+
+    private fun mockLocation(distance: Float): Location {
+        return mock {
+            on { distanceTo(any()) }.thenReturn(distance)
         }
     }
 
@@ -106,6 +112,8 @@ class StatisticsManagerTest {
         statisticsManager.pushNewLocation(mSingleLocation)
         statisticsManager.notifyLocationOk()
 
+        simulateHighSpeed(statisticsManager)
+
         simulateLowSpeed(statisticsManager)
 
         assertEquals(Status.PAUSE, statisticsManager.status)
@@ -116,9 +124,6 @@ class StatisticsManagerTest {
     fun highSpeed_shouldChangeStateToRunning() {
 
         statisticsManager.pushNewLocation(mSingleLocation)
-        statisticsManager.onNewStats = {
-            println(it[Statistic.Name.SPEED]!!.getValue(mock {}))
-        }
         statisticsManager.notifyLocationOk()
 
         simulateLowSpeed(statisticsManager)
@@ -137,13 +142,8 @@ class StatisticsManagerTest {
 
     private fun simulateHighSpeed(statisticsManager: StatisticsManager) {
 
-        var lat = 0.0
-        var lng = 0.0
-
         for (i in 1..5) {
-            lat += 1
-            lng += 1
-            statisticsManager.pushNewLocation(mockLocation(lat, lng))
+            statisticsManager.pushNewLocation(mockLocation(100F))
         }
     }
 }
