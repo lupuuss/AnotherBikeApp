@@ -25,6 +25,8 @@ class TrackingService : Service() {
 
     @Inject
     lateinit var statsManager: StatisticsManager
+    @Inject
+    lateinit var locationClient: FusedLocationProviderClient
 
     val savedRoute
         get() = statsManager.savedRoute
@@ -33,8 +35,6 @@ class TrackingService : Service() {
         get() = statsManager.lastStats
 
     var lastLocationAvailability = false
-
-    private lateinit var locationClient: FusedLocationProviderClient
 
     private val locationDataReceivers = mutableListOf<LocationDataReceiver>()
     private val onStatsUpdateListeners = mutableListOf<OnStatsUpdateListener>()
@@ -156,7 +156,6 @@ class TrackingService : Service() {
         }
 
         Timber.d("Service started")
-        locationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun onBind(p0: Intent?): IBinder? {
