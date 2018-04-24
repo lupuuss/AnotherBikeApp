@@ -6,6 +6,7 @@ class StatisticsMathProvider(private val timeProvider: () -> Long) {
 
     private var lastTime = -1L
     private var avgCount = 0.0
+    private var currentAvg = 0.0
 
     /** Removes the highest and the lowest value from tempSpeedList**/
     fun removeSpeedNoise(tempSpeedList: MutableList<Double>) {
@@ -32,11 +33,13 @@ class StatisticsMathProvider(private val timeProvider: () -> Long) {
 
     }
 
-    fun measureAvgSpeed(currentAvg: Double, currentSpeed: Double): Double {
+    fun measureAvgSpeed(currentSpeed: Double): Double {
 
         avgCount++
 
-        return (currentAvg * (avgCount - 1) + currentSpeed) / avgCount
+        currentAvg = (currentAvg * (avgCount - 1) + currentSpeed) / avgCount
+
+        return currentAvg
     }
 
     fun measureMaxSpeed(currentSpeed: Double, maxSpeed: Double): Double {

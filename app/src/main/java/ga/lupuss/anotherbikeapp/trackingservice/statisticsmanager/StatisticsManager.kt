@@ -111,7 +111,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
                 if (speed > minSpeedToCount) {
 
-                    routeData.avgSpeed = math.measureAvgSpeed(routeData.avgSpeed, speed)
+                    routeData.avgSpeed = math.measureAvgSpeed(speed)
                     routeData.distance += tempDistanceList.sum()
                     timer.unpause()
                     status = Status.RUNNING
@@ -149,7 +149,6 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     fun notifyLocationOk() {
 
         status = Status.RUNNING
-        timer.unpause()
         newStats()
     }
 
