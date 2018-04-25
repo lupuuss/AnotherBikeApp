@@ -162,7 +162,7 @@ class TrackingActivity : AppCompatActivity(),
             })
         }
 
-        trackingPresenter.initTracking()
+        trackingPresenter.onMapReady()
     }
 
     private fun getGoogleMapStyleFromTheme(): String {
@@ -284,6 +284,7 @@ class TrackingActivity : AppCompatActivity(),
     }
 
     override fun setInfoWaitForLocationVisibility(visibility: Int) {
+
         infoWaitForLocation?.visibility = visibility
     }
 

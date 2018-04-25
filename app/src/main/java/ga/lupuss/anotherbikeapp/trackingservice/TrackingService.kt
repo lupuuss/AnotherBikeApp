@@ -46,17 +46,17 @@ class TrackingService : Service() {
     private var locationRequested = false
     private val locationCallback: LocationCallback = object : LocationCallback() {
 
-        override fun onLocationResult(p0: LocationResult?) {
+        override fun onLocationResult(locRes: LocationResult?) {
 
-            super.onLocationResult(p0)
+            super.onLocationResult(locRes)
 
             backgroundThread.post {
 
-                p0 ?: return@post
+                locRes ?: return@post
 
                 var location: Location? = null
 
-                for (loc in p0.locations) {
+                for (loc in locRes.locations) {
                     location = loc
                     break
                 }
@@ -70,33 +70,32 @@ class TrackingService : Service() {
                     locationDataReceivers.forEach { it.onNewLocation(savedRoute) }
                 }
 
-                Timber.v(TrackingService::class.qualifiedName,
-                        "NEW POINT = [${location.latitude}, ${location.longitude}]")
+                Timber.v("NEW POINT = [${location.latitude}, ${location.longitude}]")
             }
         }
 
-        override fun onLocationAvailability(p0: LocationAvailability?) {
+        override fun onLocationAvailability(locA: LocationAvailability?) {
 
-            super.onLocationAvailability(p0)
+            super.onLocationAvailability(locA)
 
-            val ok = p0?.isLocationAvailable ?: true
+            val isLocationOk = locA?.isLocationAvailable ?: true
 
-            lastLocationAvailability = ok
+            lastLocationAvailability = isLocationOk
 
             backgroundThread.post {
 
-                if (!ok && savedRoute.size != 0) {
+                if (!isLocationOk && savedRoute.isNotEmpty()) {
 
                     statsManager.notifyLostLocation()
 
-                } else if (ok) {
+                } else if (isLocationOk) {
 
                     statsManager.notifyLocationOk()
                 }
             }
 
-            Timber.d(TrackingService::class.qualifiedName, "Location availability: " + ok.toString())
-            locationDataReceivers.forEach { it.onLocationAvailability(ok) }
+            Timber.d("Location availability: %s", isLocationOk)
+            locationDataReceivers.forEach { it.onLocationAvailability(isLocationOk) }
         }
 
     }
@@ -160,7 +159,7 @@ class TrackingService : Service() {
 
     override fun onBind(p0: Intent?): IBinder? {
 
-        Timber.d("Bound " + p0.toString())
+        Timber.d("Bound %s", p0)
 
         if (!locationRequested) {
 
@@ -171,7 +170,7 @@ class TrackingService : Service() {
 
     override fun onUnbind(intent: Intent?): Boolean {
 
-        Timber.d("Unbound > " + intent.toString())
+        Timber.d("Unbound > %s", intent)
         return super.onUnbind(intent)
     }
 
@@ -232,6 +231,6 @@ class TrackingService : Service() {
 
     fun isInProgress(): Boolean {
 
-        return savedRoute.size != 0 && lastStats != null
+        return savedRoute.isNotEmpty() && lastStats != null
     }
 }

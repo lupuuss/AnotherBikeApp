@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun unbindTrackingService(connection: ServiceConnection) {
 
-        Timber.d(MainActivity::class.qualifiedName, "Unbinding service...")
+        Timber.d("Unbinding service...")
         unbindService(connection)
     }
 

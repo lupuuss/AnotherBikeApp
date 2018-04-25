@@ -6,6 +6,7 @@ import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
+import timber.log.Timber
 import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].
@@ -22,23 +23,27 @@ class TrackingPresenter @Inject constructor()
     private var followMyLocation: Boolean = true
     private var isLocationAvailable: Boolean = false
         private set(value) {
-            trackingView.setInfoWaitForLocationVisibility(
-                    if (isLocationAvailable) View.VISIBLE else View.INVISIBLE
-            )
 
+            trackingView.setInfoWaitForLocationVisibility(
+
+                    if (value) View.INVISIBLE else View.VISIBLE
+            )
             field = value
         }
 
-    fun initTracking() {
+    fun onMapReady() {
 
         // checking if service worked before activity start
-        if (serviceBinder.savedRoute.size != 0) {
+        if (serviceBinder.savedRoute.isNotEmpty()) {
 
             trackingView.prepareMapToTrack(serviceBinder.savedRoute)
         }
-        if (serviceBinder.lastStats != null) {
-            trackingView.updateStats(serviceBinder.lastStats!!)
+
+        serviceBinder.lastStats?.let {
+
+            trackingView.updateStats(it)
         }
+
         isLocationAvailable = serviceBinder.lastLocationAvailability
 
         // request receiving location and statistics from TrackService
@@ -50,12 +55,14 @@ class TrackingPresenter @Inject constructor()
 
         followMyLocation = true
 
-        if (serviceBinder.savedRoute.size != 0) {
+        if (serviceBinder.savedRoute.isNotEmpty()) {
+
             trackingView.moveMapCamera(serviceBinder.savedRoute.last())
         }
     }
 
     fun onGoogleMapClick() {
+
         followMyLocation = false
     }
 
@@ -92,18 +99,11 @@ class TrackingPresenter @Inject constructor()
 
     override fun onLocationAvailability(available: Boolean) {
 
-        if (!available) {
+        isLocationAvailable = available
 
-            isLocationAvailable = false
+        if (!available && !serviceBinder.isServiceInProgress()) {
 
-            if (!serviceBinder.isServiceInProgress()) {
-
-                trackingView.makeToast(R.string.message_location_not_available)
-            }
-
-        } else {
-
-            isLocationAvailable = true
+            trackingView.makeToast(R.string.message_location_not_available)
         }
     }
 
