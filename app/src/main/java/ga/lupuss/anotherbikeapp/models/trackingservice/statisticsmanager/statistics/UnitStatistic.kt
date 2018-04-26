@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics
+package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics
 
 import android.content.Context
 

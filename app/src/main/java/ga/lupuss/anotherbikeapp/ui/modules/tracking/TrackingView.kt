@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.base.BaseView
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 
 interface TrackingView : BaseView {
 

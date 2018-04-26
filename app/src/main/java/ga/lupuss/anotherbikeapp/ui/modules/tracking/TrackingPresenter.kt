@@ -4,9 +4,8 @@ import android.view.View
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
-import timber.log.Timber
+import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].

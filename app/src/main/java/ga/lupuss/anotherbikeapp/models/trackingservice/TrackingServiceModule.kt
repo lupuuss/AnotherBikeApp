@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.trackingservice
+package ga.lupuss.anotherbikeapp.models.trackingservice
 
 import android.content.Context
 import android.os.Handler
@@ -6,7 +6,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.StatisticsMathProvider
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsMathProvider
 
 @Module
 class TrackingServiceModule {

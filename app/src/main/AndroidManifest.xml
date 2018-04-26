@@ -24,7 +24,7 @@
         </activity>
 
         <service
-            android:name="ga.lupuss.anotherbikeapp.trackingservice.TrackingService"
+            android:name="ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService"
             android:exported="false" />
 
         <meta-data

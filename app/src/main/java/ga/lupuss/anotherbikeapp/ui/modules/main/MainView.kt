@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.main
 
 import android.content.ServiceConnection
 import ga.lupuss.anotherbikeapp.base.BaseView
-import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 
 interface MainView : BaseView {
 

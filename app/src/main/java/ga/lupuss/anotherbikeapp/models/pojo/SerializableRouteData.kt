@@ -1,10 +1,10 @@
 package ga.lupuss.anotherbikeapp.models.pojo
 
 import com.google.android.gms.maps.model.LatLng
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.StringStatistic
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.TimeStatistic
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.UnitStatistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.StringStatistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
 
 data class SerializableRouteData(
         val savedRoute: MutableList<LatLng>,

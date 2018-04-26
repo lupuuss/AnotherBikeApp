@@ -3,8 +3,11 @@ package ga.lupuss.anotherbikeapp.ui.extensions
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 
 @SuppressLint("SetTextI18n")
 
@@ -24,12 +27,12 @@ class ViewExtensions {
          *  @param tag Tag that was assigned to TextView by createStatsLineWithNameTag
          *
          */
-        fun updateStatLineByTag(layout: ViewGroup,
-                                tag: Statistic.Name, stat: Statistic) {
+        fun updateTextViewStatByTag(layout: ViewGroup,
+                                    tag: Statistic.Name, stat: Statistic) {
 
             val statTextView = layout.findViewWithTag<TextView>(tag)
 
-            (statTextView as TextView).setText(tag, stat)
+            statTextView.setText(tag, stat)
         }
 
         /**
@@ -38,8 +41,10 @@ class ViewExtensions {
          * @param statLayoutId Id of layout, which contains TextView that represents statistic
          * @param statName Name of statistic. It's a tag for a TextView
          */
-        fun createStatLineWithNameTag(layoutInflater: LayoutInflater, rootView: ViewGroup,
-                                      statLayoutId: Int, statName: Statistic.Name,
+        fun createTextViewStatWithTag(layoutInflater: LayoutInflater,
+                                      rootView: ViewGroup,
+                                      statLayoutId: Int,
+                                      statName: Statistic.Name,
                                       stat: Statistic): TextView {
 
             val statTextView = layoutInflater
@@ -50,6 +55,5 @@ class ViewExtensions {
 
             return statTextView
         }
-
     }
 }

@@ -5,11 +5,11 @@
     android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorAccent">
+    android:background="?android:colorAccent">
 
     <fragment
         android:id="@+id/statsFragment"
-        android:name="ga.lupuss.anotherbikeapp.ui.modules.tracking.StatsFragment"
+        android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_stats" />

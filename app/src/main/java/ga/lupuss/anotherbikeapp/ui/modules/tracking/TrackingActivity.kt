@@ -18,10 +18,11 @@ import com.tinsuke.icekick.extension.serialState
 import com.tinsuke.icekick.extension.unfreezeInstanceState
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
-import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.setText
+import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
 import timber.log.Timber
@@ -258,7 +259,7 @@ class TrackingActivity : AppCompatActivity(),
 
         for (statName in shortStatsListToDisplay) {
 
-            (shortStatsContainer as ViewGroup).addView(ViewExtensions.createStatLineWithNameTag(
+            (shortStatsContainer as ViewGroup).addView(ViewExtensions.createTextViewStatWithTag(
                     layoutInflater,
                     (shortStatsContainer as ViewGroup),
                     R.layout.activity_tracking_short_stat,

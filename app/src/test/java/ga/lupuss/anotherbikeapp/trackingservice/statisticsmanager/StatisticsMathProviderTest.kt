@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager
 
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsMathProvider
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 

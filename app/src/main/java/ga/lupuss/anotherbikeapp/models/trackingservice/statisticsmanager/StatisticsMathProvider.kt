@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager
+package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import kotlin.math.max
 

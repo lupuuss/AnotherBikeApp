@@ -1,9 +1,12 @@
-package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager
+package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.models.pojo.SerializableRouteData
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.*
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.StringStatistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,7 +17,7 @@ import javax.inject.Inject
  */
 class StatisticsManager @Inject constructor(private val locale: Locale,
                                             val timer: Timer,
-                                            val math: StatisticsMathProvider) {
+                                            private val math: StatisticsMathProvider) {
 
     private val kmh5 = 5 / Statistic.Unit.KM_H.convertParam // 5 km/h in m/s
 
@@ -40,7 +43,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         get() = routeData.savedRoute
 
     /** Contains values that should be saved in memory or on server. */
-    private val routeData = SerializableRouteData(
+    val routeData = SerializableRouteData(
             savedRoute = mutableListOf(),
             avgSpeed = 0.0,
             maxSpeed = 0.0,

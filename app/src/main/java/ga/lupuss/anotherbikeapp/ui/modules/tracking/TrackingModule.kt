@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import dagger.Module
 import dagger.Provides
-import ga.lupuss.anotherbikeapp.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 
 @Module
 class TrackingModule(view: TrackingView,

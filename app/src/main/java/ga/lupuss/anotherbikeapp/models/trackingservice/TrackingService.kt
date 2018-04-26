@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.trackingservice
+package ga.lupuss.anotherbikeapp.models.trackingservice
 
 import android.Manifest
 import android.app.Service
@@ -10,8 +10,8 @@ import android.support.v4.content.PermissionChecker
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.StatisticsManager
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,6 +33,9 @@ class TrackingService : Service() {
 
     val lastStats: Map<Statistic.Name, Statistic>?
         get() = statsManager.lastStats
+
+    val routeData
+        get() = statsManager.routeData
 
     var lastLocationAvailability = false
 
@@ -118,6 +121,8 @@ class TrackingService : Service() {
 
         val lastStats get() = this@TrackingService.lastStats
 
+        val routeData get() = this@TrackingService.routeData
+
         fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
 
         fun connectServiceDataReceiver(locationDataReceiver: LocationDataReceiver) =
@@ -136,8 +141,7 @@ class TrackingService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        DaggerTrackingServiceComponent
-                .builder()
+        DaggerTrackingServiceComponent.builder()
                 .anotherBikeAppComponent(AnotherBikeApp.get(this.application).component)
                 .build()
                 .inject(this)

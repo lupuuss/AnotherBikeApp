@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.ui.modules.tracking
+package ga.lupuss.anotherbikeapp.ui.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,19 +9,11 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 
 /** Contains information about tracking. */
 class StatsFragment : Fragment() {
-
-    companion object {
-
-        fun newInstance(): StatsFragment {
-
-            return StatsFragment()
-        }
-    }
 
     private lateinit var layout: LinearLayout
 
@@ -53,7 +45,7 @@ class StatsFragment : Fragment() {
         for ((name, stat) in stats) {
 
             layout.addView(
-                    ViewExtensions.createStatLineWithNameTag(
+                    ViewExtensions.createTextViewStatWithTag(
                             layoutInflater,
                             view!!.findViewById(R.id.statsContainer),
                             R.layout.activity_tracking_stat,
@@ -68,7 +60,7 @@ class StatsFragment : Fragment() {
 
         for ((name, stat) in stats) {
 
-            ViewExtensions.updateStatLineByTag(layout, name, stat)
+            ViewExtensions.updateTextViewStatByTag(layout, name, stat)
         }
     }
 }

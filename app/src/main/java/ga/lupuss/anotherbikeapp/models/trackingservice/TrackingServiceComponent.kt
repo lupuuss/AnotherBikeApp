@@ -1,10 +1,10 @@
-package ga.lupuss.anotherbikeapp.trackingservice
+package ga.lupuss.anotherbikeapp.models.trackingservice
 
 import android.os.Handler
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.Component
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
-import ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.StatisticsMathProvider
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsMathProvider
 import javax.inject.Scope
 
 @Component(dependencies = [AnotherBikeAppComponent::class], modules = [TrackingServiceModule::class])

@@ -5,6 +5,8 @@ import android.support.v4.os.ConfigurationCompat
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import ga.lupuss.anotherbikeapp.models.FilesManager
+import java.io.File
 import java.util.*
 
 @Module
@@ -25,4 +27,9 @@ class AnotherBikeAppModule(context: Context) {
         @Provides
         @AnotherBikeAppScope
         get() = Gson()
+
+    val filesManager: FilesManager
+        @Provides
+        @AnotherBikeAppScope
+        get() = FilesManager(gson)
 }
