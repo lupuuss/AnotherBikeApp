@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.modules.main.MainActivity"
+    android:background="?android:colorPrimary">
+
+    <TextView
+        android:id="@+id/label"
+        android:text="Trasa #1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        tools:ignore="HardcodedText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mapFrame"/>
+
+    <include
+        layout="@layout/map_frame"
+        android:id="@+id/mapFrame"
+        android:layout_height="250dp"
+        android:layout_width="0dp"
+        app:layout_constraintTop_toBottomOf="@id/label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/mapFrame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        tools:ignore="HardcodedText">
+
+
+        <TextView
+            android:id="@+id/durationStat"
+            android:drawableStart="@drawable/ic_duration_24dp"
+            android:drawablePadding="10dp"
+            android:textSize="17sp"
+            android:text="00:45:31"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/distanceStat"
+            android:text="25 km"
+            android:textSize="17sp"
+            android:drawableStart="@drawable/ic_distance_24dp"
+            android:drawablePadding="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/speedStat"
+            android:textSize="17sp"
+            android:drawableStart="@drawable/ic_speed_24dp"
+            android:drawablePadding="10dp"
+            android:text="20.31 km/h"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
