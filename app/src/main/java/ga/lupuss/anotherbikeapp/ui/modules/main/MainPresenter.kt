@@ -7,7 +7,10 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.TEMP_ROUTE_FILE_PREFIX
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.FilesManager
+import ga.lupuss.anotherbikeapp.models.RoutesKeeper
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
@@ -18,7 +21,8 @@ import javax.inject.Inject
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
-class MainPresenter @Inject constructor(private val context: Context) : Presenter {
+class MainPresenter @Inject constructor(private val context: Context,
+                                        private val routesKeeper: RoutesKeeper) : Presenter {
 
     @Inject
     lateinit var mainView: MainView
@@ -93,10 +97,20 @@ class MainPresenter @Inject constructor(private val context: Context) : Presente
         if (requestCode == MainActivity.Request.TRACKING_ACTIVITY_REQUEST) {
 
             when (resultCode) {
+
                 TrackingActivity.Result.DONE -> {
 
                     Timber.d("Service done. Data may be saved")
+
+                    val routeData = serviceBinder?.routeData
+
                     stopTracking()
+
+                    routeData?.let {
+
+                        val path = routesKeeper.saveRouteTemporary(routeData)
+                        mainView.startSummaryActivity(path.absolutePath)
+                    }
                 }
 
                 TrackingActivity.Result.NO_DATA_DONE -> {
@@ -124,6 +138,7 @@ class MainPresenter @Inject constructor(private val context: Context) : Presente
     }
 
     private fun stopTracking() {
+
         isServiceActive = false
         serviceBinder = null
         mainView.unbindTrackingService(serviceConnection)
@@ -149,6 +164,7 @@ class MainPresenter @Inject constructor(private val context: Context) : Presente
             unbindTrackingService()
 
         } else {
+
             Timber.d("No service. Clean destroy.")
         }
     }

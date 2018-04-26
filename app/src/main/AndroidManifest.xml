@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="ga.lupuss.anotherbikeapp">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION "/>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION " />
 
     <application
         android:name=".AnotherBikeApp"
@@ -14,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/OrangeTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-
         <activity android:name=".ui.modules.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
         </activity>
 
         <service
-            android:name="ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService"
+            android:name=".models.trackingservice.TrackingService"
             android:exported="false" />
 
         <meta-data
@@ -34,6 +34,7 @@
         <activity
             android:name=".ui.modules.tracking.TrackingActivity"
             android:label="@string/title_activity_tracking" />
+        <activity android:name=".ui.modules.summary.SummaryActivity"/>
     </application>
 
 </manifest>

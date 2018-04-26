@@ -1,21 +1,19 @@
 package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
-import com.google.gson.Gson
 import dagger.Component
-import ga.lupuss.anotherbikeapp.models.FilesManager
+import ga.lupuss.anotherbikeapp.models.RoutesKeeper
 import java.util.*
 import javax.inject.Scope
 
 @Scope
 annotation class AnotherBikeAppScope
 
-@Component(modules = [AnotherBikeAppModule::class])
+@Component(modules = [AnotherBikeAppModule::class, MemoryModule::class])
 @AnotherBikeAppScope
 interface AnotherBikeAppComponent {
 
     fun providesContext(): Context
-    fun providesGson(): Gson
     fun providesLocale(): Locale
-    fun providesFileManager(): FilesManager
+    fun providesRoutesKeeper(): RoutesKeeper
 }

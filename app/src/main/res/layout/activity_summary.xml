@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.modules.summary.SummaryActivity"
+    android:background="?android:colorAccent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarSummary"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="?android:colorPrimary"
+        app:title="@string/summary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mapFrameSummary"/>
+    <include
+        android:id="@+id/mapFrameSummary"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarSummary"
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        layout="@layout/map_frame"/>
+    <LinearLayout
+        android:id="@+id/divider"
+        android:background="?android:colorPrimaryDark"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapFrameSummary"
+        app:layout_constraintBottom_toTopOf="@id/statsFragment"/>
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        tools:layout="@layout/fragment_stats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+</android.support.constraint.ConstraintLayout>

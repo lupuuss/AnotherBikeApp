@@ -28,10 +28,10 @@ class SavedRouteFragment : Fragment(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val uri = arguments.getString(ROUTE_DATA_URI)
+        val path = arguments.getString(ROUTE_DATA_PATH)
 
         routeData = AnotherBikeApp.get(this.activity.application)
-                .component.providesFileManager().fileToObject(uri, SerializableRouteData::class.java)
+                .component.providesRoutesKeeper().readRoute(path)
         statisticsMap = routeData.getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM)
 
     }
@@ -59,14 +59,14 @@ class SavedRouteFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
 
-        private const val ROUTE_DATA_URI = "ROUTE_DATA_URI"
+        private const val ROUTE_DATA_PATH = "ROUTE_DATA_PATH"
 
         @JvmStatic
-        fun newInstance(uri: String) = SavedRouteFragment().apply {
+        fun newInstance(path: String) = SavedRouteFragment().apply {
 
             arguments.apply {
 
-                putString(ROUTE_DATA_URI, uri)
+                putString(ROUTE_DATA_PATH, path)
             }
         }
     }

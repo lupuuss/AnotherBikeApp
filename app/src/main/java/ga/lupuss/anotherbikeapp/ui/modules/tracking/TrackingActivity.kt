@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AlertDialog
 import android.util.TypedValue
 import android.view.*
@@ -18,9 +16,11 @@ import com.tinsuke.icekick.extension.serialState
 import com.tinsuke.icekick.extension.unfreezeInstanceState
 
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
+import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 import ga.lupuss.anotherbikeapp.ui.extensions.setText
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_tracking.*
@@ -29,7 +29,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class TrackingActivity : AppCompatActivity(),
+class TrackingActivity : BaseActivity(),
         OnMapReadyCallback, TrackingView {
 
     @Inject
@@ -50,8 +50,6 @@ class TrackingActivity : AppCompatActivity(),
     private lateinit var defaultMarkerOptions: MarkerOptions
 
     private var isInfoContainerExpand by serialState(true)
-
-    private lateinit var toast: Toast
 
     private var infoContainerVisibility: Int = View.INVISIBLE
         set(value) {
@@ -75,7 +73,7 @@ class TrackingActivity : AppCompatActivity(),
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tracking)
-        setSupportActionBar(toolbarMain)
+        activateToolbar(toolbarMain)
         setResult(Result.NOT_DONE)
 
         DaggerTrackingComponent.builder().trackingModule(
@@ -83,12 +81,7 @@ class TrackingActivity : AppCompatActivity(),
                 )
         ).build().inject(this)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-
         unfreezeInstanceState(savedInstanceState)
-
-        toast = Toast.makeText(this, "", Toast.LENGTH_LONG)
 
         //init google map
         (supportFragmentManager
@@ -109,23 +102,6 @@ class TrackingActivity : AppCompatActivity(),
         })
     }
 
-    private fun getDefaultMarkerIconForColor(color: Int) =
-            BitmapDescriptorFactory.defaultMarker(getColorHue(color))
-
-    private fun getColorForAttr(attr: Int): Int {
-
-        val typedValue = TypedValue()
-        theme.resolveAttribute(attr, typedValue, true)
-        return typedValue.data
-    }
-
-    private fun getColorHue(color: Int): Float {
-
-        val floatArray = FloatArray(3)
-        ColorUtils.colorToHSL(color, floatArray)
-        return floatArray[0]
-    }
-
     private fun getIBinderFromIntent(): TrackingService.ServiceBinder {
 
         val bundle = intent.getBundleExtra(ARG_MAIN_BUNDLE)
@@ -135,7 +111,7 @@ class TrackingActivity : AppCompatActivity(),
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        menuInflater.inflate(R.menu.activity_tracking_menu, menu)
         return true
     }
 
@@ -143,10 +119,10 @@ class TrackingActivity : AppCompatActivity(),
     override fun onMapReady(googleMap: GoogleMap) {
 
         trackLineOptions =
-                PolylineOptions().color(getColorForAttr(R.attr.trackLineColor)).width(15F)
+                PolylineOptions().color(theme.getColorForAttr(R.attr.trackLineColor)).width(15F)
 
         defaultMarkerOptions = MarkerOptions().icon(
-                getDefaultMarkerIconForColor(getColorForAttr(R.attr.markersColor))
+                ViewExtensions.getDefaultMarkerIconForColor(theme.getColorForAttr(R.attr.markersColor))
         )
 
         map = googleMap
@@ -211,17 +187,7 @@ class TrackingActivity : AppCompatActivity(),
         )
     }
 
-    // TrackingPresenter.IView Impl
-
-    override fun makeToast(stringId: Int) {
-        toast.setText(stringId)
-        toast.show()
-    }
-
-    override fun makeToast(str: String) {
-        toast.setText(str)
-        toast.show()
-    }
+    // TrackingView Impl
 
     override fun prepareMapToTrack(points: List<LatLng>) {
 
@@ -368,17 +334,13 @@ class TrackingActivity : AppCompatActivity(),
         private const val ARG_MAIN_BUNDLE = "main bundle"
         private const val ARG_BINDER = "IBinder"
 
+        fun newIntent(context: Context, serviceBinder: TrackingService.ServiceBinder) =
+                Intent(context, TrackingActivity::class.java).apply {
 
-        fun newIntent(context: Context, serviceBinder: TrackingService.ServiceBinder): Intent {
-
-            val intent = Intent(context, TrackingActivity::class.java)
-            val bundle = Bundle()
-
-            bundle.putBinder(ARG_BINDER, serviceBinder)
-            intent.putExtra(ARG_MAIN_BUNDLE, bundle)
-
-            return intent
-        }
+                    val bundle = Bundle()
+                    bundle.putBinder(ARG_BINDER, serviceBinder)
+                    putExtra(ARG_MAIN_BUNDLE, bundle)
+                }
     }
 
     /** Possible results codes */

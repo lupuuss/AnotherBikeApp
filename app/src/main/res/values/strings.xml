@@ -40,5 +40,10 @@
     <string name="cancel">Cancel</string>
 
     <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="summary">Summary</string>
+    <string name="save">Save</string>
+    <string name="reject">Reject</string>
+    <string name="message_reject_warning">Are you sure you want to reject?</string>
 
 </resources>

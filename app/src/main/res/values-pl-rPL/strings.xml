@@ -23,4 +23,8 @@
     <string name="start_time">Czas rozpoczęcia</string>
     <string name="start_tracking">Rozpocznij śledzenie</string>
     <string name="continue_tracking">Kontynuuj śledzenie</string>
+    <string name="end">Koniec</string>
+    <string name="summary">Podsumowanie</string>
+    <string name="save">Zapisz</string>
+    <string name="reject">Odrzuć</string>
 </resources>
