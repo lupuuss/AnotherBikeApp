@@ -13,8 +13,9 @@ import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statist
 import ga.lupuss.anotherbikeapp.resolveTimeString
 
 @Suppress("MemberVisibilityCanBePrivate")
-class RoutesHistoryRecyclerViewAdapter(private val routesDataCallback: (Int) -> SerializableRouteData,
-                                       private val sizeCallback: () -> Int
+class RoutesHistoryRecyclerViewAdapter(
+        private val routesDataCallback: (Int, (SerializableRouteData) -> Unit) -> Unit,
+        private val sizeCallback: () -> Int
 
 ) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
 
@@ -41,9 +42,12 @@ class RoutesHistoryRecyclerViewAdapter(private val routesDataCallback: (Int) -> 
 
         fun bindView(n: Int) {
 
-            val routeData = routesDataCallback.invoke(n)
+            routesDataCallback.invoke(n, {
+
+                fillStats(it, itemCount - n)
+            })
             constraintLayout.tag = this
-            fillStats(routeData, itemCount - n)
+
         }
 
         private fun fillStats(routeData: SerializableRouteData, n: Int) {

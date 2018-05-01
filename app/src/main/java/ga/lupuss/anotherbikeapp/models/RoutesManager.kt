@@ -1,17 +1,52 @@
 package ga.lupuss.anotherbikeapp.models
 
+import android.content.Context
+import android.os.FileObserver
+import android.os.Handler
 import ga.lupuss.anotherbikeapp.ROUTE_FILE_PREFIX
 import ga.lupuss.anotherbikeapp.models.pojo.SerializableRouteData
 import ga.lupuss.anotherbikeapp.models.pojo.User
+import timber.log.Timber
 import java.io.File
 
 /** Manages routes on phone memory. Saves routes to /unsync dir.
  * Reads routes form /sync and /unsync dir **/
 class RoutesManager(private val filesManager: FilesManager,
-                    private val user: User) {
+                    private val user: User,
+                    fileObserverFactory: (String, Int, (Int, String?) -> Unit) -> FileObserver,
+                    context: Context) {
+
+    private val fileObserver: FileObserver
+    private val onRoutesChangedListeners = mutableListOf<() -> Unit>()
 
     init {
         refreshSavedRoutesList()
+
+        fileObserver = fileObserverFactory.invoke(
+                user.unsyncRoutesPath.absolutePath, // dir to observe path
+                (FileObserver.CREATE
+                        or FileObserver.DELETE
+                        or FileObserver.CLOSE_WRITE
+                        or FileObserver.DELETE_SELF), // mask
+                { code, filePath ->
+                    // onEvent
+
+                    when (code) {
+                        FileObserver.CREATE, FileObserver.DELETE, FileObserver.DELETE_SELF, FileObserver.CLOSE_WRITE -> {
+                            refreshSavedRoutesList()
+                            Timber.d("Routes changed >>> Code: $code Changed file: $filePath")
+
+                            Handler(context.mainLooper).post {
+
+                                onRoutesChangedListeners.forEach {
+                                    it.invoke()
+                                }
+                            }
+                        }
+                    }
+
+                })
+        fileObserver.startWatching()
     }
 
     var temporaryRoute: SerializableRouteData? = null
@@ -52,6 +87,15 @@ class RoutesManager(private val filesManager: FilesManager,
 
     fun clearTemporaryRoute() {
         temporaryRoute = null
+    }
+
+    fun addOnRoutesChangedListener(onRoutesChanged: () -> Unit) {
+        onRoutesChangedListeners.add(onRoutesChanged)
+    }
+
+    fun removeOnRoutesChangedListener(onRoutesChanged: () -> Unit) {
+
+        onRoutesChangedListeners.remove(onRoutesChanged)
     }
 
     private fun generatePath(routeData: SerializableRouteData): File {
