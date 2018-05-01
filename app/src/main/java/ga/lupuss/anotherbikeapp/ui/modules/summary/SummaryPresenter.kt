@@ -28,6 +28,12 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
     }
 
     fun onSaveClick() {
+
+        val name = summaryView.getRouteNameFromEditText()
+
+        if (name != "") {
+            routeData.name = name
+        }
         routesManager.saveRoute(routeData)
         summaryView.finishActivity()
     }

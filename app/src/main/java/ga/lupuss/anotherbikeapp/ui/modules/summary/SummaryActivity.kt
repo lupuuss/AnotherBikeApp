@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.FileObserver
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
@@ -128,6 +129,8 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }
+
+    override fun getRouteNameFromEditText(): String = routeNameEdit.text.toString()
 
     companion object {
 

@@ -10,4 +10,5 @@ interface SummaryView : BaseView {
     fun showStatistics(statistics: Map<Statistic.Name, Statistic>)
     fun finishActivity()
     fun showRejectDialog(onYes: () -> Unit)
+    fun getRouteNameFromEditText(): String
 }

@@ -58,5 +58,7 @@
     <string name="months">months</string>
     <string name="years">years</string>
     <string name="default_route_name">Route</string>
+    <string name="name_edit_text_title">Name:</string>
+    <string name="enter_name">Enter name</string>
 
 </resources>

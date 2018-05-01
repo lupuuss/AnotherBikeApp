@@ -31,7 +31,38 @@
         android:layout_height="0dp"
         app:layout_constraintEnd_toStartOf="@id/statsFragment"
         app:layout_constraintTop_toBottomOf="@id/toolbarSummary"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nameLabelWrapper"
+        android:background="?android:colorPrimaryDark"
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/divider"
+        app:layout_constraintTop_toBottomOf="@id/toolbarSummary"
+        app:layout_constraintBottom_toTopOf="@id/statsFragment">
+        <TextView
+            android:id="@+id/nameLabel"
+            android:text="@string/name_edit_text_title"
+            android:layout_marginStart="20dp"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/routeNameEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:inputType="text"
+            android:hint="@string/enter_name"
+            android:textColorHint="?android:textColor"
+            android:layout_marginStart="30dp"/>
+    </LinearLayout>
 
     <fragment
         android:id="@+id/statsFragment"
@@ -39,7 +70,7 @@
         android:layout_width="270dp"
         android:layout_height="0dp"
         tools:layout="@layout/fragment_stats"
-        app:layout_constraintTop_toBottomOf="@id/toolbarSummary"
+        app:layout_constraintTop_toBottomOf="@id/nameLabelWrapper"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 

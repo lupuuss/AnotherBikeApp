@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.modules.summary.SummaryActivity"
-    android:background="?android:colorAccent">
+    android:background="?android:colorAccent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarSummary"
         android:layout_width="match_parent"
@@ -26,22 +28,42 @@
     <LinearLayout
         android:id="@+id/divider"
         android:background="?android:colorPrimaryDark"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="0dp"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mapFrameSummary"
-        app:layout_constraintBottom_toTopOf="@id/statsFragment"/>
+        app:layout_constraintBottom_toTopOf="@id/statsFragment">
+        <TextView
+            android:id="@+id/nameLabel"
+            android:text="@string/name_edit_text_title"
+            android:layout_marginStart="20dp"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/routeNameEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:inputType="text"
+            android:hint="@string/enter_name"
+            android:textColorHint="?android:textColor"
+            android:layout_marginStart="30dp"/>
+    </LinearLayout>
+
+
     <fragment
         android:id="@+id/statsFragment"
         android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         tools:layout="@layout/fragment_stats"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 

@@ -40,4 +40,6 @@
     <string name="years">l.</string>
     <string name="use_default_account">Użyj domyślnego konta</string>
     <string name="default_route_name">Trasa</string>
+    <string name="name_edit_text_title">Nazwa:</string>
+    <string name="enter_name">Wprowadź nazwę</string>
 </resources>
