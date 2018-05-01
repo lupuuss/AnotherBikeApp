@@ -18,7 +18,7 @@
 
     <include
         layout="@layout/map_frame"
-        android:id="@+id/mapFrame"
+        android:id="@+id/map"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="40dp"

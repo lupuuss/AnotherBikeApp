@@ -7,20 +7,12 @@ import org.junit.Test
 
 class TimeStatisticTest {
 
-    private fun hours(hours: Long): Long {
+    private fun hours(hours: Long) = min(60) * hours
 
-        return min(60) * hours
-    }
+    private fun min(min: Long) = sec(60) * min
 
-    private fun min(min: Long): Long {
+    private fun sec(sec: Long) = 1000L * sec
 
-        return sec(60) * min
-    }
-
-    private fun sec(sec: Long): Long {
-
-        return 1000 * sec
-    }
 
     private val valMaps = mapOf(
             "03:30:10" to hours(3) + min(30) + sec(10),

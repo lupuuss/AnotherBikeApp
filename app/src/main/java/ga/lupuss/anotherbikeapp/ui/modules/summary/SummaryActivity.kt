@@ -35,7 +35,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
         DaggerSummaryComponent
                 .builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).component)
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent)
                 .summaryModule(SummaryModule(this))
                 .build()
                 .inject(this)
@@ -46,7 +46,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
 
         this.map = map!!
-        summaryPresenter.onFilePathPass(intent.extras[ROUTE_PATH] as String)
+        summaryPresenter.viewReady()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -58,6 +58,11 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override fun onBackPressed() {
 
         onRejectClick(null)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        summaryPresenter.notifyOnDestroy(isFinishing)
     }
 
     // onClicks
@@ -126,12 +131,8 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
     companion object {
 
-        private const val ROUTE_PATH = "route path"
-
         @JvmStatic
-        fun newIntent(context: Context, path: String) =
-                Intent(context, SummaryActivity::class.java).apply {
-                    putExtra(ROUTE_PATH, path)
-                }
+        fun newIntent(context: Context) =
+                Intent(context, SummaryActivity::class.java)
     }
 }

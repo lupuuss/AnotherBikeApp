@@ -16,15 +16,15 @@ class TrackingServiceModule {
         @TrackingServiceScope
         get() = Handler()
 
-    val statisticsMathProvider: StatisticsMathProvider
-        @Provides
-        @TrackingServiceScope
-        get() = StatisticsMathProvider(System::currentTimeMillis)
-
 
     @Provides
     @TrackingServiceScope
-    fun providesLocationClient(context: Context): FusedLocationProviderClient {
+    fun statisticMathProvider(timeProvider: () -> Long) =
+            StatisticsMathProvider(timeProvider)
+
+    @Provides
+    @TrackingServiceScope
+    fun locationClient(context: Context): FusedLocationProviderClient {
 
         return LocationServices.getFusedLocationProviderClient(context)
     }

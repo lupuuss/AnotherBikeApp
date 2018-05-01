@@ -10,16 +10,20 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.PermissionChecker
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
+import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
-import kotlinx.android.synthetic.main.activity_main.trackingButton
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -50,13 +54,33 @@ class MainActivity : BaseActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        redirectToLoginIfNecessary()
+
         DaggerMainComponent.builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).component)
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent)
                 .mainModule(MainModule(this))
                 .build()
                 .inject(this)
 
         mainPresenter.notifyOnCreate(savedInstanceState)
+
+        val adapter = RoutesHistoryRecyclerViewAdapter(
+                mainPresenter::onHistoryRecyclerItemRequest,
+                mainPresenter::onHistoryRecyclerItemCountRequest
+        )
+
+        routesHistoryRecycler.apply {
+            this.adapter = adapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
+
+        routesHistoryRecycler.addItemDecoration(
+                BottomSpaceItemDecoration(dpToPixels(this, 5F)))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        routesHistoryRecycler.adapter.notifyDataSetChanged()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -96,6 +120,11 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     // MainView Impl
+
+    override fun setNoDataTextVisibility(visibility: Int) {
+
+        noDataText.visibility = visibility
+    }
 
     override fun setTrackingButtonState(trackingInProgress: Boolean) {
 
@@ -161,9 +190,13 @@ class MainActivity : BaseActivity(), MainView {
         unbindService(connection)
     }
 
-    override fun startSummaryActivity(filePath: String) {
+    override fun startSummaryActivity() {
 
-        startActivity(SummaryActivity.newIntent(this, filePath))
+        startActivity(SummaryActivity.newIntent(this))
+    }
+
+    override fun refreshRecyclerAdapter() {
+        routesHistoryRecycler.adapter.notifyDataSetChanged()
     }
 
     class Request {

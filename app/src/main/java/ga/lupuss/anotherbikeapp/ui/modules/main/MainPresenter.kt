@@ -6,11 +6,10 @@ import android.content.Context
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.TEMP_ROUTE_FILE_PREFIX
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.FilesManager
-import ga.lupuss.anotherbikeapp.models.RoutesKeeper
+import ga.lupuss.anotherbikeapp.models.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
@@ -22,7 +21,7 @@ import javax.inject.Inject
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
 class MainPresenter @Inject constructor(private val context: Context,
-                                        private val routesKeeper: RoutesKeeper) : Presenter {
+                                        private val routesManager: RoutesManager) : Presenter {
 
     @Inject
     lateinit var mainView: MainView
@@ -80,6 +79,11 @@ class MainPresenter @Inject constructor(private val context: Context,
         }
     }
 
+    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readRoute(position)
+
+
+    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.routesCount()
+
     override fun notifyOnCreate(savedInstanceState: Bundle?) {
 
         savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE)?.let {
@@ -90,6 +94,10 @@ class MainPresenter @Inject constructor(private val context: Context,
 
             mainView.bindTrackingService(serviceConnection)
         }
+
+        mainView.setNoDataTextVisibility(
+                if (routesManager.routesCount() == 0) View.VISIBLE else View.INVISIBLE
+        )
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -108,8 +116,8 @@ class MainPresenter @Inject constructor(private val context: Context,
 
                     routeData?.let {
 
-                        val path = routesKeeper.saveRouteTemporary(routeData)
-                        mainView.startSummaryActivity(path.absolutePath)
+                        routesManager.temporaryRoute = it
+                        mainView.startSummaryActivity()
                     }
                 }
 

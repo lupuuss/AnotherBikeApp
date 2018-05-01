@@ -7,12 +7,14 @@ import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statist
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
 
 data class SerializableRouteData(
+        var name: String?,
         val savedRoute: MutableList<LatLng>,
         var distance: Double,
-        var avgSpeed: Double, 
-        var maxSpeed: Double, 
-        var duration: Long, 
-        var startTime: String
+        var avgSpeed: Double,
+        var maxSpeed: Double,
+        var duration: Long,
+        var startTimeStr: String,
+        var startTime: Long
 ) {
     fun getStatisticsMap(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit)
             : Map<Statistic.Name, Statistic> {
@@ -22,7 +24,7 @@ data class SerializableRouteData(
                 Statistic.Name.AVG_SPEED to UnitStatistic(avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(maxSpeed, speedUnit),
                 Statistic.Name.DURATION to TimeStatistic(duration),
-                Statistic.Name.START_TIME to StringStatistic(startTime)
+                Statistic.Name.START_TIME to StringStatistic(startTimeStr)
         )
     }
 }

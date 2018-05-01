@@ -13,5 +13,7 @@ interface MainView : BaseView {
     fun unbindTrackingService(connection: ServiceConnection)
     fun stopTrackingService()
     fun setTrackingButtonState(trackingInProgress: Boolean)
-    fun startSummaryActivity(filePath: String)
+    fun startSummaryActivity()
+    fun refreshRecyclerAdapter()
+    fun setNoDataTextVisibility(visibility: Int)
 }

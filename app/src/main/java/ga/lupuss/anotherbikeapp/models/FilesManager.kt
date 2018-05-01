@@ -2,16 +2,27 @@ package ga.lupuss.anotherbikeapp.models
 import com.google.gson.Gson
 import java.io.File
 
+@Suppress("MemberVisibilityCanBePrivate")
 class FilesManager(private val gson: Gson) {
 
     fun <T> readFileToObject(filePath: String, classObject: Class<T>): T {
 
-        return gson.fromJson(File(filePath).readText(), classObject)
+        return readFileToObject(File(filePath), classObject)
+    }
+
+    fun <T> readFileToObject(file: File, classObject: Class<T>): T {
+
+        return gson.fromJson(file.readText(), classObject)
     }
 
     fun <T> saveObjectToFile(any: T, filePath: String): File {
 
-        return File(filePath).apply {
+        return saveObjectToFile(any, File(filePath))
+    }
+
+    fun <T> saveObjectToFile(any: T, file: File): File {
+
+        return file.apply {
 
             parentFile.mkdirs()
             if (!exists()) {
@@ -20,11 +31,12 @@ class FilesManager(private val gson: Gson) {
 
             writeText(gson.toJson(any))
         }
+
     }
 
-    fun makeChildrenListFor(path: String): List<File> {
+    fun makeChildrenListFor(file: File): List<File> {
 
-        return File(path).walk().maxDepth(1)
+        return file.walk().maxDepth(1)
                 .iterator()
                 .asSequence()
                 .toMutableList()

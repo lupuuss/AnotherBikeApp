@@ -27,4 +27,17 @@
     <string name="summary">Podsumowanie</string>
     <string name="save">Zapisz</string>
     <string name="reject">Odrzuć</string>
+    <string name="message_reject_warning">Czy na pewno chcesz odrzucić?</string>
+    <string name="routes_history">Historia tras</string>
+    <string name="no_data_available">Brak dostępnych danych</string>
+    <string name="seconds">sek.</string>
+    <string name="ago">temu</string>
+    <string name="minutes">min.</string>
+    <string name="hours">godz.</string>
+    <string name="days">d.</string>
+    <string name="weeks">tyg.</string>
+    <string name="months">mies.</string>
+    <string name="years">l.</string>
+    <string name="use_default_account">Użyj domyślnego konta</string>
+    <string name="default_route_name">Trasa</string>
 </resources>

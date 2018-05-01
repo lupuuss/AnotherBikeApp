@@ -4,11 +4,8 @@ import android.annotation.SuppressLint
 import android.support.v4.graphics.ColorUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 
 @SuppressLint("SetTextI18n")
@@ -60,7 +57,6 @@ class ViewExtensions {
 
         fun getDefaultMarkerIconForColor(color: Int) =
                 BitmapDescriptorFactory.defaultMarker(getColorHue(color))!!
-
 
         private fun getColorHue(color: Int): Float {
             val floatArray = FloatArray(3)

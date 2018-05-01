@@ -16,7 +16,7 @@
         app:title="@string/title_activity_tracking" />
 
     <include
-        android:id="@+id/mapFrame"
+        android:id="@+id/map"
         layout="@layout/map_frame"
         android:layout_width="0dp"
         android:layout_height="0dp"

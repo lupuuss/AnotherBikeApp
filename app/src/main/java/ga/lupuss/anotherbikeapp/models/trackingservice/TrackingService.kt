@@ -142,7 +142,7 @@ class TrackingService : Service() {
         super.onCreate()
 
         DaggerTrackingServiceComponent.builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).component)
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent)
                 .build()
                 .inject(this)
 

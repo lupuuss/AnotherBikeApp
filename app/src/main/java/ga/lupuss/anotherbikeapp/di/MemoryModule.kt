@@ -1,11 +1,11 @@
 package ga.lupuss.anotherbikeapp.di
 
-import android.content.Context
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.FilesManager
-import ga.lupuss.anotherbikeapp.models.RoutesKeeper
+import ga.lupuss.anotherbikeapp.models.RoutesManager
+import ga.lupuss.anotherbikeapp.models.pojo.User
 
 @Module(includes = [BasicModule::class])
 class MemoryModule {
@@ -17,6 +17,6 @@ class MemoryModule {
 
     @Provides
     @AnotherBikeAppScope
-    fun getRoutesKeeper(filesManager: FilesManager, context: Context) =
-            RoutesKeeper(filesManager, context)
+    fun getRoutesKeeper(filesManager: FilesManager, user: User) =
+            RoutesManager(filesManager, user)
 }

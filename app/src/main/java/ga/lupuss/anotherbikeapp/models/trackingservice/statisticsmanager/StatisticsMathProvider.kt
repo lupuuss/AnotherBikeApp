@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import kotlin.math.max
 
-class StatisticsMathProvider(private val timeProvider: () -> Long) {
+class StatisticsMathProvider(val timeProvider: () -> Long) {
 
     private var lastTime = -1L
     private var avgCount = 0.0

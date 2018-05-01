@@ -44,12 +44,14 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
     /** Contains values that should be saved in memory or on server. */
     val routeData = SerializableRouteData(
+            name = null,
             savedRoute = mutableListOf(),
             avgSpeed = 0.0,
             maxSpeed = 0.0,
             distance = 0.0,
             duration = 0L,
-            startTime = "-"
+            startTimeStr = "-",
+            startTime = 0L
     )
 
     // temporary stats
@@ -83,7 +85,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
             timer.start()
             timer.pause()
-            routeData.startTime = recordStartTime()
+            routeData.startTimeStr = recordStartTime()
             newStats()
         }
 
@@ -166,6 +168,8 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         val calendar = Calendar.getInstance()
         val simpleDateFormat = SimpleDateFormat("HH:mm dd-MM-yyyy", locale)
 
+        routeData.startTime = math.timeProvider.invoke()
+
         return simpleDateFormat.format(calendar.time)
     }
 
@@ -177,7 +181,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
                 Statistic.Name.DISTANCE to UnitStatistic(routeData.distance, distanceUnit),
                 Statistic.Name.AVG_SPEED to UnitStatistic(routeData.avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(routeData.maxSpeed, speedUnit),
-                Statistic.Name.START_TIME to StringStatistic(routeData.startTime)
+                Statistic.Name.START_TIME to StringStatistic(routeData.startTimeStr)
         )
     }
 }
