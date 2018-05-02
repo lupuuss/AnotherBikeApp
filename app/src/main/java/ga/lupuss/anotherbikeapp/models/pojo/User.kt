@@ -1,18 +1,45 @@
 package ga.lupuss.anotherbikeapp.models.pojo
 
-import ga.lupuss.anotherbikeapp.DEFAULT_PROFILE_NAME
+import com.google.gson.annotations.Expose
+import ga.lupuss.anotherbikeapp.models.PathsGenerator
 import java.io.File
 
 data class User(
+        @Expose
         val name: String,
-        val unsyncRoutesPath: File,
-        val syncRoutesPath: File,
-        var savedRouteData: List<File>,
-        val isDefault: Boolean
+        @Expose
+        val isDefault: Boolean,
+        @Expose(serialize = false)
+        val unsyncRoutesPath: File = File(""),
+        @Expose(serialize = false)
+        val syncRoutesPath: File = File(""),
+        @Expose(serialize = false)
+        var savedRouteData: List<File> = listOf()
 ) {
     companion object {
 
         @JvmStatic
         lateinit var defaultUser: User
+
+        fun newInstance(pathsGenerator: PathsGenerator,
+                        name: String,
+                        isDefault: Boolean): User {
+
+            return if (!isDefault) {
+
+                val pathUnsync = pathsGenerator.generateUnsyncRoutesPathForUserName(name)
+                val pathSync = pathsGenerator.generateSyncRoutesPathForUserName(name)
+
+                User(
+                        name,
+                        false,
+                        pathUnsync,
+                        pathSync
+                )
+            } else {
+
+                defaultUser
+            }
+        }
     }
 }

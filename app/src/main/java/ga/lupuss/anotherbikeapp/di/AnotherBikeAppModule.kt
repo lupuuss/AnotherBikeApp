@@ -1,28 +1,24 @@
 package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
-import android.support.v4.os.ConfigurationCompat
+import android.os.FileObserver
 import dagger.Module
 import dagger.Provides
-import ga.lupuss.anotherbikeapp.APP_PREFS
+import ga.lupuss.anotherbikeapp.models.FileObserverFactory
+import ga.lupuss.anotherbikeapp.models.FilesManager
+import ga.lupuss.anotherbikeapp.models.RoutesManager
+import ga.lupuss.anotherbikeapp.models.pojo.User
 
-@Module(includes = [BasicModule::class])
+@Module()
 class AnotherBikeAppModule {
 
     @Provides
     @AnotherBikeAppScope
-    fun locale(context: Context) =
-            ConfigurationCompat.getLocales(context.resources.configuration)[0]!!
+    fun getRoutesKeeper(filesManager: FilesManager,
+                        user: User,
+                        context: Context,
+                        fileObserverFactory: FileObserverFactory) =
 
+            RoutesManager(filesManager, user, fileObserverFactory, context)
 
-    @Provides
-    @AnotherBikeAppScope
-    fun sharedPreferences(context: Context) =
-            context.getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE)
-
-
-    val timeProvider: () -> Long = System::currentTimeMillis
-        @Provides
-        @AnotherBikeAppScope
-        get
 }

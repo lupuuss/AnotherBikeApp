@@ -20,21 +20,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         toast = Toast.makeText(this, "empty", Toast.LENGTH_LONG)
     }
 
-    /** Checks if mainComponent is available. If it's not that means user is not logged. **/
-    fun redirectToLoginIfNecessary() {
-
-        if (AnotherBikeApp.get(this.application).mainComponent == null) {
-
-            startLoginActivity()
-            finish()
-        }
-    }
-
-    fun startLoginActivity() {
-
-        startActivity(LoginActivity.newIntent(this))
-    }
-
     fun activateToolbar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
 
@@ -59,5 +44,9 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun makeToast(stringId: Int) {
         toast.setText(stringId)
         toast.show()
+    }
+
+    override fun finishActivity() {
+        finish()
     }
 }

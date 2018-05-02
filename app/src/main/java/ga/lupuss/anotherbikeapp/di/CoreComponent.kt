@@ -2,27 +2,27 @@ package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import dagger.Component
 import ga.lupuss.anotherbikeapp.models.FileObserverFactory
-import ga.lupuss.anotherbikeapp.models.RoutesManager
+import ga.lupuss.anotherbikeapp.models.FilesManager
+import ga.lupuss.anotherbikeapp.models.PathsGenerator
 import java.util.*
 import javax.inject.Scope
 
 @Scope
-annotation class AnotherBikeAppScope
+annotation class CoreScope
 
-@Component(modules = [UserModule::class, AnotherBikeAppModule::class], dependencies = [CoreComponent::class])
-@AnotherBikeAppScope
-interface AnotherBikeAppComponent {
+@CoreScope
+@Component(modules = [CoreModule::class, MemoryModule::class])
+interface CoreComponent {
 
-    // CoreComponent
     fun providesContext(): Context
-
     fun providesLocale(): Locale
     fun providesTimeProvider(): () -> Long
     fun providesSharedPreferences(): SharedPreferences
+    fun providesFilesManager(): FilesManager
     fun providesFileObserverFactory(): FileObserverFactory
-
-    // AnotherBikeAppComponent
-    fun providesRoutesKeeper(): RoutesManager
+    fun providesPathsGenerator(): PathsGenerator
+    fun providesGson(): Gson
 }

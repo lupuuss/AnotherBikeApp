@@ -11,9 +11,10 @@ import java.io.File
 
 /** Manages routes on phone memory. Saves routes to /unsync dir.
  * Reads routes form /sync and /unsync dir **/
+
 class RoutesManager(private val filesManager: FilesManager,
                     private val user: User,
-                    fileObserverFactory: (String, Int, (Int, String?) -> Unit) -> FileObserver,
+                    fileObserverFactory: FileObserverFactory,
                     context: Context) {
 
     private val fileObserver: FileObserver
@@ -22,7 +23,7 @@ class RoutesManager(private val filesManager: FilesManager,
     init {
         refreshSavedRoutesList()
 
-        fileObserver = fileObserverFactory.invoke(
+        fileObserver = fileObserverFactory.create(
                 user.unsyncRoutesPath.absolutePath, // dir to observe path
                 (FileObserver.CREATE
                         or FileObserver.DELETE
@@ -32,7 +33,7 @@ class RoutesManager(private val filesManager: FilesManager,
                     // onEvent
 
                     when (code) {
-                        FileObserver.CREATE, FileObserver.DELETE, FileObserver.DELETE_SELF, FileObserver.CLOSE_WRITE -> {
+                        FileObserver.CREATE, FileObserver.DELETE, FileObserver.DELETE_SELF -> {
                             refreshSavedRoutesList()
                             Timber.d("Routes changed >>> Code: $code Changed file: $filePath")
 

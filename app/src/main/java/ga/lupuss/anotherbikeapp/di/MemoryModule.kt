@@ -5,36 +5,22 @@ import android.os.FileObserver
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import ga.lupuss.anotherbikeapp.models.FileObserverFactory
 import ga.lupuss.anotherbikeapp.models.FilesManager
-import ga.lupuss.anotherbikeapp.models.RoutesManager
-import ga.lupuss.anotherbikeapp.models.pojo.User
+import ga.lupuss.anotherbikeapp.models.PathsGenerator
 
 @Module(includes = [BasicModule::class])
 class MemoryModule {
 
     @Provides
-    @AnotherBikeAppScope
+    @CoreScope
     fun getFilesManager(gson: Gson) = FilesManager(gson)
 
+    @Provides
+    @CoreScope
+    fun fileObserverFactory(): FileObserverFactory = FileObserverFactory()
 
     @Provides
-    @AnotherBikeAppScope
-    fun getRoutesKeeper(filesManager: FilesManager,
-                        user: User,
-                        context: Context) =
-            RoutesManager(filesManager, user, fileObserverFactory, context)
-
-    val fileObserverFactory: (String, Int, (Int, String?) -> Unit) -> FileObserver =
-
-            { path: String, mask: Int, onEvent: (Int, String?) -> Unit ->
-                object : FileObserver(path, mask) {
-                    override fun onEvent(p0: Int, p1: String?) {
-                        onEvent.invoke(p0, p1)
-                    }
-
-                }
-            }
-        @Provides
-        @AnotherBikeAppScope
-        get
+    @CoreScope
+    fun pathsGenerator(context: Context): PathsGenerator = PathsGenerator(context)
 }

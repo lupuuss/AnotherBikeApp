@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.FileObserver
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
@@ -113,10 +112,6 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override fun showStatistics(statistics: Map<Statistic.Name, Statistic>) {
         (supportFragmentManager.findFragmentById(R.id.statsFragment) as StatsFragment)
                 .updateStats(statistics)
-    }
-
-    override fun finishActivity() {
-        finish()
     }
 
     override fun showRejectDialog(onYes: () -> Unit) {

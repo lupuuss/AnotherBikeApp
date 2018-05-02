@@ -54,10 +54,8 @@ class MainActivity : BaseActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        redirectToLoginIfNecessary()
-
         DaggerMainComponent.builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent)
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent!!)
                 .mainModule(MainModule(this))
                 .build()
                 .inject(this)
@@ -89,7 +87,13 @@ class MainActivity : BaseActivity(), MainView {
         mainPresenter.notifyOnSavedInstanceState(outState!!)
     }
 
+    override fun onBackPressed() {
+        finishFromChild(this.parent)
+        finishAndRemoveTask()
+    }
+
     override fun onDestroy() {
+
         super.onDestroy()
         mainPresenter.notifyOnDestroy(isFinishing)
         Timber.d("MainActivity destroyed!")
@@ -203,5 +207,10 @@ class MainActivity : BaseActivity(), MainView {
         companion object {
             const val TRACKING_ACTIVITY_REQUEST = 0
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 }

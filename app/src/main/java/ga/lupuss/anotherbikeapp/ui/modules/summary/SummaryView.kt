@@ -8,7 +8,6 @@ interface SummaryView : BaseView {
 
     fun showRouteLine(points: List<LatLng>)
     fun showStatistics(statistics: Map<Statistic.Name, Statistic>)
-    fun finishActivity()
     fun showRejectDialog(onYes: () -> Unit)
     fun getRouteNameFromEditText(): String
 }

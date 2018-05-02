@@ -12,6 +12,7 @@ import java.io.File
 class AnotherBikeApp : Application() {
 
     var mainComponent: AnotherBikeAppComponent? = null
+    lateinit var coreComponent: CoreComponent
 
     companion object {
 
@@ -25,17 +26,39 @@ class AnotherBikeApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         AndroidThreeTen.init(this)
-
         initDefaultUser()
 
-        // just for now
-        // firebase not implemented yet
-        mainComponent = DaggerAnotherBikeAppComponent
+        coreComponent = DaggerCoreComponent
                 .builder()
-                .basicModule(BasicModule(this))
-                .userModule(UserModule(User.defaultUser))
+                .basicModule(BasicModule(this.applicationContext))
                 .build()
 
+        if (mainComponent == null) {
+
+            val lastUser = coreComponent.providesSharedPreferences().getString(Prefs.LAST_USER, "")
+
+            if (lastUser != "") {
+
+                val user = coreComponent.providesGson().fromJson(lastUser, User::class.java)
+                initMainComponentWithUser(
+                        User.newInstance(coreComponent.providesPathsGenerator(), user.name, user.isDefault)
+                )
+            }
+        }
+    }
+
+    fun initMainComponentWithUser(user: User) {
+
+        coreComponent.providesSharedPreferences().edit().putString(
+                Prefs.LAST_USER,
+                coreComponent.providesGson().toJson(user)
+        ).apply()
+
+        mainComponent = DaggerAnotherBikeAppComponent
+                .builder()
+                .userModule(UserModule(user))
+                .coreComponent(coreComponent)
+                .build()
     }
 
     private fun initDefaultUser() {
@@ -43,10 +66,10 @@ class AnotherBikeApp : Application() {
         val routesPath = File(filesDir, DEFAULT_PROFILE_ROUTES_PATH)
         User.defaultUser = User(
                 DEFAULT_PROFILE_NAME,
+                true,
                 routesPath,
                 routesPath,
-                FilesManager(Gson()).makeChildrenListFor(routesPath),
-                true
+                FilesManager(Gson()).makeChildrenListFor(routesPath)
         )
     }
 }
