@@ -38,8 +38,11 @@
     <string name="weeks">tyg.</string>
     <string name="months">mies.</string>
     <string name="years">l.</string>
-    <string name="use_default_account">Użyj domyślnego konta</string>
+    <string name="no_account">Korzystaj bez konta</string>
     <string name="default_route_name">Trasa</string>
     <string name="name_edit_text_title">Nazwa:</string>
     <string name="enter_name">Wprowadź nazwę</string>
+    <string name="login">Zaloguj</string>
+    <string name="password">Hasło</string>
+    <string name="create_new_account">Stwórz nowe konto</string>
 </resources>

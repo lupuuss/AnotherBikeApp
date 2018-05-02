@@ -47,7 +47,6 @@
     <string name="message_reject_warning">Are you sure you want to reject?</string>
     <string name="routes_history">Routes history</string>
     <string name="no_data_available">No data available</string>
-    <string name="use_default_account">Use default account</string>
 
     <string name="seconds">seconds</string>
     <string name="ago">ago</string>
@@ -60,5 +59,10 @@
     <string name="default_route_name">Route</string>
     <string name="name_edit_text_title">Name:</string>
     <string name="enter_name">Enter name</string>
+    <string name="login">Login</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password">Password</string>
+    <string name="no_account">Use without account</string>
+    <string name="create_new_account">Create new account</string>
 
 </resources>
