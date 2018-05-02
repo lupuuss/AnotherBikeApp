@@ -16,6 +16,7 @@
         <item name="trackLineColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="googleMapStyleJson">@string/map_style_retro</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="OrangeDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -51,6 +52,7 @@
         <item name="trackLineColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="googleMapStyleJson">@string/map_style_basic_theme</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="GreyDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
