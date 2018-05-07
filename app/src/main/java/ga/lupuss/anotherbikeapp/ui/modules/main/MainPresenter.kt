@@ -87,7 +87,7 @@ class MainPresenter @Inject constructor(private val context: Context,
                                      onRequestOk: (SerializableRouteData) -> Unit) {
 
         Single.create<SerializableRouteData> {
-            Timber.d(Thread.currentThread().name)
+
             it.onSuccess(routesManager.readRoute(position))
         }.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
