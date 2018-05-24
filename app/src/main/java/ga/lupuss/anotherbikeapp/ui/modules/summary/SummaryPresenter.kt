@@ -1,8 +1,8 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.RoutesManager
-import ga.lupuss.anotherbikeapp.models.pojo.SerializableRouteData
+import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import javax.inject.Inject
 
@@ -11,15 +11,15 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
     @Inject
     lateinit var summaryView: SummaryView
 
-    private lateinit var routeData: SerializableRouteData
+    private lateinit var routeData: ExtendedRouteData
 
     fun viewReady() {
 
-        routesManager.temporaryRoute ?: throw IllegalStateException("No route to show")
+        routesManager.routeKeeper.getRoute() ?: throw IllegalStateException("no route to show")
 
-        routeData = routesManager.temporaryRoute!!
+        routeData = routesManager.routeKeeper.getRoute()!!
 
-        summaryView.showRouteLine(routeData.savedRoute)
+        summaryView.showRouteLine(routeData.points)
         summaryView.showStatistics(routeData.getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM))
     }
 
@@ -51,7 +51,7 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
 
         if (isFinishing) {
 
-            routesManager.clearTemporaryRoute()
+            routesManager.routeKeeper.clear()
         }
     }
 }

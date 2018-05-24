@@ -137,6 +137,11 @@ class MainActivity : BaseActivity(), MainView {
         )
     }
 
+    override fun setRoutesHistoryVisibility(visibility: Int) {
+
+        routesHistoryRecycler.visibility = visibility
+    }
+
     override fun startTrackingActivity(serviceBinder: TrackingService.ServiceBinder?) {
 
         startActivityForResult(

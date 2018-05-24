@@ -3,8 +3,8 @@ package ga.lupuss.anotherbikeapp.di
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.Component
-import ga.lupuss.anotherbikeapp.models.FileObserverFactory
-import ga.lupuss.anotherbikeapp.models.RoutesManager
+import ga.lupuss.anotherbikeapp.models.User
+import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
 import java.util.*
 import javax.inject.Scope
 
@@ -21,8 +21,8 @@ interface AnotherBikeAppComponent {
     fun providesLocale(): Locale
     fun providesTimeProvider(): () -> Long
     fun providesSharedPreferences(): SharedPreferences
-    fun providesFileObserverFactory(): FileObserverFactory
+    fun providesUser(): User
 
     // AnotherBikeAppComponent
-    fun providesRoutesKeeper(): RoutesManager
+    fun providesSyncRoutesManager(): RoutesManager
 }

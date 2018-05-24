@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.models.pojo.SerializableRouteData
+import ga.lupuss.anotherbikeapp.models.pojo.RouteData
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
@@ -14,7 +14,7 @@ import ga.lupuss.anotherbikeapp.resolveTimeString
 
 @Suppress("MemberVisibilityCanBePrivate")
 class RoutesHistoryRecyclerViewAdapter(
-        private val routesDataCallback: (Int, (SerializableRouteData) -> Unit) -> Unit,
+        private val routesDataCallback: (Int, (RouteData) -> Unit) -> Unit,
         private val sizeCallback: () -> Int
 
 ) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
@@ -42,15 +42,15 @@ class RoutesHistoryRecyclerViewAdapter(
 
         fun bindView(n: Int) {
 
-            routesDataCallback.invoke(n, {
+            routesDataCallback.invoke(n) {
 
                 fillStats(it, itemCount - n)
-            })
+            }
             constraintLayout.tag = this
 
         }
 
-        private fun fillStats(routeData: SerializableRouteData, n: Int) {
+        private fun fillStats(routeData: RouteData, n: Int) {
 
             val context = constraintLayout.context.applicationContext
 
@@ -58,9 +58,13 @@ class RoutesHistoryRecyclerViewAdapter(
             distanceTextView.text = UnitStatistic(routeData.distance, Statistic.Unit.KM).getValue(context)
             durationTextView.text = TimeStatistic(routeData.duration).getValue(context)
             whenTextView.text = resolveTimeString(context, routeData.startTime)
+
             labelTextView.text = if (routeData.name == null) {
+
                 "${context.getString(R.string.default_route_name)} #$n"
+
             } else {
+
                 routeData.name
             }
         }

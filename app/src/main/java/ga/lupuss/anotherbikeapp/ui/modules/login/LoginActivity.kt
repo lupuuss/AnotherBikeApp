@@ -8,8 +8,10 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
+import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
+@Suppress("UNUSED_PARAMETER")
 class LoginActivity : BaseActivity(), LoginView {
 
     @Inject
@@ -21,14 +23,20 @@ class LoginActivity : BaseActivity(), LoginView {
         DaggerLoginComponent
                 .builder()
                 .loginModule(LoginModule(this))
+                .coreComponent(getAnotherBikeApp().coreComponent)
                 .build()
                 .inject(this)
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun onClickUseWithoutAccount(view: View) {
 
         loginPresenter.onClickUseWithoutAccount()
+    }
+
+    fun onClickSignIn(view: View) {
+
+        loginPresenter.onClickSignIn(emailEditText.text.toString(),
+                passwordEditText.text.toString())
     }
 
     override fun startMainActivity() {

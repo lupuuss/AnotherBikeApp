@@ -30,6 +30,11 @@ android {
 
 dependencies {
 
+    ext {
+        support_library_version = '26.1.0'
+        google_play_services_version = '11.4.2'
+    }
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // kotlin
@@ -42,15 +47,20 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     // google services
-    implementation 'com.google.android.gms:play-services-location:15.0.0'
-    implementation 'com.google.android.gms:play-services-maps:15.0.0'
+
+    implementation "com.google.android.gms:play-services-location:${google_play_services_version}"
+    implementation "com.google.android.gms:play-services-maps:${google_play_services_version}"
+    implementation "com.google.firebase:firebase-auth:${google_play_services_version}"
+    implementation "com.google.firebase:firebase-core:${google_play_services_version}"
+    implementation "com.google.firebase:firebase-firestore:${google_play_services_version}"
+    implementation "com.google.code.gson:gson:2.8.2"
 
     // android
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation 'com.android.support:support-v4:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:gridlayout-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation "com.android.support:recyclerview-v7:${support_library_version}"
+    implementation "com.android.support:support-v4:${support_library_version}"
+    implementation "com.android.support:appcompat-v7:${support_library_version}"
+    implementation "com.android.support:gridlayout-v7:${support_library_version}"
+    implementation "com.android.support.constraint:constraint-layout:1.1.0"
 
     // dagger
     implementation 'com.google.dagger:dagger:2.15'
@@ -63,7 +73,6 @@ dependencies {
     // others
     implementation 'com.github.tinsukE:icekick:0.4'
     implementation 'com.jakewharton.timber:timber:4.7.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.nhaarman:mockito-kotlin:1.5.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
 
@@ -72,3 +81,5 @@ dependencies {
         maven { url "https://jitpack.io" }
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -2,11 +2,12 @@ package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import dagger.Component
-import ga.lupuss.anotherbikeapp.models.FileObserverFactory
-import ga.lupuss.anotherbikeapp.models.FilesManager
-import ga.lupuss.anotherbikeapp.models.PathsGenerator
+import ga.lupuss.anotherbikeapp.models.memory.FileObserverFactory
+import ga.lupuss.anotherbikeapp.models.memory.FilesManager
 import java.util.*
 import javax.inject.Scope
 
@@ -14,7 +15,7 @@ import javax.inject.Scope
 annotation class CoreScope
 
 @CoreScope
-@Component(modules = [CoreModule::class, MemoryModule::class])
+@Component(modules = [CoreModule::class, MemoryModule::class, FirebaseModule::class])
 interface CoreComponent {
 
     fun providesContext(): Context
@@ -23,6 +24,7 @@ interface CoreComponent {
     fun providesSharedPreferences(): SharedPreferences
     fun providesFilesManager(): FilesManager
     fun providesFileObserverFactory(): FileObserverFactory
-    fun providesPathsGenerator(): PathsGenerator
     fun providesGson(): Gson
+    fun providesFirebaseAuth(): FirebaseAuth
+    fun providesFirebaseFireStore(): FirebaseFirestore
 }

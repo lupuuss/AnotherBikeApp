@@ -9,14 +9,11 @@ import android.os.IBinder
 import android.view.View
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.RoutesManager
-import ga.lupuss.anotherbikeapp.models.pojo.SerializableRouteData
+import ga.lupuss.anotherbikeapp.models.pojo.RouteData
+import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 import javax.inject.Inject
@@ -84,26 +81,13 @@ class MainPresenter @Inject constructor(private val context: Context,
     }
 
     fun onHistoryRecyclerItemRequest(position: Int,
-                                     onRequestOk: (SerializableRouteData) -> Unit) {
+                                     onRequestOk: (RouteData) -> Unit) {
 
-        Single.create<SerializableRouteData> {
-            Timber.d(Thread.currentThread().name)
-            it.onSuccess(routesManager.readRoute(position))
-        }.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(onRequestOk)
+        routesManager.readRoute(position, onRequestOk, null)
     }
 
 
     fun onHistoryRecyclerItemCountRequest(): Int = routesManager.routesCount()
-
-    private val onRoutesChangedListener = {
-
-        mainView.setNoDataTextVisibility(
-                if (routesManager.routesCount() == 0) View.VISIBLE else View.INVISIBLE
-        )
-        mainView.refreshRecyclerAdapter()
-    }
 
     override fun notifyOnCreate(savedInstanceState: Bundle?) {
 
@@ -116,11 +100,18 @@ class MainPresenter @Inject constructor(private val context: Context,
             mainView.bindTrackingService(serviceConnection)
         }
 
-        mainView.setNoDataTextVisibility(
-                if (routesManager.routesCount() == 0) View.VISIBLE else View.INVISIBLE
-        )
+        mainView.setNoDataTextVisibility(View.INVISIBLE)
 
-        routesManager.addOnRoutesChangedListener(onRoutesChangedListener)
+        if (!routesManager.isInitialized()) {
+
+            routesManager.initialize {
+
+                mainView.setRoutesHistoryVisibility(
+                        if (it) View.VISIBLE else View.GONE
+                )
+                mainView.refreshRecyclerAdapter()
+            }
+        }
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -139,7 +130,7 @@ class MainPresenter @Inject constructor(private val context: Context,
 
                     routeData?.let {
 
-                        routesManager.temporaryRoute = it
+                        routesManager.routeKeeper.keep(it)
                         mainView.startSummaryActivity()
                     }
                 }
@@ -183,8 +174,6 @@ class MainPresenter @Inject constructor(private val context: Context,
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
-
-        routesManager.removeOnRoutesChangedListener(onRoutesChangedListener)
 
         if (isFinishing && isServiceActive) {
 

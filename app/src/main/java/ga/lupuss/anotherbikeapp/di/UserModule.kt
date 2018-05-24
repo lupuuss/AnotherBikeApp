@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.di
 
 import dagger.Module
 import dagger.Provides
-import ga.lupuss.anotherbikeapp.models.pojo.User
+import ga.lupuss.anotherbikeapp.models.User
 
 @Module
 class UserModule(currentUser: User) {

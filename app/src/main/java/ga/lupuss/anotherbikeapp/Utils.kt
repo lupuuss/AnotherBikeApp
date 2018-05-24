@@ -4,6 +4,8 @@ import android.content.Context
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.temporal.ChronoUnit
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun dpToPixels(context: Context, dp: Float): Int {
 
@@ -60,4 +62,9 @@ fun resolveTimeString(context: Context, time: Long): String {
 
         generateTimeString(ChronoUnit.YEARS.between(date, now), R.string.years)
     }
+}
+
+fun timeToFormattedString(locale: Locale, time: Long): String {
+    val simpleDateFormat = SimpleDateFormat("HH:mm dd-MM-yyyy", locale)
+    return simpleDateFormat.format(Calendar.getInstance().apply { timeInMillis = time }.time)
 }

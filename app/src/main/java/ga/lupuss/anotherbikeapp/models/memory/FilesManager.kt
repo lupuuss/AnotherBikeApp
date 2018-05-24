@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models
+package ga.lupuss.anotherbikeapp.models.memory
 import com.google.gson.Gson
 import java.io.File
 

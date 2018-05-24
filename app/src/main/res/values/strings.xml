@@ -59,7 +59,7 @@
     <string name="default_route_name">Route</string>
     <string name="name_edit_text_title">Name:</string>
     <string name="enter_name">Enter name</string>
-    <string name="login">Login</string>
+    <string name="login">Sign in</string>
     <string name="email" translatable="false">Email</string>
     <string name="password">Password</string>
     <string name="no_account">Use without account</string>

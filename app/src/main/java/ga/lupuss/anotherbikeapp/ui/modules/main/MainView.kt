@@ -16,4 +16,5 @@ interface MainView : BaseView {
     fun startSummaryActivity()
     fun refreshRecyclerAdapter()
     fun setNoDataTextVisibility(visibility: Int)
+    fun setRoutesHistoryVisibility(visibility: Int)
 }

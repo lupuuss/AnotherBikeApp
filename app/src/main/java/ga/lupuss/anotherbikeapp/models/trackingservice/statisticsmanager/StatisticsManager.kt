@@ -2,11 +2,12 @@ package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import ga.lupuss.anotherbikeapp.models.pojo.SerializableRouteData
+import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.StringStatistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
+import ga.lupuss.anotherbikeapp.timeToFormattedString
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,12 +41,12 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     var lastStats: Map<Statistic.Name, Statistic>? = null
     var lastLocation: Location? = null
     val savedRoute: List<LatLng>
-        get() = routeData.savedRoute
+        get() = routeData.points
 
     /** Contains values that should be saved in memory or on server. */
-    val routeData = SerializableRouteData(
+    val routeData = ExtendedRouteData(
             name = null,
-            savedRoute = mutableListOf(),
+            points = mutableListOf(),
             avgSpeed = 0.0,
             maxSpeed = 0.0,
             distance = 0.0,
@@ -72,7 +73,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         if ((lastLocation != null && location.distanceTo(lastLocation) != 0F)
                 || lastLocation == null) {
 
-            routeData.savedRoute.add(LatLng(location.latitude, location.longitude))
+            routeData.points.add(LatLng(location.latitude, location.longitude))
         }
 
         lastLocation = location
@@ -166,11 +167,10 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     private fun recordStartTime(): String {
 
         val calendar = Calendar.getInstance()
-        val simpleDateFormat = SimpleDateFormat("HH:mm dd-MM-yyyy", locale)
 
         routeData.startTime = math.timeProvider.invoke()
 
-        return simpleDateFormat.format(calendar.time)
+        return timeToFormattedString(locale, calendar.timeInMillis)
     }
 
     private fun createStatsList(): Map<Statistic.Name, Statistic> {
