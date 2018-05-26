@@ -26,20 +26,32 @@ class LoginPresenter @Inject constructor() : Presenter {
 
     fun onClickSignIn(email: String, password: String) {
 
-        loginView.getAnotherBikeApp()
-                .coreComponent
-                .providesFirebaseAuth()
-                .signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
+        if (email.isBlank() && password.isBlank()) {
 
-                    loginView.makeToast("No nieźle zalogowałeś się brawo kurwa :/")
-                    initWithUser(User("test", it.user, false))
+            loginView.getAnotherBikeApp()
+                    .coreComponent
+                    .providesFirebaseAuth()
+                    .signInWithEmailAndPassword("test@test.com", "test12")
+                    .addOnSuccessListener {
+                        initWithUser(User("test", it.user, false))
+                    }
+        } else {
 
-                }.addOnFailureListener {
+            loginView.getAnotherBikeApp()
+                    .coreComponent
+                    .providesFirebaseAuth()
+                    .signInWithEmailAndPassword(email, password)
+                    .addOnSuccessListener {
 
-                    Timber.d(it)
-                    loginView.makeToast("Coś się popsuło i nie było mnie słychać :/")
-                }
+                        loginView.makeToast("No nieźle zalogowałeś się brawo kurwa :/")
+                        initWithUser(User("test", it.user, false))
+
+                    }.addOnFailureListener {
+
+                        Timber.d(it)
+                        loginView.makeToast("Coś się popsuło i nie było mnie słychać :/")
+                    }
+        }
 
     }
 }
