@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
+import android.content.Context
+import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
@@ -7,6 +9,9 @@ import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statist
 import javax.inject.Inject
 
 class SummaryPresenter @Inject constructor(private val routesManager: RoutesManager) : Presenter {
+
+    @Inject
+    lateinit var context: Context
 
     @Inject
     lateinit var summaryView: SummaryView
@@ -31,9 +36,8 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
 
         val name = summaryView.getRouteNameFromEditText()
 
-        if (name != "") {
-            routeData.name = name
-        }
+        routeData.name = if (name != "") name else context.getString(R.string.default_route_name)
+
         routesManager.saveRoute(routeData)
         summaryView.finishActivity()
     }
