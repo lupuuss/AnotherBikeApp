@@ -6,14 +6,14 @@ import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statist
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
 
 open class RouteData(
-        var name: String?,
-        var distance: Double,
-        var avgSpeed: Double,
-        var maxSpeed: Double,
-        var duration: Long,
+        name: String?,
+        distance: Double,
+        avgSpeed: Double,
+        duration: Long,
+        startTime: Long,
         var startTimeStr: String,
-        var startTime: Long
-) {
+        var maxSpeed: Double
+) : ShortRouteData(name, distance, avgSpeed, duration, startTime) {
     fun getStatisticsMap(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit)
             : Map<Statistic.Name, Statistic> {
 
