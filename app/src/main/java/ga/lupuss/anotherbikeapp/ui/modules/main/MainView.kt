@@ -15,6 +15,9 @@ interface MainView : BaseView {
     fun setTrackingButtonState(trackingInProgress: Boolean)
     fun startSummaryActivity()
     fun refreshRecyclerAdapter()
+    fun notifyRecyclerItemChanged(position: Int)
+    fun notifyRecyclerItemRemoved(position: Int)
+    fun notifyRecyclerItemInserted(position: Int)
     fun setNoDataTextVisibility(visibility: Int)
     fun setRoutesHistoryVisibility(visibility: Int)
 }

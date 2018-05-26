@@ -9,7 +9,7 @@ import android.os.IBinder
 import android.view.View
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.routes.OnRoutesChangedListener
+import ga.lupuss.anotherbikeapp.models.routes.OnDocumentChanged
 import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
@@ -22,7 +22,7 @@ import javax.inject.Inject
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
 class MainPresenter @Inject constructor(private val context: Context,
-                                        private val routesManager: RoutesManager) : Presenter, OnRoutesChangedListener {
+                                        private val routesManager: RoutesManager) : Presenter, OnDocumentChanged {
 
     @Inject
     lateinit var mainView: MainView
@@ -82,10 +82,18 @@ class MainPresenter @Inject constructor(private val context: Context,
 
     fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readQuickRoute(position)
 
-    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.routesCount()
+    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.quickRoutesCount()
 
-    override fun onRoutesChanged() {
-        mainView.refreshRecyclerAdapter()
+    override fun onNewDocument(position: Int) {
+        mainView.notifyRecyclerItemInserted(position)
+    }
+
+    override fun onRouteModified(position: Int) {
+        mainView.notifyRecyclerItemChanged(position)
+    }
+
+    override fun onDocumentDeleted(position: Int) {
+        mainView.notifyRecyclerItemRemoved(position)
     }
 
     override fun notifyOnCreate(savedInstanceState: Bundle?) {
@@ -100,8 +108,8 @@ class MainPresenter @Inject constructor(private val context: Context,
         }
 
         mainView.setNoDataTextVisibility(View.INVISIBLE)
-        routesManager.addOnRoutesChangedListener(this)
-        routesManager.requestMoreData(null, { Timber.d(it) })
+        routesManager.addOnQuickRoutesChangedListener(this)
+        routesManager.requestMoreQuickRoutes(null, { Timber.d(it) })
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -180,7 +188,7 @@ class MainPresenter @Inject constructor(private val context: Context,
             Timber.d("No service. Clean destroy.")
         }
 
-        routesManager.removeOnRoutesChangedListener(this)
+        routesManager.removeOnQuickRoutesChangedListener(this)
     }
 
     companion object {

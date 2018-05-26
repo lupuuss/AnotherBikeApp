@@ -67,6 +67,8 @@ class MainActivity : BaseActivity(), MainView {
                 mainPresenter::onHistoryRecyclerItemCountRequest
         )
 
+        routesHistoryRecycler.setItemViewCacheSize(3)
+
         routesHistoryRecycler.apply {
             this.adapter = adapter
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -206,6 +208,18 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun refreshRecyclerAdapter() {
         routesHistoryRecycler.adapter.notifyDataSetChanged()
+    }
+
+    override fun notifyRecyclerItemChanged(position: Int) {
+        routesHistoryRecycler.adapter.notifyItemChanged(position)
+    }
+
+    override fun notifyRecyclerItemRemoved(position: Int) {
+        routesHistoryRecycler.adapter.notifyItemRemoved(position)
+    }
+
+    override fun notifyRecyclerItemInserted(position: Int) {
+        routesHistoryRecycler.adapter.notifyItemInserted(position)
     }
 
     class Request {

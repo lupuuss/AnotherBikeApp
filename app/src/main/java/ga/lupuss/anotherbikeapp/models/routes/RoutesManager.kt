@@ -1,127 +1,78 @@
 package ga.lupuss.anotherbikeapp.models.routes
 
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import ga.lupuss.anotherbikeapp.models.User
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.pojo.ShortRouteData
-import timber.log.Timber
 import java.util.*
 
 
 class RoutesManager(val user: User,
                     val routeKeeper: TempRouteKeeper,
-                    firebaseFirestore: FirebaseFirestore,
+                    val firebaseFirestore: FirebaseFirestore,
                     val locale: Locale) {
-
-    private val dataChangedListeners = mutableListOf<OnRoutesChangedListener>()
-    private var data: List<FirebaseShortRouteData> = listOf()
-    private var routesCount = -1
+    private val onDocumentsChangedListeners = mutableListOf<OnDocumentChanged>()
     private val userPath = "$FIREB_USERS/${user.firebaseUser!!.uid}"
     private val routesPath = "$userPath/$FIREB_ROUTES"
     private val routesQuery = firebaseFirestore
             .collection(routesPath)
             .orderBy(FIREB_ROUTES_START_TIME)
 
-    private var lastDocumentSnapshot: DocumentSnapshot? = null
+    private val routesQueryManager =
+            QueryManager(routesQuery, DEFAULT_LIMIT, onDocumentsChangedListeners)
 
     init {
+
+        var x = 1214333241343L
+        for (g in 0..23)
+            firebaseFirestore.collection(routesPath).document(g.toString()).set(
+                    mapOf<String, Any>(
+                            "name" to "Test #$g",
+                            "avgSpeed" to 33,
+                            "distance" to 1000L,
+                            "duration" to 100000000L,
+                            "more" to firebaseFirestore.document("routes/HxQctIkJ3z8DzIUbVNmj"),
+                            "startTime" to x++
+                    )
+            )
+
 
         user.firebaseUser ?: throw IllegalStateException("No auth")
     }
 
-    fun addOnRoutesChangedListener(onRoutesChangedListener: OnRoutesChangedListener) {
-        dataChangedListeners.add(onRoutesChangedListener)
+    private fun DocumentSnapshot.toShortRouteData(): FirebaseShortRouteData =
+            this.toObject(FirebaseShortRouteData::class.java).also { it.id = this.id }
+
+    fun addOnQuickRoutesChangedListener(onRoutesChangedListener: OnDocumentChanged) {
+        onDocumentsChangedListeners.add(onRoutesChangedListener)
     }
 
-    fun removeOnRoutesChangedListener(onRoutesChangedListener: OnRoutesChangedListener) {
-        dataChangedListeners.remove(onRoutesChangedListener)
+    fun removeOnQuickRoutesChangedListener(onRoutesChangedListener: OnDocumentChanged) {
+        onDocumentsChangedListeners.remove(onRoutesChangedListener)
+    }
+
+    fun requestMoreQuickRoutes(onDataEnd: (() -> Unit)?, onFail: ((Exception) -> Unit)?) {
+
+        routesQueryManager.loadMoreDocuments()
     }
 
     @Suppress("UNCHECKED_CAST")
     fun readQuickRoute(position: Int): ShortRouteData {
 
-        return data[position]
+        return routesQueryManager.readDocument(position).toShortRouteData()
     }
 
-    fun readRoute(id: String): ExtendedRouteData {
+    fun quickRoutesCount() = routesQueryManager.size
 
-        return ExtendedRouteData(
-                "",
-                0.0,
-                0.0,
-                0.0,
-                1000L,
-                "w232",
-                1000L,
-                mutableListOf()
-        )
+    fun requestExtendedRoutesData(
+            onDataOk: ((ExtendedRouteData) -> Unit)?,
+            onDataFail: ((Exception) -> Unit)?) {
+
     }
-
-    fun routesCount(): Int = data.size
 
     fun saveRoute(routeData: ExtendedRouteData) {
         TODO()
-    }
-
-    fun requestMoreData(onDataEnd: (() -> Unit)?, onFail: ((Exception) -> Unit)?) {
-
-        if ((routesCount == 0 || routesCount <= data.size) && routesCount != -1) {
-
-            onDataEnd?.invoke()
-
-        } else if (lastDocumentSnapshot == null) {
-            routesQuery
-                    .limit(DEFAULT_LIMIT)
-                    .get()
-                    .addOnSuccessListener {
-                        fetchQuery(it)
-                    }
-                    .addOnFailureListener {
-                        onFail?.invoke(it)
-                    }
-        } else {
-
-            lastDocumentSnapshot?.let {
-
-                routesQuery
-                        .startAfter(it)
-                        .limit(DEFAULT_LIMIT + data.size)
-                        .get()
-                        .addOnSuccessListener {
-                            fetchQuery(it)
-                        }
-                        .addOnFailureListener {
-                            onFail?.invoke(it)
-                        }
-
-            }
-        }
-
-    }
-
-    private fun fetchQuery(snapshot: QuerySnapshot) {
-
-        val mutList = mutableListOf<FirebaseShortRouteData>()
-
-        if (!snapshot.documents.isEmpty()) {
-
-            for (docSnap in snapshot.documents) {
-
-                Timber.d(docSnap.data.toString())
-                mutList.add(
-                        docSnap.toObject(FirebaseShortRouteData::class.java)
-                                .also { it.id = docSnap.id }
-                )
-            }
-
-            lastDocumentSnapshot = snapshot.last()
-            data = mutList.toList()
-
-            dataChangedListeners.forEach { it.onRoutesChanged() }
-        }
     }
 
     companion object {
