@@ -13,7 +13,7 @@ class QueryManager(val rootQuery: Query, val limit: Long, val listeners: List<On
     private val children = mutableListOf<DocumentObserver>()
 
     val size
-        get() = children.map { it.size }.sum()
+        get() = children.map { it.size }.sum().also { Timber.d("SIZE: $it") }
 
     fun readDocument(position: Int): DocumentSnapshot {
 
@@ -48,7 +48,7 @@ class QueryManager(val rootQuery: Query, val limit: Long, val listeners: List<On
 
     private fun notifyModifiedDocument(childId: Int, relativePos: Int) {
         val i = countAbsoulutePosition(childId, relativePos)
-        listeners.forEach { it.onRouteModified(i) }
+        listeners.forEach { it.onDocumentModified(i) }
     }
 
     private fun countAbsoulutePosition(childId: Int, relativePos: Int): Int {
@@ -90,32 +90,31 @@ class QueryManager(val rootQuery: Query, val limit: Long, val listeners: List<On
             query.addSnapshotListener { querySnapshot, _ ->
                 if (querySnapshot != null && !querySnapshot.isEmpty) {
 
-                    Single.create<LinkedHashMap<DocumentChange.Type, MutableList<Int>>> {
+                    Single.create<List<Pair<DocumentChange.Type, Int>>> {
 
                         it.onSuccess(fetchDocumentChanges(querySnapshot.documentChanges))
 
                     }.observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io())
-                            .subscribe { map ->
-                                map.forEach {
-                                    notifyParent(it.key, it.value)
-                                }
+                            .subscribe { list ->
+
+                                list.forEach { (first, second) -> notifyParent(first, second) }
                             }
                 }
             }
         }
 
-        private fun notifyParent(type: DocumentChange.Type, mutableList: MutableList<Int>) {
+        private fun notifyParent(type: DocumentChange.Type, i: Int) {
+
+            Timber.d("%s %s", type, i.toString())
+
             when (type) {
 
-                DocumentChange.Type.MODIFIED ->
-                    mutableList.forEach { notifyModifiedDocument(num, it) }
+                DocumentChange.Type.MODIFIED -> notifyModifiedDocument(num, i)
 
-                DocumentChange.Type.REMOVED ->
-                    mutableList.forEach { notifyRemovedDocument(num, it) }
+                DocumentChange.Type.REMOVED -> notifyRemovedDocument(num, i)
 
-                DocumentChange.Type.ADDED ->
-                    mutableList.forEach { notifyNewDocument(num, it) }
+                DocumentChange.Type.ADDED -> notifyNewDocument(num, i)
             }
         }
 
@@ -132,45 +131,40 @@ class QueryManager(val rootQuery: Query, val limit: Long, val listeners: List<On
             return -1
         }
 
-        private fun fetchDocumentChanges(allChanges: List<DocumentChange>): LinkedHashMap<DocumentChange.Type, MutableList<Int>> {
+        private fun fetchDocumentChanges(allChanges: List<DocumentChange>): List<Pair<DocumentChange.Type, Int>> {
 
-            val map = linkedMapOf(
-                    DocumentChange.Type.MODIFIED to mutableListOf<Int>(),
-                    DocumentChange.Type.REMOVED to mutableListOf(),
-                    DocumentChange.Type.ADDED to mutableListOf()
-            )
+            val list = mutableListOf<Pair<DocumentChange.Type, Int>>()
 
             for (change in allChanges) {
+
                 when (change.type) {
 
                     DocumentChange.Type.ADDED -> {
                         this.add(change.document)
-                        map[DocumentChange.Type.ADDED]!!.add(size - 1)
+                        list.add(Pair(change.type, size - 1))
                     }
 
-                    else -> fetchData(change, map[change.type]!!)
+                    else -> {
+
+                        val i = findById(change.document.id)
+
+                        if (i != -1) {
+
+                            if (change.type == DocumentChange.Type.REMOVED) {
+
+                                removeAt(i)
+
+                            } else {
+
+                                set(i, change.document)
+                            }
+                            list.add(Pair(change.type, i))
+                        }
+                    }
                 }
             }
 
-            return map
-        }
-
-        private fun fetchData(change: DocumentChange, list: MutableList<Int>) {
-
-            val i = findById(change.document.id)
-
-            if (i != -1) {
-
-                if (change.type == DocumentChange.Type.REMOVED) {
-
-                    removeAt(i)
-
-                } else {
-
-                    set(i, change.document)
-                }
-                list.add(i)
-            }
+            return list
         }
     }
 }

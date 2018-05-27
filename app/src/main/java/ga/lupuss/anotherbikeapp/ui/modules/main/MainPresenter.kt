@@ -84,18 +84,6 @@ class MainPresenter @Inject constructor(private val context: Context,
 
     fun onHistoryRecyclerItemCountRequest(): Int = routesManager.quickRoutesCount()
 
-    override fun onNewDocument(position: Int) {
-        mainView.notifyRecyclerItemInserted(position)
-    }
-
-    override fun onRouteModified(position: Int) {
-        mainView.notifyRecyclerItemChanged(position)
-    }
-
-    override fun onDocumentDeleted(position: Int) {
-        mainView.notifyRecyclerItemRemoved(position)
-    }
-
     override fun notifyOnCreate(savedInstanceState: Bundle?) {
 
         savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE)?.let {
@@ -145,6 +133,18 @@ class MainPresenter @Inject constructor(private val context: Context,
                 }
             }
         }
+    }
+
+    override fun onNewDocument(position: Int) {
+        mainView.notifyRecyclerItemInserted(position)
+    }
+
+    override fun onDocumentModified(position: Int) {
+        mainView.notifyRecyclerItemChanged(position)
+    }
+
+    override fun onDocumentDeleted(position: Int) {
+        mainView.notifyRecyclerItemRemoved(position)
     }
 
     private fun startTracking() {

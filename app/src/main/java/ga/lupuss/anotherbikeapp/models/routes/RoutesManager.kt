@@ -53,7 +53,6 @@ class RoutesManager(val user: User,
     }
 
     fun requestMoreQuickRoutes(onDataEnd: (() -> Unit)?, onFail: ((Exception) -> Unit)?) {
-
         routesQueryManager.loadMoreDocuments()
     }
 
