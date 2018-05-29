@@ -17,7 +17,7 @@ class RoutesManager(val user: User,
                     private val firebaseFirestore: FirebaseFirestore,
                     val locale: Locale) {
     private val onRoutesChangedListeners = mutableListOf<OnDocumentChanged>()
-    private val userPath = "$FIREB_USERS/${user.firebaseUser!!.uid}"
+    private val userPath = "$FIREB_USERS/${user.firebaseUser.uid}"
     private val routesPath = "$userPath/$FIREB_ROUTES"
     private val routesQuery = firebaseFirestore
             .collection(routesPath)
@@ -26,9 +26,6 @@ class RoutesManager(val user: User,
     private val queryManager =
             QueryLoadingManager(routesQuery, DEFAULT_LIMIT, onRoutesChangedListeners)
 
-    init {
-        user.firebaseUser ?: throw IllegalStateException("No auth")
-    }
 
     private fun DocumentSnapshot.toShortRouteData(): FirebaseShortRouteData =
             this.toObject(FirebaseShortRouteData::class.java).also { it.id = this.id }
@@ -67,7 +64,7 @@ class RoutesManager(val user: User,
 
         val newPointsRef = firebaseFirestore.collection("points").document()
         val newRouteRef = firebaseFirestore.collection(FIREB_ROUTES).document()
-        val userRef = firebaseFirestore.collection(FIREB_USERS).document(user.firebaseUser!!.uid)
+        val userRef = firebaseFirestore.collection(FIREB_USERS).document(user.firebaseUser.uid)
 
         firebaseFirestore
                 .batch()

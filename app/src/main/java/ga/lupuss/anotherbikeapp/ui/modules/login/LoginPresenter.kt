@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.ui.modules.login
 
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.User
@@ -14,6 +15,9 @@ class LoginPresenter @Inject constructor() : Presenter {
     @Inject
     lateinit var auth: FirebaseAuth
 
+    @Inject
+    lateinit var context: Context
+
     fun initWithUser(user: User) {
         loginView.getAnotherBikeApp().initMainComponentWithUser(user)
         loginView.startMainActivity()
@@ -26,31 +30,25 @@ class LoginPresenter @Inject constructor() : Presenter {
 
     fun onClickSignIn(email: String, password: String) {
 
-        if (email.isBlank() && password.isBlank()) {
+        loginView.getAnotherBikeApp()
+                .coreComponent
+                .providesFirebaseAuth()
+                .signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener {
 
-            loginView.getAnotherBikeApp()
-                    .coreComponent
-                    .providesFirebaseAuth()
-                    .signInWithEmailAndPassword("test@test.com", "test12")
-                    .addOnSuccessListener {
-                        initWithUser(User("test", it.user, false))
-                    }
-        } else {
+                    initWithUser(User(it.user, context))
 
-            loginView.getAnotherBikeApp()
-                    .coreComponent
-                    .providesFirebaseAuth()
-                    .signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener {
+                }.addOnFailureListener {
 
-                        loginView.makeToast("No nieźle zalogowałeś się brawo kurwa :/")
-                        initWithUser(User("test", it.user, false))
+                    fetchException(it)
+                    Timber.d(it)
+                }
 
-                    }.addOnFailureListener {
+    }
 
-                        Timber.d(it)
-                        loginView.makeToast("Coś się popsuło i nie było mnie słychać :/")
-                    }
+    fun fetchException(exception: Exception) {
+
+        when (exception) {
         }
 
     }

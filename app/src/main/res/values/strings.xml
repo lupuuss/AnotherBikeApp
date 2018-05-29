@@ -64,5 +64,6 @@
     <string name="password">Password</string>
     <string name="no_account">Use without account</string>
     <string name="create_new_account">Create new account</string>
+    <string name="user">User</string>
 
 </resources>

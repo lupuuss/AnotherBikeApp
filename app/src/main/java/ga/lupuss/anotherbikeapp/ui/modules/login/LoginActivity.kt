@@ -28,11 +28,6 @@ class LoginActivity : BaseActivity(), LoginView {
                 .inject(this)
     }
 
-    fun onClickUseWithoutAccount(view: View) {
-
-        loginPresenter.onClickUseWithoutAccount()
-    }
-
     fun onClickSignIn(view: View) {
 
         loginPresenter.onClickSignIn(emailEditText.text.toString(),

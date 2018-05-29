@@ -22,14 +22,11 @@ import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 import timber.log.Timber
 import javax.inject.Inject
-import android.widget.Toast
-import android.support.v4.view.ViewCompat.canScrollVertically
 import android.support.v4.widget.NestedScrollView
-import android.support.v7.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_main_ui.*
 
 
 /**
@@ -80,7 +77,7 @@ class MainActivity : BaseActivity(), MainView {
         }
 
         recyclerWrapper.setOnScrollChangeListener(
-                { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+                { v: NestedScrollView?, _, _, _, _ ->
 
                     if (!v!!.canScrollVertically(1)) {
 
