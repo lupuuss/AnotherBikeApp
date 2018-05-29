@@ -54,12 +54,12 @@
         android:textAlignment="center"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@id/topView"
-        app:layout_constraintBottom_toTopOf="@id/routesHistoryRecycler"
+        app:layout_constraintBottom_toTopOf="@id/recyclerWrapper"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/routesHistoryRecycler"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/recyclerWrapper"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +67,27 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/routesHistoryLabel"
-        app:layout_goneMarginTop="5dp" />
+        app:layout_goneMarginTop="5dp">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/routesHistoryRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <ProgressBar
+                android:id="@+id/recyclerProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/noDataText"
