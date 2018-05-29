@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.routes
+package ga.lupuss.anotherbikeapp.models.firebase
 
 interface OnDocumentChanged {
     fun onNewDocument(position: Int)

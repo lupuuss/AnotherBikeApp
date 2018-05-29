@@ -6,11 +6,16 @@ import ga.lupuss.anotherbikeapp.models.pojo.ShortRouteData
 import ga.lupuss.anotherbikeapp.timeToFormattedString
 import java.util.*
 
-class FirebaseRouteData() : FirebaseBaseRouteData() {
+class FirebaseRouteData : FirebaseBaseRouteData() {
 
     var maxSpeed = 0.0
     var points: DocumentReference? = null
     var user: DocumentReference? = null
+
+    fun fillWith(routeData: RouteData) {
+        fillWithShort(routeData)
+        maxSpeed = routeData.maxSpeed
+    }
 
     fun toRouteData(locale: Locale): RouteData {
 

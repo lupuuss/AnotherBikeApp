@@ -21,4 +21,12 @@ open class ShortRouteData() {
         this.duration = duration
         this.startTime = startTime
     }
+
+    fun fillWithShort(routeData: ShortRouteData) {
+        this.name = routeData.name
+        this.distance = routeData.distance
+        this.avgSpeed = routeData.avgSpeed
+        this.duration = routeData.duration
+        this.startTime = routeData.startTime
+    }
 }

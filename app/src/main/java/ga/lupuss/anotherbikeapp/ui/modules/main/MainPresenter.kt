@@ -9,7 +9,7 @@ import android.os.IBinder
 import android.view.View
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.routes.OnDocumentChanged
+import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
 import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
@@ -80,9 +80,30 @@ class MainPresenter @Inject constructor(private val context: Context,
         }
     }
 
-    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readQuickRoute(position)
+    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
 
-    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.quickRoutesCount()
+    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.shortRouteDataCount()
+
+    fun notifyRecyclerReachedBottom() {
+
+        onLoadMoreRequest()
+    }
+
+    private fun onLoadMoreRequest() {
+        mainView.setProgressBarVisibility(View.VISIBLE)
+
+        routesManager.requestMoreShortRouteData({
+
+            mainView.setProgressBarVisibility(View.GONE)
+
+            if (routesManager.shortRouteDataCount() == 0)
+                mainView.setNoDataTextVisibility(View.VISIBLE)
+
+        }, {
+            mainView.setProgressBarVisibility(View.GONE)
+            Timber.d(it)
+        })
+    }
 
     override fun notifyOnCreate(savedInstanceState: Bundle?) {
 
@@ -96,8 +117,8 @@ class MainPresenter @Inject constructor(private val context: Context,
         }
 
         mainView.setNoDataTextVisibility(View.INVISIBLE)
-        routesManager.addOnQuickRoutesChangedListener(this)
-        routesManager.requestMoreQuickRoutes(null, { Timber.d(it) })
+        routesManager.addOnShortRoutesDataChangedListener(this)
+        onLoadMoreRequest()
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -136,6 +157,8 @@ class MainPresenter @Inject constructor(private val context: Context,
     }
 
     override fun onNewDocument(position: Int) {
+
+        mainView.setNoDataTextVisibility(View.INVISIBLE)
         mainView.notifyRecyclerItemInserted(position)
     }
 
@@ -145,6 +168,11 @@ class MainPresenter @Inject constructor(private val context: Context,
 
     override fun onDocumentDeleted(position: Int) {
         mainView.notifyRecyclerItemRemoved(position)
+
+        if (routesManager.shortRouteDataCount() == 0) {
+
+            mainView.setNoDataTextVisibility(View.VISIBLE)
+        }
     }
 
     private fun startTracking() {
@@ -188,8 +216,9 @@ class MainPresenter @Inject constructor(private val context: Context,
             Timber.d("No service. Clean destroy.")
         }
 
-        routesManager.removeOnQuickRoutesChangedListener(this)
+        routesManager.removeOnShortRoutesDataChangedListener(this)
     }
+
 
     companion object {
         private const val IS_SERVICE_ACTIVE = "is service active"

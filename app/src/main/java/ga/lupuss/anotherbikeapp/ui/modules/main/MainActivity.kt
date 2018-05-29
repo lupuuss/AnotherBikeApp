@@ -26,6 +26,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import timber.log.Timber
 import javax.inject.Inject
+import android.widget.Toast
+import android.support.v4.view.ViewCompat.canScrollVertically
+import android.support.v4.widget.NestedScrollView
+import android.support.v7.widget.RecyclerView
+
 
 /**
  * Main user's interface.
@@ -68,19 +73,23 @@ class MainActivity : BaseActivity(), MainView {
         )
 
         routesHistoryRecycler.setItemViewCacheSize(3)
-
+        routesHistoryRecycler.isNestedScrollingEnabled = false
         routesHistoryRecycler.apply {
             this.adapter = adapter
             layoutManager = LinearLayoutManager(this@MainActivity)
         }
 
+        recyclerWrapper.setOnScrollChangeListener(
+                { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+
+                    if (!v!!.canScrollVertically(1)) {
+
+                        mainPresenter.notifyRecyclerReachedBottom()
+                    }
+                })
+
         routesHistoryRecycler.addItemDecoration(
                 BottomSpaceItemDecoration(dpToPixels(this, 5F)))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        routesHistoryRecycler.adapter.notifyDataSetChanged()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -204,6 +213,10 @@ class MainActivity : BaseActivity(), MainView {
     override fun startSummaryActivity() {
 
         startActivity(SummaryActivity.newIntent(this))
+    }
+
+    override fun setProgressBarVisibility(visibility: Int) {
+        recyclerProgressBar.visibility = visibility
     }
 
     override fun refreshRecyclerAdapter() {
