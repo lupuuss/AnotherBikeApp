@@ -10,8 +10,6 @@ class User(
 ) {
     val name: String = if (firebaseUser.displayName != "")
         firebaseUser.displayName!!
-    else if (firebaseUser.email != null && firebaseUser.email != "")
-        firebaseUser.email!!
     else
         context.getString(R.string.user)
 }

@@ -26,6 +26,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 import javax.inject.Inject
 import android.support.v4.widget.NestedScrollView
+import android.widget.TextView
+import ga.lupuss.anotherbikeapp.models.User
+import ga.lupuss.anotherbikeapp.ui.adapters.IconStringListViewAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_ui.*
 
 
@@ -33,6 +37,9 @@ import kotlinx.android.synthetic.main.activity_main_ui.*
  * Main user's interface.
  */
 class MainActivity : BaseActivity(), MainView {
+
+    @Inject
+    lateinit var user: User
 
     @Inject
     lateinit var mainPresenter: MainPresenter
@@ -63,6 +70,20 @@ class MainActivity : BaseActivity(), MainView {
                 .inject(this)
 
         mainPresenter.notifyOnCreate(savedInstanceState)
+
+        drawerListView.adapter = IconStringListViewAdapter(this, layoutInflater)
+        drawerListView.addHeaderView(
+
+                layoutInflater.inflate(
+                        R.layout.activity_main_drawer_header,
+                        drawerListView,
+                        false
+                ).apply {
+
+                    this.findViewById<TextView>(R.id.userName).text = user.name
+                    this.findViewById<TextView>(R.id.userEmail).text = user.firebaseUser.email
+                }
+        )
 
         val adapter = RoutesHistoryRecyclerViewAdapter(
                 mainPresenter::onHistoryRecyclerItemRequest,

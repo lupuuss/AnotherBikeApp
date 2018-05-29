@@ -66,4 +66,9 @@
     <string name="create_new_account">Create new account</string>
     <string name="user">User</string>
 
+    <!-- Drawer list items -->
+
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+
 </resources>

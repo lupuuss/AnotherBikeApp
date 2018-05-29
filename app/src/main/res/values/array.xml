@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="drawer_list_keys">
+        <item>@string/logout</item>
+        <item>@string/settings</item>
+    </string-array>
+
+    <array name="drawer_list_values">
+        <item>@drawable/ic_logout_24dp</item>
+        <item>@drawable/ic_settings_24dp</item>
+    </array>
+</resources>

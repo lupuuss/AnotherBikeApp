@@ -45,4 +45,7 @@
     <string name="login">Zaloguj</string>
     <string name="password">Hasło</string>
     <string name="create_new_account">Stwórz nowe konto</string>
+    <string name="user">Użytkownik</string>
+    <string name="logout">Wyloguj</string>
+    <string name="settings">Ustawienia</string>
 </resources>
