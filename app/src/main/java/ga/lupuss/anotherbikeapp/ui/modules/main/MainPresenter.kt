@@ -9,6 +9,8 @@ import android.view.View
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.firebase.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
@@ -24,10 +26,12 @@ import javax.inject.Inject
  */
 class MainPresenter @Inject constructor(private val context: Context,
                                         routesManager: FirebaseRoutesManager,
-                                        private val gson: Gson) : Presenter, OnDocumentChanged {
+                                        private val gson: Gson,
+                                        authInteractor: FirebaseAuthInteractor) : Presenter, OnDocumentChanged {
 
     class State(val isServiceActive: Boolean)
 
+    private val authInteractor: AuthInteractor = authInteractor
     private val routesManager: RoutesManager = routesManager
 
     @Inject
@@ -130,6 +134,7 @@ class MainPresenter @Inject constructor(private val context: Context,
         mainView.setNoDataTextVisibility(View.INVISIBLE)
         routesManager.addRoutesDataChangedListener(this)
         onLoadMoreRequest()
+        mainView.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {

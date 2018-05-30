@@ -24,4 +24,5 @@ interface MainView : BaseView {
     fun setNoDataTextVisibility(visibility: Int)
     fun setRoutesHistoryVisibility(visibility: Int)
     fun setProgressBarVisibility(visibility: Int)
+    fun setDrawerHeaderInfos(displayName: String?, email: String?)
 }

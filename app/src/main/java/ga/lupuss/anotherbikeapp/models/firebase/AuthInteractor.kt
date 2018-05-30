@@ -10,4 +10,8 @@ interface AuthInteractor {
     }
 
     fun login(email: String, password: String, onLoginDone: OnLoginDoneListener)
+
+    fun getEmail(): String?
+
+    fun getDisplayName(): String?
 }

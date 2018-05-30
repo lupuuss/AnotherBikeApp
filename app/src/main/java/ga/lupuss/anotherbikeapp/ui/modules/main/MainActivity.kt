@@ -69,21 +69,8 @@ class MainActivity : BaseActivity(), MainView {
             mainPresenter.initWithStateJson(it.getString(MAIN_PRESENTER_STATE_KEY))
         }
 
-        mainPresenter.notifyOnViewReady()
 
         drawerListView.adapter = IconStringListViewAdapter(this, layoutInflater)
-        drawerListView.addHeaderView(
-
-                layoutInflater.inflate(
-                        R.layout.activity_main_drawer_header,
-                        drawerListView,
-                        false
-                ).apply {
-
-                    this.findViewById<TextView>(R.id.userName).text = "Użytkownik"
-                    this.findViewById<TextView>(R.id.userEmail).text = "abcd.xyz@gmail.com"
-                }
-        )
 
         val adapter = RoutesHistoryRecyclerViewAdapter(
                 mainPresenter::onHistoryRecyclerItemRequest,
@@ -97,6 +84,11 @@ class MainActivity : BaseActivity(), MainView {
             layoutManager = LinearLayoutManager(this@MainActivity)
         }
 
+        routesHistoryRecycler.addItemDecoration(
+                BottomSpaceItemDecoration(dpToPixels(this, 5F)))
+
+        mainPresenter.notifyOnViewReady()
+
         recyclerWrapper.setOnScrollChangeListener(
                 { v: NestedScrollView?, _, _, _, _ ->
 
@@ -105,9 +97,6 @@ class MainActivity : BaseActivity(), MainView {
                         mainPresenter.notifyRecyclerReachedBottom()
                     }
                 })
-
-        routesHistoryRecycler.addItemDecoration(
-                BottomSpaceItemDecoration(dpToPixels(this, 5F)))
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -251,6 +240,25 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun notifyRecyclerItemInserted(position: Int) {
         routesHistoryRecycler.adapter.notifyItemInserted(position)
+    }
+
+    override fun setDrawerHeaderInfos(displayName: String?, email: String?) {
+
+        drawerListView.addHeaderView(
+                layoutInflater.inflate(
+                        R.layout.activity_main_drawer_header,
+                        drawerListView,
+                        false
+                ).apply {
+
+                    this.findViewById<TextView>(R.id.userName).text =
+                            if (displayName == null || displayName == "")
+                                getString(R.string.user)
+                            else displayName
+
+                    this.findViewById<TextView>(R.id.userEmail).text = email
+                }
+        )
     }
 
     class Request {

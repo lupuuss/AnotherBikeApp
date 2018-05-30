@@ -22,4 +22,7 @@ class FirebaseAuthInteractor @Inject constructor(private val firebaseAuth: Fireb
 
     }
 
+    override fun getEmail(): String? = firebaseAuth.currentUser?.email
+
+    override fun getDisplayName(): String? = firebaseAuth.currentUser?.displayName
 }
