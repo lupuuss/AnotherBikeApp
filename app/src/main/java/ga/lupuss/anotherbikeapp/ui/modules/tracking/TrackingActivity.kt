@@ -139,7 +139,7 @@ class TrackingActivity : BaseActivity(),
             })
         }
 
-        trackingPresenter.onMapReady()
+        trackingPresenter.notifyOnViewReady()
     }
 
     private fun getGoogleMapStyleFromTheme(): String {

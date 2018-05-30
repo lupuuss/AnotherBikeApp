@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import com.tinsuke.icekick.extension.serialState
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
@@ -61,7 +60,7 @@ class LoginActivity : BaseActivity(), LoginView {
         DaggerLoginComponent
                 .builder()
                 .loginModule(LoginModule(this))
-                .anotherBikeAppComponent(getAnotherBikeApp().mainComponent)
+                .anotherBikeAppComponent(getAnotherBikeApp().anotherBikeAppComponent)
                 .build()
                 .inject(this)
 

@@ -18,7 +18,7 @@ class StartActivity : BaseActivity() {
         Handler().postDelayed({
 
             val user = AnotherBikeApp.get(this.application)
-                    .mainComponent.providesFirebaseAuth().currentUser
+                    .anotherBikeAppComponent.providesFirebaseAuth().currentUser
 
             val intent: Intent = if (user != null) {
                 MainActivity.newIntent(this)

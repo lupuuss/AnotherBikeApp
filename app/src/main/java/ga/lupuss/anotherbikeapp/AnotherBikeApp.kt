@@ -6,7 +6,7 @@ import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
 class AnotherBikeApp : Application() {
 
-    lateinit var mainComponent: AnotherBikeAppComponent
+    lateinit var anotherBikeAppComponent: AnotherBikeAppComponent
 
     companion object {
 
@@ -21,9 +21,9 @@ class AnotherBikeApp : Application() {
         Timber.plant(Timber.DebugTree())
         AndroidThreeTen.init(this)
 
-        mainComponent = DaggerAnotherBikeAppComponent
+        anotherBikeAppComponent = DaggerAnotherBikeAppComponent
                 .builder()
-                .basicModule(BasicModule(this.applicationContext))
+                .androidModule(AndroidModule(this.applicationContext))
                 .build()
     }
 }

@@ -1,12 +1,16 @@
 package ga.lupuss.anotherbikeapp.base
 
-import android.os.Bundle
 
 /** Base interface for presenters */
 interface Presenter {
 
-    fun notifyOnCreate(savedInstanceState: Bundle?) {}
-    fun notifyOnDestroy(isFinishing: Boolean) {}
+    fun initWithStateJson(stateJson: String?) {}
+
+    fun notifyOnViewReady() {}
+
     fun notifyOnResult(requestCode: Int, resultCode: Int) {}
-    fun notifyOnSavedInstanceState(outState: Bundle) {}
+
+    fun notifyOnDestroy(isFinishing: Boolean) {}
+
+    fun getStateJson(): String? = null
 }

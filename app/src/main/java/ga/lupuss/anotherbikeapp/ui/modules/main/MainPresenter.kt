@@ -4,9 +4,9 @@ import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
-import android.os.Bundle
 import android.os.IBinder
 import android.view.View
+import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
@@ -23,7 +23,10 @@ import javax.inject.Inject
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
 class MainPresenter @Inject constructor(private val context: Context,
-                                        routesManager: FirebaseRoutesManager) : Presenter, OnDocumentChanged {
+                                        routesManager: FirebaseRoutesManager,
+                                        private val gson: Gson) : Presenter, OnDocumentChanged {
+
+    class State(val isServiceActive: Boolean)
 
     private val routesManager: RoutesManager = routesManager
 
@@ -108,11 +111,16 @@ class MainPresenter @Inject constructor(private val context: Context,
         })
     }
 
-    override fun notifyOnCreate(savedInstanceState: Bundle?) {
+    override fun initWithStateJson(stateJson: String?) {
 
-        savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE)?.let {
-            isServiceActive = it
+        gson.fromJson<State>(stateJson, State::class.java).let {
+
+            isServiceActive = it.isServiceActive
         }
+    }
+
+    override fun notifyOnViewReady() {
+        super.notifyOnViewReady()
 
         if (isServiceActive) {
 
@@ -196,11 +204,7 @@ class MainPresenter @Inject constructor(private val context: Context,
         mainView.stopTrackingService()
     }
 
-    override fun notifyOnSavedInstanceState(outState: Bundle) {
-
-        super.notifyOnSavedInstanceState(outState)
-        outState.putBoolean(IS_SERVICE_ACTIVE, isServiceActive)
-    }
+    override fun getStateJson(): String? = gson.toJson(State(isServiceActive))
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
 
@@ -223,7 +227,4 @@ class MainPresenter @Inject constructor(private val context: Context,
     }
 
 
-    companion object {
-        private const val IS_SERVICE_ACTIVE = "is service active"
-    }
 }

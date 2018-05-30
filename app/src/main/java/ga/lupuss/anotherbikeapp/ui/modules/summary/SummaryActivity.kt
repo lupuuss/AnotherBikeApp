@@ -35,7 +35,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
         DaggerSummaryComponent
                 .builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent)
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
                 .summaryModule(SummaryModule(this))
                 .build()
                 .inject(this)
@@ -46,7 +46,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
 
         this.map = map!!
-        summaryPresenter.viewReady()
+        summaryPresenter.notifyOnViewReady()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

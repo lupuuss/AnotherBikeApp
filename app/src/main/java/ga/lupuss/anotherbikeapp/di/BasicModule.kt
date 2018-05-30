@@ -6,15 +6,15 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class BasicModule(context: Context) {
-
-    val context = context
-        @Provides
-        @AnotherBikeAppScope
-        get
+class BasicModule() {
 
     val gson: Gson
         @Provides
         @AnotherBikeAppScope
         get() = Gson()
+
+    val timeProvider: () -> Long = System::currentTimeMillis
+        @Provides
+        @AnotherBikeAppScope
+        get
 }

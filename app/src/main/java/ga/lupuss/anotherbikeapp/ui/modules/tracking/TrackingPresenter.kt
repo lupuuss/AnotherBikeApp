@@ -30,7 +30,7 @@ class TrackingPresenter @Inject constructor()
             field = value
         }
 
-    fun onMapReady() {
+    override fun notifyOnViewReady() {
 
         // checking if service worked before activity start
         if (serviceBinder.savedRoute.isNotEmpty()) {

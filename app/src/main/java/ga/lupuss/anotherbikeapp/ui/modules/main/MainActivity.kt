@@ -60,12 +60,16 @@ class MainActivity : BaseActivity(), MainView {
         setContentView(R.layout.activity_main)
 
         DaggerMainComponent.builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent)
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
                 .mainModule(MainModule(this))
                 .build()
                 .inject(this)
 
-        mainPresenter.notifyOnCreate(savedInstanceState)
+        savedInstanceState?.let {
+            mainPresenter.initWithStateJson(it.getString(MAIN_PRESENTER_STATE_KEY))
+        }
+
+        mainPresenter.notifyOnViewReady()
 
         drawerListView.adapter = IconStringListViewAdapter(this, layoutInflater)
         drawerListView.addHeaderView(
@@ -109,7 +113,7 @@ class MainActivity : BaseActivity(), MainView {
     override fun onSaveInstanceState(outState: Bundle?) {
 
         super.onSaveInstanceState(outState)
-        mainPresenter.notifyOnSavedInstanceState(outState!!)
+        outState?.putString(MAIN_PRESENTER_STATE_KEY, mainPresenter.getStateJson())
     }
 
     override fun onBackPressed() {
@@ -256,6 +260,9 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     companion object {
+
+        const val MAIN_PRESENTER_STATE_KEY = "mainPresenterState"
+
         @JvmStatic
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }

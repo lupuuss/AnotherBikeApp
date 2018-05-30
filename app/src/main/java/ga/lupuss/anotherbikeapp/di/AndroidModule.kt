@@ -7,7 +7,12 @@ import dagger.Provides
 import ga.lupuss.anotherbikeapp.Prefs
 
 @Module(includes = [BasicModule::class])
-class CoreModule {
+class AndroidModule(context: Context) {
+
+    val context = context
+        @Provides
+        @AnotherBikeAppScope
+        get
 
     @Provides
     @AnotherBikeAppScope
@@ -19,10 +24,4 @@ class CoreModule {
     @AnotherBikeAppScope
     fun sharedPreferences(context: Context) =
             context.getSharedPreferences(Prefs.APP_PREFS, Context.MODE_PRIVATE)
-
-
-    val timeProvider: () -> Long = System::currentTimeMillis
-        @Provides
-        @AnotherBikeAppScope
-        get
 }

@@ -21,7 +21,7 @@ class SummaryPresenter @Inject constructor(routesManager: FirebaseRoutesManager)
 
     private val routesManager: RoutesManager = routesManager
 
-    fun viewReady() {
+    override fun notifyOnViewReady() {
 
         routesManager.getTempRoute() ?: throw IllegalStateException("no route to show")
 
