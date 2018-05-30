@@ -62,7 +62,7 @@ class LoginActivity : BaseActivity(), LoginView {
 
         loginPresenter.onClickSignIn(
                 findViewById<EditText>(R.id.emailEditInclude).text.toString(),
-                findViewById<EditText>(R.id.emailEditInclude).text.toString()
+                findViewById<EditText>(R.id.passwordEditInclude).text.toString()
         )
     }
 

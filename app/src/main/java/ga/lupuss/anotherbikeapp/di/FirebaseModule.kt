@@ -10,7 +10,9 @@ class FirebaseModule {
 
     @Provides
     @AnotherBikeAppScope
-    fun firebaseAuth() = FirebaseAuth.getInstance()
+    fun firebaseAuth() = FirebaseAuth.getInstance().apply {
+        this.useAppLanguage()
+    }
 
     @Provides
     @AnotherBikeAppScope

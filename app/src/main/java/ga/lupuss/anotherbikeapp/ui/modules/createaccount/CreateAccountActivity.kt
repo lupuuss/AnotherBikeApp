@@ -76,16 +76,16 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
         }
     }
 
-    fun onClickCreateNewAccount(view: View) {
+    fun onClickCreateNewAccount(@Suppress("UNUSED_PARAMETER") view: View) {
 
         createAccountPresenter.onClickCreateNewAccount(
                 findViewById<EditText>(R.id.emailEditInclude).text.toString(),
-                findViewById<EditText>(R.id.emailEditInclude).text.toString(),
+                findViewById<EditText>(R.id.passwordEditInclude).text.toString(),
                 displayNameEditText.text.toString()
         )
     }
 
-    fun onClickSignIn(view: View) {
+    fun onClickSignIn(@Suppress("UNUSED_PARAMETER") view: View) {
 
         createAccountPresenter.onClickSignIn()
     }

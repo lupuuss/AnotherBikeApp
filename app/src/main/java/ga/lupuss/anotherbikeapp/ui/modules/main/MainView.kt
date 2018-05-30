@@ -25,4 +25,5 @@ interface MainView : BaseView {
     fun setRoutesHistoryVisibility(visibility: Int)
     fun setProgressBarVisibility(visibility: Int)
     fun setDrawerHeaderInfos(displayName: String?, email: String?)
+    fun startLoginActivity()
 }

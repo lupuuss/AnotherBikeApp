@@ -27,4 +27,6 @@ interface AuthInteractor {
     fun getDisplayName(): String?
 
     fun setDisplayName(displayName: String, onDisplayNameSetDone: OnDisplayNameSetDoneListener?)
+
+    fun logout()
 }

@@ -4,17 +4,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
 import ga.lupuss.anotherbikeapp.models.AuthInteractor
+import timber.log.Timber
 import javax.inject.Inject
 
 class FirebaseAuthInteractor @Inject constructor(private val firebaseAuth: FirebaseAuth) : AuthInteractor {
 
     override fun login(email: String, password: String, onLoginDone: AuthInteractor.OnLoginDoneListener?) {
 
+        Timber.d("Login with => $email : $password")
+
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
                     onLoginDone?.onSuccess()
                 }
                 .addOnFailureListener {
+
+                    Timber.d(it)
 
                     when (it) {
                         is FirebaseAuthInvalidCredentialsException -> onLoginDone?.onIncorrectCredentialsError()
@@ -51,5 +56,10 @@ class FirebaseAuthInteractor @Inject constructor(private val firebaseAuth: Fireb
 
         firebaseAuth.currentUser?.updateProfile(userProfileChangeRequest)
                 ?: onDisplayNameSetDone?.onUndefinedError()
+    }
+
+    override fun logout() {
+
+        firebaseAuth.signOut()
     }
 }

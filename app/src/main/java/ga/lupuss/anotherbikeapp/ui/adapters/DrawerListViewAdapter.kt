@@ -1,44 +1,16 @@
 package ga.lupuss.anotherbikeapp.ui.adapters
 
-
-import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 
-class IconStringListViewAdapter(context: Context,
-                                private val layoutInflater: LayoutInflater) : BaseAdapter() {
 
-    private val children: List<Pair<String, Int>>
-
-    init {
-
-        val keys = context.resources.getStringArray(R.array.drawer_list_keys).toList()
-        val values = context.resources.obtainTypedArray(R.array.drawer_list_values)
-
-        val list = mutableListOf<Pair<String, Int>>()
-
-        if (keys.size > values.length()) {
-
-            throw IllegalStateException(
-                    "Missing value for key ${keys.last()} in R.array.drawer_list_values"
-            )
-        }
-
-        for (i in 0 until keys.size) {
-
-            list.add(Pair(keys[i], values.getResourceId(i, 0)))
-        }
-
-        values.recycle()
-
-        children = list.toList()
-
-    }
+class DrawerListViewAdapter(private val children: List<Pair<MainActivity.ItemName, MainActivity.StrIconRes>>,
+                            private val layoutInflater: LayoutInflater) : BaseAdapter() {
 
     inner class ViewHolder(var textView: TextView)
 
@@ -65,8 +37,8 @@ class IconStringListViewAdapter(context: Context,
 
         (textView.tag as ViewHolder).textView.apply {
 
-            text = children[position].first
-            setCompoundDrawablesWithIntrinsicBounds(children[position].second,
+            text = context.getString(children[position].second.str)
+            setCompoundDrawablesWithIntrinsicBounds(children[position].second.icon,
                     0, 0, 0)
         }
 

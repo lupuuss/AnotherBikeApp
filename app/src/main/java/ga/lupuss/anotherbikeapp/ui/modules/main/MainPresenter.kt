@@ -90,6 +90,16 @@ class MainPresenter @Inject constructor(private val context: Context,
         }
     }
 
+    fun onClickSettings() {
+
+    }
+
+    fun onClickLogout() {
+        authInteractor.logout()
+        mainView.startLoginActivity()
+        mainView.finishActivity()
+    }
+
     fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
 
     fun onHistoryRecyclerItemCountRequest(): Int = routesManager.shortRouteDataCount()

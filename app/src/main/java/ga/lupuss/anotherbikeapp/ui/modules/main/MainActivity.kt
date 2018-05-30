@@ -27,7 +27,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import android.support.v4.widget.NestedScrollView
 import android.widget.TextView
-import ga.lupuss.anotherbikeapp.ui.adapters.IconStringListViewAdapter
+import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
+import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_ui.*
 
@@ -53,6 +54,20 @@ class MainActivity : BaseActivity(), MainView {
 
     }
 
+    enum class ItemName {
+        LOGOUT, SETTINGS
+    }
+
+    class StrIconRes(
+            val str: Int,
+            val icon: Int
+    )
+
+    private val drawerListViewChildren = listOf(
+            Pair(ItemName.LOGOUT, StrIconRes(R.string.logout, R.drawable.ic_logout_24dp)),
+            Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
+    )
+
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -70,7 +85,19 @@ class MainActivity : BaseActivity(), MainView {
         }
 
 
-        drawerListView.adapter = IconStringListViewAdapter(this, layoutInflater)
+        drawerListView.adapter = DrawerListViewAdapter(
+                drawerListViewChildren,
+                layoutInflater
+        )
+
+        drawerListView.setOnItemClickListener { adapterView, _, i, _ ->
+            @Suppress("UNCHECKED_CAST")
+            when ((adapterView.adapter.getItem(i) as Pair<ItemName, StrIconRes>).first) {
+
+                MainActivity.ItemName.LOGOUT -> mainPresenter.onClickLogout()
+                MainActivity.ItemName.SETTINGS -> mainPresenter.onClickSettings()
+            }
+        }
 
         val adapter = RoutesHistoryRecyclerViewAdapter(
                 mainPresenter::onHistoryRecyclerItemRequest,
@@ -166,6 +193,11 @@ class MainActivity : BaseActivity(), MainView {
                 TrackingActivity.newIntent(this@MainActivity, serviceBinder!!),
                 Request.TRACKING_ACTIVITY_REQUEST
         )
+    }
+
+    override fun startLoginActivity() {
+
+        startActivity(LoginActivity.newIntent(this))
     }
 
     override fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
