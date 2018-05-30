@@ -16,7 +16,9 @@
         android:theme="@style/GreyTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".ui.modules.main.MainActivity" />
-        <service android:name=".models.trackingservice.TrackingService"
+
+        <service
+            android:name=".models.trackingservice.TrackingService"
             android:exported="false" />
 
         <meta-data
@@ -26,17 +28,23 @@
         <activity
             android:name=".ui.modules.tracking.TrackingActivity"
             android:label="@string/title_activity_tracking" />
-        <activity android:name=".ui.modules.summary.SummaryActivity"
-            android:label="@string/summary"/>
-        <activity android:name=".ui.modules.login.LoginActivity"
-            android:label="@string/login"/>
-        <activity android:name=".ui.StartActivity"
+        <activity
+            android:name=".ui.modules.summary.SummaryActivity"
+            android:label="@string/summary" />
+        <activity
+            android:name=".ui.modules.login.LoginActivity"
+            android:label="@string/login" />
+        <activity
+            android:name=".ui.StartActivity"
             android:screenOrientation="locked">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.modules.createaccount.CreateAccountActivity"
+            android:label="@string/create_new_account"/>
     </application>
 
 </manifest>

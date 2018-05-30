@@ -77,5 +77,9 @@
 
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
+    <string name="name">Name</string>
+    <string name="new_account">New account</string>
+    <string name="accountCreated">Account has been created. Sign in!</string>
+    <string name="fillAllFileds">Fill all fields!</string>
 
 </resources>

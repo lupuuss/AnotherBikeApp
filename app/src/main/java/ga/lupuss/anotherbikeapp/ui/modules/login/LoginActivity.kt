@@ -5,11 +5,15 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.email_edit_text.*
+import kotlinx.android.synthetic.main.password_edit_text.*
 import javax.inject.Inject
 
 @Suppress("UNUSED_PARAMETER")
@@ -54,6 +58,18 @@ class LoginActivity : BaseActivity(), LoginView {
             field = value
         }
 
+    fun onClickSignIn(view: View) {
+
+        loginPresenter.onClickSignIn(
+                findViewById<EditText>(R.id.emailEditInclude).text.toString(),
+                findViewById<EditText>(R.id.emailEditInclude).text.toString()
+        )
+    }
+
+    fun onClickCreateAccount(view: View) {
+        loginPresenter.onClickCreateAccount()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -81,15 +97,14 @@ class LoginActivity : BaseActivity(), LoginView {
         }
     }
 
-    fun onClickSignIn(view: View) {
-
-        loginPresenter.onClickSignIn(emailEditText.text.toString(),
-                passwordEditText.text.toString())
-    }
-
     override fun startMainActivity() {
 
         startActivity(MainActivity.newIntent(this))
+    }
+
+    override fun startCreateAccountActivity() {
+
+        startActivity(CreateAccountActivity.newIntent(this))
     }
 
     override fun getAnotherBikeApp(): AnotherBikeApp = AnotherBikeApp.get(this.application)

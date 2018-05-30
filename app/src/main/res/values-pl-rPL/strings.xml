@@ -52,4 +52,8 @@
     <string name="somethingGoesWrong">Coś poszło nie tak…</string>
     <string name="passwordOrEmailBlank">Musisz podać email i hasło!</string>
     <string name="wrongCredentials">Email lub hasło są niepoprawne!</string>
+    <string name="name">Nazwa</string>
+    <string name="new_account">Nowe konto</string>
+    <string name="accountCreated">Konto zostało utworzone. Zaloguj się!</string>
+    <string name="fillAllFileds">Wypełij wszystkie pola!</string>
 </resources>

@@ -9,7 +9,7 @@ import android.view.View
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.firebase.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager

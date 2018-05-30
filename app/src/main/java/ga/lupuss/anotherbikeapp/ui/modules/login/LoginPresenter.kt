@@ -3,7 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.login
 import android.content.Context
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.firebase.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import javax.inject.Inject
 
@@ -20,13 +20,13 @@ class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDo
 
     fun onClickSignIn(email: String, password: String) {
 
-        if (!loginView.isOnline()) {
-
-            loginView.makeToast(R.string.noInternetConnection)
-
-        } else if (email.isBlank() || password.isBlank()) {
+        if (email.isBlank() || password.isBlank()) {
 
             loginView.makeToast(R.string.passwordOrEmailBlank)
+
+        } else if (!loginView.isOnline()) {
+
+            loginView.makeToast(R.string.noInternetConnection)
 
         } else {
 
@@ -35,6 +35,11 @@ class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDo
             loginView.isSignInButtonTextVisible = false
             loginInteractor.login(email, password, this)
         }
+    }
+
+    fun onClickCreateAccount() {
+
+        loginView.startCreateAccountActivity()
     }
 
     private fun onAnyError() {
@@ -53,7 +58,7 @@ class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDo
         loginView.makeToast(R.string.somethingGoesWrong)
     }
 
-    override fun onCredentialsError() {
+    override fun onIncorrectCredentialsError() {
         onAnyError()
         loginView.makeToast(R.string.wrongCredentials)
     }
