@@ -225,6 +225,4 @@ class MainPresenter @Inject constructor(private val context: Context,
 
         routesManager.removeOnRoutesDataChangedListener(this)
     }
-
-
 }
