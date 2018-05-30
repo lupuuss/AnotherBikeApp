@@ -4,6 +4,7 @@ import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
 import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
+
 class AnotherBikeApp : Application() {
 
     lateinit var anotherBikeAppComponent: AnotherBikeAppComponent
