@@ -10,6 +10,7 @@ import android.view.View
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
+import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
@@ -22,7 +23,9 @@ import javax.inject.Inject
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
 class MainPresenter @Inject constructor(private val context: Context,
-                                        private val routesManager: RoutesManager) : Presenter, OnDocumentChanged {
+                                        routesManager: FirebaseRoutesManager) : Presenter, OnDocumentChanged {
+
+    private val routesManager: RoutesManager = routesManager
 
     @Inject
     lateinit var mainView: MainView
@@ -117,7 +120,7 @@ class MainPresenter @Inject constructor(private val context: Context,
         }
 
         mainView.setNoDataTextVisibility(View.INVISIBLE)
-        routesManager.addOnShortRoutesDataChangedListener(this)
+        routesManager.addRoutesDataChangedListener(this)
         onLoadMoreRequest()
     }
 
@@ -137,7 +140,7 @@ class MainPresenter @Inject constructor(private val context: Context,
 
                     routeData?.let {
 
-                        routesManager.routeKeeper.keep(it)
+                        routesManager.keepTempRoute(it)
                         mainView.startSummaryActivity()
                     }
                 }
@@ -216,7 +219,7 @@ class MainPresenter @Inject constructor(private val context: Context,
             Timber.d("No service. Clean destroy.")
         }
 
-        routesManager.removeOnShortRoutesDataChangedListener(this)
+        routesManager.removeOnRoutesDataChangedListener(this)
     }
 
 

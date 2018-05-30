@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.base
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -8,6 +9,11 @@ import android.view.MenuItem
 import android.widget.Toast
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
+import android.net.NetworkInfo
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+
+
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
 
@@ -48,5 +54,12 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     override fun finishActivity() {
         finish()
+    }
+
+    override fun isOnline(): Boolean {
+
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
     }
 }

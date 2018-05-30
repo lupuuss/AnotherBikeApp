@@ -9,11 +9,11 @@ import dagger.Provides
 class FirebaseModule {
 
     @Provides
-    @CoreScope
+    @AnotherBikeAppScope
     fun firebaseAuth() = FirebaseAuth.getInstance()
 
     @Provides
-    @CoreScope
+    @AnotherBikeAppScope
     fun firebaseFirestore() = FirebaseFirestore.getInstance()
 
 }

@@ -1,55 +1,60 @@
 package ga.lupuss.anotherbikeapp.ui.modules.login
 
 import android.content.Context
-import com.google.firebase.auth.FirebaseAuth
+import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.User
-import timber.log.Timber
+import ga.lupuss.anotherbikeapp.models.firebase.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import javax.inject.Inject
 
-class LoginPresenter @Inject constructor() : Presenter {
+class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDoneListener {
 
     @Inject
     lateinit var loginView: LoginView
 
     @Inject
-    lateinit var auth: FirebaseAuth
-
-    @Inject
     lateinit var context: Context
 
-    fun initWithUser(user: User) {
-        loginView.getAnotherBikeApp().initMainComponentWithUser(user)
+    @Inject
+    lateinit var loginInteractor: FirebaseAuthInteractor
+
+    fun onClickSignIn(email: String, password: String) {
+
+        if (!loginView.isOnline()) {
+
+            loginView.makeToast(R.string.noInternetConnection)
+
+        } else if (email.isBlank() || password.isBlank()) {
+
+            loginView.makeToast(R.string.passwordOrEmailBlank)
+
+        } else {
+
+            loginView.isUiEnable = false
+            loginView.isSignInProgressBarVisible = true
+            loginView.isSignInButtonTextVisible = false
+            loginInteractor.login(email, password, this)
+        }
+    }
+
+    private fun onAnyError() {
+        loginView.isUiEnable = true
+        loginView.isSignInProgressBarVisible = false
+        loginView.isSignInButtonTextVisible = true
+    }
+
+    override fun onSuccess() {
         loginView.startMainActivity()
         loginView.finishActivity()
     }
 
-    fun onClickUseWithoutAccount() {
-
+    override fun onUndefinedError() {
+        onAnyError()
+        loginView.makeToast(R.string.somethingGoesWrong)
     }
 
-    fun onClickSignIn(email: String, password: String) {
-
-        loginView.getAnotherBikeApp()
-                .coreComponent
-                .providesFirebaseAuth()
-                .signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-
-                    initWithUser(User(it.user, context))
-
-                }.addOnFailureListener {
-
-                    fetchException(it)
-                    Timber.d(it)
-                }
-
-    }
-
-    fun fetchException(exception: Exception) {
-
-        when (exception) {
-        }
-
+    override fun onCredentialsError() {
+        onAnyError()
+        loginView.makeToast(R.string.wrongCredentials)
     }
 }

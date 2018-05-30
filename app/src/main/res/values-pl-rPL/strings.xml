@@ -48,4 +48,8 @@
     <string name="user">Użytkownik</string>
     <string name="logout">Wyloguj</string>
     <string name="settings">Ustawienia</string>
+    <string name="noInternetConnection">Brak połączenia z internetem!</string>
+    <string name="somethingGoesWrong">Coś poszło nie tak…</string>
+    <string name="passwordOrEmailBlank">Musisz podać email i hasło!</string>
+    <string name="wrongCredentials">Email lub hasło są niepoprawne!</string>
 </resources>

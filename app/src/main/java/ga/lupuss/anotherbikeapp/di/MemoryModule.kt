@@ -11,10 +11,10 @@ import ga.lupuss.anotherbikeapp.models.memory.FilesManager
 class MemoryModule {
 
     @Provides
-    @CoreScope
+    @AnotherBikeAppScope
     fun getFilesManager(gson: Gson) = FilesManager(gson)
 
     @Provides
-    @CoreScope
+    @AnotherBikeAppScope
     fun fileObserverFactory(): FileObserverFactory = FileObserverFactory()
 }

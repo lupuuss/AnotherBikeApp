@@ -10,19 +10,19 @@ import ga.lupuss.anotherbikeapp.Prefs
 class CoreModule {
 
     @Provides
-    @CoreScope
+    @AnotherBikeAppScope
     fun locale(context: Context) =
             ConfigurationCompat.getLocales(context.resources.configuration)[0]!!
 
 
     @Provides
-    @CoreScope
+    @AnotherBikeAppScope
     fun sharedPreferences(context: Context) =
             context.getSharedPreferences(Prefs.APP_PREFS, Context.MODE_PRIVATE)
 
 
     val timeProvider: () -> Long = System::currentTimeMillis
         @Provides
-        @CoreScope
+        @AnotherBikeAppScope
         get
 }

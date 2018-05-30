@@ -4,11 +4,12 @@ import android.content.Context
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import javax.inject.Inject
 
-class SummaryPresenter @Inject constructor(private val routesManager: RoutesManager) : Presenter {
+class SummaryPresenter @Inject constructor(routesManager: FirebaseRoutesManager) : Presenter {
 
     @Inject
     lateinit var context: Context
@@ -18,11 +19,13 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
 
     private lateinit var routeData: ExtendedRouteData
 
+    private val routesManager: RoutesManager = routesManager
+
     fun viewReady() {
 
-        routesManager.routeKeeper.getRoute() ?: throw IllegalStateException("no route to show")
+        routesManager.getTempRoute() ?: throw IllegalStateException("no route to show")
 
-        routeData = routesManager.routeKeeper.getRoute()!!
+        routeData = routesManager.getTempRoute()!!
 
         summaryView.showRouteLine(routeData.points)
         summaryView.showStatistics(routeData.getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM))
@@ -55,7 +58,7 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
 
         if (isFinishing) {
 
-            routesManager.routeKeeper.clear()
+            routesManager.clearTempRoute()
         }
     }
 }

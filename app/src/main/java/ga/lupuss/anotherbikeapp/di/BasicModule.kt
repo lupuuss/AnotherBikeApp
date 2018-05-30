@@ -10,11 +10,11 @@ class BasicModule(context: Context) {
 
     val context = context
         @Provides
-        @CoreScope
+        @AnotherBikeAppScope
         get
 
     val gson: Gson
         @Provides
-        @CoreScope
+        @AnotherBikeAppScope
         get() = Gson()
 }

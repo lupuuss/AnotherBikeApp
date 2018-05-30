@@ -6,7 +6,6 @@ import android.os.Handler
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
-import ga.lupuss.anotherbikeapp.models.User
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 
@@ -18,28 +17,18 @@ class StartActivity : BaseActivity() {
 
         Handler().postDelayed({
 
-            val intent: Intent =
+            val user = AnotherBikeApp.get(this.application)
+                    .mainComponent.providesFirebaseAuth().currentUser
 
-                    if (AnotherBikeApp.get(this.application).mainComponent != null) {
+            val intent: Intent = if (user != null) {
+                MainActivity.newIntent(this)
 
-                        MainActivity.newIntent(this)
-
-                    } else {
-
-                        val user = AnotherBikeApp.get(this.application)
-                                .coreComponent.providesFirebaseAuth().currentUser
-
-                        if (user != null) {
-                            AnotherBikeApp.get(this.application)
-                                    .initMainComponentWithUser(User(user, this))
-                            MainActivity.newIntent(this)
-
-                        } else {
-                            LoginActivity.newIntent(this)
-                        }
-                    }
+            } else {
+                LoginActivity.newIntent(this)
+            }
             finish()
             startActivity(intent)
+
         }, 1000)
     }
 }

@@ -66,6 +66,13 @@
     <string name="create_new_account">Create new account</string>
     <string name="user">User</string>
 
+    <!-- Errors -->
+
+    <string name="noInternetConnection">No internet connection!</string>
+    <string name="somethingGoesWrong">Something goes wrong…</string>
+    <string name="passwordOrEmailBlank">You have to provide an email and password!</string>
+    <string name="wrongCredentials">Email or password is incorrect!</string>
+
     <!-- Drawer list items -->
 
     <string name="logout">Logout</string>

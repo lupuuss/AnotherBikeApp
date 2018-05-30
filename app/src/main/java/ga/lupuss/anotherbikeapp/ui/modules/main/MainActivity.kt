@@ -27,7 +27,6 @@ import timber.log.Timber
 import javax.inject.Inject
 import android.support.v4.widget.NestedScrollView
 import android.widget.TextView
-import ga.lupuss.anotherbikeapp.models.User
 import ga.lupuss.anotherbikeapp.ui.adapters.IconStringListViewAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_ui.*
@@ -37,9 +36,6 @@ import kotlinx.android.synthetic.main.activity_main_ui.*
  * Main user's interface.
  */
 class MainActivity : BaseActivity(), MainView {
-
-    @Inject
-    lateinit var user: User
 
     @Inject
     lateinit var mainPresenter: MainPresenter
@@ -64,7 +60,7 @@ class MainActivity : BaseActivity(), MainView {
         setContentView(R.layout.activity_main)
 
         DaggerMainComponent.builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent!!)
+                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).mainComponent)
                 .mainModule(MainModule(this))
                 .build()
                 .inject(this)
@@ -80,8 +76,8 @@ class MainActivity : BaseActivity(), MainView {
                         false
                 ).apply {
 
-                    this.findViewById<TextView>(R.id.userName).text = user.name
-                    this.findViewById<TextView>(R.id.userEmail).text = user.firebaseUser.email
+                    this.findViewById<TextView>(R.id.userName).text = "Użytkownik"
+                    this.findViewById<TextView>(R.id.userEmail).text = "abcd.xyz@gmail.com"
                 }
         )
 
