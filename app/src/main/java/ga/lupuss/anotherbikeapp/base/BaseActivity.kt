@@ -10,7 +10,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import android.net.ConnectivityManager
 import ga.lupuss.anotherbikeapp.Message
-import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
+import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     private lateinit var toast: Toast
 
     @Inject
-    lateinit var messageResolver: AndroidStringsResolver
+    lateinit var messageResolver: StringsResolver
 
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {

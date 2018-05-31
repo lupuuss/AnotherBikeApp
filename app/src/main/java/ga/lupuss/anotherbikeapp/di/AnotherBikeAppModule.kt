@@ -7,6 +7,8 @@ import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.routes.TempRouteKeeper
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import java.util.*
 
 @Module()
@@ -17,12 +19,12 @@ class AnotherBikeAppModule {
     fun providesRoutesManager(firebaseAuth: FirebaseAuth,
                               routesKeeper: TempRouteKeeper,
                               firebaseFirestore: FirebaseFirestore,
-                              locale: Locale): FirebaseRoutesManager =
+                              locale: Locale): RoutesManager =
             FirebaseRoutesManager(firebaseAuth, firebaseFirestore, routesKeeper, locale)
 
     @Provides
     @AnotherBikeAppScope
-    fun providesFirebaseLoginInteractor(firebaseAuth: FirebaseAuth) = FirebaseAuthInteractor(firebaseAuth)
+    fun providesAuthInteractor(firebaseAuth: FirebaseAuth): AuthInteractor = FirebaseAuthInteractor(firebaseAuth)
 
 
 }

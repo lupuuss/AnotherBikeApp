@@ -6,6 +6,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import dagger.Component
 import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
+import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
+import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
 import java.util.*
 import javax.inject.Scope
@@ -13,7 +16,7 @@ import javax.inject.Scope
 @Scope
 annotation class AnotherBikeAppScope
 
-@Component(modules = [AnotherBikeAppModule::class, AndroidModule::class, MemoryModule::class, FirebaseModule::class])
+@Component(modules = [AnotherBikeAppModule::class, AndroidModule::class, FirebaseModule::class])
 @AnotherBikeAppScope
 interface AnotherBikeAppComponent {
 
@@ -22,9 +25,8 @@ interface AnotherBikeAppComponent {
     fun providesLocale(): Locale
     fun providesTimeProvider(): () -> Long
 
-    fun providesSharedPreferences(): SharedPreferences
-
     fun providesFirebaseAuth(): FirebaseAuth
-    fun providesRoutesManager(): FirebaseRoutesManager
-    fun providesAndroidStringResolver(): AndroidStringsResolver
+    fun providesRoutesManager(): RoutesManager
+    fun providesStringResolver(): StringsResolver
+    fun providesAuthInteractor(): AuthInteractor
 }

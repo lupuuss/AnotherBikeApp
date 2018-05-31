@@ -20,14 +20,11 @@ import javax.inject.Inject
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
-class MainPresenter @Inject constructor(routesManager: FirebaseRoutesManager,
+class MainPresenter @Inject constructor(private val routesManager: RoutesManager,
                                         private val gson: Gson,
-                                        authInteractor: FirebaseAuthInteractor) : Presenter, OnDocumentChanged {
+                                        private val authInteractor: AuthInteractor) : Presenter, OnDocumentChanged {
 
     class State(val isServiceActive: Boolean)
-
-    private val authInteractor: AuthInteractor = authInteractor
-    private val routesManager: RoutesManager = routesManager
 
     @Inject
     lateinit var mainView: MainView

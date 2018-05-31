@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.Prefs
 import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
+import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 
 @Module(includes = [BasicModule::class])
 class AndroidModule(context: Context) {
@@ -28,5 +29,5 @@ class AndroidModule(context: Context) {
 
     @Provides
     @AnotherBikeAppScope
-    fun androidStringResolver(context: Context) = AndroidStringsResolver(context)
+    fun androidStringResolver(context: Context): StringsResolver = AndroidStringsResolver(context)
 }

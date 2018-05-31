@@ -5,9 +5,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
 import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import timber.log.Timber
-import javax.inject.Inject
 
-class FirebaseAuthInteractor @Inject constructor(private val firebaseAuth: FirebaseAuth) : AuthInteractor {
+class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInteractor {
 
     override fun login(email: String, password: String, onLoginDone: AuthInteractor.OnLoginDoneListener?) {
 

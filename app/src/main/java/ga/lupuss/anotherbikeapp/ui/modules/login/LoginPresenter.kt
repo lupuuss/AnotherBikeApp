@@ -6,12 +6,9 @@ import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import javax.inject.Inject
 
-class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDoneListener {
+class LoginPresenter @Inject constructor(private val loginInteractor: AuthInteractor) : Presenter, AuthInteractor.OnLoginDoneListener {
     @Inject
     lateinit var loginView: LoginView
-
-    @Inject
-    lateinit var loginInteractor: FirebaseAuthInteractor
 
     fun onClickSignIn(email: String, password: String) {
 

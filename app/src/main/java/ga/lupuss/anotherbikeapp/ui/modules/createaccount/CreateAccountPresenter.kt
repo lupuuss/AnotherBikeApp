@@ -8,12 +8,10 @@ import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import javax.inject.Inject
 
-class CreateAccountPresenter @Inject constructor(firebaseAuthInteractor: FirebaseAuthInteractor,
-                                                 messageResolver: AndroidStringsResolver)
+class CreateAccountPresenter @Inject constructor(private val stringsResolver: StringsResolver,
+                                                 private val authInteractor: AuthInteractor)
     : Presenter, AuthInteractor.OnAccountCreateDoneListener {
 
-    private val authInteractor: AuthInteractor = firebaseAuthInteractor
-    private val stringsResolver: StringsResolver = messageResolver
 
     @Inject
     lateinit var createAccountView: CreateAccountView
