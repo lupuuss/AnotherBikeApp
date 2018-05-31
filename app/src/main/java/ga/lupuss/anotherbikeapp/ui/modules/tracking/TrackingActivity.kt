@@ -72,17 +72,18 @@ class TrackingActivity : BaseActivity(),
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tracking)
-        activateToolbar(toolbarMain)
-        setResult(Result.NOT_DONE)
-
+        //Dagger MUST be first
         DaggerTrackingComponent
                 .builder()
                 .anotherBikeAppComponent((this.application as AnotherBikeApp).anotherBikeAppComponent)
                 .trackingModule(TrackingModule(this, getIBinderFromIntent()))
                 .build()
                 .inject(this)
+        
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_tracking)
+        activateToolbar(toolbarMain)
+        setResult(Result.NOT_DONE)
 
         unfreezeInstanceState(savedInstanceState)
 

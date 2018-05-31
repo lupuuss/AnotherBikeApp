@@ -7,9 +7,11 @@ import com.google.gson.Gson
 import dagger.Component
 import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
 import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
+import ga.lupuss.anotherbikeapp.ui.StartActivity
 import java.util.*
 import javax.inject.Scope
 
@@ -28,4 +30,5 @@ interface AnotherBikeAppComponent {
     fun providesRoutesManager(): RoutesManager
     fun providesStringResolver(): StringsResolver
     fun providesAuthInteractor(): AuthInteractor
+    fun providesPreferencesInteractor(): PreferencesInteractor
 }

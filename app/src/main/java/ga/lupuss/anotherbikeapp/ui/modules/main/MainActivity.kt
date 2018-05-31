@@ -72,14 +72,15 @@ class MainActivity : BaseActivity(), MainView {
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        // Dagger MUST be first
         DaggerMainComponent.builder()
                 .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
                 .mainModule(MainModule(this))
                 .build()
                 .inject(this)
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         savedInstanceState?.let {
             mainPresenter.initWithStateJson(it.getString(MAIN_PRESENTER_STATE_KEY))

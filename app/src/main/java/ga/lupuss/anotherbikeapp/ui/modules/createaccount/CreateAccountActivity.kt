@@ -57,9 +57,7 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_account)
-
+        // Dagger MUST be first
         DaggerCreateAccountComponent
                 .builder()
                 .createAccountModule(CreateAccountModule(this))
@@ -69,6 +67,8 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
                 .build()
                 .inject(this)
 
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_create_account)
         savedInstanceState?.let {
             isUiEnable = it[IS_UI_ENABLE_KEY] as Boolean
             isCreateAccountButtonTextVisible = it[IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE] as Boolean

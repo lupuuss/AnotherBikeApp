@@ -71,14 +71,16 @@ class LoginActivity : BaseActivity(), LoginView {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        // Dagger MUST be first
         DaggerLoginComponent
                 .builder()
                 .loginModule(LoginModule(this))
                 .anotherBikeAppComponent(getAnotherBikeApp().anotherBikeAppComponent)
                 .build()
                 .inject(this)
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
 
         savedInstanceState?.let {
             isUiEnable = it[IS_UI_ENABLE_KEY] as Boolean

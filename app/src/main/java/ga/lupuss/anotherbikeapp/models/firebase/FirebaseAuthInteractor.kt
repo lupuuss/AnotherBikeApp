@@ -61,4 +61,6 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
 
         firebaseAuth.signOut()
     }
+
+    override fun isUserLogged(): Boolean = firebaseAuth.currentUser != null
 }

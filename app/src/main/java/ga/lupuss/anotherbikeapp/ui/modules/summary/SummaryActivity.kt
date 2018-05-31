@@ -29,16 +29,18 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_summary)
-        activateToolbar(toolbarSummary)
 
+        // Dagger MUST be first
         DaggerSummaryComponent
                 .builder()
                 .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
                 .summaryModule(SummaryModule(this))
                 .build()
                 .inject(this)
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_summary)
+        activateToolbar(toolbarSummary)
 
         (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(this)
     }
