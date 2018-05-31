@@ -9,7 +9,6 @@ import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statist
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
 import ga.lupuss.anotherbikeapp.timeToFormattedString
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 

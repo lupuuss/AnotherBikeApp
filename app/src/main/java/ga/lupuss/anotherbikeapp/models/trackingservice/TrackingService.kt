@@ -10,7 +10,6 @@ import android.support.v4.content.PermissionChecker
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
-import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import timber.log.Timber
