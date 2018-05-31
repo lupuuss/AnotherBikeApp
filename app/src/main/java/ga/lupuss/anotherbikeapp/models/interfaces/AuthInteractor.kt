@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models
+package ga.lupuss.anotherbikeapp.models.interfaces
 
 interface AuthInteractor {
 

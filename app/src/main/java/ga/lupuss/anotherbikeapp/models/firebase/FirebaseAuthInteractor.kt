@@ -3,7 +3,7 @@ package ga.lupuss.anotherbikeapp.models.firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
-import ga.lupuss.anotherbikeapp.models.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import timber.log.Timber
 import javax.inject.Inject
 

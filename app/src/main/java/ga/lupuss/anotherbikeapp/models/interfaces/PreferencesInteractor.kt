@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models
+package ga.lupuss.anotherbikeapp.models.interfaces
 
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic

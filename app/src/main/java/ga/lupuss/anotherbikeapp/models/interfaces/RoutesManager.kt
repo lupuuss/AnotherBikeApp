@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.routes
+package ga.lupuss.anotherbikeapp.models.interfaces
 
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
