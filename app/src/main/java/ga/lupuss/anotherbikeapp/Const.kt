@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp
 
+const val APP_PREFS = "app_prefs"
+
 enum class Message {
     ACCOUNT_CREATED,
     USER_EXISTS,
