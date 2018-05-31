@@ -94,8 +94,8 @@ class MainPresenter @Inject constructor(private val context: Context,
 
     }
 
-    fun onClickLogout() {
-        authInteractor.logout()
+    fun onClickSignOut() {
+        authInteractor.signOut()
         mainView.startLoginActivity()
         mainView.finishActivity()
     }

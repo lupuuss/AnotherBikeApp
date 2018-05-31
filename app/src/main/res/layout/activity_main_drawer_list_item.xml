@@ -5,11 +5,11 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/itemText"
-        android:text="@string/logout"
+        android:text="@string/sign_out"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_logout_24dp"
+        android:drawableStart="@drawable/ic_sign_out_24dp"
         android:drawablePadding="14dp"
         android:textSize="19sp"/>
 </LinearLayout>

@@ -77,7 +77,7 @@
 
     <!-- Drawer list items -->
 
-    <string name="logout">Logout</string>
+    <string name="sign_out">Sign out</string>
     <string name="settings">Settings</string>
 
 </resources>

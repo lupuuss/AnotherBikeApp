@@ -55,7 +55,7 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     enum class ItemName {
-        LOGOUT, SETTINGS
+        SIGN_OUT, SETTINGS
     }
 
     class StrIconRes(
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity(), MainView {
     )
 
     private val drawerListViewChildren = listOf(
-            Pair(ItemName.LOGOUT, StrIconRes(R.string.logout, R.drawable.ic_logout_24dp)),
+            Pair(ItemName.SIGN_OUT, StrIconRes(R.string.sign_out, R.drawable.ic_sign_out_24dp)),
             Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
     )
 
@@ -94,7 +94,7 @@ class MainActivity : BaseActivity(), MainView {
             @Suppress("UNCHECKED_CAST")
             when ((adapterView.adapter.getItem(i) as Pair<ItemName, StrIconRes>).first) {
 
-                MainActivity.ItemName.LOGOUT -> mainPresenter.onClickLogout()
+                MainActivity.ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
                 MainActivity.ItemName.SETTINGS -> mainPresenter.onClickSettings()
             }
         }

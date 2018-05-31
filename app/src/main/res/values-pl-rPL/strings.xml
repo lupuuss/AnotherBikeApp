@@ -46,7 +46,7 @@
     <string name="password">Hasło</string>
     <string name="create_new_account">Stwórz nowe konto</string>
     <string name="user">Użytkownik</string>
-    <string name="logout">Wyloguj</string>
+    <string name="sign_out">Wyloguj</string>
     <string name="settings">Ustawienia</string>
     <string name="noInternetConnection">Brak połączenia z internetem!</string>
     <string name="somethingGoesWrong">Coś poszło nie tak…</string>

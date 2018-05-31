@@ -58,7 +58,7 @@ class FirebaseAuthInteractor @Inject constructor(private val firebaseAuth: Fireb
                 ?: onDisplayNameSetDone?.onUndefinedError()
     }
 
-    override fun logout() {
+    override fun signOut() {
 
         firebaseAuth.signOut()
     }

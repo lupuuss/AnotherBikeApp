@@ -9,9 +9,12 @@ interface AuthInteractor {
 
     interface OnLoginDoneListener : OnAuthTaskDoneListener {
         fun onIncorrectCredentialsError()
+        fun onUserNotExists()
     }
 
-    interface OnAccountCreateDoneListener : OnAuthTaskDoneListener
+    interface OnAccountCreateDoneListener : OnAuthTaskDoneListener {
+        fun onUserExist()
+    }
 
     interface OnDisplayNameSetDoneListener : OnAuthTaskDoneListener
 
@@ -28,5 +31,5 @@ interface AuthInteractor {
 
     fun setDisplayName(displayName: String, onDisplayNameSetDone: OnDisplayNameSetDoneListener?)
 
-    fun logout()
+    fun signOut()
 }
