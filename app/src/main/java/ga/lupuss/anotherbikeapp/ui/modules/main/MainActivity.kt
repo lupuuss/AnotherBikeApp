@@ -26,6 +26,7 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 import javax.inject.Inject
 import android.support.v4.widget.NestedScrollView
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
@@ -82,10 +83,20 @@ class MainActivity : BaseActivity(), MainView {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        activateToolbar(toolbarMain)
 
         savedInstanceState?.let {
             mainPresenter.initWithStateJson(it.getString(MAIN_PRESENTER_STATE_KEY))
         }
+
+        drawerLayout.addDrawerListener(
+
+                ActionBarDrawerToggle(
+                        this,
+                        drawerLayout, R.string.open,
+                        R.string.close
+                ).apply { syncState() }
+        )
 
 
         drawerListView.adapter = DrawerListViewAdapter(
@@ -97,8 +108,8 @@ class MainActivity : BaseActivity(), MainView {
             @Suppress("UNCHECKED_CAST")
             when ((adapterView.adapter.getItem(i) as Pair<ItemName, StrIconRes>).first) {
 
-                MainActivity.ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
-                MainActivity.ItemName.SETTINGS -> mainPresenter.onClickSettings()
+                ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
+                ItemName.SETTINGS -> mainPresenter.onClickSettings()
             }
         }
 

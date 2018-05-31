@@ -63,4 +63,6 @@
     <string name="prefThemesSummary">Zmień motyw</string>
     <string name="themeGrey">Szary</string>
     <string name="themeOrange">Pomarańczowy</string>
+    <string name="open">Otwórz</string>
+    <string name="close">Zamknij</string>
 </resources>

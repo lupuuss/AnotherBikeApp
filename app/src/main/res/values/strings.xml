@@ -87,5 +87,7 @@
     <string name="prefThemesSummary">Change theme</string>
     <string name="themeGrey">Grey</string>
     <string name="themeOrange">Orange</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
 </resources>
