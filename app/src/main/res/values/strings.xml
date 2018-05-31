@@ -74,6 +74,7 @@
     <string name="wrongCredentials">Email or password is incorrect!</string>>
     <string name="accountCreated">Account has been created. Sign in!</string>
     <string name="fillAllFileds">Fill all fields!</string>
+    <string name="user_exists">User with that email already exists!</string>
 
     <!-- Drawer list items -->
 

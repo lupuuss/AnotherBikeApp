@@ -56,4 +56,5 @@
     <string name="new_account">Nowe konto</string>
     <string name="accountCreated">Konto zostało utworzone. Zaloguj się!</string>
     <string name="fillAllFileds">Wypełij wszystkie pola!</string>
+    <string name="user_exists">Użytkownik z podanym adresem email istnieje!</string>
 </resources>

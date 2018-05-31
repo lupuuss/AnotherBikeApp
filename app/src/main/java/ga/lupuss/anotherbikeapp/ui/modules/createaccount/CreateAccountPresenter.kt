@@ -49,6 +49,11 @@ class CreateAccountPresenter @Inject constructor(firebaseAuthInteractor: Firebas
         createAccountView.finishActivity()
     }
 
+    override fun onUserExist() {
+        onAnyError()
+        createAccountView.makeToast(R.string.user_exists)
+    }
+
     override fun onUndefinedError() {
         onAnyError()
         createAccountView.makeToast(R.string.somethingGoesWrong)
