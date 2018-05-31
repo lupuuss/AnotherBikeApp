@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.models.interfaces
 
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import timber.log.Timber
 
 abstract class PreferencesInteractor {
 
@@ -24,11 +25,13 @@ abstract class PreferencesInteractor {
                                   onThemeChangedListener: PreferencesInteractor.OnThemeChangedListener) {
 
         themeListeners[owner] = onThemeChangedListener
+        Timber.d("New theme listener: $owner")
     }
 
     fun removeOnThemeChangedListener(owner: Any) {
 
-        themeListeners.remove(owner)
+        Timber.d("Remove theme listener: $owner!")
+        themeListeners.remove(owner) ?: Timber.w("Removing listener failed!")
     }
 
     fun addOnUnitChangedListener(owner: Any,

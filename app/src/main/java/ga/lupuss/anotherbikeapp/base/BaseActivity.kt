@@ -36,7 +36,12 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
         preferencesInteractor.addOnThemeChangedListener(this, this)
     }
 
-    fun setTheme(theme: AppTheme) {
+    override fun onDestroy() {
+        super.onDestroy()
+        preferencesInteractor.removeOnThemeChangedListener(this)
+    }
+
+    private fun setTheme(theme: AppTheme) {
 
         setTheme(when (theme) {
             AppTheme.GREY -> R.style.GreyTheme
@@ -44,7 +49,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
         })
     }
 
-    fun applyTheme(theme: AppTheme) {
+    private fun applyTheme(theme: AppTheme) {
         setTheme(theme)
         recreate()
     }
