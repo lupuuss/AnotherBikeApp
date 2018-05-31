@@ -76,6 +76,16 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.let {
+            it.putBoolean(IS_UI_ENABLE_KEY, isUiEnable)
+            it.putBoolean(IS_CREATE_ACCOUNT_PROGRESSBAR_VISIBLE, isCreateAccountProgressBarVisible)
+            it.putBoolean(IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE, isCreateAccountButtonTextVisible)
+        }
+    }
+
     fun onClickCreateNewAccount(@Suppress("UNUSED_PARAMETER") view: View) {
 
         createAccountPresenter.onClickCreateNewAccount(
