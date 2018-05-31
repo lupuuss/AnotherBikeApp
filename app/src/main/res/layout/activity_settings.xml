@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.modules.settings.SettingsActivity"
+    android:background="?android:colorPrimaryDark">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarSettings"
+        android:layout_width="0dp"
+        android:layout_height="?android:actionBarSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="?android:colorPrimary"/>
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarSettings"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <fragment
+            android:id="@+id/settingsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsFragment"/>
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

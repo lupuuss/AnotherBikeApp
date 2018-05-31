@@ -30,6 +30,7 @@ import android.support.v7.app.AlertDialog
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
+import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_ui.*
 
@@ -206,6 +207,11 @@ class MainActivity : BaseActivity(), MainView {
     override fun startLoginActivity() {
 
         startActivity(LoginActivity.newIntent(this))
+    }
+
+    override fun startSettingsActivity() {
+
+        startActivity(SettingsActivity.newIntent(this))
     }
 
     override fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {

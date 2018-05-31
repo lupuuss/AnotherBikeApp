@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.di
 
+import android.content.Context
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,7 +32,7 @@ class AnotherBikeAppModule {
 
     @Provides
     @AnotherBikeAppScope
-    fun providesPreferencesInteractor(sharedPreferences: SharedPreferences): PreferencesInteractor =
-            AndroidPreferencesInteractor(sharedPreferences)
+    fun providesPreferencesInteractor(sharedPreferences: SharedPreferences, context: Context): PreferencesInteractor =
+            AndroidPreferencesInteractor(sharedPreferences, context)
 
 }

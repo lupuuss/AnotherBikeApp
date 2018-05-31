@@ -59,4 +59,8 @@
     <string name="userExists">Użytkownik z podanym adresem email istnieje!</string>
     <string name="dataLostWarning">Trwa śledzenie. Jeśli zamkniesz aplikację, dane zostaną utracone. Czy na pewno chcesz wyjść?</string>
     <string name="exit">Wyjdź</string>
+    <string name="prefThemesTitle">Motyw</string>
+    <string name="prefThemesSummary">Zmień motyw</string>
+    <string name="themeGrey">Szary</string>
+    <string name="themeOrange">Pomarańczowy</string>
 </resources>

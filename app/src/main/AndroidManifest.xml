@@ -43,8 +43,11 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.modules.createaccount.CreateAccountActivity"
-            android:label="@string/create_new_account"/>
+        <activity
+            android:name=".ui.modules.createaccount.CreateAccountActivity"
+            android:label="@string/create_new_account" />
+        <activity android:name=".ui.modules.settings.SettingsActivity"
+            android:label="@string/settings"/>
     </application>
 
 </manifest>

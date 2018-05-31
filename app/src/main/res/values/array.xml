@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="themes">
+        <item>@string/themeGrey</item>
+        <item>@string/themeOrange</item>
+    </string-array>
+
+    <!-- MUST fit AppTheme enum -->
+    <string-array name="themeKeys">
+        <item>GREY</item>
+        <item>ORANGE</item>
+    </string-array>
+</resources>

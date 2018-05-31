@@ -27,4 +27,5 @@ interface MainView : BaseView {
     fun setDrawerHeaderInfos(displayName: String?, email: String?)
     fun startLoginActivity()
     fun showExitWarningDialog(onYesClick: () -> Unit)
+    fun startSettingsActivity()
 }

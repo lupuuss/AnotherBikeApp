@@ -82,6 +82,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     fun onClickSettings() {
 
+        mainView.startSettingsActivity()
     }
 
     fun onClickSignOut() {

@@ -17,6 +17,7 @@
         <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="googleMapStyleJson">@string/map_style_retro</item>
         <item name="android:windowDisablePreview">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="OrangeDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -27,6 +28,7 @@
         <item name="android:windowIsFloating">true</item>
         <item name="buttonBarNegativeButtonStyle">@style/OrangeNegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/OrangePositiveButtonStyle</item>
+        <item name="android:colorControlActivated">@color/orangeThemePrimaryLightColor</item>
     </style>
 
     <style name="OrangeNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
@@ -53,6 +55,7 @@
         <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="googleMapStyleJson">@string/map_style_basic_theme</item>
         <item name="android:windowDisablePreview">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="GreyDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -63,6 +66,7 @@
         <item name="android:windowIsFloating">true</item>
         <item name="buttonBarNegativeButtonStyle">@style/GreyNegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/GreyPositiveButtonStyle</item>
+        <item name="android:colorControlActivated">@color/greyThemePrimaryLightColor</item>
     </style>
 
     <style name="GreyNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">

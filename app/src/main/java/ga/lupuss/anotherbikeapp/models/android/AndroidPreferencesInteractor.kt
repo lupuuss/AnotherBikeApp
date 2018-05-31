@@ -1,19 +1,27 @@
 package ga.lupuss.anotherbikeapp.models.android
 
+import android.content.Context
 import android.content.SharedPreferences
 import ga.lupuss.anotherbikeapp.AppTheme
+import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import timber.log.Timber
 
-class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferences) : PreferencesInteractor() {
+class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferences,
+                                   context: Context) : PreferencesInteractor() {
+
+    private val themeKey = context.getString(R.string.prefThemesKey)
+    private val speedUnitKey = "speedUnitKey"
+    private val distanceUnitKey = "distanceUnitKey"
 
     private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
 
         when (key) {
 
-            THEME_KEY -> themeListeners.forEach { it.value.onThemeChanged(appTheme) }
-            SPEED_UNIT_KEY -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
-            DISTANCE_UNIT_KEY -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
+            themeKey -> themeListeners.forEach { it.value.onThemeChanged(appTheme) }
+            speedUnitKey -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
+            distanceUnitKey -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
         }
 
     }
@@ -33,27 +41,20 @@ class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferen
             sharedPreferences.getString(key, defaultValue)
 
     override var appTheme: AppTheme
-        get() = AppTheme.valueOf(getPref(THEME_KEY, AppTheme.GREY.toString()))
+        get() = AppTheme.valueOf(getPref(themeKey, AppTheme.GREY.toString()))
         set(value) {
-            putPref(THEME_KEY, value.toString())
+            putPref(themeKey, value.toString())
         }
 
     override var speedUnit: Statistic.Unit
-        get() = Statistic.Unit.valueOf(getPref(SPEED_UNIT_KEY, Statistic.Unit.KM_H.toString()))
+        get() = Statistic.Unit.valueOf(getPref(speedUnitKey, Statistic.Unit.KM_H.toString()))
         set(value) {
-            putPref(SPEED_UNIT_KEY, value.toString())
+            putPref(speedUnitKey, value.toString())
         }
     override var distanceUnit: Statistic.Unit
-        get() = Statistic.Unit.valueOf(getPref(DISTANCE_UNIT_KEY, Statistic.Unit.KM.toString()))
+        get() = Statistic.Unit.valueOf(getPref(distanceUnitKey, Statistic.Unit.KM.toString()))
         set(value) {
 
-            putPref(DISTANCE_UNIT_KEY, value.toString())
+            putPref(distanceUnitKey, value.toString())
         }
-
-    companion object {
-
-        const val THEME_KEY = "themeKey"
-        const val SPEED_UNIT_KEY = "speedUnitKey"
-        const val DISTANCE_UNIT_KEY = "distanceUnitKey"
-    }
 }
