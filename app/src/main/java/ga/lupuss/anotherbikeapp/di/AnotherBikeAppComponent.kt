@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import dagger.Component
+import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
 import java.util.*
 import javax.inject.Scope
@@ -25,4 +26,5 @@ interface AnotherBikeAppComponent {
 
     fun providesFirebaseAuth(): FirebaseAuth
     fun providesRoutesManager(): FirebaseRoutesManager
+    fun providesAndroidStringResolver(): AndroidStringsResolver
 }

@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.*
 import com.tinsuke.icekick.extension.freezeInstanceState
 import com.tinsuke.icekick.extension.serialState
 import com.tinsuke.icekick.extension.unfreezeInstanceState
+import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
@@ -76,10 +77,12 @@ class TrackingActivity : BaseActivity(),
         activateToolbar(toolbarMain)
         setResult(Result.NOT_DONE)
 
-        DaggerTrackingComponent.builder().trackingModule(
-                TrackingModule(this, getIBinderFromIntent()
-                )
-        ).build().inject(this)
+        DaggerTrackingComponent
+                .builder()
+                .anotherBikeAppComponent((this.application as AnotherBikeApp).anotherBikeAppComponent)
+                .trackingModule(TrackingModule(this, getIBinderFromIntent()))
+                .build()
+                .inject(this)
 
         unfreezeInstanceState(savedInstanceState)
 

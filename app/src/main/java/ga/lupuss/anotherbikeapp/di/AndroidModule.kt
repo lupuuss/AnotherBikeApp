@@ -5,6 +5,7 @@ import android.support.v4.os.ConfigurationCompat
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.Prefs
+import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
 
 @Module(includes = [BasicModule::class])
 class AndroidModule(context: Context) {
@@ -24,4 +25,8 @@ class AndroidModule(context: Context) {
     @AnotherBikeAppScope
     fun sharedPreferences(context: Context) =
             context.getSharedPreferences(Prefs.APP_PREFS, Context.MODE_PRIVATE)
+
+    @Provides
+    @AnotherBikeAppScope
+    fun androidStringResolver(context: Context) = AndroidStringsResolver(context)
 }
