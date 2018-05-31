@@ -1,21 +1,18 @@
 package ga.lupuss.anotherbikeapp.ui.modules.main
 
-import android.Manifest
 import android.content.ComponentName
-import android.content.Context
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.view.View
 import com.google.gson.Gson
-import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
-import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
+import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 
@@ -24,8 +21,7 @@ import javax.inject.Inject
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
-class MainPresenter @Inject constructor(private val context: Context,
-                                        routesManager: FirebaseRoutesManager,
+class MainPresenter @Inject constructor(routesManager: FirebaseRoutesManager,
                                         private val gson: Gson,
                                         authInteractor: FirebaseAuthInteractor) : Presenter, OnDocumentChanged {
 
@@ -75,7 +71,7 @@ class MainPresenter @Inject constructor(private val context: Context,
         when {
             serviceBinder != null -> mainView.startTrackingActivity(serviceBinder) // Tracking activity connected to existing service
 
-            context.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) -> startTracking() // Starting new tracking service and tracking activity
+            mainView.checkLocationPermission() -> startTracking() // Starting new tracking service and tracking activity
 
             else -> mainView.requestLocationPermission {
                 if (it) {
@@ -84,7 +80,7 @@ class MainPresenter @Inject constructor(private val context: Context,
 
                 } else {
 
-                    mainView.makeToast(R.string.message_no_permission_error)
+                    mainView.postMessage(Message.NO_PERMISSION)
                 }
             }
         }

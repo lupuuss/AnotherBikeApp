@@ -1,19 +1,14 @@
 package ga.lupuss.anotherbikeapp.ui.modules.login
 
-import android.content.Context
-import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import javax.inject.Inject
 
 class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDoneListener {
-
     @Inject
     lateinit var loginView: LoginView
-
-    @Inject
-    lateinit var context: Context
 
     @Inject
     lateinit var loginInteractor: FirebaseAuthInteractor
@@ -22,11 +17,11 @@ class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDo
 
         if (email.isBlank() || password.isBlank()) {
 
-            loginView.makeToast(R.string.passwordOrEmailBlank)
+            loginView.postMessage(Message.EMAIL_OR_PASSWORD_BLANK)
 
         } else if (!loginView.isOnline()) {
 
-            loginView.makeToast(R.string.noInternetConnection)
+            loginView.postMessage(Message.NO_INTERNET_CONNECTION)
 
         } else {
 
@@ -53,13 +48,18 @@ class LoginPresenter @Inject constructor() : Presenter, AuthInteractor.OnLoginDo
         loginView.finishActivity()
     }
 
-    override fun onUndefinedError() {
-        onAnyError()
-        loginView.makeToast(R.string.somethingGoesWrong)
+    override fun onUserNotExists() {
+
     }
+
 
     override fun onIncorrectCredentialsError() {
         onAnyError()
-        loginView.makeToast(R.string.wrongCredentials)
+        loginView.postMessage(Message.INCORRECT_CREDENTIALS)
+    }
+
+    override fun onUndefinedError() {
+        onAnyError()
+        loginView.postMessage(Message.SOMETHING_GOES_WRONG)
     }
 }

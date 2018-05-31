@@ -1,18 +1,17 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
-import android.content.Context
-import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
-import ga.lupuss.anotherbikeapp.models.routes.RoutesManager
+import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
+import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import javax.inject.Inject
 
-class SummaryPresenter @Inject constructor(routesManager: FirebaseRoutesManager) : Presenter {
-
-    @Inject
-    lateinit var context: Context
+class SummaryPresenter @Inject constructor(routesManager: FirebaseRoutesManager,
+                                           stringsResolver: AndroidStringsResolver) : Presenter {
 
     @Inject
     lateinit var summaryView: SummaryView
@@ -20,6 +19,7 @@ class SummaryPresenter @Inject constructor(routesManager: FirebaseRoutesManager)
     private lateinit var routeData: ExtendedRouteData
 
     private val routesManager: RoutesManager = routesManager
+    private val stringsResolver: StringsResolver = stringsResolver
 
     override fun notifyOnViewReady() {
 
@@ -39,7 +39,7 @@ class SummaryPresenter @Inject constructor(routesManager: FirebaseRoutesManager)
 
         val name = summaryView.getRouteNameFromEditText()
 
-        routeData.name = if (name != "") name else context.getString(R.string.default_route_name)
+        routeData.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
 
         routesManager.saveRoute(routeData)
         summaryView.finishActivity()

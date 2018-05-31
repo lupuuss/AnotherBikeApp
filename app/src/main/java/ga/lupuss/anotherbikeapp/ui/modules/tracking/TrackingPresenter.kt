@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import android.view.View
 import com.google.android.gms.maps.model.LatLng
-import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
@@ -102,7 +102,7 @@ class TrackingPresenter @Inject constructor()
 
         if (!available && !serviceBinder.isServiceInProgress()) {
 
-            trackingView.makeToast(R.string.message_location_not_available)
+            trackingView.postMessage(Message.LOCATION_NOT_AVAILABLE)
         }
     }
 

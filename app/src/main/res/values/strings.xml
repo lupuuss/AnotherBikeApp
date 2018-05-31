@@ -24,9 +24,9 @@
     <string name="tracking_in_progress">Tracking in progress…</string>
     <string name="waiting_for_location">Waiting for location…</string>
 
-    <string name="message_no_permission_error">Route tracking is not possible without access to the device\'s location.</string>
+    <string name="noPermission">Route tracking is not possible without access to the device\'s location.</string>
     <string name="message_empty_statistics">Statistics will be displayed here.</string>
-    <string name="message_location_not_available">Location could not be obtained. Try again later.</string>
+    <string name="locationNotAvailable">Location could not be obtained. Try again later.</string>
     <string name="message_finish_tracking">Are you sure you want to finish tracking?</string>
     <string name="finish_tracking">Finish tracking</string>
     <string name="start_tracking">Start tracking</string>
@@ -74,7 +74,7 @@
     <string name="wrongCredentials">Email or password is incorrect!</string>>
     <string name="accountCreated">Account has been created. Sign in!</string>
     <string name="fillAllFileds">Fill all fields!</string>
-    <string name="user_exists">User with that email already exists!</string>
+    <string name="userExists">User with that email already exists!</string>
 
     <!-- Drawer list items -->
 

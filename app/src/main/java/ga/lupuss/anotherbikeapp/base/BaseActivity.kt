@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.base
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -7,18 +8,19 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.Toast
-import ga.lupuss.anotherbikeapp.AnotherBikeApp
-import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
-import android.net.NetworkInfo
-import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
-
+import ga.lupuss.anotherbikeapp.Message
+import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
+import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
+import javax.inject.Inject
 
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     private lateinit var toast: Toast
 
+    @Inject
+    lateinit var messageResolver: AndroidStringsResolver
 
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +49,12 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         toast.show()
     }
 
-    override fun makeToast(stringId: Int) {
-        toast.setText(stringId)
-        toast.show()
+    override fun postMessage(message: Message) {
+
+        makeToast(messageResolver.resolve(message))
     }
+
+    override fun checkLocationPermission(): Boolean = this.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
 
     override fun finishActivity() {
         finish()

@@ -1,6 +1,17 @@
 package ga.lupuss.anotherbikeapp
 
-const val ROUTE_FILE_PREFIX = "route_"
+enum class Message {
+    ACCOUNT_CREATED,
+    USER_EXISTS,
+    SOMETHING_GOES_WRONG,
+    FILL_ALL_FIELDS,
+    NO_INTERNET_CONNECTION,
+    EMAIL_OR_PASSWORD_BLANK,
+    INCORRECT_CREDENTIALS,
+    NO_PERMISSION,
+    LOCATION_NOT_AVAILABLE
+}
 
-const val DEFAULT_PROFILE_NAME = "default"
-const val DEFAULT_PROFILE_ROUTES_PATH = "/default_user/routes"
+enum class Text {
+    DEFAULT_ROUTE_NAME
+}

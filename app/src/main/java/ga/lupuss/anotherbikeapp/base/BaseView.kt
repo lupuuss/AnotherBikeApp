@@ -1,9 +1,12 @@
 package ga.lupuss.anotherbikeapp.base
 
+import ga.lupuss.anotherbikeapp.Message
+
 interface BaseView {
 
-    fun makeToast(stringId: Int)
+    fun postMessage(message: Message)
     fun makeToast(str: String)
     fun isOnline(): Boolean
+    fun checkLocationPermission(): Boolean
     fun finishActivity()
 }

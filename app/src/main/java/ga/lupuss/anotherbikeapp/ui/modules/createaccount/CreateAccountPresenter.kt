@@ -1,15 +1,19 @@
 package ga.lupuss.anotherbikeapp.ui.modules.createaccount
 
-import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
+import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
+import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import javax.inject.Inject
 
-class CreateAccountPresenter @Inject constructor(firebaseAuthInteractor: FirebaseAuthInteractor)
+class CreateAccountPresenter @Inject constructor(firebaseAuthInteractor: FirebaseAuthInteractor,
+                                                 messageResolver: AndroidStringsResolver)
     : Presenter, AuthInteractor.OnAccountCreateDoneListener {
 
     private val authInteractor: AuthInteractor = firebaseAuthInteractor
+    private val stringsResolver: StringsResolver = messageResolver
 
     @Inject
     lateinit var createAccountView: CreateAccountView
@@ -23,11 +27,11 @@ class CreateAccountPresenter @Inject constructor(firebaseAuthInteractor: Firebas
 
         if (email.isBlank() || password.isBlank() || displayName.isBlank()) {
 
-            createAccountView.makeToast(R.string.fillAllFileds)
+            createAccountView.postMessage(Message.FILL_ALL_FIELDS)
 
         } else if (!createAccountView.isOnline()) {
 
-            createAccountView.makeToast(R.string.noInternetConnection)
+            createAccountView.postMessage(Message.NO_INTERNET_CONNECTION)
 
         } else {
 
@@ -45,17 +49,17 @@ class CreateAccountPresenter @Inject constructor(firebaseAuthInteractor: Firebas
     }
 
     override fun onSuccess() {
-        createAccountView.makeToast(R.string.accountCreated)
+        createAccountView.postMessage(Message.ACCOUNT_CREATED)
         createAccountView.finishActivity()
     }
 
     override fun onUserExist() {
         onAnyError()
-        createAccountView.makeToast(R.string.user_exists)
+        createAccountView.postMessage(Message.USER_EXISTS)
     }
 
     override fun onUndefinedError() {
         onAnyError()
-        createAccountView.makeToast(R.string.somethingGoesWrong)
+        createAccountView.postMessage(Message.SOMETHING_GOES_WRONG)
     }
 }
