@@ -66,6 +66,7 @@ class TrackingPresenter @Inject constructor()
     }
 
     fun onClickFinishTracking() {
+
         if (serviceBinder.isServiceInProgress()) {
 
             trackingView.showFinishTrackingDialog {

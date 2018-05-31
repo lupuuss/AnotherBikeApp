@@ -80,5 +80,7 @@
 
     <string name="sign_out">Sign out</string>
     <string name="settings">Settings</string>
+    <string name="dataLostWarning">Tracking is in progess. If you exit app, data is lost. Are you sure you want exit?</string>
+    <string name="exit">Exit</string>
 
 </resources>

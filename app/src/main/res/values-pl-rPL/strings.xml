@@ -57,4 +57,6 @@
     <string name="accountCreated">Konto zostało utworzone. Zaloguj się!</string>
     <string name="fillAllFileds">Wypełij wszystkie pola!</string>
     <string name="userExists">Użytkownik z podanym adresem email istnieje!</string>
+    <string name="dataLostWarning">Trwa śledzenie. Jeśli zamkniesz aplikację, dane zostaną utracone. Czy na pewno chcesz wyjść?</string>
+    <string name="exit">Wyjdź</string>
 </resources>

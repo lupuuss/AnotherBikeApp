@@ -26,4 +26,5 @@ interface MainView : BaseView {
     fun setProgressBarVisibility(visibility: Int)
     fun setDrawerHeaderInfos(displayName: String?, email: String?)
     fun startLoginActivity()
+    fun showExitWarningDialog(onYesClick: () -> Unit)
 }

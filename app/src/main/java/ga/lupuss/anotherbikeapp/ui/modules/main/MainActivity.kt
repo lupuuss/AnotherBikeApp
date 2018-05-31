@@ -26,6 +26,7 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 import javax.inject.Inject
 import android.support.v4.widget.NestedScrollView
+import android.support.v7.app.AlertDialog
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
@@ -133,6 +134,12 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     override fun onBackPressed() {
+
+        mainPresenter.onExitRequest()
+    }
+
+    override fun finishActivity() {
+
         finishFromChild(this.parent)
         finishAndRemoveTask()
     }
@@ -291,6 +298,19 @@ class MainActivity : BaseActivity(), MainView {
                     this.findViewById<TextView>(R.id.userEmail).text = email
                 }
         )
+    }
+
+    override fun showExitWarningDialog(onYesClick: () -> Unit) {
+
+        AlertDialog.Builder(this)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.dataLostWarning)
+                .setPositiveButton(R.string.exit, { _, _ ->
+                    onYesClick.invoke()
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+
     }
 
     class Request {

@@ -17,7 +17,6 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 
 import javax.inject.Inject
-
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
@@ -91,6 +90,16 @@ class MainPresenter @Inject constructor(routesManager: FirebaseRoutesManager,
     }
 
     fun onClickSignOut() {
+
+        if (serviceBinder == null || !serviceBinder!!.isServiceInProgress()) {
+
+            signOut()
+        } else {
+            mainView.showExitWarningDialog({ signOut() })
+        }
+    }
+
+    private fun signOut() {
         authInteractor.signOut()
         mainView.startLoginActivity()
         mainView.finishActivity()
@@ -103,6 +112,18 @@ class MainPresenter @Inject constructor(routesManager: FirebaseRoutesManager,
     fun notifyRecyclerReachedBottom() {
 
         onLoadMoreRequest()
+    }
+
+    fun onExitRequest() {
+
+        if (serviceBinder == null || !serviceBinder!!.isServiceInProgress()) {
+
+            mainView.finishActivity()
+
+        } else {
+
+            mainView.showExitWarningDialog({ mainView.finishActivity() })
+        }
     }
 
     private fun onLoadMoreRequest() {
