@@ -8,9 +8,7 @@ import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
-import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity

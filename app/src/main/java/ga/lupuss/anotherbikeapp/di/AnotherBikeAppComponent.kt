@@ -25,7 +25,6 @@ interface AnotherBikeAppComponent {
     fun providesLocale(): Locale
     fun providesTimeProvider(): () -> Long
 
-    fun providesFirebaseAuth(): FirebaseAuth
     fun providesRoutesManager(): RoutesManager
     fun providesStringResolver(): StringsResolver
     fun providesAuthInteractor(): AuthInteractor
