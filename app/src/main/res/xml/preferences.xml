@@ -7,4 +7,18 @@
         android:entries="@array/themes"
         android:entryValues="@array/themeKeys" />
 
+    <ListPreference
+        android:key="@string/prefUnitSpeedKey"
+        android:title="@string/prefUnitSpeedTitle"
+        android:summary="@string/prefUnitSpeedSummary"
+        android:entries="@array/speedUnits"
+        android:entryValues="@array/speedUnitKeys" />
+
+    <ListPreference
+        android:key="@string/prefUnitDistanceKey"
+        android:title="@string/prefUnitDistanceTitle"
+        android:summary="@string/prefUnitDistanceSummary"
+        android:entries="@array/distanceUnits"
+        android:entryValues="@array/distanceUnitKeys" />
+
 </PreferenceScreen>

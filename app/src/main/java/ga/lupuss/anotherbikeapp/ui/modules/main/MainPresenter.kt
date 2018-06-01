@@ -9,8 +9,10 @@ import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
+import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 
@@ -20,9 +22,14 @@ import javax.inject.Inject
  */
 class MainPresenter @Inject constructor(private val routesManager: RoutesManager,
                                         private val gson: Gson,
-                                        private val authInteractor: AuthInteractor) : Presenter, OnDocumentChanged {
+                                        private val authInteractor: AuthInteractor,
+                                        private val preferencesInteractor: PreferencesInteractor)
+    : Presenter, OnDocumentChanged {
 
     class State(val isServiceActive: Boolean)
+
+    var speedUnit: Statistic.Unit = preferencesInteractor.speedUnit
+    var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
 
     @Inject
     lateinit var mainView: MainView
@@ -148,6 +155,19 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     override fun notifyOnViewReady() {
         super.notifyOnViewReady()
+
+        preferencesInteractor.addOnUnitChangedListener(
+                this,
+                object : PreferencesInteractor.OnUnitChangedListener {
+                    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
+
+                        this@MainPresenter.speedUnit = speedUnit
+                        this@MainPresenter.distanceUnit = distanceUnit
+
+                        mainView.refreshRecyclerAdapter()
+                    }
+
+                })
 
         if (isServiceActive) {
 

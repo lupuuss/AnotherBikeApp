@@ -31,10 +31,10 @@ abstract class Statistic {
      * @param suffix represents unit suffix like m/s for metre per second
      */
     enum class Unit(val suffix: Int, val convertParam: Double) {
-        M_S(R.string.unit_speed_ms, 1.0), // SI unit
-        KM_H(R.string.unit_speed_kmh, 3.6),
-        M(R.string.unit_distance_m, 1.0), // SI unit
-        KM(R.string.unit_distance_km, 0.001)
+        M_S(R.string.unitSpeedMs, 1.0), // SI unit
+        KM_H(R.string.unitSpeedKmh, 3.6),
+        M(R.string.unitDistanceM, 1.0), // SI unit
+        KM(R.string.unitDistanceKm, 0.001)
     }
 
     /** Returns statistic value. Some [Statistic] subclasses may need [context] to return proper value. */

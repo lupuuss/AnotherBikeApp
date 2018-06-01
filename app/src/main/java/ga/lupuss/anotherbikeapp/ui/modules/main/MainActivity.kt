@@ -115,7 +115,9 @@ class MainActivity : BaseActivity(), MainView {
 
         val adapter = RoutesHistoryRecyclerViewAdapter(
                 mainPresenter::onHistoryRecyclerItemRequest,
-                mainPresenter::onHistoryRecyclerItemCountRequest
+                mainPresenter::onHistoryRecyclerItemCountRequest,
+                mainPresenter::speedUnit,
+                mainPresenter::distanceUnit
         )
 
         routesHistoryRecycler.setItemViewCacheSize(3)

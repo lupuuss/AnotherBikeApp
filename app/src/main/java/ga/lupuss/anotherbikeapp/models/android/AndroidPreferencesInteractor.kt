@@ -12,8 +12,8 @@ class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferen
                                    context: Context) : PreferencesInteractor() {
 
     private val themeKey = context.getString(R.string.prefThemesKey)
-    private val speedUnitKey = "speedUnitKey"
-    private val distanceUnitKey = "distanceUnitKey"
+    private val speedUnitKey = context.getString(R.string.prefUnitSpeedKey)
+    private val distanceUnitKey = context.getString(R.string.prefUnitDistanceKey)
 
     private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
 

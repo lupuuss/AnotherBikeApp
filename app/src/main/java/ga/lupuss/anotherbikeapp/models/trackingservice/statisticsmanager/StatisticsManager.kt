@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
+import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.StringStatistic
@@ -17,7 +18,8 @@ import javax.inject.Inject
  */
 class StatisticsManager @Inject constructor(private val locale: Locale,
                                             val timer: Timer,
-                                            private val math: StatisticsMathProvider) {
+                                            private val math: StatisticsMathProvider,
+                                            preferencesInteractor: PreferencesInteractor) {
 
     private val kmh5 = 5 / Statistic.Unit.KM_H.convertParam // 5 km/h in m/s
 
@@ -31,9 +33,10 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     }
 
     /** Minimum speed to record statistics */
-    var minSpeedToCount = kmh5
-    var speedUnit = Statistic.Unit.KM_H
-    var distanceUnit = Statistic.Unit.KM
+    private val minSpeedToCount = kmh5
+
+    var speedUnit = preferencesInteractor.speedUnit
+    var distanceUnit = preferencesInteractor.distanceUnit
 
     var onNewStats: ((stats: Map<Statistic.Name, Statistic>) -> Unit)? = null
 

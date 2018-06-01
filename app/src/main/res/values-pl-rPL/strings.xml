@@ -65,4 +65,8 @@
     <string name="themeOrange">Pomarańczowy</string>
     <string name="open">Otwórz</string>
     <string name="close">Zamknij</string>
+    <string name="prefUnitDistanceTitle">Jednostka odległości</string>
+    <string name="prefUnitDistanceSummary">Zmień jednostkę odleglości</string>
+    <string name="prefUnitSpeedSummary">Zmień jednostkę szybkości</string>
+    <string name="prefUnitSpeedTitle">Jednostka szybkości</string>
 </resources>

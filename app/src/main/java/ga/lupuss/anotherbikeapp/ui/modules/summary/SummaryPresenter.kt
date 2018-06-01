@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
@@ -9,7 +10,8 @@ import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statist
 import javax.inject.Inject
 
 class SummaryPresenter @Inject constructor(private val routesManager: RoutesManager,
-                                           private val stringsResolver: StringsResolver) : Presenter {
+                                           private val stringsResolver: StringsResolver,
+                                           private val preferencesInteractor: PreferencesInteractor) : Presenter {
 
     @Inject
     lateinit var summaryView: SummaryView
@@ -23,7 +25,12 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
         routeData = routesManager.getTempRoute()!!
 
         summaryView.showRouteLine(routeData.points)
-        summaryView.showStatistics(routeData.getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM))
+        summaryView.showStatistics(
+                routeData.getStatisticsMap(
+                        preferencesInteractor.speedUnit,
+                        preferencesInteractor.distanceUnit
+                )
+        )
     }
 
     fun onMapClick() {

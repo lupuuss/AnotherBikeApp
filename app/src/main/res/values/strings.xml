@@ -4,10 +4,10 @@
 
     <!-- units -->
 
-    <string name="unit_distance_m" translatable="false">m</string>
-    <string name="unit_distance_km" translatable="false">km</string>
-    <string name="unit_speed_ms" translatable="false">m/s</string>
-    <string name="unit_speed_kmh" translatable="false">km/h</string>
+    <string name="unitDistanceM" translatable="false">m</string>
+    <string name="unitDistanceKm" translatable="false">km</string>
+    <string name="unitSpeedMs" translatable="false">m/s</string>
+    <string name="unitSpeedKmh" translatable="false">km/h</string>
 
     <!-- Stats names -->
 
@@ -85,9 +85,15 @@
     <string name="prefThemesKey" translatable="false">keyThemes</string>
     <string name="prefThemesTitle">Theme</string>
     <string name="prefThemesSummary">Change theme</string>
+    <string name="prefUnitSpeedKey" translatable="false">unitSpeedKey</string>
+    <string name="prefUnitSpeedTitle">Speed unit</string>
+    <string name="prefUnitSpeedSummary">Change speed unit</string>
+    <string name="prefUnitDistanceKey" translatable="false">unitDistanceKey</string>
+    <string name="prefUnitDistanceTitle">Distance unit</string>
+    <string name="prefUnitDistanceSummary">Change distance unit</string>
+
     <string name="themeGrey">Grey</string>
     <string name="themeOrange">Orange</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-
 </resources>

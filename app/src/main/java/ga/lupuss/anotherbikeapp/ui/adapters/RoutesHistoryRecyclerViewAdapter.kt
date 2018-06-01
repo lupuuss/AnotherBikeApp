@@ -15,7 +15,9 @@ import ga.lupuss.anotherbikeapp.resolveTimeString
 @Suppress("MemberVisibilityCanBePrivate")
 class RoutesHistoryRecyclerViewAdapter(
         private val routesDataCallback: (Int) -> ShortRouteData,
-        private val sizeCallback: () -> Int
+        private val sizeCallback: () -> Int,
+        private val speedUnitCallback: () -> Statistic.Unit,
+        private val distanceUnitCallback: () -> Statistic.Unit
 
 ) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
 
@@ -50,8 +52,8 @@ class RoutesHistoryRecyclerViewAdapter(
 
             val context = constraintLayout.context.applicationContext
 
-            speedTextView.text = UnitStatistic(routeData.avgSpeed, Statistic.Unit.KM_H).getValue(context)
-            distanceTextView.text = UnitStatistic(routeData.distance, Statistic.Unit.KM).getValue(context)
+            speedTextView.text = UnitStatistic(routeData.avgSpeed, speedUnitCallback.invoke()).getValue(context)
+            distanceTextView.text = UnitStatistic(routeData.distance, distanceUnitCallback.invoke()).getValue(context)
             durationTextView.text = TimeStatistic(routeData.duration).getValue(context)
             whenTextView.text = resolveTimeString(context, routeData.startTime)
 

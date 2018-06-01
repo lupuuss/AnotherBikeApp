@@ -10,4 +10,24 @@
         <item>GREY</item>
         <item>ORANGE</item>
     </string-array>
+
+    <string-array name="speedUnits">
+        <item>@string/unitSpeedKmh</item>
+        <item>@string/unitSpeedMs</item>
+    </string-array>
+
+    <string-array name="speedUnitKeys">
+        <item>KM_H</item>
+        <item>M_S</item>
+    </string-array>
+
+    <string-array name="distanceUnits">
+        <item>@string/unitDistanceKm</item>
+        <item>@string/unitDistanceM</item>
+    </string-array>
+
+    <string-array name="distanceUnitKeys">
+        <item>KM</item>
+        <item>M</item>
+    </string-array>
 </resources>
