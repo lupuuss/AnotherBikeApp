@@ -1,17 +1,13 @@
 package ga.lupuss.anotherbikeapp.ui.modules.main
 
-import android.content.ComponentName
-import android.content.ServiceConnection
-import android.os.IBinder
 import android.view.View
-import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
-import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
@@ -21,12 +17,10 @@ import javax.inject.Inject
  * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
  */
 class MainPresenter @Inject constructor(private val routesManager: RoutesManager,
-                                        private val gson: Gson,
                                         private val authInteractor: AuthInteractor,
-                                        private val preferencesInteractor: PreferencesInteractor)
+                                        private val preferencesInteractor: PreferencesInteractor,
+                                        private val trackingServiceGovernor: TrackingServiceGovernor)
     : Presenter, OnDocumentChanged {
-
-    class State(val isServiceActive: Boolean)
 
     var speedUnit: Statistic.Unit = preferencesInteractor.speedUnit
     var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
@@ -34,99 +28,82 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     @Inject
     lateinit var mainView: MainView
 
-    private var isServiceActive: Boolean = false
-        set(value) {
+    override fun notifyOnViewReady() {
+        super.notifyOnViewReady()
 
-            if (::mainView.isInitialized) mainView.setTrackingButtonState(value)
-            field = value
-        }
+        preferencesInteractor.addOnUnitChangedListener(
+                this,
+                object : PreferencesInteractor.OnUnitChangedListener {
+                    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
 
-    private var serviceBinder: TrackingService.ServiceBinder? = null
+                        this@MainPresenter.speedUnit = speedUnit
+                        this@MainPresenter.distanceUnit = distanceUnit
 
-    /** Connection callback to bindService */
-    private val serviceConnection = object : ServiceConnection {
+                        mainView.refreshRecyclerAdapter()
+                    }
 
-        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+                })
 
-            p1 ?: throw IllegalStateException("Service should always return IBinder!")
+        trackingServiceGovernor.addOnServiceActivityChangesListener(
+                this,
+                object : TrackingServiceGovernor.OnServiceActivityChangesListener {
+                    override fun onServiceActivityChanged(state: Boolean) {
+                        mainView.setTrackingButtonState(state)
+                    }
+                })
 
-            Timber.d("Service connected")
-
-            serviceBinder = p1 as TrackingService.ServiceBinder
-
-            if (!isServiceActive) {
-
-                isServiceActive = true
-                mainView.startTrackingActivity(serviceBinder)
-            }
-        }
-
-        override fun onServiceDisconnected(p0: ComponentName?) {
-            isServiceActive = false
-            serviceBinder = null
-        }
+        mainView.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
+        mainView.setNoDataTextVisibility(View.INVISIBLE)
+        routesManager.addRoutesDataChangedListener(this)
+        onLoadMoreRequest()
+        mainView.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
     }
 
-    fun onClickTrackingButton() {
+    override fun notifyOnResult(requestCode: Int, resultCode: Int) {
 
-        when {
-            serviceBinder != null -> mainView.startTrackingActivity(serviceBinder) // Tracking activity connected to existing service
+        if (requestCode == MainActivity.Request.TRACKING_ACTIVITY_REQUEST) {
 
-            mainView.checkLocationPermission() -> startTracking() // Starting new tracking service and tracking activity
+            when (resultCode) {
 
-            else -> mainView.requestLocationPermission {
-                if (it) {
+                TrackingActivity.Result.DONE -> {
 
-                    startTracking()
+                    Timber.d("Service done. Data may be saved")
 
-                } else {
+                    val routeData = trackingServiceGovernor.serviceInteractor?.routeData
 
-                    mainView.postMessage(Message.NO_PERMISSION)
+                    trackingServiceGovernor.stopTracking()
+
+                    routeData?.let {
+
+                        routesManager.keepTempRoute(it)
+                        mainView.startSummaryActivity()
+                    }
+                }
+
+                TrackingActivity.Result.NO_DATA_DONE -> {
+
+                    Timber.d("Service done, but no data")
+                    trackingServiceGovernor.stopTracking()
+                }
+
+                TrackingActivity.Result.NOT_DONE -> {
+
+                    Timber.d("Service is working...")
                 }
             }
         }
     }
 
-    fun onClickSettings() {
+    override fun notifyOnDestroy(isFinishing: Boolean) {
 
-        mainView.startSettingsActivity()
+        trackingServiceGovernor.removeOnServiceActivityChangesListener(this)
+        trackingServiceGovernor.destroy(isFinishing)
+        routesManager.removeOnRoutesDataChangedListener(this)
     }
-
-    fun onClickSignOut() {
-
-        if (serviceBinder == null || !serviceBinder!!.isServiceInProgress()) {
-
-            signOut()
-        } else {
-            mainView.showExitWarningDialog({ signOut() })
-        }
-    }
-
-    private fun signOut() {
-        authInteractor.signOut()
-        mainView.startLoginActivity()
-        mainView.finishActivity()
-    }
-
-    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
-
-    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.shortRouteDataCount()
 
     fun notifyRecyclerReachedBottom() {
 
         onLoadMoreRequest()
-    }
-
-    fun onExitRequest() {
-
-        if (serviceBinder == null || !serviceBinder!!.isServiceInProgress()) {
-
-            mainView.finishActivity()
-
-        } else {
-
-            mainView.showExitWarningDialog({ mainView.finishActivity() })
-        }
     }
 
     private fun onLoadMoreRequest() {
@@ -145,73 +122,51 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         })
     }
 
-    override fun initWithStateJson(stateJson: String?) {
+    fun onClickTrackingButton() {
 
-        gson.fromJson<State>(stateJson, State::class.java).let {
+        trackingServiceGovernor.startTracking(
+                { mainView.startTrackingActivity() },
+                { mainView.postMessage(Message.NO_PERMISSION) }
+        )
 
-            isServiceActive = it.isServiceActive
+    }
+
+    fun onClickSettings() {
+
+        mainView.startSettingsActivity()
+    }
+
+    fun onClickSignOut() {
+
+        if (trackingServiceGovernor.serviceInteractor == null
+                || !trackingServiceGovernor.serviceInteractor!!.isServiceInProgress()) {
+
+            signOut()
+        } else {
+            mainView.showExitWarningDialog({ signOut() })
         }
     }
 
-    override fun notifyOnViewReady() {
-        super.notifyOnViewReady()
-
-        preferencesInteractor.addOnUnitChangedListener(
-                this,
-                object : PreferencesInteractor.OnUnitChangedListener {
-                    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
-
-                        this@MainPresenter.speedUnit = speedUnit
-                        this@MainPresenter.distanceUnit = distanceUnit
-
-                        mainView.refreshRecyclerAdapter()
-                    }
-
-                })
-
-        if (isServiceActive) {
-
-            mainView.bindTrackingService(serviceConnection)
-        }
-
-        mainView.setNoDataTextVisibility(View.INVISIBLE)
-        routesManager.addRoutesDataChangedListener(this)
-        onLoadMoreRequest()
-        mainView.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
+    private fun signOut() {
+        authInteractor.signOut()
+        mainView.startLoginActivity()
+        mainView.finishActivity()
     }
 
-    override fun notifyOnResult(requestCode: Int, resultCode: Int) {
+    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
 
-        if (requestCode == MainActivity.Request.TRACKING_ACTIVITY_REQUEST) {
+    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.shortRouteDataCount()
 
-            when (resultCode) {
+    fun onExitRequest() {
 
-                TrackingActivity.Result.DONE -> {
+        if (trackingServiceGovernor.serviceInteractor == null
+                || !trackingServiceGovernor.serviceInteractor!!.isServiceInProgress()) {
 
-                    Timber.d("Service done. Data may be saved")
+            mainView.finishActivity()
 
-                    val routeData = serviceBinder?.routeData
+        } else {
 
-                    stopTracking()
-
-                    routeData?.let {
-
-                        routesManager.keepTempRoute(it)
-                        mainView.startSummaryActivity()
-                    }
-                }
-
-                TrackingActivity.Result.NO_DATA_DONE -> {
-
-                    Timber.d("Service done, but no data")
-                    stopTracking()
-                }
-
-                TrackingActivity.Result.NOT_DONE -> {
-
-                    Timber.d("Service is working...")
-                }
-            }
+            mainView.showExitWarningDialog({ mainView.finishActivity() })
         }
     }
 
@@ -232,45 +187,5 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
             mainView.setNoDataTextVisibility(View.VISIBLE)
         }
-    }
-
-    private fun startTracking() {
-        mainView.startTrackingService()
-        mainView.bindTrackingService(serviceConnection)
-    }
-
-    private fun unbindTrackingService() {
-        serviceBinder = null
-        mainView.unbindTrackingService(serviceConnection)
-    }
-
-    private fun stopTracking() {
-
-        isServiceActive = false
-        serviceBinder = null
-        mainView.unbindTrackingService(serviceConnection)
-        mainView.stopTrackingService()
-    }
-
-    override fun getStateJson(): String? = gson.toJson(State(isServiceActive))
-
-    override fun notifyOnDestroy(isFinishing: Boolean) {
-
-        if (isFinishing && isServiceActive) {
-
-            Timber.d("Finishing activity...")
-            stopTracking()
-
-        } else if (isServiceActive) {
-
-            Timber.d("Recreating activity...")
-            unbindTrackingService()
-
-        } else {
-
-            Timber.d("No service. Clean destroy.")
-        }
-
-        routesManager.removeOnRoutesDataChangedListener(this)
     }
 }

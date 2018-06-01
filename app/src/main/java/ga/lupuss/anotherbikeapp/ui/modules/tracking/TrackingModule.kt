@@ -2,18 +2,18 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
 import dagger.Module
 import dagger.Provides
-import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
 
 @Module
 class TrackingModule(view: TrackingView,
-                     serviceBinder: TrackingService.ServiceBinder) {
+                     serviceInteractor: TrackingServiceInteractor) {
 
     val trackingView = view
         @TrackingScope
         @Provides
         get
 
-    val serviceBinder = serviceBinder
+    val serviceInteractor = serviceInteractor
         @TrackingScope
         @Provides
         get

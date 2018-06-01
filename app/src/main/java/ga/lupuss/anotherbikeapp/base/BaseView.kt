@@ -9,4 +9,5 @@ interface BaseView {
     fun isOnline(): Boolean
     fun checkLocationPermission(): Boolean
     fun finishActivity()
+    fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit)
 }

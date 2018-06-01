@@ -8,6 +8,7 @@ import android.os.*
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
+import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
@@ -16,9 +17,9 @@ import javax.inject.Inject
 
 
 /** Receives location from GPS and shares saved route and statistics.
- *  To control service use [TrackingService.ServiceBinder].
- *  To receive location changes implement [TrackingService.LocationDataReceiver].
- *  To receive statistics updates implement [TrackingService.OnStatsUpdateListener]
+ *  To control service use [TrackingServiceInteractor].
+ *  To receive location changes implement [TrackingServiceInteractor.LocationDataReceiver].
+ *  To receive statistics updates implement [TrackingServiceInteractor.OnStatsUpdateListener]
  */
 class TrackingService : Service() {
 
@@ -39,8 +40,8 @@ class TrackingService : Service() {
 
     var lastLocationAvailability = false
 
-    private val locationDataReceivers = mutableListOf<LocationDataReceiver>()
-    private val onStatsUpdateListeners = mutableListOf<OnStatsUpdateListener>()
+    private val locationDataReceivers = mutableListOf<TrackingServiceInteractor.LocationDataReceiver>()
+    private val onStatsUpdateListeners = mutableListOf<TrackingServiceInteractor.OnStatsUpdateListener>()
 
     private val thread = HandlerThread("Service HandleThread")
     private lateinit var backgroundThread: Handler
@@ -103,38 +104,28 @@ class TrackingService : Service() {
 
     }
 
-    interface LocationDataReceiver {
+    inner class ServiceBinder : Binder(), TrackingServiceInteractor {
 
-        fun onNewLocation(points: List<LatLng>)
-        fun onLocationAvailability(available: Boolean)
-    }
+        override val lastLocationAvailability get() = this@TrackingService.lastLocationAvailability
 
-    interface OnStatsUpdateListener {
-        fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>)
-    }
+        override val savedRoute get() = this@TrackingService.savedRoute
 
-    inner class ServiceBinder : Binder() {
+        override val lastStats get() = this@TrackingService.lastStats
 
-        val lastLocationAvailability get() = this@TrackingService.lastLocationAvailability
+        override val routeData get() = this@TrackingService.routeData
 
-        val savedRoute get() = this@TrackingService.savedRoute
+        override fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
 
-        val lastStats get() = this@TrackingService.lastStats
-
-        val routeData get() = this@TrackingService.routeData
-
-        fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
-
-        fun connectServiceDataReceiver(locationDataReceiver: LocationDataReceiver) =
+        override fun connectServiceDataReceiver(locationDataReceiver: TrackingServiceInteractor.LocationDataReceiver) =
                 this@TrackingService.connectLocationDataReceiver(locationDataReceiver)
 
-        fun disconnectServiceDataReceiver(locationDataReceiver: LocationDataReceiver) =
+        override fun disconnectServiceDataReceiver(locationDataReceiver: TrackingServiceInteractor.LocationDataReceiver) =
                 this@TrackingService.disconnectLocationDataReceiver(locationDataReceiver)
 
-        fun addOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) =
+        override fun addOnStatsUpdateListener(onStatsUpdateListener: TrackingServiceInteractor.OnStatsUpdateListener) =
                 this@TrackingService.addOnStatsUpdateListener(onStatsUpdateListener)
 
-        fun removeOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) =
+        override fun removeOnStatsUpdateListener(onStatsUpdateListener: TrackingServiceInteractor.OnStatsUpdateListener) =
                 this@TrackingService.removeOnStatsUpdateListener(onStatsUpdateListener)
     }
 
@@ -207,22 +198,22 @@ class TrackingService : Service() {
         Timber.d("Service destroyed.")
     }
 
-    fun connectLocationDataReceiver(locationDataReceiver: LocationDataReceiver) {
+    fun connectLocationDataReceiver(locationDataReceiver: TrackingServiceInteractor.LocationDataReceiver) {
 
         locationDataReceivers.add(locationDataReceiver)
     }
 
-    fun disconnectLocationDataReceiver(locationDataReceiver: LocationDataReceiver) {
+    fun disconnectLocationDataReceiver(locationDataReceiver: TrackingServiceInteractor.LocationDataReceiver) {
 
         locationDataReceivers.remove(locationDataReceiver)
     }
 
-    fun addOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) {
+    fun addOnStatsUpdateListener(onStatsUpdateListener: TrackingServiceInteractor.OnStatsUpdateListener) {
 
         onStatsUpdateListeners.add(onStatsUpdateListener)
     }
 
-    fun removeOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener) {
+    fun removeOnStatsUpdateListener(onStatsUpdateListener: TrackingServiceInteractor.OnStatsUpdateListener) {
 
         onStatsUpdateListeners.remove(onStatsUpdateListener)
     }

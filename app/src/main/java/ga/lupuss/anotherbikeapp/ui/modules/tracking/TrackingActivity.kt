@@ -18,6 +18,7 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
@@ -75,7 +76,7 @@ class TrackingActivity : BaseActivity(),
         DaggerTrackingComponent
                 .builder()
                 .anotherBikeAppComponent((this.application as AnotherBikeApp).anotherBikeAppComponent)
-                .trackingModule(TrackingModule(this, getIBinderFromIntent()))
+                .trackingModule(TrackingModule(this, getIBinderFromIntent() as TrackingServiceInteractor))
                 .build()
                 .inject(this)
         

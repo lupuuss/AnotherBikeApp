@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.main
 
-import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
@@ -8,8 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.PermissionChecker
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
@@ -29,6 +26,8 @@ import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import android.widget.TextView
+import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
+import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
@@ -44,18 +43,11 @@ class MainActivity : BaseActivity(), MainView {
     @Inject
     lateinit var mainPresenter: MainPresenter
 
-    private val locationPermissionRequestCode = 1
-    private var onLocationPermissionRequestResult: ((Boolean) -> Unit)? = null
+    @Inject
+    lateinit var trackingServiceGovernor: TrackingServiceGovernor
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == Request.TRACKING_ACTIVITY_REQUEST) {
-
-            mainPresenter.notifyOnResult(requestCode, resultCode)
-        }
-
-    }
+    val androidTrackingServiceGovernor
+        get() = trackingServiceGovernor as AndroidTrackingServiceGovernor
 
     enum class ItemName {
         SIGN_OUT, SETTINGS
@@ -71,13 +63,23 @@ class MainActivity : BaseActivity(), MainView {
             Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
     )
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == MainActivity.Request.TRACKING_ACTIVITY_REQUEST) {
+
+            mainPresenter.notifyOnResult(requestCode, resultCode)
+        }
+
+    }
+
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Dagger MUST be first
         DaggerMainComponent.builder()
                 .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
-                .mainModule(MainModule(this))
+                .mainModule(MainModule(this, AndroidTrackingServiceGovernor()))
                 .build()
                 .inject(this)
 
@@ -85,9 +87,8 @@ class MainActivity : BaseActivity(), MainView {
         setContentView(R.layout.activity_main)
         activateToolbar(toolbarMain)
 
-        savedInstanceState?.let {
-            mainPresenter.initWithStateJson(it.getString(MAIN_PRESENTER_STATE_KEY))
-        }
+
+        androidTrackingServiceGovernor.init(this, savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE_KEY))
 
         drawerLayout.addDrawerListener(
 
@@ -131,6 +132,7 @@ class MainActivity : BaseActivity(), MainView {
         routesHistoryRecycler.addItemDecoration(
                 BottomSpaceItemDecoration(dpToPixels(this, 5F)))
 
+
         mainPresenter.notifyOnViewReady()
 
         recyclerWrapper.setOnScrollChangeListener(
@@ -146,7 +148,7 @@ class MainActivity : BaseActivity(), MainView {
     override fun onSaveInstanceState(outState: Bundle?) {
 
         super.onSaveInstanceState(outState)
-        outState?.putString(MAIN_PRESENTER_STATE_KEY, mainPresenter.getStateJson())
+        outState?.putBoolean(IS_SERVICE_ACTIVE_KEY, androidTrackingServiceGovernor.isServiceActive)
     }
 
     override fun onBackPressed() {
@@ -210,10 +212,11 @@ class MainActivity : BaseActivity(), MainView {
         routesHistoryRecycler.visibility = visibility
     }
 
-    override fun startTrackingActivity(serviceBinder: TrackingService.ServiceBinder?) {
+    override fun startTrackingActivity() {
 
         startActivityForResult(
-                TrackingActivity.newIntent(this@MainActivity, serviceBinder!!),
+                TrackingActivity.newIntent(this@MainActivity,
+                        androidTrackingServiceGovernor.serviceBinder!!),
                 Request.TRACKING_ACTIVITY_REQUEST
         )
     }
@@ -226,55 +229,6 @@ class MainActivity : BaseActivity(), MainView {
     override fun startSettingsActivity() {
 
         startActivity(SettingsActivity.newIntent(this))
-    }
-
-    override fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
-
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionRequestCode)
-
-        this.onLocationPermissionRequestResult = onLocationPermissionRequestResult
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == locationPermissionRequestCode) {
-
-            onLocationPermissionRequestResult
-                    ?.invoke(grantResults[0] == PermissionChecker.PERMISSION_GRANTED)
-        }
-
-    }
-
-    override fun startTrackingService() {
-
-        // after bind onServiceStart is called by serviceConnection callback
-
-        Timber.d("Starting service...")
-        startService(Intent(this, TrackingService::class.java))
-    }
-
-    override fun bindTrackingService(connection: ServiceConnection) {
-
-        Timber.d("Binding service...")
-        bindService(
-                Intent(this, TrackingService::class.java),
-                connection,
-                Context.BIND_AUTO_CREATE
-        )
-    }
-
-    override fun stopTrackingService() {
-
-        Timber.d("Stopping service...")
-        stopService(Intent(this, TrackingService::class.java))
-    }
-
-    override fun unbindTrackingService(connection: ServiceConnection) {
-
-        Timber.d("Unbinding service...")
-        unbindService(connection)
     }
 
     override fun startSummaryActivity() {
@@ -342,7 +296,7 @@ class MainActivity : BaseActivity(), MainView {
 
     companion object {
 
-        const val MAIN_PRESENTER_STATE_KEY = "mainPresenterState"
+        const val IS_SERVICE_ACTIVE_KEY = "mainPresenterState"
 
         @JvmStatic
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)

@@ -4,20 +4,20 @@ import android.view.View
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].
  * [TrackingActivity] must implement [TrackingView] */
 class TrackingPresenter @Inject constructor()
-    : TrackingService.LocationDataReceiver, TrackingService.OnStatsUpdateListener, Presenter {
+    : TrackingServiceInteractor.LocationDataReceiver, TrackingServiceInteractor.OnStatsUpdateListener, Presenter {
 
     @Inject
     lateinit var trackingView: TrackingView
 
     @Inject
-    lateinit var serviceBinder: TrackingService.ServiceBinder
+    lateinit var serviceInteractor: TrackingServiceInteractor
 
     private var followMyLocation: Boolean = true
     private var isLocationAvailable: Boolean = false
@@ -33,30 +33,30 @@ class TrackingPresenter @Inject constructor()
     override fun notifyOnViewReady() {
 
         // checking if service worked before activity start
-        if (serviceBinder.savedRoute.isNotEmpty()) {
+        if (serviceInteractor.savedRoute.isNotEmpty()) {
 
-            trackingView.prepareMapToTrack(serviceBinder.savedRoute)
+            trackingView.prepareMapToTrack(serviceInteractor.savedRoute)
         }
 
-        serviceBinder.lastStats?.let {
+        serviceInteractor.lastStats?.let {
 
             trackingView.updateStats(it)
         }
 
-        isLocationAvailable = serviceBinder.lastLocationAvailability
+        isLocationAvailable = serviceInteractor.lastLocationAvailability
 
         // request receiving location and statistics from TrackService
-        serviceBinder.connectServiceDataReceiver(this)
-        serviceBinder.addOnStatsUpdateListener(this)
+        serviceInteractor.connectServiceDataReceiver(this)
+        serviceInteractor.addOnStatsUpdateListener(this)
     }
 
     fun onMyLocationButtonClick() {
 
         followMyLocation = true
 
-        if (serviceBinder.savedRoute.isNotEmpty()) {
+        if (serviceInteractor.savedRoute.isNotEmpty()) {
 
-            trackingView.moveMapCamera(serviceBinder.savedRoute.last())
+            trackingView.moveMapCamera(serviceInteractor.savedRoute.last())
         }
     }
 
@@ -67,7 +67,7 @@ class TrackingPresenter @Inject constructor()
 
     fun onClickFinishTracking() {
 
-        if (serviceBinder.isServiceInProgress()) {
+        if (serviceInteractor.isServiceInProgress()) {
 
             trackingView.showFinishTrackingDialog {
                 trackingView.finishActivityWithResult(TrackingActivity.Result.DONE)
@@ -101,7 +101,7 @@ class TrackingPresenter @Inject constructor()
 
         isLocationAvailable = available
 
-        if (!available && !serviceBinder.isServiceInProgress()) {
+        if (!available && !serviceInteractor.isServiceInProgress()) {
 
             trackingView.postMessage(Message.LOCATION_NOT_AVAILABLE)
         }
@@ -114,7 +114,7 @@ class TrackingPresenter @Inject constructor()
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
 
-        serviceBinder.removeOnStatsUpdateListener(this)
-        serviceBinder.disconnectServiceDataReceiver(this)
+        serviceInteractor.removeOnStatsUpdateListener(this)
+        serviceInteractor.disconnectServiceDataReceiver(this)
     }
 }
