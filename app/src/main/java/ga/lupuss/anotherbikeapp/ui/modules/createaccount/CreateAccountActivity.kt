@@ -69,6 +69,7 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
+
         savedInstanceState?.let {
             isUiEnable = it[IS_UI_ENABLE_KEY] as Boolean
             isCreateAccountButtonTextVisible = it[IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE] as Boolean

@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Bundle
 import android.os.IBinder
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
@@ -49,17 +50,38 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
 
     private var onServiceConnected: (() -> Unit)? = null
 
-    fun init(parentActivity: BaseActivity, isServiceActive: Boolean?) {
+    fun init(parentActivity: BaseActivity, savedInstanceState: Bundle?) {
 
-        this.serviceParentActivity = parentActivity
+        serviceParentActivity = parentActivity
 
-        isServiceActive?.let{
-            this.isServiceActive = it
-        }
+        isServiceActive = savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE_KEY) ?: false
 
         if (this.isServiceActive) {
 
             bindTrackingService()
+        }
+    }
+
+    fun saveInstanceState(outState: Bundle?) {
+
+        outState?.putBoolean(IS_SERVICE_ACTIVE_KEY, isServiceActive)
+    }
+
+    override fun destroy(isFinishing: Boolean) {
+
+        if (isFinishing && isServiceActive) {
+
+            Timber.d("Finishing activity...")
+            stopTracking()
+
+        } else if (isServiceActive) {
+
+            Timber.d("Recreating activity...")
+            unbindTrackingService()
+
+        } else {
+
+            Timber.d("No service. Clean destroy.")
         }
     }
 
@@ -135,22 +157,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
         serviceParentActivity.unbindService(serviceConnection)
     }
 
-    override fun destroy(isFinishing: Boolean) {
-
-        if (isFinishing && isServiceActive) {
-
-            Timber.d("Finishing activity...")
-            stopTracking()
-
-        } else if (isServiceActive) {
-
-            Timber.d("Recreating activity...")
-            unbindTrackingService()
-
-        } else {
-
-            Timber.d("No service. Clean destroy.")
-        }
+    companion object {
+        private const val IS_SERVICE_ACTIVE_KEY = "mainPresenterState"
     }
-
 }

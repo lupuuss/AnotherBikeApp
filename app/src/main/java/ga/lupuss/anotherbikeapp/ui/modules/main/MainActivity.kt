@@ -5,7 +5,6 @@ import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -14,7 +13,6 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.dpToPixels
-import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
@@ -25,6 +23,7 @@ import javax.inject.Inject
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
+import android.widget.AdapterView
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
@@ -38,15 +37,20 @@ import kotlinx.android.synthetic.main.activity_main_ui.*
 /**
  * Main user's interface.
  */
-class MainActivity : BaseActivity(), MainView {
+class MainActivity : BaseActivity(), MainView, AdapterView.OnItemClickListener {
 
     @Inject
     lateinit var mainPresenter: MainPresenter
 
+    /**
+     * [trackingServiceGovernor] is just for proper dependency injection.
+     * In fact it is [AndroidTrackingServiceGovernor] so [androidTrackingServiceGovernor]
+     * should be used inside Activity
+     */
     @Inject
     lateinit var trackingServiceGovernor: TrackingServiceGovernor
 
-    val androidTrackingServiceGovernor
+    private val androidTrackingServiceGovernor
         get() = trackingServiceGovernor as AndroidTrackingServiceGovernor
 
     enum class ItemName {
@@ -87,32 +91,16 @@ class MainActivity : BaseActivity(), MainView {
         setContentView(R.layout.activity_main)
         activateToolbar(toolbarMain)
 
-
-        androidTrackingServiceGovernor.init(this, savedInstanceState?.getBoolean(IS_SERVICE_ACTIVE_KEY))
+        androidTrackingServiceGovernor.init(this, savedInstanceState)
 
         drawerLayout.addDrawerListener(
-
-                ActionBarDrawerToggle(
-                        this,
-                        drawerLayout, R.string.open,
-                        R.string.close
-                ).apply { syncState() }
+                ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+                        .apply { syncState() }
         )
 
+        drawerListView.adapter = DrawerListViewAdapter(drawerListViewChildren, layoutInflater)
 
-        drawerListView.adapter = DrawerListViewAdapter(
-                drawerListViewChildren,
-                layoutInflater
-        )
-
-        drawerListView.setOnItemClickListener { adapterView, _, i, _ ->
-            @Suppress("UNCHECKED_CAST")
-            when ((adapterView.adapter.getItem(i) as Pair<ItemName, StrIconRes>).first) {
-
-                ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
-                ItemName.SETTINGS -> mainPresenter.onClickSettings()
-            }
-        }
+        drawerListView.onItemClickListener = this
 
         val adapter = RoutesHistoryRecyclerViewAdapter(
                 mainPresenter::onHistoryRecyclerItemRequest,
@@ -122,33 +110,28 @@ class MainActivity : BaseActivity(), MainView {
                 stringsResolver
         )
 
-        routesHistoryRecycler.setItemViewCacheSize(3)
-        routesHistoryRecycler.isNestedScrollingEnabled = false
         routesHistoryRecycler.apply {
+            setItemViewCacheSize(3)
+            isNestedScrollingEnabled = false
             this.adapter = adapter
             layoutManager = LinearLayoutManager(this@MainActivity)
+            addItemDecoration(BottomSpaceItemDecoration(dpToPixels(this@MainActivity, 5F)))
         }
 
-        routesHistoryRecycler.addItemDecoration(
-                BottomSpaceItemDecoration(dpToPixels(this, 5F)))
+        recyclerWrapper.setOnScrollChangeListener({ v: NestedScrollView?, _, _, _, _ ->
 
+            if (!v!!.canScrollVertically(1))
+                mainPresenter.notifyRecyclerReachedBottom()
+
+        })
 
         mainPresenter.notifyOnViewReady()
-
-        recyclerWrapper.setOnScrollChangeListener(
-                { v: NestedScrollView?, _, _, _, _ ->
-
-                    if (!v!!.canScrollVertically(1)) {
-
-                        mainPresenter.notifyRecyclerReachedBottom()
-                    }
-                })
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
 
         super.onSaveInstanceState(outState)
-        outState?.putBoolean(IS_SERVICE_ACTIVE_KEY, androidTrackingServiceGovernor.isServiceActive)
+        androidTrackingServiceGovernor.saveInstanceState(outState)
     }
 
     override fun onBackPressed() {
@@ -170,6 +153,17 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     // onClicks
+
+    override fun onItemClick(adapterView: AdapterView<*>, view: View?, i: Int, l: Long) {
+
+        @Suppress("UNCHECKED_CAST")
+        when ((adapterView.adapter.getItem(i) as Pair<ItemName, StrIconRes>).first) {
+
+            ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
+            ItemName.SETTINGS -> mainPresenter.onClickSettings()
+        }
+
+    }
 
     fun onClickTrackingButton(view: View) {
 
@@ -212,30 +206,6 @@ class MainActivity : BaseActivity(), MainView {
         routesHistoryRecycler.visibility = visibility
     }
 
-    override fun startTrackingActivity() {
-
-        startActivityForResult(
-                TrackingActivity.newIntent(this@MainActivity,
-                        androidTrackingServiceGovernor.serviceBinder!!),
-                Request.TRACKING_ACTIVITY_REQUEST
-        )
-    }
-
-    override fun startLoginActivity() {
-
-        startActivity(LoginActivity.newIntent(this))
-    }
-
-    override fun startSettingsActivity() {
-
-        startActivity(SettingsActivity.newIntent(this))
-    }
-
-    override fun startSummaryActivity() {
-
-        startActivity(SummaryActivity.newIntent(this))
-    }
-
     override fun setProgressBarVisibility(visibility: Int) {
         recyclerProgressBar.visibility = visibility
     }
@@ -245,6 +215,7 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     override fun notifyRecyclerItemChanged(position: Int) {
+
         routesHistoryRecycler.adapter.notifyItemChanged(position)
     }
 
@@ -275,6 +246,8 @@ class MainActivity : BaseActivity(), MainView {
         )
     }
 
+    //      Navigation
+
     override fun showExitWarningDialog(onYesClick: () -> Unit) {
 
         AlertDialog.Builder(this)
@@ -288,6 +261,31 @@ class MainActivity : BaseActivity(), MainView {
 
     }
 
+    override fun startTrackingActivity() {
+
+        startActivityForResult(
+                TrackingActivity.newIntent(this@MainActivity,
+                        androidTrackingServiceGovernor.serviceBinder!!),
+                Request.TRACKING_ACTIVITY_REQUEST
+        )
+    }
+
+    override fun startLoginActivity() {
+
+        startActivity(LoginActivity.newIntent(this))
+    }
+
+    override fun startSettingsActivity() {
+
+        startActivity(SettingsActivity.newIntent(this))
+    }
+
+    override fun startSummaryActivity() {
+
+        startActivity(SummaryActivity.newIntent(this))
+    }
+
+
     class Request {
         companion object {
             const val TRACKING_ACTIVITY_REQUEST = 0
@@ -295,8 +293,6 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     companion object {
-
-        const val IS_SERVICE_ACTIVE_KEY = "mainPresenterState"
 
         @JvmStatic
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)

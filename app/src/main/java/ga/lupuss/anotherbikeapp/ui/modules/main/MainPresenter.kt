@@ -20,7 +20,10 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
                                         private val authInteractor: AuthInteractor,
                                         private val preferencesInteractor: PreferencesInteractor,
                                         private val trackingServiceGovernor: TrackingServiceGovernor)
-    : Presenter, OnDocumentChanged {
+    :   Presenter,
+        OnDocumentChanged,
+        TrackingServiceGovernor.OnServiceActivityChangesListener,
+        PreferencesInteractor.OnUnitChangedListener {
 
     var speedUnit: Statistic.Unit = preferencesInteractor.speedUnit
     var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
@@ -31,32 +34,16 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     override fun notifyOnViewReady() {
         super.notifyOnViewReady()
 
-        preferencesInteractor.addOnUnitChangedListener(
-                this,
-                object : PreferencesInteractor.OnUnitChangedListener {
-                    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
-
-                        this@MainPresenter.speedUnit = speedUnit
-                        this@MainPresenter.distanceUnit = distanceUnit
-
-                        mainView.refreshRecyclerAdapter()
-                    }
-
-                })
-
-        trackingServiceGovernor.addOnServiceActivityChangesListener(
-                this,
-                object : TrackingServiceGovernor.OnServiceActivityChangesListener {
-                    override fun onServiceActivityChanged(state: Boolean) {
-                        mainView.setTrackingButtonState(state)
-                    }
-                })
-
         mainView.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
         mainView.setNoDataTextVisibility(View.INVISIBLE)
-        routesManager.addRoutesDataChangedListener(this)
-        onLoadMoreRequest()
         mainView.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
+
+        preferencesInteractor.addOnUnitChangedListener(this, this)
+        trackingServiceGovernor.addOnServiceActivityChangesListener(this, this)
+        routesManager.addRoutesDataChangedListener(this)
+
+        onLoadMoreRequest()
+
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -187,5 +174,18 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
             mainView.setNoDataTextVisibility(View.VISIBLE)
         }
+    }
+
+    override fun onServiceActivityChanged(state: Boolean) {
+
+        mainView.setTrackingButtonState(state)
+    }
+
+    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
+
+        this.speedUnit = speedUnit
+        this.distanceUnit = distanceUnit
+
+        mainView.refreshRecyclerAdapter()
     }
 }
