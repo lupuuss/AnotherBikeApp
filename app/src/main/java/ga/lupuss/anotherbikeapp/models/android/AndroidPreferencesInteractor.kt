@@ -5,8 +5,7 @@ import android.content.SharedPreferences
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
-import timber.log.Timber
+import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 
 class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferences,
                                    context: Context) : PreferencesInteractor() {

@@ -1,7 +1,7 @@
-package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics
+package ga.lupuss.anotherbikeapp.models.pojo.statistics
 
 import com.nhaarman.mockito_kotlin.mock
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
+import ga.lupuss.anotherbikeapp.models.pojo.TimeStatistic
 import org.junit.Assert.*
 import org.junit.Test
 

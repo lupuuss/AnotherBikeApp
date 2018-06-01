@@ -3,11 +3,7 @@ package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.StringStatistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
+import ga.lupuss.anotherbikeapp.models.pojo.*
 import ga.lupuss.anotherbikeapp.timeToFormattedString
 import timber.log.Timber
 import java.util.*
@@ -38,9 +34,9 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     var speedUnit = preferencesInteractor.speedUnit
     var distanceUnit = preferencesInteractor.distanceUnit
 
-    var onNewStats: ((stats: Map<Statistic.Name, Statistic>) -> Unit)? = null
+    var onNewStats: ((stats: Map<Statistic.Name, Statistic<*>>) -> Unit)? = null
 
-    var lastStats: Map<Statistic.Name, Statistic>? = null
+    var lastStats: Map<Statistic.Name, Statistic<*>>? = null
     var lastLocation: Location? = null
     val savedRoute: List<LatLng>
         get() = routeData.points
@@ -175,9 +171,9 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         return timeToFormattedString(locale, calendar.timeInMillis)
     }
 
-    private fun createStatsList(): Map<Statistic.Name, Statistic> {
+    private fun createStatsList(): Map<Statistic.Name, Statistic<*>> {
         return linkedMapOf(
-                Statistic.Name.STATUS to StringStatistic(status.descriptionId),
+                Statistic.Name.STATUS to StatusStatistic(status),
                 Statistic.Name.DURATION to TimeStatistic(routeData.duration),
                 Statistic.Name.SPEED to UnitStatistic(speed, speedUnit),
                 Statistic.Name.DISTANCE to UnitStatistic(routeData.distance, distanceUnit),

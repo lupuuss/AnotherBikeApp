@@ -12,17 +12,17 @@
     <!-- Stats names -->
 
     <string name="speed">Speed</string>
-    <string name="avg_speed">Avg speed</string>
-    <string name="max_speed">Max speed</string>
+    <string name="avgSpeed">Avg speed</string>
+    <string name="maxSpeed">Max speed</string>
     <string name="distance">Distance</string>
     <string name="duration">Duration</string>
     <string name="status">Status</string>
-    <string name="start_time">Start time</string>
+    <string name="startTime">Start time</string>
 
     <!-- Statuses -->
     <string name="pause">Pause</string>
-    <string name="tracking_in_progress">Tracking in progress…</string>
-    <string name="waiting_for_location">Waiting for location…</string>
+    <string name="trackingInProgress">Tracking in progress…</string>
+    <string name="waitingForLocation">Waiting for location…</string>
 
     <string name="noPermission">Route tracking is not possible without access to the device\'s location.</string>
     <string name="message_empty_statistics">Statistics will be displayed here.</string>

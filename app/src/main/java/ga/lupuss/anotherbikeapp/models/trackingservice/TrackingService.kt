@@ -5,13 +5,12 @@ import android.app.Service
 import android.content.Intent
 import android.location.Location
 import android.os.*
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.PermissionChecker
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.pojo.Statistic
+import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,13 +24,14 @@ class TrackingService : Service() {
 
     @Inject
     lateinit var statsManager: StatisticsManager
+
     @Inject
     lateinit var locationClient: FusedLocationProviderClient
 
     val savedRoute
         get() = statsManager.savedRoute
 
-    val lastStats: Map<Statistic.Name, Statistic>?
+    val lastStats: Map<Statistic.Name, Statistic<*>>?
         get() = statsManager.lastStats
 
     val routeData
@@ -110,7 +110,7 @@ class TrackingService : Service() {
     }
 
     interface OnStatsUpdateListener {
-        fun onStatsUpdate(stats: Map<Statistic.Name, Statistic>)
+        fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>)
     }
 
     inner class ServiceBinder : Binder() {
@@ -180,13 +180,7 @@ class TrackingService : Service() {
 
     private fun requestLocation() {
 
-        val permissionStatus =
-                ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                )
-
-        if (permissionStatus == PermissionChecker.PERMISSION_GRANTED) {
+        if (this.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
 
             locationClient.requestLocationUpdates(
                     LocationRequest.create().apply {

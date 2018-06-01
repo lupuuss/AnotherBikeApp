@@ -6,7 +6,6 @@ import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import javax.inject.Inject
 
 class SummaryPresenter @Inject constructor(private val routesManager: RoutesManager,

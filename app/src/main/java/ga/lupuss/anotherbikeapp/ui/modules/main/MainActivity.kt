@@ -117,7 +117,8 @@ class MainActivity : BaseActivity(), MainView {
                 mainPresenter::onHistoryRecyclerItemRequest,
                 mainPresenter::onHistoryRecyclerItemCountRequest,
                 mainPresenter::speedUnit,
-                mainPresenter::distanceUnit
+                mainPresenter::distanceUnit,
+                stringsResolver
         )
 
         routesHistoryRecycler.setItemViewCacheSize(3)

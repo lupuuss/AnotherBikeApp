@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import ga.lupuss.anotherbikeapp.models.pojo.ShortRouteData
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
+import ga.lupuss.anotherbikeapp.models.pojo.Statistic
+import ga.lupuss.anotherbikeapp.models.pojo.TimeStatistic
+import ga.lupuss.anotherbikeapp.models.pojo.UnitStatistic
 import ga.lupuss.anotherbikeapp.resolveTimeString
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -17,7 +18,8 @@ class RoutesHistoryRecyclerViewAdapter(
         private val routesDataCallback: (Int) -> ShortRouteData,
         private val sizeCallback: () -> Int,
         private val speedUnitCallback: () -> Statistic.Unit,
-        private val distanceUnitCallback: () -> Statistic.Unit
+        private val distanceUnitCallback: () -> Statistic.Unit,
+        private val stringsResolver: StringsResolver
 
 ) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
 
@@ -52,9 +54,9 @@ class RoutesHistoryRecyclerViewAdapter(
 
             val context = constraintLayout.context.applicationContext
 
-            speedTextView.text = UnitStatistic(routeData.avgSpeed, speedUnitCallback.invoke()).getValue(context)
-            distanceTextView.text = UnitStatistic(routeData.distance, distanceUnitCallback.invoke()).getValue(context)
-            durationTextView.text = TimeStatistic(routeData.duration).getValue(context)
+            speedTextView.text = stringsResolver.resolve(UnitStatistic(routeData.avgSpeed, speedUnitCallback.invoke()))
+            distanceTextView.text = stringsResolver.resolve(UnitStatistic(routeData.distance, distanceUnitCallback.invoke()))
+            durationTextView.text = stringsResolver.resolve(TimeStatistic(routeData.duration))
             whenTextView.text = resolveTimeString(context, routeData.startTime)
 
             labelTextView.text = routeData.name

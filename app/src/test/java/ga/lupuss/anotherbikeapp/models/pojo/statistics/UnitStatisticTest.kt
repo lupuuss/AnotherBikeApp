@@ -1,9 +1,8 @@
-package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager.statistics
+package ga.lupuss.anotherbikeapp.models.pojo.statistics
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
+import ga.lupuss.anotherbikeapp.models.pojo.Statistic
+import ga.lupuss.anotherbikeapp.models.pojo.UnitStatistic
 import org.junit.Assert.*
 import org.junit.Test
 

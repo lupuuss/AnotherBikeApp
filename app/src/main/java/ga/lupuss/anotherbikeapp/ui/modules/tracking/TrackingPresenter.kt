@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].
@@ -107,7 +107,7 @@ class TrackingPresenter @Inject constructor()
         }
     }
 
-    override fun onStatsUpdate(stats: Map<Statistic.Name, Statistic>) {
+    override fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>) {
 
         trackingView.updateStats(stats)
     }

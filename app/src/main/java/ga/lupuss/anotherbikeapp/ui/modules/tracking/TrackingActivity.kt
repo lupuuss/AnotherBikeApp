@@ -18,11 +18,10 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
-import ga.lupuss.anotherbikeapp.ui.extensions.setText
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
@@ -206,12 +205,12 @@ class TrackingActivity : BaseActivity(),
         trackLine?.points = points
     }
 
-    override fun updateStats(statistics: Map<Statistic.Name, Statistic>) {
+    override fun updateStats(statistics: Map<Statistic.Name, Statistic<*>>) {
         updateShortStats(statistics)
         updateInfoFragmentStats(statistics)
     }
 
-    private fun updateShortStats(stats: Map<Statistic.Name, Statistic>) {
+    private fun updateShortStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
         if (emptyShortStatsText != null) {
 
@@ -223,7 +222,7 @@ class TrackingActivity : BaseActivity(),
         }
     }
 
-    private fun initShortStats(stats: Map<Statistic.Name, Statistic>) {
+    private fun initShortStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
         (shortStatsContainer as ViewGroup).removeAllViews()
 
@@ -234,21 +233,22 @@ class TrackingActivity : BaseActivity(),
                     (shortStatsContainer as ViewGroup),
                     R.layout.activity_tracking_short_stat,
                     statName,
-                    stats[statName]!!
+                    stringsResolver.resolve(statName, stats[statName]!!)
             ))
         }
 
     }
 
-    private fun updateExistingShortStats(stats: Map<Statistic.Name, Statistic>) {
+    private fun updateExistingShortStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
         for (statName in shortStatsListToDisplay) {
 
-            shortStatsContainer.findViewWithTag<TextView>(statName).setText(statName, stats[statName]!!)
+            shortStatsContainer.findViewWithTag<TextView>(statName).text =
+                    stringsResolver.resolve(statName, stats[statName]!!)
         }
     }
 
-    private fun updateInfoFragmentStats(stats: Map<Statistic.Name, Statistic>) {
+    private fun updateInfoFragmentStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
         (supportFragmentManager.findFragmentById(R.id.statsFragment) as StatsFragment?)
                 ?.updateStats(stats)

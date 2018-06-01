@@ -6,14 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
+import ga.lupuss.anotherbikeapp.models.pojo.Statistic
 
 @SuppressLint("SetTextI18n")
-
-fun TextView?.setText(statName: Statistic.Name, stat: Statistic) {
-    this?.context ?: return
-    text = "${statName.getName(context)}: ${stat.getValue(context)}"
-}
 
 class ViewExtensions {
 
@@ -27,11 +22,11 @@ class ViewExtensions {
          *
          */
         fun updateTextViewStatByTag(layout: ViewGroup,
-                                    tag: Statistic.Name, stat: Statistic) {
+                                    tag: Statistic.Name, statString: String) {
 
             val statTextView = layout.findViewWithTag<TextView>(tag)
 
-            statTextView.setText(tag, stat)
+            statTextView.text = statString
         }
 
         /**
@@ -44,13 +39,13 @@ class ViewExtensions {
                                       rootView: ViewGroup,
                                       statLayoutId: Int,
                                       statName: Statistic.Name,
-                                      stat: Statistic): TextView {
+                                      statString: String): TextView {
 
             val statTextView = layoutInflater
                     .inflate(statLayoutId, rootView, false)
 
             statTextView.tag = (statName)
-            (statTextView as TextView).setText(statName, stat)
+            (statTextView as TextView).text = statString
 
             return statTextView
         }

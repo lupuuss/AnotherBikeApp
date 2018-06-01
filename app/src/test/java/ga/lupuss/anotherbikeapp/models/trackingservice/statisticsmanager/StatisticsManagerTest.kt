@@ -1,15 +1,10 @@
-package ga.lupuss.anotherbikeapp.trackingservice.statisticsmanager
+package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import android.location.Location
 import android.os.Handler
 import com.google.android.gms.maps.model.LatLng
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsMathProvider
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Status
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Timer
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

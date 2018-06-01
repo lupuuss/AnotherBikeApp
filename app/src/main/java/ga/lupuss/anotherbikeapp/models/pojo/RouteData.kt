@@ -1,10 +1,5 @@
 package ga.lupuss.anotherbikeapp.models.pojo
 
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.Statistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.StringStatistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.TimeStatistic
-import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.statistics.UnitStatistic
-
 open class RouteData(
         name: String?,
         distance: Double,
@@ -15,7 +10,7 @@ open class RouteData(
         var maxSpeed: Double
 ) : ShortRouteData(name, distance, avgSpeed, duration, startTime) {
     fun getStatisticsMap(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit)
-            : Map<Statistic.Name, Statistic> {
+            : Map<Statistic.Name, Statistic<*>> {
 
         return linkedMapOf(
                 Statistic.Name.DISTANCE to UnitStatistic(distance, distanceUnit),

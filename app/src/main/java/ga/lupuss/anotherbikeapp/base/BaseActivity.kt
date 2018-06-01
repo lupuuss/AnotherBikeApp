@@ -23,7 +23,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
     private lateinit var toast: Toast
 
     @Inject
-    lateinit var messageResolver: StringsResolver
+    lateinit var stringsResolver: StringsResolver
 
     @Inject
     lateinit var preferencesInteractor: PreferencesInteractor
@@ -82,7 +82,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
 
     override fun postMessage(message: Message) {
 
-        makeToast(messageResolver.resolve(message))
+        makeToast(stringsResolver.resolve(message))
     }
 
     override fun checkLocationPermission(): Boolean = this.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
