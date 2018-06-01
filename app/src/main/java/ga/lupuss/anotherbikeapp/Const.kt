@@ -12,6 +12,10 @@ enum class Message {
     LOCATION_NOT_AVAILABLE
 }
 
+enum class AppTheme {
+    GREY, ORANGE
+}
+
 enum class Text {
     DEFAULT_ROUTE_NAME
 }
