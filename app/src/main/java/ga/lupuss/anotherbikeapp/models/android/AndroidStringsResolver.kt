@@ -5,7 +5,7 @@ import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
-import ga.lupuss.anotherbikeapp.models.pojo.*
+import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Status
 
 @Suppress("REDUNDANT_ELSE_IN_WHEN")

@@ -8,8 +8,8 @@ import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
-import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.pojo.ShortRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import java.util.*
 
 

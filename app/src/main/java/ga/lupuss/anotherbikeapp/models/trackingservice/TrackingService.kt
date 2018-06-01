@@ -6,11 +6,10 @@ import android.content.Intent
 import android.location.Location
 import android.os.*
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
-import ga.lupuss.anotherbikeapp.models.pojo.Statistic
+import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import timber.log.Timber
 import javax.inject.Inject

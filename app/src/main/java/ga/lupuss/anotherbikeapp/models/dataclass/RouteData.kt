@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.pojo
+package ga.lupuss.anotherbikeapp.models.dataclass
 
 open class RouteData(
         name: String?,

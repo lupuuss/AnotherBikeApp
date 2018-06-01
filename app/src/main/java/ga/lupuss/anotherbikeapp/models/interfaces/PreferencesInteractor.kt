@@ -1,7 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.interfaces
 
 import ga.lupuss.anotherbikeapp.AppTheme
-import ga.lupuss.anotherbikeapp.models.pojo.Statistic
+import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import timber.log.Timber
 
 abstract class PreferencesInteractor {

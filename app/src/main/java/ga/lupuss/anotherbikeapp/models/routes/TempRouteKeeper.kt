@@ -1,6 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.routes
 
-import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import javax.inject.Inject
 
 class TempRouteKeeper @Inject constructor() {

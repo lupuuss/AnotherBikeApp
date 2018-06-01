@@ -3,7 +3,7 @@ package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.pojo.*
+import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.timeToFormattedString
 import timber.log.Timber
 import java.util.*

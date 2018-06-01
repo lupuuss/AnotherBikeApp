@@ -1,9 +1,8 @@
 package ga.lupuss.anotherbikeapp.models.interfaces
 
 import com.google.android.gms.maps.model.LatLng
-import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.models.pojo.Statistic
+import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 
 interface TrackingServiceInteractor {
 

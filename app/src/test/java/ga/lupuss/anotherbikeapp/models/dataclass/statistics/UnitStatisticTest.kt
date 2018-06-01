@@ -1,8 +1,8 @@
-package ga.lupuss.anotherbikeapp.models.pojo.statistics
+package ga.lupuss.anotherbikeapp.models.dataclass.statistics
 
 import com.nhaarman.mockito_kotlin.mock
-import ga.lupuss.anotherbikeapp.models.pojo.Statistic
-import ga.lupuss.anotherbikeapp.models.pojo.UnitStatistic
+import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import ga.lupuss.anotherbikeapp.models.dataclass.UnitStatistic
 import org.junit.Assert.*
 import org.junit.Test
 

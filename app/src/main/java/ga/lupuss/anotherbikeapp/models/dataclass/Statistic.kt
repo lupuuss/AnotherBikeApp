@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.pojo
+package ga.lupuss.anotherbikeapp.models.dataclass
 
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Status
 

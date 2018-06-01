@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
-import ga.lupuss.anotherbikeapp.models.pojo.ShortRouteData
-import ga.lupuss.anotherbikeapp.models.pojo.Statistic
-import ga.lupuss.anotherbikeapp.models.pojo.TimeStatistic
-import ga.lupuss.anotherbikeapp.models.pojo.UnitStatistic
+import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import ga.lupuss.anotherbikeapp.models.dataclass.TimeStatistic
+import ga.lupuss.anotherbikeapp.models.dataclass.UnitStatistic
 import ga.lupuss.anotherbikeapp.resolveTimeString
 
 @Suppress("MemberVisibilityCanBePrivate")

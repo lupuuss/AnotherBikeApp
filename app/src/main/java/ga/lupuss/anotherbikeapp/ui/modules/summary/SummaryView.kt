@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.base.BaseView
-import ga.lupuss.anotherbikeapp.models.pojo.Statistic
+import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 
 interface SummaryView : BaseView {
 

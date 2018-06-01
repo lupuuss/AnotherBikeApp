@@ -3,7 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.pojo.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import javax.inject.Inject
