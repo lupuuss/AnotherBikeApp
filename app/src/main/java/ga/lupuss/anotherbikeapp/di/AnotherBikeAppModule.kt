@@ -22,9 +22,8 @@ class AnotherBikeAppModule {
     @AnotherBikeAppScope
     fun providesRoutesManager(firebaseAuth: FirebaseAuth,
                               routesKeeper: TempRouteKeeper,
-                              firebaseFirestore: FirebaseFirestore,
-                              locale: Locale): RoutesManager =
-            FirebaseRoutesManager(firebaseAuth, firebaseFirestore, routesKeeper, locale)
+                              firebaseFirestore: FirebaseFirestore): RoutesManager =
+            FirebaseRoutesManager(firebaseAuth, firebaseFirestore, routesKeeper)
 
     @Provides
     @AnotherBikeAppScope

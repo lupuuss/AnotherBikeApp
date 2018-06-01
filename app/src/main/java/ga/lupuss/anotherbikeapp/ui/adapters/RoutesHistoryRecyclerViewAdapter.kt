@@ -13,7 +13,6 @@ import ga.lupuss.anotherbikeapp.models.dataclass.TimeStatistic
 import ga.lupuss.anotherbikeapp.models.dataclass.UnitStatistic
 import ga.lupuss.anotherbikeapp.resolveTimeString
 
-@Suppress("MemberVisibilityCanBePrivate")
 class RoutesHistoryRecyclerViewAdapter(
         private val routesDataCallback: (Int) -> ShortRouteData,
         private val sizeCallback: () -> Int,
@@ -23,14 +22,14 @@ class RoutesHistoryRecyclerViewAdapter(
 
 ) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val constraintLayout: ConstraintLayout)
+    inner class ViewHolder(private val constraintLayout: ConstraintLayout)
         : RecyclerView.ViewHolder(constraintLayout) {
 
-        val speedTextView: TextView
-        val distanceTextView: TextView
-        val durationTextView: TextView
-        val whenTextView: TextView
-        val labelTextView: TextView
+        private val speedTextView: TextView
+        private val distanceTextView: TextView
+        private val durationTextView: TextView
+        private val whenTextView: TextView
+        private val labelTextView: TextView
 
         init {
 
@@ -63,6 +62,16 @@ class RoutesHistoryRecyclerViewAdapter(
         }
     }
 
+    private val listeners = mutableListOf<OnItemClickListener>()
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        listeners.add(onItemClickListener)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
 
         val constraintLayout = LayoutInflater
@@ -77,6 +86,10 @@ class RoutesHistoryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        holder.itemView.setOnClickListener {
+
+            listeners.forEach { it.onItemClick(position) }
+        }
         holder.bindView(position)
     }
 

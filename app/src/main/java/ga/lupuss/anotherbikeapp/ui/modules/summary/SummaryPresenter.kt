@@ -6,6 +6,7 @@ import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
+import timber.log.Timber
 import javax.inject.Inject
 
 class SummaryPresenter @Inject constructor(private val routesManager: RoutesManager,
@@ -17,11 +18,52 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
 
     private lateinit var routeData: ExtendedRouteData
 
+    private lateinit var mode: Mode
+    private var docReference: String? = null
+
+    enum class Mode {
+        OVERVIEW, AFTER_TRACKING_SUMMARY
+    }
+
+    fun initMode(mode: Mode, docReference: String?) {
+        this.mode = mode
+
+        if (mode == Mode.OVERVIEW) {
+
+            summaryView.isRouteEditLineVisible = false
+            summaryView.isProgressBarVisible = true
+            summaryView.isStatsFragmentVisible = false
+            this.docReference = docReference
+        }
+    }
+
     override fun notifyOnViewReady() {
 
-        routesManager.getTempRoute() ?: throw IllegalStateException("no route to show")
+        if (mode == Mode.AFTER_TRACKING_SUMMARY) {
 
-        routeData = routesManager.getTempRoute()!!
+            routesManager.getTempRoute() ?: throw IllegalStateException("no route to show")
+
+            routeData = routesManager.getTempRoute()!!
+
+            showExtendedRouteData(routeData)
+
+        } else {
+
+            routesManager.requestExtendedRoutesData(
+                    docReference!!,
+                    {
+
+                        summaryView.isStatsFragmentVisible = true
+                        summaryView.isProgressBarVisible = false
+                        summaryView.isRouteEditLineVisible = true
+                        showExtendedRouteData(it)
+                    },
+                    { Timber.d(it) }
+            )
+        }
+    }
+
+    private fun showExtendedRouteData(routeData: ExtendedRouteData) {
 
         summaryView.showRouteLine(routeData.points)
         summaryView.showStatistics(
@@ -38,18 +80,26 @@ class SummaryPresenter @Inject constructor(private val routesManager: RoutesMana
 
     fun onSaveClick() {
 
-        val name = summaryView.getRouteNameFromEditText()
+        if (mode == Mode.AFTER_TRACKING_SUMMARY) {
 
-        routeData.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+            val name = summaryView.getRouteNameFromEditText()
 
-        routesManager.saveRoute(routeData)
-        summaryView.finishActivity()
+            routeData.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+
+            routesManager.saveRoute(routeData)
+            summaryView.finishActivity()
+        }
     }
 
     fun onRejectClick() {
 
-        summaryView.showRejectDialog {
+        if (mode == Mode.AFTER_TRACKING_SUMMARY) {
 
+            summaryView.showRejectDialog {
+
+                summaryView.finishActivity()
+            }
+        } else {
             summaryView.finishActivity()
         }
     }

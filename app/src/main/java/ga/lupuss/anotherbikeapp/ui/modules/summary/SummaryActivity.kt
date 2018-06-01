@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -28,6 +29,36 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
     lateinit var map: GoogleMap
 
+    private lateinit var mode: SummaryPresenter.Mode
+    private var docReference: String? = null
+
+    override var isRouteEditLineVisible: Boolean = true
+        set(value) {
+            nameLabel?.let {
+                it.visibility = if (value) View.VISIBLE else View.INVISIBLE
+                routeNameEdit.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            }
+            field = value
+        }
+
+    override var isStatsFragmentVisible: Boolean = true
+        set(value) {
+
+            statsFragmentWrapper?.let {
+                it.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            }
+            field = value
+        }
+
+    override var isProgressBarVisible: Boolean = false
+        set(value) {
+
+            summaryProgressBar?.let {
+                it.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            }
+            field = value
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Dagger MUST be first
@@ -41,6 +72,14 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
         activateToolbar(toolbarSummary)
+
+        mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))
+
+        if (mode == SummaryPresenter.Mode.OVERVIEW) {
+            docReference = intent.extras.getString(DOC_REFERENCE_KEY)
+        }
+
+        summaryPresenter.initMode(mode, docReference)
 
         (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(this)
     }
@@ -131,8 +170,19 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
     companion object {
 
+        const val MODE_KEY = "modeKey"
+        const val DOC_REFERENCE_KEY = "positionKey"
+
         @JvmStatic
         fun newIntent(context: Context) =
                 Intent(context, SummaryActivity::class.java)
+                        .putExtra(MODE_KEY, SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY.toString())
+
+        @JvmStatic
+        fun newIntent(context: Context, docReference: String) =
+                Intent(context, SummaryActivity::class.java)
+                        .putExtra(MODE_KEY, SummaryPresenter.Mode.OVERVIEW.toString())
+                        .putExtra(DOC_REFERENCE_KEY, docReference)
+
     }
 }

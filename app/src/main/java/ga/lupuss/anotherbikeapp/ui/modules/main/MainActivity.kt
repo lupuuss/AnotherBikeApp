@@ -37,7 +37,11 @@ import kotlinx.android.synthetic.main.activity_main_ui.*
 /**
  * Main user's interface.
  */
-class MainActivity : BaseActivity(), MainView, AdapterView.OnItemClickListener {
+class MainActivity
+    : BaseActivity(),
+        MainView,
+        AdapterView.OnItemClickListener,
+        RoutesHistoryRecyclerViewAdapter.OnItemClickListener {
 
     @Inject
     lateinit var mainPresenter: MainPresenter
@@ -110,6 +114,8 @@ class MainActivity : BaseActivity(), MainView, AdapterView.OnItemClickListener {
                 stringsResolver
         )
 
+        adapter.setOnItemClickListener(this)
+
         routesHistoryRecycler.apply {
             setItemViewCacheSize(3)
             isNestedScrollingEnabled = false
@@ -154,6 +160,13 @@ class MainActivity : BaseActivity(), MainView, AdapterView.OnItemClickListener {
 
     // onClicks
 
+    // Recycler View
+    override fun onItemClick(position: Int) {
+
+        mainPresenter.onClickShortRoute(position)
+    }
+
+    // Drawer Layout
     override fun onItemClick(adapterView: AdapterView<*>, view: View?, i: Int, l: Long) {
 
         @Suppress("UNCHECKED_CAST")
@@ -285,6 +298,10 @@ class MainActivity : BaseActivity(), MainView, AdapterView.OnItemClickListener {
         startActivity(SummaryActivity.newIntent(this))
     }
 
+    override fun startSummaryActivity(docRef: String) {
+
+        startActivity(SummaryActivity.newIntent(this, docRef))
+    }
 
     class Request {
         companion object {

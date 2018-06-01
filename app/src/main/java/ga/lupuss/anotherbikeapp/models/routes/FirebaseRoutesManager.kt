@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.routes
 
+import com.google.android.gms.tasks.Continuation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
@@ -10,13 +11,12 @@ import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
-import java.util.*
+import timber.log.Timber
 
 
 class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
                             private val firebaseFirestore: FirebaseFirestore,
-                            private val routeKeeper: TempRouteKeeper,
-                            val locale: Locale) : RoutesManager {
+                            private val routeKeeper: TempRouteKeeper): RoutesManager {
 
     private val onRoutesChangedListeners = mutableListOf<OnDocumentChanged>()
     private val userPath = "$FIREB_USERS/${firebaseAuth.currentUser!!.uid}"
@@ -54,10 +54,14 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
 
     override fun shortRouteDataCount() = queryManager.size
 
+    override fun getMoreInfoReference(position: Int): String =
+            queryManager.readDocument(position).toShortRouteData().more!!.path
+
     override fun requestExtendedRoutesData(
+            docReference: String,
             onDataOk: ((ExtendedRouteData) -> Unit)?,
             onDataFail: ((Exception) -> Unit)?) {
-
+        Timber.d(docReference)
     }
 
     override fun saveRoute(routeData: ExtendedRouteData) {

@@ -9,6 +9,7 @@ import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryPresenter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 
@@ -107,6 +108,12 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
             mainView.setProgressBarVisibility(View.GONE)
             Timber.d(it)
         })
+    }
+
+    fun onClickShortRoute(position: Int) {
+
+        mainView.startSummaryActivity(routesManager.getMoreInfoReference(position))
+
     }
 
     fun onClickTrackingButton() {

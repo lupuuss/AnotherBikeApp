@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mapFrameSummary"
-        app:layout_constraintBottom_toTopOf="@id/statsFragment">
+        app:layout_constraintBottom_toTopOf="@id/statsFragmentWrapper">
         <TextView
             android:id="@+id/nameLabel"
             android:text="@string/name_edit_text_title"
@@ -54,18 +54,33 @@
             android:layout_marginStart="30dp"/>
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/summaryProgressBar"
+        android:visibility="invisible"
+        android:elevation="2dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:indeterminateTint="?android:textColor"
+        android:layout_margin="60dp"
+        app:layout_constraintBottom_toBottomOf="@id/statsFragmentWrapper"
+        app:layout_constraintTop_toTopOf="@id/statsFragmentWrapper"
+        app:layout_constraintStart_toStartOf="@id/statsFragmentWrapper"
+        app:layout_constraintEnd_toEndOf="@id/statsFragmentWrapper"/>
 
-    <fragment
-        android:id="@+id/statsFragment"
-        android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
+    <FrameLayout
+        android:id="@+id/statsFragmentWrapper"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        tools:layout="@layout/fragment_stats"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
+        app:layout_constraintBottom_toBottomOf="parent">
+        <fragment
+            android:id="@+id/statsFragment"
+            android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_stats" />
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

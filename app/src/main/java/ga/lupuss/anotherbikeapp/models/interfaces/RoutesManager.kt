@@ -12,9 +12,10 @@ interface RoutesManager {
     fun readShortRouteData(position: Int): ShortRouteData
 
     fun shortRouteDataCount(): Int
-    fun requestExtendedRoutesData(onDataOk: ((ExtendedRouteData) -> Unit)?, onDataFail: ((Exception) -> Unit)?)
+    fun requestExtendedRoutesData(docReference: String, onDataOk: ((ExtendedRouteData) -> Unit)?, onDataFail: ((Exception) -> Unit)?)
     fun saveRoute(routeData: ExtendedRouteData)
     fun keepTempRoute(routeData: ExtendedRouteData)
     fun getTempRoute(): ExtendedRouteData?
     fun clearTempRoute()
+    fun getMoreInfoReference(position: Int): String
 }

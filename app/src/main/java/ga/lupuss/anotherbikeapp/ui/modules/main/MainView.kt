@@ -5,7 +5,9 @@ import ga.lupuss.anotherbikeapp.base.BaseView
 interface MainView : BaseView {
 
     fun startTrackingActivity()
+    fun startSettingsActivity()
     fun startSummaryActivity()
+    fun startSummaryActivity(docRef: String)
 
     fun setTrackingButtonState(trackingInProgress: Boolean)
 
@@ -20,5 +22,4 @@ interface MainView : BaseView {
     fun setDrawerHeaderInfos(displayName: String?, email: String?)
     fun startLoginActivity()
     fun showExitWarningDialog(onYesClick: () -> Unit)
-    fun startSettingsActivity()
 }
