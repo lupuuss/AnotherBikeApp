@@ -10,6 +10,7 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,13 +21,16 @@ import javax.inject.Inject
  *  To receive location changes implement [TrackingServiceInteractor.LocationDataReceiver].
  *  To receive statistics updates implement [TrackingServiceInteractor.OnStatsUpdateListener]
  */
-class TrackingService : Service() {
+class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
     @Inject
     lateinit var statsManager: StatisticsManager
 
     @Inject
     lateinit var locationClient: FusedLocationProviderClient
+
+    @Inject
+    lateinit var preferencesInteractor: PreferencesInteractor
 
     val savedRoute
         get() = statsManager.savedRoute
@@ -128,6 +132,13 @@ class TrackingService : Service() {
                 this@TrackingService.removeOnStatsUpdateListener(onStatsUpdateListener)
     }
 
+    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
+
+        statsManager.speedUnit = speedUnit
+        statsManager.distanceUnit = distanceUnit
+        statsManager.refresh()
+    }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -139,6 +150,8 @@ class TrackingService : Service() {
         uiThread = Handler(mainLooper)
         thread.start()
         backgroundThread = Handler(thread.looper)
+
+        preferencesInteractor.addOnUnitChangedListener(this, this)
 
         statsManager.onNewStats = { stats ->
 

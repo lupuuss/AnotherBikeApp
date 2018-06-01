@@ -156,6 +156,11 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         newStats()
     }
 
+    fun refresh() {
+
+        newStats()
+    }
+
     private fun newStats() {
         val stats = createStatsList()
         lastStats = stats
