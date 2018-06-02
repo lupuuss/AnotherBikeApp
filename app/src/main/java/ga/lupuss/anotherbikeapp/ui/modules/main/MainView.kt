@@ -16,10 +16,12 @@ interface MainView : BaseView {
     fun notifyRecyclerItemRemoved(position: Int)
     fun notifyRecyclerItemInserted(position: Int)
 
+    val isDrawerLayoutOpened: Boolean
     fun setNoDataTextVisibility(visibility: Int)
     fun setRoutesHistoryVisibility(visibility: Int)
     fun setProgressBarVisibility(visibility: Int)
     fun setDrawerHeaderInfos(displayName: String?, email: String?)
     fun startLoginActivity()
     fun showExitWarningDialog(onYesClick: () -> Unit)
+    fun hideDrawer()
 }

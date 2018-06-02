@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.base
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -12,13 +11,15 @@ import android.widget.Toast
 import android.net.ConnectivityManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.PermissionChecker
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
-import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
@@ -35,6 +36,13 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
     private val locationPermissionRequestCode = 1
     private var onLocationPermissionRequestResult: ((Boolean) -> Unit)? = null
 
+    private enum class HomeActionMode {
+        DRAWER_TOGGLE, BACK
+    }
+
+    private lateinit var mode: HomeActionMode
+    private var toggle: ActionBarDrawerToggle? = null
+
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +52,22 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
     }
 
     fun activateToolbar(toolbar: Toolbar) {
+
+        activateToolbar(toolbar, null)
+    }
+
+    fun activateToolbar(toolbar: Toolbar, drawerLayout: DrawerLayout?) {
+
         setSupportActionBar(toolbar)
+
+        this.mode = if (drawerLayout != null) HomeActionMode.DRAWER_TOGGLE else HomeActionMode.BACK
+
+        drawerLayout?.let {
+
+            toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+            drawerLayout.addDrawerListener(toggle!!)
+            toggle!!.syncState()
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -92,15 +115,21 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
         applyTheme(theme)
     }
 
-
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (item.itemId == android.R.id.home) {
+        return if (mode == HomeActionMode.DRAWER_TOGGLE) {
 
-            onBackPressed()
+            toggle!!.onOptionsItemSelected(item)
+
+
+        } else {
+
+            if (item.itemId == android.R.id.home) {
+
+                onBackPressed()
+            }
+            super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun makeToast(str: String) {

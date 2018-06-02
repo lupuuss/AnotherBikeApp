@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.GravityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
@@ -21,7 +22,6 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 import javax.inject.Inject
 import android.support.v4.widget.NestedScrollView
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import android.widget.AdapterView
 import android.widget.TextView
@@ -71,6 +71,10 @@ class MainActivity
             Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
     )
 
+    override var isDrawerLayoutOpened = false
+        get() = drawerLayout?.isDrawerOpen(GravityCompat.START) ?: false
+        private set
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -93,20 +97,14 @@ class MainActivity
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        activateToolbar(toolbarMain)
-
         androidTrackingServiceGovernor.init(this, savedInstanceState)
 
-        drawerLayout.addDrawerListener(
-                ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-                        .apply { syncState() }
-        )
+        activateToolbar(toolbarMain, drawerLayout)
 
         drawerListView.adapter = DrawerListViewAdapter(drawerListViewChildren, layoutInflater)
-
         drawerListView.onItemClickListener = this
 
-        val adapter = RoutesHistoryRecyclerViewAdapter(
+        val recyclerViewAdapter = RoutesHistoryRecyclerViewAdapter(
                 mainPresenter::onHistoryRecyclerItemRequest,
                 mainPresenter::onHistoryRecyclerItemCountRequest,
                 mainPresenter::speedUnit,
@@ -114,12 +112,12 @@ class MainActivity
                 stringsResolver
         )
 
-        adapter.setOnItemClickListener(this)
+        recyclerViewAdapter.setOnItemClickListener(this)
 
         routesHistoryRecycler.apply {
             setItemViewCacheSize(3)
             isNestedScrollingEnabled = false
-            this.adapter = adapter
+            this.adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
             addItemDecoration(BottomSpaceItemDecoration(dpToPixels(this@MainActivity, 5F)))
         }
@@ -128,7 +126,6 @@ class MainActivity
 
             if (!v!!.canScrollVertically(1))
                 mainPresenter.notifyRecyclerReachedBottom()
-
         })
 
         mainPresenter.notifyOnViewReady()
@@ -201,6 +198,11 @@ class MainActivity
     }
 
     // MainView Impl
+
+    override fun hideDrawer() {
+
+        drawerLayout.closeDrawer(GravityCompat.START)
+    }
 
     override fun setNoDataTextVisibility(visibility: Int) {
 

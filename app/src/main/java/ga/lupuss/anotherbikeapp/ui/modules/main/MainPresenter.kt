@@ -153,7 +153,11 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     fun onExitRequest() {
 
-        if (trackingServiceGovernor.serviceInteractor == null
+        if (mainView.isDrawerLayoutOpened) {
+
+            mainView.hideDrawer()
+
+        } else if (trackingServiceGovernor.serviceInteractor == null
                 || !trackingServiceGovernor.serviceInteractor!!.isServiceInProgress()) {
 
             mainView.finishActivity()
