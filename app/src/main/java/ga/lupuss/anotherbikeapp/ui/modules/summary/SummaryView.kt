@@ -9,9 +9,13 @@ interface SummaryView : BaseView {
     var isRouteEditLineVisible: Boolean
     var isStatsFragmentVisible: Boolean
     var isProgressBarVisible: Boolean
+    var isRejectActionVisible: Boolean
+    var isSaveActionVisible: Boolean
 
     fun showRouteLine(points: List<LatLng>)
     fun showStatistics(statistics: Map<Statistic.Name, Statistic<*>>)
     fun showRejectDialog(onYes: () -> Unit)
+    fun showDeleteDialog(onYes: () -> Unit)
     fun getRouteNameFromEditText(): String
+    fun setNameLabelValue(value: String)
 }

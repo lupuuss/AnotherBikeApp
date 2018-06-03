@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
@@ -22,8 +23,10 @@ class AnotherBikeAppModule {
     @AnotherBikeAppScope
     fun providesRoutesManager(firebaseAuth: FirebaseAuth,
                               routesKeeper: TempRouteKeeper,
-                              firebaseFirestore: FirebaseFirestore): RoutesManager =
-            FirebaseRoutesManager(firebaseAuth, firebaseFirestore, routesKeeper)
+                              firebaseFirestore: FirebaseFirestore,
+                              locale: Locale,
+                              gson: Gson): RoutesManager =
+            FirebaseRoutesManager(firebaseAuth, firebaseFirestore, routesKeeper, locale, gson)
 
     @Provides
     @AnotherBikeAppScope

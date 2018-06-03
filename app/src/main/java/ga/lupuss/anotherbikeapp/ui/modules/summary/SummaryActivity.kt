@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -15,6 +16,7 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import ga.lupuss.anotherbikeapp.models.interfaces.RouteReference
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
@@ -25,12 +27,13 @@ import javax.inject.Inject
 class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
     @Inject
-    lateinit var summaryPresenter: SummaryPresenter
+    lateinit var summaryPresenter: MainSummaryPresenter
 
     lateinit var map: GoogleMap
 
     private lateinit var mode: SummaryPresenter.Mode
-    private var docReference: String? = null
+    private lateinit var rejectItem: MenuItem
+    private lateinit var saveItem: MenuItem
 
     override var isRouteEditLineVisible: Boolean = true
         set(value) {
@@ -59,6 +62,26 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
             field = value
         }
 
+    override var isRejectActionVisible = true
+        set(value) {
+
+            if (::rejectItem.isInitialized) {
+
+                rejectItem.isVisible = value
+            }
+            field = value
+        }
+
+    override var isSaveActionVisible = true
+        set(value) {
+
+            if (::saveItem.isInitialized) {
+
+                saveItem.isVisible = value
+            }
+            field = value
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Dagger MUST be first
@@ -75,7 +98,10 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
         mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))
 
+        var docReference: String? = null
+
         if (mode == SummaryPresenter.Mode.OVERVIEW) {
+
             docReference = intent.extras.getString(DOC_REFERENCE_KEY)
         }
 
@@ -87,18 +113,30 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
 
         this.map = map!!
+        map.uiSettings.setAllGesturesEnabled(false)
+
+        map.setOnMapClickListener {
+            summaryPresenter.onMapClick()
+        }
         summaryPresenter.notifyOnViewReady()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         menuInflater.inflate(R.menu.activity_summary_menu, menu)
+
+        rejectItem = menu!!.findItem(R.id.itemRejectRoute)
+        saveItem = menu.findItem(R.id.itemSaveRoute)
+
+        saveItem.isVisible = isSaveActionVisible
+        rejectItem.isVisible = isRejectActionVisible
+
         return true
     }
 
     override fun onBackPressed() {
 
-        onRejectClick(null)
+        summaryPresenter.onExitRequest()
     }
 
     override fun onDestroy() {
@@ -122,31 +160,33 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
     // SummaryView impl
 
+    override fun setNameLabelValue(value: String) {
+        routeNameEdit.setText(value, TextView.BufferType.EDITABLE)
+    }
+
     override fun showRouteLine(points: List<LatLng>) {
 
         val icon = ViewExtensions.getDefaultMarkerIconForColor(theme.getColorForAttr(R.attr.markersColor))
 
-        map.addMarker(
-                MarkerOptions()
-                        .title(getString(R.string.start))
-                        .icon(icon)
-                        .position(points.first())
-        )
+        if (points.isNotEmpty()) {
 
-        map.addPolyline(PolylineOptions().addAll(points).color(theme.getColorForAttr(R.attr.trackLineColor)))
+            map.addMarker(
+                    MarkerOptions()
+                            .title(getString(R.string.start))
+                            .icon(icon)
+                            .position(points.first())
+            )
 
-        map.addMarker(
-                MarkerOptions()
-                        .title(getString(R.string.end))
-                        .icon(icon)
-                        .position(points.last())
-        )
+            map.addPolyline(PolylineOptions().addAll(points).color(theme.getColorForAttr(R.attr.trackLineColor)))
 
-        map.fitToPoints(points, 150, 18F)
-        map.uiSettings.setAllGesturesEnabled(false)
+            map.addMarker(
+                    MarkerOptions()
+                            .title(getString(R.string.end))
+                            .icon(icon)
+                            .position(points.last())
+            )
 
-        map.setOnMapClickListener {
-            summaryPresenter.onMapClick()
+            map.fitToPoints(points, 150, 18F)
         }
     }
 
@@ -160,8 +200,18 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
         AlertDialog.Builder(this)
                 .setIcon(R.drawable.ic_delete_24dp)
                 .setTitle(R.string.warning)
-                .setMessage(R.string.message_reject_warning)
+                .setMessage(R.string.messageRejectWarning)
                 .setPositiveButton(R.string.reject, { _, _ -> onYes.invoke() })
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+    }
+
+    override fun showDeleteDialog(onYes: () -> Unit) {
+        AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_delete_24dp)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.messageDeleteRouteWarning)
+                .setPositiveButton(R.string.delete, { _, _ -> onYes.invoke() })
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }

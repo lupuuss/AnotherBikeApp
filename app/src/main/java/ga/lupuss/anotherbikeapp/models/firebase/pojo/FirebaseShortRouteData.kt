@@ -1,8 +1,10 @@
 package ga.lupuss.anotherbikeapp.models.firebase.pojo
 
 import com.google.firebase.firestore.DocumentReference
+import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 
-class FirebaseShortRouteData : FirebaseBaseRouteData() {
+class FirebaseShortRouteData : ShortRouteData() {
 
-    var more: DocumentReference? = null
+    var route: DocumentReference? = null
+    var points: DocumentReference? = null
 }

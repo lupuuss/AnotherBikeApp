@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.dataclass
 
+import com.google.android.gms.maps.model.LatLng
+
 open class RouteData(
         name: String?,
         distance: Double,
@@ -18,6 +20,20 @@ open class RouteData(
                 Statistic.Name.MAX_SPEED to UnitStatistic(maxSpeed, speedUnit),
                 Statistic.Name.DURATION to TimeStatistic(duration),
                 Statistic.Name.START_TIME to StringStatistic(startTimeStr)
+        )
+    }
+
+    fun toExtendedRouteData(points: MutableList<LatLng>?): ExtendedRouteData {
+
+        return ExtendedRouteData(
+                name = name,
+                distance = distance,
+                avgSpeed = avgSpeed,
+                duration = duration,
+                startTime = startTime,
+                startTimeStr = startTimeStr,
+                maxSpeed = maxSpeed,
+                points = points ?: emptyList<LatLng>().toMutableList()
         )
     }
 }
