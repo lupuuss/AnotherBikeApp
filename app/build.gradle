@@ -32,7 +32,7 @@ dependencies {
 
     ext {
         support_library_version = '26.1.0'
-        google_play_services_version = '11.4.2'
+        google_play_services_version = '15.0.0'
     }
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
