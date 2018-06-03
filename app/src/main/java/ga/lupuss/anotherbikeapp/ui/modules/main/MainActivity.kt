@@ -67,7 +67,7 @@ class MainActivity
     )
 
     private val drawerListViewChildren = listOf(
-            Pair(ItemName.SIGN_OUT, StrIconRes(R.string.sign_out, R.drawable.ic_sign_out_24dp)),
+            Pair(ItemName.SIGN_OUT, StrIconRes(R.string.signOut, R.drawable.ic_sign_out_24dp)),
             Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
     )
 
@@ -212,7 +212,7 @@ class MainActivity
     override fun setTrackingButtonState(trackingInProgress: Boolean) {
 
         trackingButton.setText(
-                if (trackingInProgress) R.string.continue_tracking else R.string.start_tracking
+                if (trackingInProgress) R.string.continueTracking else R.string.startTracking
         )
     }
 

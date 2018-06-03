@@ -75,7 +75,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:colorPrimaryDark"
-            android:text="@string/create_new_account"
+            android:text="@string/createNewAccount"
             android:layout_marginTop="15dp"
             android:onClick="onClickCreateAccount"
             app:layout_constraintStart_toStartOf="@id/passwordEditInclude"

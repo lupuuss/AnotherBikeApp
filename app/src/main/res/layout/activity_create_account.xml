@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/new_account"
+            android:text="@string/newAccount"
             android:textAlignment="center"
             android:layout_marginTop="70dp"
             android:textSize="25sp"/>
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:colorPrimaryDark"
-            android:text="@string/create_new_account"
+            android:text="@string/createNewAccount"
             android:layout_marginTop="30dp"
             android:onClick="onClickCreateNewAccount"
             app:layout_constraintStart_toStartOf="@id/passwordEditInclude"

@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toTopOf="@id/statsFragmentWrapper">
         <TextView
             android:id="@+id/nameLabel"
-            android:text="@string/name_edit_text_title"
+            android:text="@string/nameEditTextTitle"
             android:layout_marginStart="20dp"
             android:textSize="15sp"
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:inputType="text"
-            android:hint="@string/enter_name"
+            android:hint="@string/enterName"
             android:textColorHint="?android:textColor"
             android:layout_marginStart="30dp"/>
     </LinearLayout>

@@ -318,7 +318,7 @@ class TrackingActivity : BaseActivity(),
 
         AlertDialog.Builder(this)
                 .setTitle(R.string.warning)
-                .setMessage(R.string.message_finish_tracking)
+                .setMessage(R.string.messageFinishTracking)
                 .setPositiveButton(R.string.yes, { _, _ ->
                     onYesAction.invoke()
                 })

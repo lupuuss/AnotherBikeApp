@@ -16,7 +16,7 @@ class AndroidStringsResolver(private val context: Context) : StringsResolver {
         Message.ACCOUNT_CREATED -> R.string.accountCreated
         Message.USER_EXISTS -> R.string.userExists
         Message.SOMETHING_GOES_WRONG -> R.string.somethingGoesWrong
-        Message.FILL_ALL_FIELDS -> R.string.fillAllFileds
+        Message.FILL_ALL_FIELDS -> R.string.fillAllFields
         Message.NO_INTERNET_CONNECTION -> R.string.noInternetConnection
         Message.EMAIL_OR_PASSWORD_BLANK -> R.string.passwordOrEmailBlank
         Message.INCORRECT_CREDENTIALS -> R.string.wrongCredentials
@@ -25,7 +25,7 @@ class AndroidStringsResolver(private val context: Context) : StringsResolver {
     })
 
     override fun resolve(text: Text): String = context.getString(when (text) {
-        Text.DEFAULT_ROUTE_NAME -> R.string.default_route_name
+        Text.DEFAULT_ROUTE_NAME -> R.string.defaultRouteName
     })
 
 

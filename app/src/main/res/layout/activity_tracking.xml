@@ -14,7 +14,7 @@
         android:layout_height="?android:actionBarSize"
         android:elevation="4dp"
         android:background="?android:colorPrimary"
-        app:title="@string/title_activity_tracking" />
+        app:title="@string/titleActivityTacking" />
 
     <include
         layout="@layout/map_frame"
