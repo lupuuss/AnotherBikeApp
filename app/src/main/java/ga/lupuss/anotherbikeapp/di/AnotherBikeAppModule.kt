@@ -8,8 +8,8 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.routes.FirebaseRoutesManager
-import ga.lupuss.anotherbikeapp.models.routes.TempRouteKeeper
+import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
+import ga.lupuss.anotherbikeapp.models.firebase.TempRouteKeeper
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor

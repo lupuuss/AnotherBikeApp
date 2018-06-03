@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.routes
+package ga.lupuss.anotherbikeapp.models.firebase
 
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import javax.inject.Inject

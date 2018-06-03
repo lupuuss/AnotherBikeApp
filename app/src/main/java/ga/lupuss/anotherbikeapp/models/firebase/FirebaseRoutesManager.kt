@@ -1,11 +1,9 @@
-package ga.lupuss.anotherbikeapp.models.routes
+package ga.lupuss.anotherbikeapp.models.firebase
 
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
-import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
-import ga.lupuss.anotherbikeapp.models.firebase.QueryLoadingManager
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
@@ -13,8 +11,6 @@ import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.RouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
-import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRouteReference
-import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRouteReferenceSerializer
 import ga.lupuss.anotherbikeapp.models.interfaces.RouteReference
 import ga.lupuss.anotherbikeapp.models.interfaces.RouteReferenceSerializer
 import timber.log.Timber
