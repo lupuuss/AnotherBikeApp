@@ -166,11 +166,16 @@ class MainActivity
     // Drawer Layout
     override fun onItemClick(adapterView: AdapterView<*>, view: View?, i: Int, l: Long) {
 
-        @Suppress("UNCHECKED_CAST")
-        when ((adapterView.adapter.getItem(i) as Pair<ItemName, StrIconRes>).first) {
+        val item = adapterView.adapter.getItem(i)
 
-            ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
-            ItemName.SETTINGS -> mainPresenter.onClickSettings()
+        if (item is Pair<*, *> && item.first is ItemName) {
+
+            @Suppress("UNCHECKED_CAST")
+            when (item.first) {
+
+                ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
+                ItemName.SETTINGS -> mainPresenter.onClickSettings()
+            }
         }
 
     }
