@@ -23,6 +23,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
+import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
@@ -61,7 +62,11 @@ class TrackingActivity : BaseActivity(),
             field = value
         }
 
-
+    override var isInfoWaitForLocationVisible: Boolean = true
+        set(value) {
+            infoWaitForLocation?.isVisible = value
+            field = value
+        }
     private val onMapAnLayoutReady = OnMapAndLayoutReady {
 
         infoContainerVisibility = View.VISIBLE
@@ -253,11 +258,6 @@ class TrackingActivity : BaseActivity(),
 
         (supportFragmentManager.findFragmentById(R.id.statsFragment) as StatsFragment?)
                 ?.updateStats(stats)
-    }
-
-    override fun setInfoWaitForLocationVisibility(visibility: Int) {
-
-        infoWaitForLocation?.visibility = visibility
     }
 
     override fun isTrackLineReady() = trackLine != null

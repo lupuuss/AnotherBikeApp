@@ -10,7 +10,7 @@ interface TrackingView : BaseView {
     fun updateTrackLine(points: List<LatLng>)
     fun prepareMapToTrack(points: List<LatLng>)
 
-    fun setInfoWaitForLocationVisibility(visibility: Int)
+    var isInfoWaitForLocationVisible: Boolean
 
     fun isTrackLineReady(): Boolean
 

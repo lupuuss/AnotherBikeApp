@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
-import android.view.View
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
@@ -23,10 +22,7 @@ class TrackingPresenter @Inject constructor()
     private var isLocationAvailable: Boolean = false
         private set(value) {
 
-            trackingView.setInfoWaitForLocationVisibility(
-
-                    if (value) View.INVISIBLE else View.VISIBLE
-            )
+            trackingView.isInfoWaitForLocationVisible = value
             field = value
         }
 
@@ -70,6 +66,7 @@ class TrackingPresenter @Inject constructor()
         if (serviceInteractor.isServiceInProgress()) {
 
             trackingView.showFinishTrackingDialog {
+
                 trackingView.finishActivityWithResult(TrackingActivity.Result.DONE)
             }
 
