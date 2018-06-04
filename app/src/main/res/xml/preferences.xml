@@ -5,20 +5,23 @@
         android:title="@string/prefThemesTitle"
         android:summary="@string/prefThemesSummary"
         android:entries="@array/themes"
-        android:entryValues="@array/themeKeys" />
+        android:entryValues="@array/themeKeys"
+        android:defaultValue="GREY"/>
 
     <ListPreference
         android:key="@string/prefUnitSpeedKey"
         android:title="@string/prefUnitSpeedTitle"
         android:summary="@string/prefUnitSpeedSummary"
         android:entries="@array/speedUnits"
-        android:entryValues="@array/speedUnitKeys" />
+        android:entryValues="@array/speedUnitKeys"
+        android:defaultValue="KM_H"/>
 
     <ListPreference
         android:key="@string/prefUnitDistanceKey"
         android:title="@string/prefUnitDistanceTitle"
         android:summary="@string/prefUnitDistanceSummary"
         android:entries="@array/distanceUnits"
-        android:entryValues="@array/distanceUnitKeys" />
+        android:entryValues="@array/distanceUnitKeys"
+        android:defaultValue="KM"/>
 
 </PreferenceScreen>
