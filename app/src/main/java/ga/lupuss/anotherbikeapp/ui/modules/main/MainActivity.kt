@@ -28,6 +28,8 @@ import android.widget.TextView
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
+import ga.lupuss.anotherbikeapp.ui.extensions.isGone
+import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -72,22 +74,14 @@ class MainActivity
     )
 
     override var isNoDataTextVisible: Boolean = true
-        set(value) {
+        set(value){ noDataText?.isVisible = value }
 
-            noDataText?.visibility = if (value) View.VISIBLE else View.INVISIBLE
-        }
 
     override var isRoutesHistoryVisible: Boolean = true
-        set(value) {
-
-            routesHistoryRecycler?.visibility = if (value) View.VISIBLE else View.INVISIBLE
-        }
+        set(value) { routesHistoryRecycler?.isVisible = value }
 
     override var isProgressBarVisible: Boolean = true
-        set(value) {
-
-            recyclerProgressBar.visibility = if (value) View.VISIBLE else View.GONE
-        }
+        set(value) { recyclerProgressBar.isGone = !value }
 
     override var isDrawerLayoutOpened = false
         get() = drawerLayout?.isDrawerOpen(GravityCompat.START) ?: false

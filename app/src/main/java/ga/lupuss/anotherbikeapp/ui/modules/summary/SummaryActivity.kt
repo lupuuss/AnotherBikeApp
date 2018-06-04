@@ -19,6 +19,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
+import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
@@ -37,8 +38,8 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override var isRouteEditLineVisible: Boolean = true
         set(value) {
             nameLabel?.let {
-                it.visibility = if (value) View.VISIBLE else View.INVISIBLE
-                routeNameEdit.visibility = if (value) View.VISIBLE else View.INVISIBLE
+                it.isVisible = value
+                routeNameEdit.isVisible = value
             }
             field = value
         }
@@ -47,7 +48,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
         set(value) {
 
             statsFragmentWrapper?.let {
-                it.visibility = if (value) View.VISIBLE else View.INVISIBLE
+                it.isVisible = value
             }
             field = value
         }
@@ -56,7 +57,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
         set(value) {
 
             summaryProgressBar?.let {
-                it.visibility = if (value) View.VISIBLE else View.INVISIBLE
+                it.isVisible = value
             }
             field = value
         }
@@ -76,7 +77,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
             if (::saveItem.isInitialized) {
 
-                saveItem.isVisible = value
+                saveItem.isVisible= value
             }
             field = value
         }

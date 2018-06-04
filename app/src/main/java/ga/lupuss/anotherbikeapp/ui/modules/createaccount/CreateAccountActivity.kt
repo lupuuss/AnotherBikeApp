@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.email_edit_text.*
 import kotlinx.android.synthetic.main.password_edit_text.*
 import javax.inject.Inject
+import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 
 class CreateAccountActivity : BaseActivity(), CreateAccountView {
 
@@ -34,7 +35,7 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
         set(value) {
 
             createAccountProgressBar?.let {
-                it.visibility = if (value) View.VISIBLE else View.GONE
+                it.isGone = !value
             }
 
             field = value

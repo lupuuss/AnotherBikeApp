@@ -9,6 +9,7 @@ import android.widget.EditText
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -36,7 +37,7 @@ class LoginActivity : BaseActivity(), LoginView {
         set(value) {
 
             signInProgressBar?.let {
-                it.visibility = if (value) View.VISIBLE else View.GONE
+                it.isGone = !value
             }
 
             field = value

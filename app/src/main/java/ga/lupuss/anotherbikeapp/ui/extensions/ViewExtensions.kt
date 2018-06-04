@@ -3,13 +3,28 @@ package ga.lupuss.anotherbikeapp.ui.extensions
 import android.annotation.SuppressLint
 import android.support.v4.graphics.ColorUtils
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 
-@SuppressLint("SetTextI18n")
+var View.isVisible
+    get() = visibility != View.VISIBLE
+    set(value) {
 
+        visibility = if (value) View.VISIBLE else View.INVISIBLE
+    }
+
+var View.isGone
+    get() = visibility != View.GONE
+    set (value) {
+
+        visibility = if (value) View.GONE else View.VISIBLE
+    }
+
+
+@SuppressLint("SetTextI18n")
 class ViewExtensions {
 
     /** Contains methods to create statistic's views. */
