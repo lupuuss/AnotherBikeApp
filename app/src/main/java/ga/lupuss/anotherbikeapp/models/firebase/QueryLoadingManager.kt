@@ -101,7 +101,7 @@ class QueryLoadingManager(private val rootQuery: Query,
 
         for (change in allChanges) {
 
-            Timber.d("  > ${change.document.data}")
+            Timber.d("${change.type} > ${change.document.data}")
 
             when (change.type) {
 
