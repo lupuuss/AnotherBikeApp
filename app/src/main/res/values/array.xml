@@ -16,6 +16,7 @@
         <item>@string/unitSpeedMs</item>
     </string-array>
 
+    <!-- MUST fit Statistic.Unit enum -->
     <string-array name="speedUnitKeys">
         <item>KM_H</item>
         <item>M_S</item>
@@ -26,6 +27,7 @@
         <item>@string/unitDistanceM</item>
     </string-array>
 
+    <!-- MUST fit Statistic.Unit enum -->
     <string-array name="distanceUnitKeys">
         <item>KM</item>
         <item>M</item>
