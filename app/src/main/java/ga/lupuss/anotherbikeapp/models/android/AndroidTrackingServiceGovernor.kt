@@ -7,8 +7,8 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import ga.lupuss.anotherbikeapp.base.BaseActivity
-import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
-import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
+import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
+import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import timber.log.Timber
 

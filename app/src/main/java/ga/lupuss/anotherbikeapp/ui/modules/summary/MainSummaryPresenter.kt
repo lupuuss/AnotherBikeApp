@@ -1,8 +1,8 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
-import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
-import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
+import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import javax.inject.Inject
 
 

@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.interfaces
+package ga.lupuss.anotherbikeapp.models.base
 
 interface RouteReferenceSerializer {
     fun serialize(routeReference: RouteReference): String

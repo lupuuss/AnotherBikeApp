@@ -16,10 +16,9 @@ import android.support.v7.app.ActionBarDrawerToggle
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 

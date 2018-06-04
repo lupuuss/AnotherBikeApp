@@ -1,8 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
 import com.google.firebase.firestore.DocumentReference
-import ga.lupuss.anotherbikeapp.models.interfaces.RouteReference
-import org.w3c.dom.Document
+import ga.lupuss.anotherbikeapp.models.base.RouteReference
 
 class FirebaseRouteReference(
         var userRouteReference: DocumentReference?,

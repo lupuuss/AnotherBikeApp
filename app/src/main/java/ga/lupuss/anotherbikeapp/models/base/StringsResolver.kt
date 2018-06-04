@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.interfaces
+package ga.lupuss.anotherbikeapp.models.base
 
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.Text

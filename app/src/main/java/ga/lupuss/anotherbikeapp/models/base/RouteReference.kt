@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.interfaces
+package ga.lupuss.anotherbikeapp.models.base
 
 /**
  * It's empty because implementation of it's up to RoutesManager.

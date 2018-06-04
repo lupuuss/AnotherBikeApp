@@ -3,11 +3,11 @@ package ga.lupuss.anotherbikeapp.ui.modules.main
 import android.view.View
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
-import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
-import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
+import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber

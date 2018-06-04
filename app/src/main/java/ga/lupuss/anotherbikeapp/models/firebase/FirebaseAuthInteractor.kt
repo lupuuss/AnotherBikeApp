@@ -3,7 +3,7 @@ package ga.lupuss.anotherbikeapp.models.firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
-import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import timber.log.Timber
 
 class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInteractor {

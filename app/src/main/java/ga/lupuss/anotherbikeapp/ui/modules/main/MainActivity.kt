@@ -26,7 +26,7 @@ import android.support.v7.app.AlertDialog
 import android.widget.AdapterView
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
-import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceGovernor
+import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity

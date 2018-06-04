@@ -1,10 +1,10 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import ga.lupuss.anotherbikeapp.Text
-import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.RouteReference
-import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
-import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.models.base.RouteReference
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
+import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import timber.log.Timber
 
 class OverviewSummaryPresenter(

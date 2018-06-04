@@ -16,7 +16,6 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import ga.lupuss.anotherbikeapp.models.interfaces.RouteReference
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
@@ -224,12 +223,12 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
         const val DOC_REFERENCE_KEY = "positionKey"
 
         @JvmStatic
-        fun newIntent(context: Context) =
+        fun newIntent(context: Context): Intent =
                 Intent(context, SummaryActivity::class.java)
                         .putExtra(MODE_KEY, SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY.toString())
 
         @JvmStatic
-        fun newIntent(context: Context, docReference: String) =
+        fun newIntent(context: Context, docReference: String): Intent =
                 Intent(context, SummaryActivity::class.java)
                         .putExtra(MODE_KEY, SummaryPresenter.Mode.OVERVIEW.toString())
                         .putExtra(DOC_REFERENCE_KEY, docReference)

@@ -7,12 +7,12 @@ import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
-import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.RouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
-import ga.lupuss.anotherbikeapp.models.interfaces.RouteReference
-import ga.lupuss.anotherbikeapp.models.interfaces.RouteReferenceSerializer
+import ga.lupuss.anotherbikeapp.models.base.RouteReference
+import ga.lupuss.anotherbikeapp.models.base.RouteReferenceSerializer
 import timber.log.Timber
 import java.lang.IllegalArgumentException
 import java.util.*

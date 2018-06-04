@@ -1,4 +1,4 @@
-package ga.lupuss.anotherbikeapp.models.interfaces
+package ga.lupuss.anotherbikeapp.models.base
 
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData

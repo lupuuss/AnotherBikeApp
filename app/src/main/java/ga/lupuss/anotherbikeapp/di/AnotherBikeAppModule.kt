@@ -11,9 +11,9 @@ import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.firebase.TempRouteKeeper
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.RoutesManager
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import java.util.*
 
 @Module()

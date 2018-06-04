@@ -2,10 +2,8 @@ package ga.lupuss.anotherbikeapp.ui.modules.createaccount
 
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
-import ga.lupuss.anotherbikeapp.models.interfaces.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
-import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import javax.inject.Inject
 
 class CreateAccountPresenter @Inject constructor(private val stringsResolver: StringsResolver,

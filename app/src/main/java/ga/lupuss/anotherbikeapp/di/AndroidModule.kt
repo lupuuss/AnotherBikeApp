@@ -6,7 +6,7 @@ import android.support.v4.os.ConfigurationCompat
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
-import ga.lupuss.anotherbikeapp.models.interfaces.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 
 @Module(includes = [BasicModule::class])
 class AndroidModule(context: Context) {

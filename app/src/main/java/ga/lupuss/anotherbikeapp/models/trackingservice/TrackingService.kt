@@ -7,10 +7,10 @@ import android.location.Location
 import android.os.*
 import com.google.android.gms.location.*
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
-import ga.lupuss.anotherbikeapp.models.interfaces.TrackingServiceInteractor
+import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import ga.lupuss.anotherbikeapp.models.interfaces.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import timber.log.Timber
 import javax.inject.Inject
