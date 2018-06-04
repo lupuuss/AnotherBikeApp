@@ -68,10 +68,20 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
         refreshStats(lastLocation, location)
 
-        if ((lastLocation != null && location.distanceTo(lastLocation) != 0F)
+        if ((lastLocation != null
+                        && location.distanceTo(lastLocation) != 0F
+                        && location.accuracy < 100)
                 || lastLocation == null) {
 
-            routeData.points.add(LatLng(location.latitude, location.longitude))
+            if (lastLocation != null && lastLocation!!.bearing == location.bearing) {
+
+                routeData.points[routeData.points.size - 1] =
+                        LatLng(location.latitude, location.longitude)
+
+            } else {
+
+                routeData.points.add(LatLng(location.latitude, location.longitude))
+            }
         }
 
         lastLocation = location

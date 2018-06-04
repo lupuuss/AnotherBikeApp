@@ -61,12 +61,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
                 locRes ?: return@post
 
-                var location: Location? = null
-
-                for (loc in locRes.locations) {
-                    location = loc
-                    break
-                }
+                val location: Location? = locRes.lastLocation
 
                 location ?: return@post
 
