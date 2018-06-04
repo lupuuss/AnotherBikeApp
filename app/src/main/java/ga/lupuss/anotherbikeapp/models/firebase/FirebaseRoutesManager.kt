@@ -30,7 +30,7 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
     private val routesPath = "$userPath/$FIREB_ROUTES"
     private val routesQuery = firebaseFirestore
             .collection(routesPath)
-            .orderBy(FIREB_ROUTES_START_TIME, Query.Direction.DESCENDING)
+            .orderBy(FIREB_START_TIME, Query.Direction.DESCENDING)
 
     private val queryManager =
             QueryLoadingManager(routesQuery, DEFAULT_LIMIT, onRoutesChangedListeners)
@@ -159,13 +159,25 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
                     points = newPointsRef
                     user = userRef
                 })
-                .update(newPointsRef, FIREB_ROUTES_ROUTE, newRouteRef)
+                .update(newPointsRef, FIREB_ROUTE, newRouteRef)
                 .set(userRef.collection(FIREB_ROUTES).document(), FirebaseShortRouteData().apply {
                     fillWithShort(routeData)
                     route = newRouteRef
                     points = newPointsRef
                 })
                 .commit()
+    }
+
+    override fun changeName(routeReference: RouteReference, routeNameFromEditText: String) {
+
+        if (routeReference !is FirebaseRouteReference)
+            throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
+
+        firebaseFirestore.runTransaction {
+            it.update(routeReference.userRouteReference!!, FIREB_NAME, routeNameFromEditText)
+            it.update(routeReference.routeReference!!, FIREB_NAME, routeNameFromEditText)
+        }
+
     }
 
     override fun deleteRoute(routeReference: RouteReference) {
@@ -209,14 +221,13 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
     companion object {
 
         // Firebase path consts starts with FIREB
-        //      if its a field
-        //      it must match FIREB_{COLLECTION}_{FIELD}
         const val FIREB_USERS = "users"
         const val FIREB_ROUTES = "routes"
-        const val FIREB_ROUTES_START_TIME = "startTime"
-        const val FIREB_ROUTES_ROUTE = "route"
+        const val FIREB_START_TIME = "startTime"
+        const val FIREB_ROUTE = "route"
         const val DEFAULT_LIMIT = 10L
         const val FIREB_POINTS = "points"
+        const val FIREB_NAME = "name"
         const val WRONG_REFERENCE_MESSAGE =
                 "routeReference must be FirebaseRouteReference! Probably it doesn't come from FirebaseRouteManager."
     }

@@ -63,6 +63,11 @@ class MainSummaryPresenter @Inject constructor(): SummaryPresenter() {
         summaryPresenter.onRejectClick()
     }
 
+    override fun onNameEditTextChanged(text: CharSequence?) {
+
+        summaryPresenter.onNameEditTextChanged(text)
+    }
+
     override fun notifyOnDestroy(isFinishing: Boolean) {
         super.notifyOnDestroy(isFinishing)
 

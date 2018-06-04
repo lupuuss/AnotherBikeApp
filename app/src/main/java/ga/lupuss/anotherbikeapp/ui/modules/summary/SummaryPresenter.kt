@@ -44,4 +44,6 @@ abstract class SummaryPresenter  : Presenter {
 
     abstract fun onRejectClick()
 
+    abstract fun onNameEditTextChanged(text: CharSequence?)
+
 }

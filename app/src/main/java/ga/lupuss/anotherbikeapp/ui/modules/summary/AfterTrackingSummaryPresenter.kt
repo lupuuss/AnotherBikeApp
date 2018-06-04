@@ -48,4 +48,6 @@ class AfterTrackingSummaryPresenter(
             summaryView.finishActivity()
         }
     }
+
+    override fun onNameEditTextChanged(text: CharSequence?) {}
 }

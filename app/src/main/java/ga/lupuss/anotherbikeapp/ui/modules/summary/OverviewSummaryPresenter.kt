@@ -54,6 +54,10 @@ class OverviewSummaryPresenter(
 
     override fun onSaveClick() {
 
+        val name = summaryView.getRouteNameFromEditText()
+        routesManager.changeName(routeReference, name)
+        this.name = name
+        summaryView.isSaveActionVisible = false
     }
 
     override fun onExitRequest() {
@@ -64,6 +68,10 @@ class OverviewSummaryPresenter(
 
         } else {
 
+            summaryView.showUnsavedStateDialog {
+
+                summaryView.finishActivity()
+            }
         }
     }
 
@@ -73,6 +81,16 @@ class OverviewSummaryPresenter(
 
             routesManager.deleteRoute(routeReference)
             summaryView.finishActivity()
+        }
+    }
+
+    override fun onNameEditTextChanged(text: CharSequence?) {
+
+        if (::name.isInitialized) {
+
+            Timber.d("${text?.toString()}|")
+            Timber.d("$name|")
+            summaryView.isSaveActionVisible = text.toString() != name
         }
     }
 }

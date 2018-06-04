@@ -32,4 +32,5 @@ interface RoutesManager {
     fun clearTempRoute()
     fun getRouteReference(position: Int): RouteReference
     fun deleteRoute(routeReference: RouteReference)
+    fun changeName(routeReference: RouteReference, routeNameFromEditText: String)
 }

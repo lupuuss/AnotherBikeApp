@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -23,7 +25,7 @@ import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
 
-class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
+class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
 
     @Inject
     lateinit var summaryPresenter: MainSummaryPresenter
@@ -104,6 +106,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
 
         summaryPresenter.initMode(mode, docReference)
 
+        routeNameEdit.addTextChangedListener(this)
         (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(this)
     }
 
@@ -132,8 +135,17 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
         summaryPresenter.notifyOnDestroy(isFinishing)
+    }
+
+    override fun afterTextChanged(p0: Editable?) {}
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        summaryPresenter.onNameEditTextChanged(p0)
     }
 
     // onClicks
@@ -204,6 +216,17 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
                 .setTitle(R.string.warning)
                 .setMessage(R.string.messageDeleteRouteWarning)
                 .setPositiveButton(R.string.delete, { _, _ -> onYes.invoke() })
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+    }
+
+    override fun showUnsavedStateDialog(onYes: () -> Unit) {
+
+        AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_delete_24dp)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.messageUnsavedState)
+                .setPositiveButton(R.string.exit, { _, _ -> onYes.invoke() })
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }

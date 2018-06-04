@@ -71,4 +71,5 @@
     <string name="prefUnitSpeedTitle">Jednostka szybkości</string>
     <string name="delete">Usuń</string>
     <string name="messageDeleteRouteWarning">Czy na pewno chcesz usunąć tą trasę?</string>
+    <string name="messageUnsavedState">Dane nie zostały zapisane. Czy jesteś pewny, że chcesz wyjść?</string>
 </resources>
