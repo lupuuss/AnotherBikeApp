@@ -48,11 +48,6 @@ class MainSummaryPresenter @Inject constructor(): SummaryPresenter() {
         summaryPresenter.notifyOnViewReady()
     }
 
-    override fun onMapClick() {
-
-        summaryPresenter.onMapClick()
-    }
-
     override fun onSaveClick() {
 
         summaryPresenter.onSaveClick()

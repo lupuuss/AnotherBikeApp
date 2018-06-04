@@ -38,8 +38,6 @@ abstract class SummaryPresenter  : Presenter {
         summaryView.setNameLabelValue(routeData.name ?: "")
     }
 
-    abstract fun onMapClick()
-
     abstract fun onSaveClick()
 
     abstract fun onExitRequest()

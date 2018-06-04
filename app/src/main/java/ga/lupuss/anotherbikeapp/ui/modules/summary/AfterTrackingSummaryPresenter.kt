@@ -26,10 +26,6 @@ class AfterTrackingSummaryPresenter(
         showExtendedRouteData(routeData)
     }
 
-    override fun onMapClick() {
-
-    }
-
     override fun onSaveClick() {
 
         val name = summaryView.getRouteNameFromEditText()

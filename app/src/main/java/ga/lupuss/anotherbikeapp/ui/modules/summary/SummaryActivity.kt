@@ -110,11 +110,6 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
 
         this.map = map!!
-        map.uiSettings.setAllGesturesEnabled(false)
-
-        map.setOnMapClickListener {
-            summaryPresenter.onMapClick()
-        }
         summaryPresenter.notifyOnViewReady()
     }
 

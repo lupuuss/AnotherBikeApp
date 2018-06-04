@@ -52,10 +52,6 @@ class OverviewSummaryPresenter(
         )
     }
 
-    override fun onMapClick() {
-
-    }
-
     override fun onSaveClick() {
 
     }
