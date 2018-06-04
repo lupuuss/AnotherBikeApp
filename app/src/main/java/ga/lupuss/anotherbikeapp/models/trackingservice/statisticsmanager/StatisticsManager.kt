@@ -60,10 +60,6 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     var status: Status = Status.LOCATION_WAIT
         private set
 
-    val minElementsToCount = 5
-    private val tempSpeedList = mutableListOf<Double>()
-    private val tempDistanceList = mutableListOf<Float>()
-
     fun pushNewLocation(location: Location) {
 
         refreshStats(lastLocation, location)
@@ -102,58 +98,37 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
         before ?: return
 
-        val deltaDist = before.distanceTo(current)
-        val mSpeed = deltaDist / (deltaTime / 1000)
+        val distance = before.distanceTo(current)
+        val speed = distance / (deltaTime / 1000)
 
-        if (mSpeed.isInfinite()) {
+        if (speed.isInfinite()) {
 
             Timber.d("Infinite speed!")
 
         } else {
 
-            var anyChanges = false
+            if (speed > minSpeedToCount) {
 
-            tempSpeedList.add(mSpeed)
-            tempDistanceList.add(deltaDist)
+                routeData.avgSpeed = math.measureAvgSpeed(speed)
+                routeData.distance += distance
+                timer.unpause()
+                status = Status.RUNNING
 
-            if (tempSpeedList.size >= minElementsToCount) {
+            } else {
 
-                math.removeSpeedNoise(tempSpeedList)
-                speed = tempSpeedList.average()
-
-                anyChanges = true
-
-                if (speed > minSpeedToCount) {
-
-                    routeData.avgSpeed = math.measureAvgSpeed(speed)
-                    routeData.distance += tempDistanceList.sum()
-                    timer.unpause()
-                    status = Status.RUNNING
-
-                } else {
-
-                    timer.pause()
-                    status = Status.PAUSE
-                }
-
-                routeData.maxSpeed = math.measureMaxSpeed(speed, routeData.maxSpeed)
-
-                tempSpeedList.clear()
-                tempDistanceList.clear()
+                timer.pause()
+                status = Status.PAUSE
             }
 
-            if (anyChanges) {
+            routeData.maxSpeed = math.measureMaxSpeed(speed, routeData.maxSpeed)
 
-                newStats()
-            }
+            newStats()
+
         }
     }
 
     fun notifyLostLocation() {
 
-        tempSpeedList.clear()
-        routeData.distance += tempSpeedList.sum()
-        tempDistanceList.clear()
         speed = 0.0
         timer.pause()
         status = Status.LOCATION_WAIT
