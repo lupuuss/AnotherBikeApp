@@ -190,8 +190,8 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     }
 
     override fun showStatistics(statistics: Map<Statistic.Name, Statistic<*>>) {
-        (supportFragmentManager.findFragmentById(R.id.statsFragment) as StatsFragment)
-                .updateStats(statistics)
+
+        (supportFragmentManager.findFragmentById(R.id.statsFragment) as? StatsFragment)?.updateStats(statistics)
     }
 
     override fun showRejectDialog(onYes: () -> Unit) {
