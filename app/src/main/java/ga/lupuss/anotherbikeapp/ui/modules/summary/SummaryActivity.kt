@@ -47,9 +47,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback {
     override var isStatsFragmentVisible: Boolean = true
         set(value) {
 
-            statsFragmentWrapper?.let {
-                it.isVisible = value
-            }
+            statsFragmentWrapper?.isVisible = value
             field = value
         }
 

@@ -36,10 +36,7 @@ class LoginActivity : BaseActivity(), LoginView {
     override var isSignInProgressBarVisible: Boolean = false
         set(value) {
 
-            signInProgressBar?.let {
-                it.isGone = !value
-            }
-
+            signInProgressBar?.isGone = !value
             field = value
         }
 

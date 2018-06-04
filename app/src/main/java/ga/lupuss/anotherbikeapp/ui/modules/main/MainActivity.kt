@@ -81,7 +81,7 @@ class MainActivity
         set(value) { routesHistoryRecycler?.isVisible = value }
 
     override var isProgressBarVisible: Boolean = true
-        set(value) { recyclerProgressBar.isGone = !value }
+        set(value) { recyclerProgressBar?.isGone = !value }
 
     override var isDrawerLayoutOpened = false
         get() = drawerLayout?.isDrawerOpen(GravityCompat.START) ?: false

@@ -34,10 +34,7 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
     override var isCreateAccountProgressBarVisible: Boolean = false
         set(value) {
 
-            createAccountProgressBar?.let {
-                it.isGone = !value
-            }
-
+            createAccountProgressBar?.isGone = !value
             field = value
         }
 
