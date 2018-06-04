@@ -13,7 +13,8 @@
         android:orientation="vertical"
         android:divider="@drawable/stats_divider_vertical"
         android:showDividers="middle"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        tools:background="?android:colorAccent">
 
         <TextView
             android:id="@+id/emptyStatsText"
