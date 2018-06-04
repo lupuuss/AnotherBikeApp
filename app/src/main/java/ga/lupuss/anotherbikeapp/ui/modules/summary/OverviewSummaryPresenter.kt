@@ -5,6 +5,7 @@ import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import timber.log.Timber
 
 class OverviewSummaryPresenter(
@@ -30,18 +31,23 @@ class OverviewSummaryPresenter(
         summaryView.isRejectActionVisible = false
 
         routesManager.requestExtendedRoutesData(
-                routeReference = routeReference,
-                onDataOk = {
+                routeReference,
+                object : RoutesManager.OnRequestExtendedRouteDataListener {
 
-                    summaryView.isRouteEditLineVisible = true
-                    summaryView.isProgressBarVisible = false
-                    summaryView.isStatsFragmentVisible = true
-                    summaryView.isRejectActionVisible = true
-                    name = it.name ?: stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
-                    showExtendedRouteData(it)
-                },
-                onDataFail = {
-                    Timber.d(it)
+                    override fun onDataOk(routeData: ExtendedRouteData) {
+                        summaryView.isRouteEditLineVisible = true
+                        summaryView.isProgressBarVisible = false
+                        summaryView.isStatsFragmentVisible = true
+                        summaryView.isRejectActionVisible = true
+                        name = routeData.name ?: stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+                        showExtendedRouteData(routeData)
+                    }
+
+                    override fun onMissingData() {
+
+                        summaryView.isProgressBarVisible = false
+                        summaryView.isStatsFragmentVisible = true
+                    }
                 }
         )
     }

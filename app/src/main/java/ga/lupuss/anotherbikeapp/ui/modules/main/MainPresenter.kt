@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.main
 
-import android.view.View
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
@@ -28,6 +27,8 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     var speedUnit: Statistic.Unit = preferencesInteractor.speedUnit
     var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
 
+    private var loadMoreAvailable = true
+
     @Inject
     lateinit var mainView: MainView
 
@@ -35,7 +36,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         super.notifyOnViewReady()
 
         mainView.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
-        mainView.setNoDataTextVisibility(View.INVISIBLE)
+        mainView.isNoDataTextVisible = false
         mainView.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
 
         preferencesInteractor.addOnUnitChangedListener(this, this)
@@ -94,19 +95,31 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     }
 
     private fun onLoadMoreRequest() {
-        mainView.setProgressBarVisibility(View.VISIBLE)
 
-        routesManager.requestMoreShortRouteData({
+        if (loadMoreAvailable) {
 
-            mainView.setProgressBarVisibility(View.GONE)
+            mainView.isProgressBarVisible = true
 
-            if (routesManager.shortRouteDataCount() == 0)
-                mainView.setNoDataTextVisibility(View.VISIBLE)
+            routesManager.requestMoreShortRouteData(object : RoutesManager.OnRequestMoreShortRouteDataListener {
+                override fun onDataEnd() {
 
-        }, {
-            mainView.setProgressBarVisibility(View.GONE)
-            Timber.d(it)
-        })
+                    mainView.isProgressBarVisible = false
+
+                    loadMoreAvailable = false
+
+                    if (routesManager.shortRouteDataCount() == 0)
+                        mainView.isNoDataTextVisible = true
+
+                }
+
+                override fun onFail(exception: Exception) {
+
+                    mainView.isProgressBarVisible = false
+                    Timber.d(exception)
+                }
+
+            })
+        }
     }
 
     fun onClickShortRoute(position: Int) {
@@ -173,7 +186,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     override fun onNewDocument(position: Int) {
 
-        mainView.setNoDataTextVisibility(View.INVISIBLE)
+        mainView.isNoDataTextVisible = false
         mainView.notifyRecyclerItemInserted(position)
     }
 
@@ -186,7 +199,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
         if (routesManager.shortRouteDataCount() == 0) {
 
-            mainView.setNoDataTextVisibility(View.VISIBLE)
+            mainView.isNoDataTextVisible = true
         }
     }
 

@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
@@ -56,9 +57,14 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
         onRoutesChangedListeners.remove(onRoutesChangedListener)
     }
 
-    override fun requestMoreShortRouteData(onDataEnd: (() -> Unit)?, onFail: ((Exception) -> Unit)?) {
+    override fun requestMoreShortRouteData(
+            onRequestMoreShortRouteDataListener: RoutesManager.OnRequestMoreShortRouteDataListener?
+    ) {
 
-        queryManager.loadMoreDocuments(onDataEnd, onFail)
+        queryManager.loadMoreDocuments(
+                { onRequestMoreShortRouteDataListener?.onDataEnd() },
+                { onRequestMoreShortRouteDataListener?.onFail(it) }
+        )
     }
 
     override fun readShortRouteData(position: Int): ShortRouteData {
@@ -78,15 +84,15 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
 
     override fun requestExtendedRoutesData(
             routeReference: RouteReference,
-            onDataOk: ((ExtendedRouteData) -> Unit)?,
-            onDataFail: ((Exception) -> Unit)?) {
+            onRequestExtendedRouteDataListener: RoutesManager.OnRequestExtendedRouteDataListener?
+    ) {
 
         if (routeReference !is FirebaseRouteReference) {
             throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
         }
 
         if (routeReference.routeReference == null) {
-            onDataFail?.invoke(Exception(""))
+            onRequestExtendedRouteDataListener?.onMissingData()
             return
         }
 
@@ -96,28 +102,42 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
 
         var routeData: RouteData? = null
 
+        fun checkRouteDataAndPostResult(points: MutableList<LatLng>?) {
+
+            if (routeData != null) {
+
+                onRequestExtendedRouteDataListener?.onDataOk(
+                        routeData!!.toExtendedRouteData(points)
+                )
+
+            } else {
+
+                onRequestExtendedRouteDataListener?.onMissingData()
+            }
+        }
+
         routeReference.routeReference!!.get()
                 .continueWithTask {
 
                     if (it.result.exists()) {
 
                         routeData = it.result.toFirebaseRouteData().toRouteData(locale)
+
                     }
 
                     routeReference.pointsReference?.get()
                 }.addOnSuccessListener {
 
-                    onDataOk?.invoke(routeData!!.toExtendedRouteData( it.toFirebasePoints().pointsAsLatLngL()))
+                    val points = if (it.exists()) it.toFirebasePoints().pointsAsLatLngL() else null
+
+                    checkRouteDataAndPostResult(points)
 
                 }.addOnFailureListener {
 
-                    if (routeData != null) {
+                    Timber.d(it)
 
-                        onDataOk?.invoke(routeData!!.toExtendedRouteData(null))
-                    } else {
+                    checkRouteDataAndPostResult(null)
 
-                        onDataFail?.invoke(it)
-                    }
                 }
 
     }

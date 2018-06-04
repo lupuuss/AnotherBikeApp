@@ -43,6 +43,15 @@ class MainActivity
         AdapterView.OnItemClickListener,
         RoutesHistoryRecyclerViewAdapter.OnItemClickListener {
 
+    enum class ItemName {
+        SIGN_OUT, SETTINGS
+    }
+
+    class StrIconRes(
+            val str: Int,
+            val icon: Int
+    )
+
     @Inject
     lateinit var mainPresenter: MainPresenter
 
@@ -57,19 +66,28 @@ class MainActivity
     private val androidTrackingServiceGovernor
         get() = trackingServiceGovernor as AndroidTrackingServiceGovernor
 
-    enum class ItemName {
-        SIGN_OUT, SETTINGS
-    }
-
-    class StrIconRes(
-            val str: Int,
-            val icon: Int
-    )
-
     private val drawerListViewChildren = listOf(
             Pair(ItemName.SIGN_OUT, StrIconRes(R.string.signOut, R.drawable.ic_sign_out_24dp)),
             Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
     )
+
+    override var isNoDataTextVisible: Boolean = true
+        set(value) {
+
+            noDataText?.visibility = if (value) View.VISIBLE else View.INVISIBLE
+        }
+
+    override var isRoutesHistoryVisible: Boolean = true
+        set(value) {
+
+            routesHistoryRecycler?.visibility = if (value) View.VISIBLE else View.INVISIBLE
+        }
+
+    override var isProgressBarVisible: Boolean = true
+        set(value) {
+
+            recyclerProgressBar.visibility = if (value) View.VISIBLE else View.GONE
+        }
 
     override var isDrawerLayoutOpened = false
         get() = drawerLayout?.isDrawerOpen(GravityCompat.START) ?: false
@@ -209,25 +227,11 @@ class MainActivity
         drawerLayout.closeDrawer(GravityCompat.START)
     }
 
-    override fun setNoDataTextVisibility(visibility: Int) {
-
-        noDataText.visibility = visibility
-    }
-
     override fun setTrackingButtonState(trackingInProgress: Boolean) {
 
         trackingButton.setText(
                 if (trackingInProgress) R.string.continueTracking else R.string.startTracking
         )
-    }
-
-    override fun setRoutesHistoryVisibility(visibility: Int) {
-
-        routesHistoryRecycler.visibility = visibility
-    }
-
-    override fun setProgressBarVisibility(visibility: Int) {
-        recyclerProgressBar.visibility = visibility
     }
 
     override fun refreshRecyclerAdapter() {

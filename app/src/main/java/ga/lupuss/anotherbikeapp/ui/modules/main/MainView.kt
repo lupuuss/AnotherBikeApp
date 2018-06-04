@@ -4,6 +4,10 @@ import ga.lupuss.anotherbikeapp.base.BaseView
 
 interface MainView : BaseView {
 
+    var isNoDataTextVisible: Boolean
+    var isRoutesHistoryVisible: Boolean
+    var isProgressBarVisible: Boolean
+
     fun startTrackingActivity()
     fun startSettingsActivity()
     fun startSummaryActivity()
@@ -17,9 +21,6 @@ interface MainView : BaseView {
     fun notifyRecyclerItemInserted(position: Int)
 
     val isDrawerLayoutOpened: Boolean
-    fun setNoDataTextVisibility(visibility: Int)
-    fun setRoutesHistoryVisibility(visibility: Int)
-    fun setProgressBarVisibility(visibility: Int)
     fun setDrawerHeaderInfos(displayName: String?, email: String?)
     fun startLoginActivity()
     fun showExitWarningDialog(onYesClick: () -> Unit)

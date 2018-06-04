@@ -6,17 +6,26 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 
 interface RoutesManager {
 
+    interface OnRequestMoreShortRouteDataListener {
+        fun onDataEnd()
+        fun onFail(exception: Exception)
+    }
+
+    interface OnRequestExtendedRouteDataListener {
+        fun onDataOk(routeData: ExtendedRouteData)
+        fun onMissingData()
+    }
+
     val routeReferenceSerializer: RouteReferenceSerializer
 
     fun addRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged)
     fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged)
-    fun requestMoreShortRouteData(onDataEnd: (() -> Unit)?, onFail: ((Exception) -> Unit)?)
+    fun requestMoreShortRouteData(onRequestMoreShortRouteDataListener: OnRequestMoreShortRouteDataListener?)
     fun readShortRouteData(position: Int): ShortRouteData
 
     fun shortRouteDataCount(): Int
     fun requestExtendedRoutesData(routeReference: RouteReference,
-                                  onDataOk: ((ExtendedRouteData) -> Unit)?,
-                                  onDataFail: ((Exception) -> Unit)?)
+                                  onRequestExtendedRouteDataListener: OnRequestExtendedRouteDataListener?)
     fun saveRoute(routeData: ExtendedRouteData)
     fun keepTempRoute(routeData: ExtendedRouteData)
     fun getTempRoute(): ExtendedRouteData?
