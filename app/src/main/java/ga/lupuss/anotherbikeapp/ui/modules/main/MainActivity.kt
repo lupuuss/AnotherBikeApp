@@ -237,12 +237,14 @@ class MainActivity
         routesHistoryRecycler.adapter.notifyItemChanged(position)
     }
 
-    override fun notifyRecyclerItemRemoved(position: Int) {
+    override fun notifyRecyclerItemRemoved(position: Int, size: Int) {
         routesHistoryRecycler.adapter.notifyItemRemoved(position)
+        routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
     }
 
-    override fun notifyRecyclerItemInserted(position: Int) {
+    override fun notifyRecyclerItemInserted(position: Int, size: Int) {
         routesHistoryRecycler.adapter.notifyItemInserted(position)
+        routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
     }
 
     override fun setDrawerHeaderInfos(displayName: String?, email: String?) {

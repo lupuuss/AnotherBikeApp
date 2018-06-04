@@ -17,8 +17,8 @@ interface MainView : BaseView {
 
     fun refreshRecyclerAdapter()
     fun notifyRecyclerItemChanged(position: Int)
-    fun notifyRecyclerItemRemoved(position: Int)
-    fun notifyRecyclerItemInserted(position: Int)
+    fun notifyRecyclerItemRemoved(position: Int, size: Int)
+    fun notifyRecyclerItemInserted(position: Int, size: Int)
 
     val isDrawerLayoutOpened: Boolean
     fun setDrawerHeaderInfos(displayName: String?, email: String?)

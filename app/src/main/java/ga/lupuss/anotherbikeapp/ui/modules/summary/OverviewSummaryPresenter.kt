@@ -62,7 +62,7 @@ class OverviewSummaryPresenter(
 
     override fun onExitRequest() {
 
-        if (name == summaryView.getRouteNameFromEditText()){
+        if (!::name.isInitialized || name == summaryView.getRouteNameFromEditText()){
 
             summaryView.finishActivity()
 

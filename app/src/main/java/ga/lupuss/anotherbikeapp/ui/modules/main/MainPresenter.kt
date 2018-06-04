@@ -187,7 +187,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     override fun onNewDocument(position: Int) {
 
         mainView.isNoDataTextVisible = false
-        mainView.notifyRecyclerItemInserted(position)
+        mainView.notifyRecyclerItemInserted(position, routesManager.shortRouteDataCount())
     }
 
     override fun onDocumentModified(position: Int) {
@@ -195,7 +195,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     }
 
     override fun onDocumentDeleted(position: Int) {
-        mainView.notifyRecyclerItemRemoved(position)
+        mainView.notifyRecyclerItemRemoved(position, routesManager.shortRouteDataCount())
 
         if (routesManager.shortRouteDataCount() == 0) {
 
