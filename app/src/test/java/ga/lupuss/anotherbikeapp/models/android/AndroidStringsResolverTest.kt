@@ -90,7 +90,7 @@ class AndroidStringsResolverTest {
                 stringsResolver.resolve(
                     Statistic.Name.SPEED,
                     UnitStatistic(3.0, Statistic.Unit.KM_H)
-                ).matches(Regex(".*: .*"))
+                ).matches(Regex(".+: .+"))
         )
     }
 
