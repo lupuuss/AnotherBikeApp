@@ -107,6 +107,8 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
         } else {
 
+            this.speed = speed
+
             if (speed > minSpeedToCount) {
 
                 routeData.avgSpeed = math.measureAvgSpeed(speed)
