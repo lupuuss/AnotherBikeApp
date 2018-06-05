@@ -9,14 +9,10 @@ import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].
  * [TrackingActivity] must implement [TrackingView] */
-class TrackingPresenter @Inject constructor()
-    : TrackingServiceInteractor.LocationDataReceiver, TrackingServiceInteractor.OnStatsUpdateListener, Presenter {
-
-    @Inject
-    lateinit var trackingView: TrackingView
-
-    @Inject
-    lateinit var serviceInteractor: TrackingServiceInteractor
+class TrackingPresenter @Inject constructor(
+        private val trackingView: TrackingView,
+        private val serviceInteractor: TrackingServiceInteractor
+) : TrackingServiceInteractor.LocationDataReceiver, TrackingServiceInteractor.OnStatsUpdateListener, Presenter {
 
     private var followMyLocation: Boolean = true
         set(value) {
