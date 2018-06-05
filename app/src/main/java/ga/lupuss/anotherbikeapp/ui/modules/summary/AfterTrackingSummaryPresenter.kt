@@ -7,10 +7,11 @@ import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 
 class AfterTrackingSummaryPresenter(
-        override var summaryView: SummaryView,
-        override var routesManager: RoutesManager,
-        override var stringsResolver: StringsResolver,
-        override var preferencesInteractor: PreferencesInteractor
+        override val summaryView: SummaryView,
+        override val routesManager: RoutesManager,
+        override val stringsResolver: StringsResolver,
+        override val preferencesInteractor: PreferencesInteractor
+
 ) : SummaryPresenter() {
 
     private lateinit var routeData: ExtendedRouteData

@@ -8,18 +8,10 @@ import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 
 abstract class SummaryPresenter  : Presenter {
 
-
-    abstract var summaryView: SummaryView
-
-
-    abstract var routesManager: RoutesManager
-
-
-    abstract var stringsResolver: StringsResolver
-
-
-    abstract var preferencesInteractor: PreferencesInteractor
-
+    abstract val summaryView: SummaryView
+    abstract val routesManager: RoutesManager
+    abstract val stringsResolver: StringsResolver
+    abstract val preferencesInteractor: PreferencesInteractor
 
     enum class Mode {
         OVERVIEW, AFTER_TRACKING_SUMMARY

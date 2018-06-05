@@ -9,10 +9,12 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import timber.log.Timber
 
 class OverviewSummaryPresenter(
-        override var summaryView: SummaryView,
-        override var routesManager: RoutesManager,
-        override var stringsResolver: StringsResolver,
-        override var preferencesInteractor: PreferencesInteractor) : SummaryPresenter() {
+        override val summaryView: SummaryView,
+        override val routesManager: RoutesManager,
+        override val stringsResolver: StringsResolver,
+        override val preferencesInteractor: PreferencesInteractor
+
+) : SummaryPresenter() {
 
     private lateinit var routeReference: RouteReference
     private lateinit var name: String
@@ -31,6 +33,7 @@ class OverviewSummaryPresenter(
         summaryView.isRejectActionVisible = false
 
         routesManager.requestExtendedRoutesData(
+
                 routeReference,
                 object : RoutesManager.OnRequestExtendedRouteDataListener {
 

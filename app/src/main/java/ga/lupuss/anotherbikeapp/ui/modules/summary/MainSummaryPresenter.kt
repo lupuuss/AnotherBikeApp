@@ -6,21 +6,16 @@ import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import javax.inject.Inject
 
 
-class MainSummaryPresenter @Inject constructor(): SummaryPresenter() {
+class MainSummaryPresenter @Inject constructor(
+        override val summaryView: SummaryView,
+        override val routesManager: RoutesManager,
+        override val stringsResolver: StringsResolver ,
+        override val preferencesInteractor: PreferencesInteractor
 
-    @Inject
-    override lateinit var summaryView: SummaryView
+): SummaryPresenter() {
 
-    @Inject
-    override lateinit var routesManager: RoutesManager
-
-    @Inject
-    override lateinit var stringsResolver: StringsResolver
-
-    @Inject
-    override lateinit var preferencesInteractor: PreferencesInteractor
-
-    private lateinit var summaryPresenter: SummaryPresenter
+    lateinit var subPresenter: SummaryPresenter
+        private set
 
     fun initMode(mode: Mode, routeReference: String?) {
 
@@ -40,32 +35,32 @@ class MainSummaryPresenter @Inject constructor(): SummaryPresenter() {
             )
         }
 
-        this.summaryPresenter = summaryPresenter
+        this.subPresenter = summaryPresenter
     }
 
     override fun notifyOnViewReady() {
 
-        summaryPresenter.notifyOnViewReady()
+        subPresenter.notifyOnViewReady()
     }
 
     override fun onSaveClick() {
 
-        summaryPresenter.onSaveClick()
+        subPresenter.onSaveClick()
     }
 
     override fun onExitRequest() {
 
-        summaryPresenter.onExitRequest()
+        subPresenter.onExitRequest()
     }
 
     override fun onRejectClick() {
 
-        summaryPresenter.onRejectClick()
+        subPresenter.onRejectClick()
     }
 
     override fun onNameEditTextChanged(text: CharSequence?) {
 
-        summaryPresenter.onNameEditTextChanged(text)
+        subPresenter.onNameEditTextChanged(text)
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
