@@ -8,7 +8,7 @@ import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingPresenter
 import timber.log.Timber
 
 import javax.inject.Inject
@@ -53,7 +53,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
             when (resultCode) {
 
-                TrackingActivity.Result.DONE -> {
+                TrackingPresenter.Result.DONE -> {
 
                     Timber.d("Service done. Data may be saved")
 
@@ -68,13 +68,13 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
                     }
                 }
 
-                TrackingActivity.Result.NO_DATA_DONE -> {
+                TrackingPresenter.Result.NO_DATA_DONE -> {
 
                     Timber.d("Service done, but no data")
                     trackingServiceGovernor.stopTracking()
                 }
 
-                TrackingActivity.Result.NOT_DONE -> {
+                TrackingPresenter.Result.NOT_DONE -> {
 
                     Timber.d("Service is working...")
                 }

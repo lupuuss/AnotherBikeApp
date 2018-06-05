@@ -112,7 +112,7 @@ class TrackingActivity : BaseActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tracking)
         activateToolbar(toolbarMain)
-        setResult(Result.NOT_DONE)
+        setResult(TrackingPresenter.Result.NOT_DONE)
 
         unfreezeInstanceState(savedInstanceState)
         savedInstanceState?.let {
@@ -378,13 +378,4 @@ class TrackingActivity : BaseActivity(),
                 }
     }
 
-    /** Possible results codes */
-    class Result {
-
-        companion object {
-            const val NOT_DONE = 0
-            const val NO_DATA_DONE = 1
-            const val DONE = 2
-        }
-    }
 }

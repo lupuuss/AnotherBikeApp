@@ -73,12 +73,12 @@ class TrackingPresenter @Inject constructor(
 
             trackingView.showFinishTrackingDialog {
 
-                trackingView.finishActivityWithResult(TrackingActivity.Result.DONE)
+                trackingView.finishActivityWithResult(Result.DONE)
             }
 
         } else {
 
-            trackingView.finishActivityWithResult(TrackingActivity.Result.NO_DATA_DONE)
+            trackingView.finishActivityWithResult(Result.NO_DATA_DONE)
         }
     }
 
@@ -119,5 +119,15 @@ class TrackingPresenter @Inject constructor(
 
         serviceInteractor.removeOnStatsUpdateListener(this)
         serviceInteractor.disconnectServiceDataReceiver(this)
+    }
+
+    /** Possible results codes */
+    class Result {
+
+        companion object {
+            const val NOT_DONE = 0
+            const val NO_DATA_DONE = 1
+            const val DONE = 2
+        }
     }
 }
