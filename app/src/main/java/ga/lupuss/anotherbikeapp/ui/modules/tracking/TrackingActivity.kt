@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.util.TypedValue
@@ -67,6 +68,29 @@ class TrackingActivity : BaseActivity(),
             infoWaitForLocation?.isVisible = value
             field = value
         }
+
+    override var mapLockButtonState: Boolean = true
+        set(value) {
+
+            mapLockButton?.let {
+
+                val drawable: Drawable
+                val back: Drawable
+
+                if (value) {
+                    drawable = getDrawable(R.drawable.ic_lock_24dp)
+                    back = getDrawable(R.drawable.button_lock_back)
+                } else {
+                    drawable = getDrawable(R.drawable.ic_unlock_24dp)
+                    back = getDrawable(R.drawable.button_unlock_back)
+                }
+                it.setImageDrawable(drawable)
+                it.background = back
+            }
+
+            field = value
+        }
+
     private val onMapAnLayoutReady = OnMapAndLayoutReady {
 
         infoContainerVisibility = View.VISIBLE
@@ -91,6 +115,10 @@ class TrackingActivity : BaseActivity(),
         setResult(Result.NOT_DONE)
 
         unfreezeInstanceState(savedInstanceState)
+        savedInstanceState?.let {
+
+            mapLockButtonState = (it[LOCK_BUTTON_STATE_KEY] as Boolean?) ?: mapLockButtonState
+        }
 
         //init google map
         (supportFragmentManager
@@ -113,9 +141,9 @@ class TrackingActivity : BaseActivity(),
 
     private fun getIBinderFromIntent(): TrackingService.ServiceBinder {
 
-        val bundle = intent.getBundleExtra(ARG_MAIN_BUNDLE)
+        val bundle = intent.getBundleExtra(MAIN_BUNDLE_KEY)
         bundle ?: throw IllegalStateException("No bundle")
-        return bundle.getBinder(ARG_BINDER) as TrackingService.ServiceBinder
+        return bundle.getBinder(BINDER_KEY) as TrackingService.ServiceBinder
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -139,13 +167,9 @@ class TrackingActivity : BaseActivity(),
         onMapAnLayoutReady.mapReady()
 
         map.apply {
+            uiSettings.isMyLocationButtonEnabled = false
             isMyLocationEnabled = true
             setMapStyle(MapStyleOptions(getGoogleMapStyleFromTheme()))
-            setOnMapClickListener { trackingPresenter.onGoogleMapClick() }
-            setOnMyLocationButtonClickListener({
-                trackingPresenter.onMyLocationButtonClick()
-                true
-            })
         }
 
         trackingPresenter.notifyOnViewReady()
@@ -162,6 +186,7 @@ class TrackingActivity : BaseActivity(),
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         freezeInstanceState(outState!!)
+        outState.putBoolean(LOCK_BUTTON_STATE_KEY, mapLockButtonState)
     }
 
     override fun onDestroy() {
@@ -173,10 +198,14 @@ class TrackingActivity : BaseActivity(),
 
     // menu onClicks
 
-    @Suppress("UNUSED_PARAMETER")
-    fun onClickFinishTracking(menuItem: MenuItem?) {
+    fun onClickFinishTracking(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
 
         trackingPresenter.onClickFinishTracking()
+    }
+
+    fun onClickLockMap(@Suppress("UNUSED_PARAMETER") view: View) {
+
+        trackingPresenter.onClickLockMap()
     }
 
     // onTouch
@@ -336,15 +365,16 @@ class TrackingActivity : BaseActivity(),
     companion object {
 
         // the activity parameters
-        private const val ARG_MAIN_BUNDLE = "main bundle"
-        private const val ARG_BINDER = "IBinder"
+        private const val MAIN_BUNDLE_KEY = "main bundle"
+        private const val BINDER_KEY = "IBinder"
+        private const val LOCK_BUTTON_STATE_KEY = "lockButtonState"
 
         fun newIntent(context: Context, serviceBinder: TrackingService.ServiceBinder) =
                 Intent(context, TrackingActivity::class.java).apply {
 
                     val bundle = Bundle()
-                    bundle.putBinder(ARG_BINDER, serviceBinder)
-                    putExtra(ARG_MAIN_BUNDLE, bundle)
+                    bundle.putBinder(BINDER_KEY, serviceBinder)
+                    putExtra(MAIN_BUNDLE_KEY, bundle)
                 }
     }
 

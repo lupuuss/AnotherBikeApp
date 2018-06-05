@@ -16,6 +16,21 @@
         android:background="?android:colorPrimary"
         app:title="@string/titleActivityTacking" />
 
+    <ImageButton
+        android:id="@+id/mapLockButton"
+        android:onClick="onClickLockMap"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="11dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarMain"
+        android:src="@drawable/ic_lock_24dp"
+        android:elevation="8dp"
+        android:background="@drawable/button_lock_back"
+        android:padding="8dp"
+        android:contentDescription="@string/lockMap"/>
+
     <include
         layout="@layout/map_frame"
         android:id="@+id/map"

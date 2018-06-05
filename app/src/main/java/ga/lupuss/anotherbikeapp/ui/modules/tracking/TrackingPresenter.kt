@@ -19,10 +19,16 @@ class TrackingPresenter @Inject constructor()
     lateinit var serviceInteractor: TrackingServiceInteractor
 
     private var followMyLocation: Boolean = true
+        set(value) {
+
+            trackingView.mapLockButtonState = value
+            field = value
+        }
+
     private var isLocationAvailable: Boolean = false
         private set(value) {
 
-            trackingView.isInfoWaitForLocationVisible = value
+            trackingView.isInfoWaitForLocationVisible = !value
             field = value
         }
 
@@ -39,6 +45,8 @@ class TrackingPresenter @Inject constructor()
             trackingView.updateStats(it)
         }
 
+        followMyLocation = trackingView.mapLockButtonState
+
         isLocationAvailable = serviceInteractor.lastLocationAvailability
 
         // request receiving location and statistics from TrackService
@@ -46,19 +54,21 @@ class TrackingPresenter @Inject constructor()
         serviceInteractor.addOnStatsUpdateListener(this)
     }
 
-    fun onMyLocationButtonClick() {
+    fun onClickLockMap() {
 
-        followMyLocation = true
+        if (followMyLocation) {
 
-        if (serviceInteractor.savedRoute.isNotEmpty()) {
+            followMyLocation = false
 
-            trackingView.moveMapCamera(serviceInteractor.savedRoute.last())
+        } else {
+
+            followMyLocation = true
+
+            if (serviceInteractor.savedRoute.isNotEmpty()) {
+
+                trackingView.moveMapCamera(serviceInteractor.savedRoute.last())
+            }
         }
-    }
-
-    fun onGoogleMapClick() {
-
-        followMyLocation = false
     }
 
     fun onClickFinishTracking() {

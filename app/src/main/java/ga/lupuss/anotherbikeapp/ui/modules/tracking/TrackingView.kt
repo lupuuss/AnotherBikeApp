@@ -11,6 +11,7 @@ interface TrackingView : BaseView {
     fun prepareMapToTrack(points: List<LatLng>)
 
     var isInfoWaitForLocationVisible: Boolean
+    var mapLockButtonState: Boolean
 
     fun isTrackLineReady(): Boolean
 
