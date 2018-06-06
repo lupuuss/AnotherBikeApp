@@ -14,11 +14,11 @@ class AfterTrackingSummaryPresenter(
 
 ) : SummaryPresenter() {
 
+    // Tests checks this field by reflection.
+    // If you renames this field, you should rename it in tests as well.
     private lateinit var routeData: ExtendedRouteData
 
     override fun notifyOnViewReady() {
-
-        summaryView.getRouteNameFromEditText()
 
         routesManager.getTempRoute() ?: throw IllegalStateException("no route to show")
 

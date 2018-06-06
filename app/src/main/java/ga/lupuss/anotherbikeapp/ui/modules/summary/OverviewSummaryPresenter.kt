@@ -16,6 +16,8 @@ class OverviewSummaryPresenter(
 
 ) : SummaryPresenter() {
 
+    // Tests checks this field by reflection.
+    // If you renames this field, you should rename it in tests as well.
     private lateinit var routeReference: RouteReference
     private lateinit var name: String
 
