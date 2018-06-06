@@ -14,8 +14,7 @@ class MainSummaryPresenter @Inject constructor(
 
 ): SummaryPresenter() {
 
-    lateinit var subPresenter: SummaryPresenter
-        private set
+    private lateinit var subPresenter: SummaryPresenter
 
     fun initMode(mode: Mode, routeReference: String?) {
 
