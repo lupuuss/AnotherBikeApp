@@ -14,7 +14,7 @@ class OverviewSummaryPresenter(
         override val stringsResolver: StringsResolver,
         override val preferencesInteractor: PreferencesInteractor
 
-) : SummaryPresenter() {
+) : SummaryPresenter(), RoutesManager.OnRequestExtendedRouteDataListener  {
 
     // Tests checks this field by reflection.
     // If you renames this field, you should rename it in tests as well.
@@ -37,24 +37,23 @@ class OverviewSummaryPresenter(
         routesManager.requestExtendedRoutesData(
 
                 routeReference,
-                object : RoutesManager.OnRequestExtendedRouteDataListener {
-
-                    override fun onDataOk(routeData: ExtendedRouteData) {
-                        summaryView.isRouteEditLineVisible = true
-                        summaryView.isProgressBarVisible = false
-                        summaryView.isStatsFragmentVisible = true
-                        summaryView.isRejectActionVisible = true
-                        name = routeData.name ?: stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
-                        showExtendedRouteData(routeData)
-                    }
-
-                    override fun onMissingData() {
-
-                        summaryView.isProgressBarVisible = false
-                        summaryView.isStatsFragmentVisible = true
-                    }
-                }
+                this
         )
+    }
+
+    override fun onDataOk(routeData: ExtendedRouteData) {
+            summaryView.isRouteEditLineVisible = true
+            summaryView.isProgressBarVisible = false
+            summaryView.isStatsFragmentVisible = true
+            summaryView.isRejectActionVisible = true
+            name = routeData.name ?: stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+            showExtendedRouteData(routeData)
+        }
+
+    override fun onMissingData() {
+
+            summaryView.isProgressBarVisible = false
+            summaryView.isStatsFragmentVisible = true
     }
 
     override fun onSaveClick() {
