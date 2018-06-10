@@ -17,5 +17,4 @@ class FirebaseModule {
     @Provides
     @AnotherBikeAppScope
     fun firebaseFirestore() = FirebaseFirestore.getInstance()
-
 }
