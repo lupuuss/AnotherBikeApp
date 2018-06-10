@@ -7,6 +7,8 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.kotlin.Resettable
+import ga.lupuss.anotherbikeapp.kotlin.ResettableManager
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
@@ -15,7 +17,8 @@ import timber.log.Timber
 class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
 
 
-    private lateinit var serviceParentActivity: BaseActivity
+    private val resettebleManager = ResettableManager()
+    private var serviceParentActivity: BaseActivity by Resettable(resettebleManager)
 
     override var serviceBinder: TrackingService.ServiceBinder? = null
         private set
@@ -68,6 +71,8 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
     }
 
     override fun destroy(isFinishing: Boolean) {
+
+        resettebleManager.reset()
 
         if (isFinishing && isServiceActive) {
 
