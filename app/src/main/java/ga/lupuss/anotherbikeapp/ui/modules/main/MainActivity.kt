@@ -162,8 +162,8 @@ class MainActivity
 
     override fun onDestroy() {
 
-        super.onDestroy()
         mainPresenter.notifyOnDestroy(isFinishing)
+        super.onDestroy()
         Timber.d("MainActivity destroyed!")
     }
 

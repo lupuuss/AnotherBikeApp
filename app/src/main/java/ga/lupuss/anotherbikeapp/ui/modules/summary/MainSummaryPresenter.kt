@@ -7,12 +7,12 @@ import javax.inject.Inject
 
 
 class MainSummaryPresenter @Inject constructor(
-        override val summaryView: SummaryView,
+        summaryView: SummaryView,
         override val routesManager: RoutesManager,
-        override val stringsResolver: StringsResolver ,
+        override val stringsResolver: StringsResolver,
         override val preferencesInteractor: PreferencesInteractor
 
-): SummaryPresenter() {
+): SummaryPresenter(summaryView) {
 
     private lateinit var subPresenter: SummaryPresenter
 
@@ -21,10 +21,10 @@ class MainSummaryPresenter @Inject constructor(
         val summaryPresenter = when (mode) {
 
             SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY->
-                AfterTrackingSummaryPresenter(summaryView, routesManager, stringsResolver, preferencesInteractor)
+                AfterTrackingSummaryPresenter(view, routesManager, stringsResolver, preferencesInteractor)
 
             SummaryPresenter.Mode.OVERVIEW->
-                OverviewSummaryPresenter(summaryView, routesManager, stringsResolver, preferencesInteractor)
+                OverviewSummaryPresenter(view, routesManager, stringsResolver, preferencesInteractor)
         }
 
         if (summaryPresenter is OverviewSummaryPresenter) {
@@ -64,6 +64,8 @@ class MainSummaryPresenter @Inject constructor(
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
         super.notifyOnDestroy(isFinishing)
+
+        subPresenter.notifyOnDestroy(isFinishing)
 
         if (isFinishing) {
 

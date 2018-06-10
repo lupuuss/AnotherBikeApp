@@ -92,8 +92,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         preferencesInteractor.removeOnThemeChangedListener(this)
+        super.onDestroy()
     }
 
     private fun setTheme(theme: AppTheme) {

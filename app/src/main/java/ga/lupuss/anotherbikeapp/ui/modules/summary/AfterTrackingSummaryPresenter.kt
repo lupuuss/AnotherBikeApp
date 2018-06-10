@@ -7,12 +7,12 @@ import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 
 class AfterTrackingSummaryPresenter(
-        override val summaryView: SummaryView,
+        summaryView: SummaryView,
         override val routesManager: RoutesManager,
         override val stringsResolver: StringsResolver,
         override val preferencesInteractor: PreferencesInteractor
 
-) : SummaryPresenter() {
+) : SummaryPresenter(summaryView) {
 
     // Tests checks this field by reflection.
     // If you renames this field, you should rename it in tests as well.
@@ -29,12 +29,12 @@ class AfterTrackingSummaryPresenter(
 
     override fun onSaveClick() {
 
-        val name = summaryView.getRouteNameFromEditText()
+        val name = view.getRouteNameFromEditText()
 
         routeData.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
 
         routesManager.saveRoute(routeData)
-        summaryView.finishActivity()
+        view.finishActivity()
     }
 
     override fun onExitRequest() {
@@ -44,9 +44,9 @@ class AfterTrackingSummaryPresenter(
 
     override fun onRejectClick() {
 
-        summaryView.showRejectDialog {
+        view.showRejectDialog {
 
-            summaryView.finishActivity()
+            view.finishActivity()
         }
     }
 

@@ -75,6 +75,11 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        createAccountPresenter.notifyOnDestroy(isFinishing)
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
 

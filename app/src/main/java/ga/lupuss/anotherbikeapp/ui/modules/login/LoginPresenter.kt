@@ -5,43 +5,47 @@ import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import javax.inject.Inject
 
-class LoginPresenter @Inject constructor(private val loginInteractor: AuthInteractor) : Presenter, AuthInteractor.OnLoginDoneListener {
-    @Inject
-    lateinit var loginView: LoginView
+class LoginPresenter @Inject constructor(private val loginInteractor: AuthInteractor,
+                                         loginView: LoginView)
+    : Presenter<LoginView>(), AuthInteractor.OnLoginDoneListener {
+
+    init {
+        view = loginView
+    }
 
     fun onClickSignIn(email: String, password: String) {
 
         if (email.isBlank() || password.isBlank()) {
 
-            loginView.postMessage(Message.EMAIL_OR_PASSWORD_BLANK)
+            view.postMessage(Message.EMAIL_OR_PASSWORD_BLANK)
 
-        } else if (!loginView.isOnline()) {
+        } else if (!view.isOnline()) {
 
-            loginView.postMessage(Message.NO_INTERNET_CONNECTION)
+            view.postMessage(Message.NO_INTERNET_CONNECTION)
 
         } else {
 
-            loginView.isUiEnable = false
-            loginView.isSignInProgressBarVisible = true
-            loginView.isSignInButtonTextVisible = false
+            view.isUiEnable = false
+            view.isSignInProgressBarVisible = true
+            view.isSignInButtonTextVisible = false
             loginInteractor.login(email, password, this)
         }
     }
 
     fun onClickCreateAccount() {
 
-        loginView.startCreateAccountActivity()
+        view.startCreateAccountActivity()
     }
 
     private fun onAnyError() {
-        loginView.isUiEnable = true
-        loginView.isSignInProgressBarVisible = false
-        loginView.isSignInButtonTextVisible = true
+        view.isUiEnable = true
+        view.isSignInProgressBarVisible = false
+        view.isSignInButtonTextVisible = true
     }
 
     override fun onSuccess() {
-        loginView.startMainActivity()
-        loginView.finishActivity()
+        view.startMainActivity()
+        view.finishActivity()
     }
 
     override fun onUserNotExists() {
@@ -51,11 +55,11 @@ class LoginPresenter @Inject constructor(private val loginInteractor: AuthIntera
 
     override fun onIncorrectCredentialsError() {
         onAnyError()
-        loginView.postMessage(Message.INCORRECT_CREDENTIALS)
+        view.postMessage(Message.INCORRECT_CREDENTIALS)
     }
 
     override fun onUndefinedError() {
         onAnyError()
-        loginView.postMessage(Message.SOMETHING_GOES_WRONG)
+        view.postMessage(Message.SOMETHING_GOES_WRONG)
     }
 }

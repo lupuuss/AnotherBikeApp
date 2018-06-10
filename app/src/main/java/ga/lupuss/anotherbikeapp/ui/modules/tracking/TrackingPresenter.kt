@@ -10,21 +10,25 @@ import javax.inject.Inject
 /** Presenter associated with [TrackingActivity].
  * [TrackingActivity] must implement [TrackingView] */
 class TrackingPresenter @Inject constructor(
-        private val trackingView: TrackingView,
+        trackingView: TrackingView,
         private val serviceInteractor: TrackingServiceInteractor
-) : TrackingServiceInteractor.LocationDataReceiver, TrackingServiceInteractor.OnStatsUpdateListener, Presenter {
+) : TrackingServiceInteractor.LocationDataReceiver, TrackingServiceInteractor.OnStatsUpdateListener, Presenter<TrackingView>() {
+
+    init {
+        view = trackingView
+    }
 
     private var followMyLocation: Boolean = true
         set(value) {
 
-            trackingView.mapLockButtonState = value
+            view.mapLockButtonState = value
             field = value
         }
 
     private var isLocationAvailable: Boolean = false
         private set(value) {
 
-            trackingView.isInfoWaitForLocationVisible = !value
+            view.isInfoWaitForLocationVisible = !value
             field = value
         }
 
@@ -33,15 +37,15 @@ class TrackingPresenter @Inject constructor(
         // checking if service worked before activity start
         if (serviceInteractor.savedRoute.isNotEmpty()) {
 
-            trackingView.prepareMapToTrack(serviceInteractor.savedRoute)
+            view.prepareMapToTrack(serviceInteractor.savedRoute)
         }
 
         serviceInteractor.lastStats?.let {
 
-            trackingView.updateStats(it)
+            view.updateStats(it)
         }
 
-        followMyLocation = trackingView.mapLockButtonState
+        followMyLocation = view.mapLockButtonState
 
         isLocationAvailable = serviceInteractor.lastLocationAvailability
 
@@ -62,7 +66,7 @@ class TrackingPresenter @Inject constructor(
 
             if (serviceInteractor.savedRoute.isNotEmpty()) {
 
-                trackingView.moveMapCamera(serviceInteractor.savedRoute.last())
+                view.moveMapCamera(serviceInteractor.savedRoute.last())
             }
         }
     }
@@ -71,30 +75,30 @@ class TrackingPresenter @Inject constructor(
 
         if (serviceInteractor.isServiceInProgress()) {
 
-            trackingView.showFinishTrackingDialog {
+            view.showFinishTrackingDialog {
 
-                trackingView.finishActivityWithResult(Result.DONE)
+                view.finishActivityWithResult(Result.DONE)
             }
 
         } else {
 
-            trackingView.finishActivityWithResult(Result.NO_DATA_DONE)
+            view.finishActivityWithResult(Result.NO_DATA_DONE)
         }
     }
 
     override fun onNewLocation(points: List<LatLng>) {
 
-        if (!trackingView.isTrackLineReady()) {
+        if (!view.isTrackLineReady()) {
 
-            trackingView.prepareMapToTrack(points)
+            view.prepareMapToTrack(points)
 
         } else {
 
-            trackingView.updateTrackLine(points)
+            view.updateTrackLine(points)
 
             if (followMyLocation) {
 
-                trackingView.moveMapCamera(points.last())
+                view.moveMapCamera(points.last())
             }
         }
 
@@ -106,13 +110,13 @@ class TrackingPresenter @Inject constructor(
 
         if (!available && !serviceInteractor.isServiceInProgress()) {
 
-            trackingView.postMessage(Message.LOCATION_NOT_AVAILABLE)
+            view.postMessage(Message.LOCATION_NOT_AVAILABLE)
         }
     }
 
     override fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>) {
 
-        trackingView.updateStats(stats)
+        view.updateStats(stats)
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {

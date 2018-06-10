@@ -9,12 +9,12 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import timber.log.Timber
 
 class OverviewSummaryPresenter(
-        override val summaryView: SummaryView,
+        summaryView: SummaryView,
         override val routesManager: RoutesManager,
         override val stringsResolver: StringsResolver,
         override val preferencesInteractor: PreferencesInteractor
 
-) : SummaryPresenter(), RoutesManager.OnRequestExtendedRouteDataListener  {
+) : SummaryPresenter(summaryView), RoutesManager.OnRequestExtendedRouteDataListener  {
 
     // Tests checks this field by reflection.
     // If you renames this field, you should rename it in tests as well.
@@ -28,11 +28,11 @@ class OverviewSummaryPresenter(
 
     override fun notifyOnViewReady() {
 
-        summaryView.isRouteEditLineVisible = false
-        summaryView.isProgressBarVisible = true
-        summaryView.isStatsFragmentVisible = false
-        summaryView.isSaveActionVisible = false
-        summaryView.isRejectActionVisible = false
+        view.isRouteEditLineVisible = false
+        view.isProgressBarVisible = true
+        view.isStatsFragmentVisible = false
+        view.isSaveActionVisible = false
+        view.isRejectActionVisible = false
 
         routesManager.requestExtendedRoutesData(
 
@@ -42,49 +42,49 @@ class OverviewSummaryPresenter(
     }
 
     override fun onDataOk(routeData: ExtendedRouteData) {
-            summaryView.isRouteEditLineVisible = true
-            summaryView.isProgressBarVisible = false
-            summaryView.isStatsFragmentVisible = true
-            summaryView.isRejectActionVisible = true
+            view.isRouteEditLineVisible = true
+            view.isProgressBarVisible = false
+            view.isStatsFragmentVisible = true
+            view.isRejectActionVisible = true
             name = routeData.name ?: stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
             showExtendedRouteData(routeData)
         }
 
     override fun onMissingData() {
 
-            summaryView.isProgressBarVisible = false
-            summaryView.isStatsFragmentVisible = true
+            view.isProgressBarVisible = false
+            view.isStatsFragmentVisible = true
     }
 
     override fun onSaveClick() {
 
-        val name = summaryView.getRouteNameFromEditText()
+        val name = view.getRouteNameFromEditText()
         routesManager.changeName(routeReference, name)
         this.name = name
-        summaryView.isSaveActionVisible = false
+        view.isSaveActionVisible = false
     }
 
     override fun onExitRequest() {
 
-        if (!::name.isInitialized || name == summaryView.getRouteNameFromEditText()){
+        if (!::name.isInitialized || name == view.getRouteNameFromEditText()){
 
-            summaryView.finishActivity()
+            view.finishActivity()
 
         } else {
 
-            summaryView.showUnsavedStateDialog {
+            view.showUnsavedStateDialog {
 
-                summaryView.finishActivity()
+                view.finishActivity()
             }
         }
     }
 
     override fun onRejectClick() {
 
-        summaryView.showDeleteDialog {
+        view.showDeleteDialog {
 
             routesManager.deleteRoute(routeReference)
-            summaryView.finishActivity()
+            view.finishActivity()
         }
     }
 
@@ -94,7 +94,7 @@ class OverviewSummaryPresenter(
 
             Timber.d("${text?.toString()}|")
             Timber.d("$name|")
-            summaryView.isSaveActionVisible = text.toString() != name
+            view.isSaveActionVisible = text.toString() != name
         }
     }
 }

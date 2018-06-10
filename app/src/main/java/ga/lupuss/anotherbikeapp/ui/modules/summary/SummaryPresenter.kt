@@ -6,9 +6,12 @@ import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 
-abstract class SummaryPresenter  : Presenter {
+abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryView>() {
 
-    abstract val summaryView: SummaryView
+    init {
+        view = summaryView
+    }
+
     abstract val routesManager: RoutesManager
     abstract val stringsResolver: StringsResolver
     abstract val preferencesInteractor: PreferencesInteractor
@@ -19,15 +22,15 @@ abstract class SummaryPresenter  : Presenter {
 
     protected fun showExtendedRouteData(routeData: ExtendedRouteData) {
 
-        summaryView.showRouteLine(routeData.points)
-        summaryView.showStatistics(
+        view.showRouteLine(routeData.points)
+        view.showStatistics(
                 routeData.getStatisticsMap(
                         preferencesInteractor.speedUnit,
                         preferencesInteractor.distanceUnit
                 )
         )
 
-        summaryView.setNameLabelValue(routeData.name ?: "")
+        view.setNameLabelValue(routeData.name ?: "")
     }
 
     abstract fun onSaveClick()

@@ -97,6 +97,11 @@ class LoginActivity : BaseActivity(), LoginView {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        loginPresenter.notifyOnDestroy(isFinishing)
+    }
+
     override fun startMainActivity() {
 
         startActivity(MainActivity.newIntent(this))

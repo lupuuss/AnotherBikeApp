@@ -6,56 +6,58 @@ import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import javax.inject.Inject
 
-class CreateAccountPresenter @Inject constructor(private val stringsResolver: StringsResolver,
-                                                 private val authInteractor: AuthInteractor)
-    : Presenter, AuthInteractor.OnAccountCreateDoneListener {
+class CreateAccountPresenter @Inject constructor(private val authInteractor: AuthInteractor,
+                                                 createAccountView: CreateAccountView)
+
+    : Presenter<CreateAccountView>(), AuthInteractor.OnAccountCreateDoneListener {
 
 
-    @Inject
-    lateinit var createAccountView: CreateAccountView
+    init {
+        view = createAccountView
+    }
 
     fun onClickSignIn() {
 
-        createAccountView.finishActivity()
+        view.finishActivity()
     }
 
     fun onClickCreateNewAccount(email: String, password: String, displayName: String) {
 
         if (email.isBlank() || password.isBlank() || displayName.isBlank()) {
 
-            createAccountView.postMessage(Message.FILL_ALL_FIELDS)
+            view.postMessage(Message.FILL_ALL_FIELDS)
 
-        } else if (!createAccountView.isOnline()) {
+        } else if (!view.isOnline()) {
 
-            createAccountView.postMessage(Message.NO_INTERNET_CONNECTION)
+            view.postMessage(Message.NO_INTERNET_CONNECTION)
 
         } else {
 
-            createAccountView.isUiEnable = false
-            createAccountView.isCreateAccountButtonTextVisible = false
-            createAccountView.isCreateAccountProgressBarVisible = true
+            view.isUiEnable = false
+            view.isCreateAccountButtonTextVisible = false
+            view.isCreateAccountProgressBarVisible = true
             authInteractor.createAccount(email, password, displayName, this)
         }
     }
 
     private fun onAnyError() {
-        createAccountView.isUiEnable = true
-        createAccountView.isCreateAccountButtonTextVisible = false
-        createAccountView.isCreateAccountProgressBarVisible = false
+        view.isUiEnable = true
+        view.isCreateAccountButtonTextVisible = false
+        view.isCreateAccountProgressBarVisible = false
     }
 
     override fun onSuccess() {
-        createAccountView.postMessage(Message.ACCOUNT_CREATED)
-        createAccountView.finishActivity()
+        view.postMessage(Message.ACCOUNT_CREATED)
+        view.finishActivity()
     }
 
     override fun onUserExist() {
         onAnyError()
-        createAccountView.postMessage(Message.USER_EXISTS)
+        view.postMessage(Message.USER_EXISTS)
     }
 
     override fun onUndefinedError() {
         onAnyError()
-        createAccountView.postMessage(Message.SOMETHING_GOES_WRONG)
+        view.postMessage(Message.SOMETHING_GOES_WRONG)
     }
 }

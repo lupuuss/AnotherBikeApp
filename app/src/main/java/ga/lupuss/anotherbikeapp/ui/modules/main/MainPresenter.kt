@@ -13,31 +13,33 @@ import timber.log.Timber
 
 import javax.inject.Inject
 /**
- * Presenter associated with [MainActivity]. [MainActivity] must implement [MainView].
+ * Presenter associated with [MainActivity]. [MainActivity] must implement [view].
  */
 class MainPresenter @Inject constructor(private val routesManager: RoutesManager,
                                         private val authInteractor: AuthInteractor,
                                         private val preferencesInteractor: PreferencesInteractor,
-                                        private val trackingServiceGovernor: TrackingServiceGovernor)
-    :   Presenter,
+                                        private val trackingServiceGovernor: TrackingServiceGovernor,
+                                        mainView: MainView)
+    :   Presenter<MainView>(),
         OnDocumentChanged,
         TrackingServiceGovernor.OnServiceActivityChangesListener,
         PreferencesInteractor.OnUnitChangedListener {
+
+    init {
+        this.view = mainView
+    }
 
     var speedUnit: Statistic.Unit = preferencesInteractor.speedUnit
     var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
 
     private var loadMoreAvailable = true
 
-    @Inject
-    lateinit var mainView: MainView
-
     override fun notifyOnViewReady() {
         super.notifyOnViewReady()
 
-        mainView.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
-        mainView.isNoDataTextVisible = false
-        mainView.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
+        view.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
+        view.isNoDataTextVisible = false
+        view.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
 
         preferencesInteractor.addOnUnitChangedListener(this, this)
         trackingServiceGovernor.addOnServiceActivityChangesListener(this, this)
@@ -64,7 +66,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
                     routeData?.let {
 
                         routesManager.keepTempRoute(it)
-                        mainView.startSummaryActivity()
+                        view.startSummaryActivity()
                     }
                 }
 
@@ -84,6 +86,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
 
+        super.notifyOnDestroy(isFinishing)
         trackingServiceGovernor.removeOnServiceActivityChangesListener(this)
         trackingServiceGovernor.destroy(isFinishing)
         routesManager.removeOnRoutesDataChangedListener(this)
@@ -98,23 +101,23 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
         if (loadMoreAvailable) {
 
-            mainView.isProgressBarVisible = true
+            view.isProgressBarVisible = true
 
             routesManager.requestMoreShortRouteData(object : RoutesManager.OnRequestMoreShortRouteDataListener {
                 override fun onDataEnd() {
 
-                    mainView.isProgressBarVisible = false
+                    view.isProgressBarVisible = false
 
                     loadMoreAvailable = false
 
                     if (routesManager.shortRouteDataCount() == 0)
-                        mainView.isNoDataTextVisible = true
+                        view.isNoDataTextVisible = true
 
                 }
 
                 override fun onFail(exception: Exception) {
 
-                    mainView.isProgressBarVisible = false
+                    view.isProgressBarVisible = false
                     Timber.d(exception)
                 }
 
@@ -124,7 +127,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     fun onClickShortRoute(position: Int) {
 
-        mainView.startSummaryActivity(
+        view.startSummaryActivity(
                 routesManager.routeReferenceSerializer.serialize(
                         routesManager.getRouteReference(position)
                 )
@@ -135,15 +138,15 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     fun onClickTrackingButton() {
 
         trackingServiceGovernor.startTracking(
-                { mainView.startTrackingActivity() },
-                { mainView.postMessage(Message.NO_PERMISSION) }
+                { view.startTrackingActivity() },
+                { view.postMessage(Message.NO_PERMISSION) }
         )
 
     }
 
     fun onClickSettings() {
 
-        mainView.startSettingsActivity()
+        view.startSettingsActivity()
     }
 
     fun onClickSignOut() {
@@ -153,14 +156,14 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
             signOut()
         } else {
-            mainView.showExitWarningDialog({ signOut() })
+            view.showExitWarningDialog({ signOut() })
         }
     }
 
     private fun signOut() {
         authInteractor.signOut()
-        mainView.startLoginActivity()
-        mainView.finishActivity()
+        view.startLoginActivity()
+        view.finishActivity()
     }
 
     fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
@@ -169,43 +172,43 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     fun onExitRequest() {
 
-        if (mainView.isDrawerLayoutOpened) {
+        if (view.isDrawerLayoutOpened) {
 
-            mainView.hideDrawer()
+            view.hideDrawer()
 
         } else if (trackingServiceGovernor.serviceInteractor == null
                 || !trackingServiceGovernor.serviceInteractor!!.isServiceInProgress()) {
 
-            mainView.finishActivity()
+            view.finishActivity()
 
         } else {
 
-            mainView.showExitWarningDialog({ mainView.finishActivity() })
+            view.showExitWarningDialog({ view.finishActivity() })
         }
     }
 
     override fun onNewDocument(position: Int) {
 
-        mainView.isNoDataTextVisible = false
-        mainView.notifyRecyclerItemInserted(position, routesManager.shortRouteDataCount())
+        view.isNoDataTextVisible = false
+        view.notifyRecyclerItemInserted(position, routesManager.shortRouteDataCount())
     }
 
     override fun onDocumentModified(position: Int) {
-        mainView.notifyRecyclerItemChanged(position)
+        view.notifyRecyclerItemChanged(position)
     }
 
     override fun onDocumentDeleted(position: Int) {
-        mainView.notifyRecyclerItemRemoved(position, routesManager.shortRouteDataCount())
+        view.notifyRecyclerItemRemoved(position, routesManager.shortRouteDataCount())
 
         if (routesManager.shortRouteDataCount() == 0) {
 
-            mainView.isNoDataTextVisible = true
+            view.isNoDataTextVisible = true
         }
     }
 
     override fun onServiceActivityChanged(state: Boolean) {
 
-        mainView.setTrackingButtonState(state)
+        view.setTrackingButtonState(state)
     }
 
     override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
@@ -213,6 +216,6 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         this.speedUnit = speedUnit
         this.distanceUnit = distanceUnit
 
-        mainView.refreshRecyclerAdapter()
+        view.refreshRecyclerAdapter()
     }
 }

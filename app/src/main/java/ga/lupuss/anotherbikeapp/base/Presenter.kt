@@ -1,11 +1,19 @@
 package ga.lupuss.anotherbikeapp.base
 
+import ga.lupuss.anotherbikeapp.kotlin.Resettable
+import ga.lupuss.anotherbikeapp.kotlin.ResettableManager
+
 
 /** Base interface for presenters */
-interface Presenter {
+abstract class Presenter<T : BaseView> {
 
-    fun notifyOnViewReady() {}
-    fun notifyOnResult(requestCode: Int, resultCode: Int) {}
-    fun notifyOnDestroy(isFinishing: Boolean) {}
+    private val resettableManager = ResettableManager()
+    var view: T by Resettable(resettableManager)
+
+    open fun notifyOnViewReady() {}
+    open fun notifyOnResult(requestCode: Int, resultCode: Int) {}
+    open fun notifyOnDestroy(isFinishing: Boolean) {
+        resettableManager.reset()
+    }
 
 }
