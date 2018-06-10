@@ -14,6 +14,9 @@ class MainSummaryPresenter @Inject constructor(
 
 ): SummaryPresenter(summaryView) {
 
+
+    // Tests checks this field by reflection.
+    // If you renames this field, you should rename it in tests as well.
     private lateinit var subPresenter: SummaryPresenter
 
     fun initMode(mode: Mode, routeReference: String?) {

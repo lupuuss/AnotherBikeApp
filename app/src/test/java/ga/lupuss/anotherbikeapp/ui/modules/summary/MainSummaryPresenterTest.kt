@@ -95,6 +95,13 @@ class MainSummaryPresenterTest {
         val routesManager: RoutesManager = mock {  }
         val summaryPresenter = MainSummaryPresenter(mock { }, routesManager, mock {  }, mock {  })
 
+        (summaryPresenter::class.memberProperties
+                .find { it.name == "subPresenter" }
+                ?.apply { this.isAccessible = true }
+                as KMutableProperty<*>)
+                .setter
+                .call(summaryPresenter, mock<SummaryPresenter>{ })
+
         summaryPresenter.notifyOnDestroy(false)
         verify(routesManager, never()).clearTempRoute()
 
