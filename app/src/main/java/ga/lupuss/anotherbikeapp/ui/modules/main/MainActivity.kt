@@ -90,11 +90,7 @@ class MainActivity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == MainActivity.Request.TRACKING_ACTIVITY_REQUEST) {
-
-            mainPresenter.notifyOnResult(requestCode, resultCode)
-        }
-
+        mainPresenter.notifyOnResult(requestCode, resultCode)
     }
 
     @SuppressLint("ShowToast")
@@ -286,7 +282,7 @@ class MainActivity
         startActivityForResult(
                 TrackingActivity.newIntent(this@MainActivity,
                         androidTrackingServiceGovernor.serviceBinder!!),
-                Request.TRACKING_ACTIVITY_REQUEST
+                MainPresenter.Request.TRACKING_ACTIVITY_REQUEST
         )
     }
 
@@ -308,12 +304,6 @@ class MainActivity
     override fun startSummaryActivity(docRef: String) {
 
         startActivity(SummaryActivity.newIntent(this, docRef))
-    }
-
-    class Request {
-        companion object {
-            const val TRACKING_ACTIVITY_REQUEST = 0
-        }
     }
 
     companion object {

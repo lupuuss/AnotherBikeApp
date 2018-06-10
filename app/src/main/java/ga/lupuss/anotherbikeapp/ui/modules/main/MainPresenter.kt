@@ -46,12 +46,11 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         routesManager.addRoutesDataChangedListener(this)
 
         onLoadMoreRequest()
-
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
 
-        if (requestCode == MainActivity.Request.TRACKING_ACTIVITY_REQUEST) {
+        if (requestCode == Request.TRACKING_ACTIVITY_REQUEST) {
 
             when (resultCode) {
 
@@ -217,5 +216,11 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         this.distanceUnit = distanceUnit
 
         view.refreshRecyclerAdapter()
+    }
+
+    class Request {
+        companion object {
+            const val TRACKING_ACTIVITY_REQUEST = 0
+        }
     }
 }
