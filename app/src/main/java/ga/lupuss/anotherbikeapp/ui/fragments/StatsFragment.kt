@@ -13,6 +13,8 @@ import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
+import ga.lupuss.anotherbikeapp.AnotherBikeApp
+
 
 /** Contains information about tracking. */
 class StatsFragment : Fragment() {
@@ -67,5 +69,12 @@ class StatsFragment : Fragment() {
 
             ViewExtensions.updateTextViewStatByTag(layout, name, stringsResolver.resolve(name, stat))
         }
+    }
+
+    override fun onDestroy() {
+
+        super.onDestroy()
+        val refWatcher = AnotherBikeApp.getRefWatcher(activity)
+        refWatcher.watch(this)
     }
 }
