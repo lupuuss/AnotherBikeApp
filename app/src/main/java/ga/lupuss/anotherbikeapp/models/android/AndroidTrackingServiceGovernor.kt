@@ -14,7 +14,7 @@ import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import timber.log.Timber
 
-class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
+class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnection {
 
 
     private val resettebleManager = ResettableManager()
@@ -26,30 +26,6 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
     override val serviceInteractor
         get() = serviceBinder as TrackingServiceInteractor?
 
-    /** Connection callback to bindService */
-    private val serviceConnection = object : ServiceConnection {
-
-        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-
-            p1 ?: throw IllegalStateException("Service should always return IBinder!")
-
-            Timber.d("Service connected")
-
-            serviceBinder = p1 as TrackingService.ServiceBinder
-
-            if (!isServiceActive) {
-
-                isServiceActive = true
-                onServiceConnected?.onTrackingInitDone()
-                onServiceConnected = null
-            }
-        }
-
-        override fun onServiceDisconnected(p0: ComponentName?) {
-            isServiceActive = false
-            serviceBinder = null
-        }
-    }
 
     private var onServiceConnected: OnTrackingRequestDone? = null
 
@@ -135,9 +111,30 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
 
         serviceParentActivity.bindService(
                 Intent(serviceParentActivity, TrackingService::class.java),
-                serviceConnection,
+                this,
                 Context.BIND_AUTO_CREATE
         )
+    }
+
+    override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+
+        p1 ?: throw IllegalStateException("Service should always return IBinder!")
+
+        Timber.d("Service connected")
+
+        serviceBinder = p1 as TrackingService.ServiceBinder
+
+        if (!isServiceActive) {
+
+            isServiceActive = true
+            onServiceConnected?.onTrackingInitDone()
+            onServiceConnected = null
+        }
+    }
+
+    override fun onServiceDisconnected(p0: ComponentName?) {
+        isServiceActive = false
+        serviceBinder = null
     }
 
     override fun stopTracking() {
@@ -159,7 +156,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
     private fun unbindTrackingService() {
 
         Timber.d("Unbinding service...")
-        serviceParentActivity.unbindService(serviceConnection)
+        serviceParentActivity.unbindService(this)
     }
 
     companion object {
