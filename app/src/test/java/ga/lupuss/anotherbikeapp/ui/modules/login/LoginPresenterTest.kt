@@ -46,7 +46,7 @@ class LoginPresenterTest {
         verify(loginView, times(1)).isSignInProgressBarVisible = true
         verify(loginView, times(1)).isSignInButtonTextVisible = false
         verify(loginInteractor, times(1))
-                .login("not blank", "not blank", loginPresenter)
+                .login("not blank", "not blank", loginPresenter, loginPresenter)
     }
 
     @Test
