@@ -17,8 +17,8 @@ import timber.log.Timber
 class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnection {
 
 
-    private val resettebleManager = ResettableManager()
-    private var serviceParentActivity: BaseActivity by Resettable(resettebleManager)
+    private val resettableManager = ResettableManager()
+    private var serviceParentActivity: BaseActivity by Resettable(resettableManager)
 
     override var serviceBinder: TrackingService.ServiceBinder? = null
         private set
@@ -48,7 +48,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
     override fun destroy(isFinishing: Boolean) {
 
-        resettebleManager.reset()
+        resettableManager.reset()
 
         if (isFinishing && isServiceActive) {
 
@@ -96,8 +96,6 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
     }
 
     private fun startTrackingService() {
-
-        // after bind onServiceStart is called by serviceConnection callback
 
         Timber.d("Starting service...")
         serviceParentActivity.startService(
@@ -160,6 +158,6 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
     }
 
     companion object {
-        private const val IS_SERVICE_ACTIVE_KEY = "mainPresenterState"
+        const val IS_SERVICE_ACTIVE_KEY = "mainPresenterState"
     }
 }
