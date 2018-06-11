@@ -183,7 +183,21 @@ class MainPresenterTest {
 
     @Test
     fun onClickShortRoute_shouldStartSummaryActivity() {
-        // ImDoneException
+        val mainPresenter = MainPresenter(
+                mock {
+                    on { routeReferenceSerializer }.then { mock<RouteReferenceSerializer> {
+                        on { serialize(any()) }.then { "" }
+                    } }
+
+                    on { getRouteReference(0) }.then { mock<RouteReference>{ } }
+                },
+                authInteractor,
+                preferencesInteractor,
+                trackingServiceGovernor,
+                mainView
+        )
+        mainPresenter.onClickShortRoute(0)
+        verify(mainView, times(1)).startSummaryActivity(eq(""))
     }
 
     @Test
