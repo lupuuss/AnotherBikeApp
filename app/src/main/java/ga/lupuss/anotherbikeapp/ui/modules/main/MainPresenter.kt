@@ -23,7 +23,8 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     :   Presenter<MainView>(),
         OnDocumentChanged,
         TrackingServiceGovernor.OnServiceActivityChangesListener,
-        PreferencesInteractor.OnUnitChangedListener {
+        PreferencesInteractor.OnUnitChangedListener,
+        RoutesManager.OnRequestMoreShortRouteDataListener{
 
     init {
         this.view = mainView
@@ -102,26 +103,25 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
             view.isProgressBarVisible = true
 
-            routesManager.requestMoreShortRouteData(object : RoutesManager.OnRequestMoreShortRouteDataListener {
-                override fun onDataEnd() {
-
-                    view.isProgressBarVisible = false
-
-                    loadMoreAvailable = false
-
-                    if (routesManager.shortRouteDataCount() == 0)
-                        view.isNoDataTextVisible = true
-
-                }
-
-                override fun onFail(exception: Exception) {
-
-                    view.isProgressBarVisible = false
-                    Timber.d(exception)
-                }
-
-            })
+            routesManager.requestMoreShortRouteData(this)
         }
+    }
+
+    override fun onDataEnd() {
+
+        view.isProgressBarVisible = false
+
+        loadMoreAvailable = false
+
+        if (routesManager.shortRouteDataCount() == 0)
+            view.isNoDataTextVisible = true
+
+    }
+
+    override fun onFail(exception: Exception) {
+
+        view.isProgressBarVisible = false
+        Timber.d(exception)
     }
 
     fun onClickShortRoute(position: Int) {
