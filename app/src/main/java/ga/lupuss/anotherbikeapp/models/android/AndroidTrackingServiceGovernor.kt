@@ -48,8 +48,6 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
     override fun destroy(isFinishing: Boolean) {
 
-        resettableManager.reset()
-
         if (isFinishing && isServiceActive) {
 
             Timber.d("Finishing activity...")
@@ -64,6 +62,8 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
             Timber.d("No service. Clean destroy.")
         }
+
+        resettableManager.reset()
     }
 
     override fun startTracking(onTrackingRequestDone: OnTrackingRequestDone?) {
