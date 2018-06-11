@@ -18,12 +18,16 @@ interface AuthInteractor {
 
     interface OnDisplayNameSetDoneListener : OnAuthTaskDoneListener
 
-    fun login(email: String, password: String, onLoginDone: OnLoginDoneListener?)
+    fun login(email: String,
+              password: String,
+              onLoginDone: OnLoginDoneListener?,
+              requestOwner: Any? = null)
 
     fun createAccount(email: String,
                       password: String,
                       displayName: String,
-                      onCreateAccountDone: OnAccountCreateDoneListener?)
+                      onCreateAccountDone: OnAccountCreateDoneListener?,
+                      requestOwner: Any? = null)
 
     fun getEmail(): String?
 

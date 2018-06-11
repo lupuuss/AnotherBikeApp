@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
+import android.app.Activity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -8,15 +9,16 @@ import timber.log.Timber
 
 class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInteractor {
 
-    override fun login(email: String, password: String, onLoginDone: AuthInteractor.OnLoginDoneListener?) {
+    override fun login(email: String, password: String, onLoginDone: AuthInteractor.OnLoginDoneListener?, requestOwner: Any?) {
 
-        Timber.d("Login with => $email : $password")
+        if (requestOwner !is Activity)
+            throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
+                .addOnSuccessListener(requestOwner) {
                     onLoginDone?.onSuccess()
                 }
-                .addOnFailureListener {
+                .addOnFailureListener(requestOwner) {
 
                     Timber.d(it)
 
@@ -35,10 +37,13 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
     override fun createAccount(email: String,
                                password: String,
                                displayName: String,
-                               onCreateAccountDone: AuthInteractor.OnAccountCreateDoneListener?) {
+                               onCreateAccountDone: AuthInteractor.OnAccountCreateDoneListener?,
+                               requestOwner: Any?) {
+        if (requestOwner !is Activity)
+            throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
+                .addOnSuccessListener(requestOwner) {
 
                     onCreateAccountDone?.onSuccess()
                     setDisplayName(displayName, null)

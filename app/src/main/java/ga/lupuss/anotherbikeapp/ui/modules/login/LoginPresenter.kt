@@ -28,7 +28,7 @@ class LoginPresenter @Inject constructor(private val loginInteractor: AuthIntera
             view.isUiEnable = false
             view.isSignInProgressBarVisible = true
             view.isSignInButtonTextVisible = false
-            loginInteractor.login(email, password, this)
+            loginInteractor.login(email, password, this, this)
         }
     }
 

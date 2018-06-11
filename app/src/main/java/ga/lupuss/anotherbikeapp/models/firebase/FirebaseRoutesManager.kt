@@ -91,7 +91,7 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
             requestOwner: Any?) {
 
         if (requestOwner !is Activity)
-            throw IllegalArgumentException("Request owner should be an activity!")
+            throw IllegalArgumentException(WRONG_OWNER)
 
         if (routeReference !is FirebaseRouteReference)
             throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
@@ -235,5 +235,6 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
         const val FIREB_NAME = "name"
         const val WRONG_REFERENCE_MESSAGE =
                 "routeReference must be FirebaseRouteReference! Probably it doesn't come from FirebaseRouteManager."
+        const val WRONG_OWNER = "Request owner should be an activity!"
     }
 }
