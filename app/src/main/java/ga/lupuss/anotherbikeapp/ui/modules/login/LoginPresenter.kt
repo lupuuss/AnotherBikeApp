@@ -52,7 +52,6 @@ class LoginPresenter @Inject constructor(private val loginInteractor: AuthIntera
 
     }
 
-
     override fun onIncorrectCredentialsError() {
         onAnyError()
         view.postMessage(Message.INCORRECT_CREDENTIALS)
