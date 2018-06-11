@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
+import android.app.Activity
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -56,7 +57,7 @@ class QueryLoadingManager(private val rootQuery: Query,
         return children[position]
     }
 
-    fun loadMoreDocuments(onEndOfData: (() -> Unit)?, onFail: ((Exception) -> Unit)?) {
+    fun loadMoreDocuments(onEndOfData: (() -> Unit)?, onFail: ((Exception) -> Unit)?, activity: Activity) {
 
         val query = if (children.isNotEmpty()) {
 
@@ -70,7 +71,7 @@ class QueryLoadingManager(private val rootQuery: Query,
         }
 
         query.get()
-                .addOnSuccessListener {
+                .addOnSuccessListener(activity) {
 
                     if (it.isEmpty) {
 
@@ -88,7 +89,7 @@ class QueryLoadingManager(private val rootQuery: Query,
                         }
                     }
                 }
-                .addOnFailureListener {
+                .addOnFailureListener(activity) {
                     onFail?.invoke(it)
                 }
     }

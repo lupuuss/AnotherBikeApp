@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
 
+import android.app.Activity
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -57,13 +58,15 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
         onRoutesChangedListeners.remove(onRoutesChangedListener)
     }
 
-    override fun requestMoreShortRouteData(
-            onRequestMoreShortRouteDataListener: RoutesManager.OnRequestMoreShortRouteDataListener?
-    ) {
+    override fun requestMoreShortRouteData(onRequestMoreShortRouteDataListener: RoutesManager.OnRequestMoreShortRouteDataListener?, requestOwner: Any?) {
+
+        if (requestOwner !is Activity)
+            throw IllegalArgumentException("Request owner should be an activity!")
 
         queryManager.loadMoreDocuments(
                 { onRequestMoreShortRouteDataListener?.onDataEnd() },
-                { onRequestMoreShortRouteDataListener?.onFail(it) }
+                { onRequestMoreShortRouteDataListener?.onFail(it) },
+                requestOwner
         )
     }
 
@@ -84,21 +87,23 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
 
     override fun requestExtendedRoutesData(
             routeReference: RouteReference,
-            onRequestExtendedRouteDataListener: RoutesManager.OnRequestExtendedRouteDataListener?
-    ) {
+            onRequestExtendedRouteDataListener: RoutesManager.OnRequestExtendedRouteDataListener?,
+            requestOwner: Any?) {
 
-        if (routeReference !is FirebaseRouteReference) {
+        if (requestOwner !is Activity)
+            throw IllegalArgumentException("Request owner should be an activity!")
+
+        if (routeReference !is FirebaseRouteReference)
             throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
-        }
 
         if (routeReference.routeReference == null) {
             onRequestExtendedRouteDataListener?.onMissingData()
             return
         }
 
-        if (routeReference.pointsReference == null) {
+        if (routeReference.pointsReference == null)
             Timber.d("Points reference is null!")
-        }
+
 
         var routeData: RouteData? = null
 
@@ -126,13 +131,13 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
                     }
 
                     routeReference.pointsReference?.get()
-                }.addOnSuccessListener {
+                }.addOnSuccessListener(requestOwner) {
 
                     val points = if (it.exists()) it.toFirebasePoints().pointsAsLatLngL() else null
 
                     checkRouteDataAndPostResult(points)
 
-                }.addOnFailureListener {
+                }.addOnFailureListener(requestOwner) {
 
                     Timber.d(it)
 

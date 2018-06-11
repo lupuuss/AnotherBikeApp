@@ -37,7 +37,8 @@ class OverviewSummaryPresenter(
         routesManager.requestExtendedRoutesData(
 
                 routeReference,
-                this
+                this,
+                view
         )
     }
 

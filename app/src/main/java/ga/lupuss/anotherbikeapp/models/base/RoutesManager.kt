@@ -20,12 +20,16 @@ interface RoutesManager {
 
     fun addRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged)
     fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged)
-    fun requestMoreShortRouteData(onRequestMoreShortRouteDataListener: OnRequestMoreShortRouteDataListener?)
+    fun requestMoreShortRouteData(
+            onRequestMoreShortRouteDataListener: OnRequestMoreShortRouteDataListener?,
+            requestOwner: Any? = null
+    )
     fun readShortRouteData(position: Int): ShortRouteData
 
     fun shortRouteDataCount(): Int
     fun requestExtendedRoutesData(routeReference: RouteReference,
-                                  onRequestExtendedRouteDataListener: OnRequestExtendedRouteDataListener?)
+                                  onRequestExtendedRouteDataListener: OnRequestExtendedRouteDataListener?,
+                                  requestOwner: Any? = null)
     fun saveRoute(routeData: ExtendedRouteData)
     fun keepTempRoute(routeData: ExtendedRouteData)
     fun getTempRoute(): ExtendedRouteData?

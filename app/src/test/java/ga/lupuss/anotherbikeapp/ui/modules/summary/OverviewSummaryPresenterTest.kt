@@ -78,7 +78,7 @@ class OverviewSummaryPresenterTest {
         verify(summaryView, times(1)).isSaveActionVisible = false
         verify(summaryView, times(1)).isRejectActionVisible = false
 
-        verify(routesManager, times(1)).requestExtendedRoutesData(any(), any())
+        verify(routesManager, times(1)).requestExtendedRoutesData(any(), any(), any())
     }
 
     @Test

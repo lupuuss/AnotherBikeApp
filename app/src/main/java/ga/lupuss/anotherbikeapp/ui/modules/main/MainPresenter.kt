@@ -103,7 +103,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
             view.isProgressBarVisible = true
 
-            routesManager.requestMoreShortRouteData(this)
+            routesManager.requestMoreShortRouteData(this, view)
         }
     }
 
