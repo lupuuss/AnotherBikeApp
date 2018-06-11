@@ -40,7 +40,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
             if (!isServiceActive) {
 
                 isServiceActive = true
-                onServiceConnected?.invoke()
+                onServiceConnected?.onTrackingInitDone()
                 onServiceConnected = null
             }
         }
@@ -51,7 +51,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
         }
     }
 
-    private var onServiceConnected: (() -> Unit)? = null
+    private var onServiceConnected: OnTrackingRequestDone? = null
 
     fun init(parentActivity: BaseActivity, savedInstanceState: Bundle?) {
 
@@ -90,17 +90,17 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
         }
     }
 
-    override fun startTracking(onSuccess: (() -> Unit)?, onNoPermission: (() -> Unit)?) {
+    override fun startTracking(onTrackingRequestDone: OnTrackingRequestDone?) {
 
         fun initTracking(){
 
-            onServiceConnected = onSuccess
+            onServiceConnected = onTrackingRequestDone
             startTrackingService()
             bindTrackingService()
         }
 
         when {
-            serviceBinder != null -> onSuccess?.invoke() // Tracking activity connected to existing service
+            serviceBinder != null -> onTrackingRequestDone?.onTrackingInitDone() // Tracking activity connected to existing service
 
             serviceParentActivity.checkLocationPermission() -> initTracking() // Starting new tracking service and tracking activity
 
@@ -111,7 +111,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor() {
 
                 } else {
 
-                    onNoPermission?.invoke()
+                    onTrackingRequestDone?.onNoTrackingPermission()
                 }
             }
         }

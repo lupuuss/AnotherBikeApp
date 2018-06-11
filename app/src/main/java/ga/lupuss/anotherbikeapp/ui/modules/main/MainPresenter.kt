@@ -2,11 +2,8 @@ package ga.lupuss.anotherbikeapp.ui.modules.main
 
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingPresenter
 import timber.log.Timber
@@ -24,7 +21,8 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         OnDocumentChanged,
         TrackingServiceGovernor.OnServiceActivityChangesListener,
         PreferencesInteractor.OnUnitChangedListener,
-        RoutesManager.OnRequestMoreShortRouteDataListener{
+        RoutesManager.OnRequestMoreShortRouteDataListener,
+        TrackingServiceGovernor.OnTrackingRequestDone {
 
     init {
         this.view = mainView
@@ -136,11 +134,17 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     fun onClickTrackingButton() {
 
-        trackingServiceGovernor.startTracking(
-                { view.startTrackingActivity() },
-                { view.postMessage(Message.NO_PERMISSION) }
-        )
+        trackingServiceGovernor.startTracking(this)
+    }
 
+    override fun onTrackingInitDone() {
+
+        view.startTrackingActivity()
+    }
+
+    override fun onNoTrackingPermission() {
+
+        view.postMessage(Message.NO_PERMISSION)
     }
 
     fun onClickSettings() {

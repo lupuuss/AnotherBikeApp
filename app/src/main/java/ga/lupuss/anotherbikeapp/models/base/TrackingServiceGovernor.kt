@@ -18,11 +18,16 @@ abstract class TrackingServiceGovernor {
         fun onServiceActivityChanged(state: Boolean)
     }
 
+    interface OnTrackingRequestDone {
+        fun onTrackingInitDone()
+        fun onNoTrackingPermission()
+    }
+
     private val serviceActivityListeners = mutableMapOf<Any, OnServiceActivityChangesListener>()
 
     abstract val serviceBinder: TrackingService.ServiceBinder?
     abstract val serviceInteractor: TrackingServiceInteractor?
-    abstract fun startTracking(onSuccess: (() -> Unit)?, onNoPermission: (() -> Unit)?)
+    abstract fun startTracking(onTrackingRequestDone: OnTrackingRequestDone?)
     abstract fun stopTracking()
     abstract fun destroy(isFinishing: Boolean)
 
