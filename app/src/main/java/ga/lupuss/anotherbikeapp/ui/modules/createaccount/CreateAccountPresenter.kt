@@ -36,7 +36,7 @@ class CreateAccountPresenter @Inject constructor(private val authInteractor: Aut
             view.isUiEnable = false
             view.isCreateAccountButtonTextVisible = false
             view.isCreateAccountProgressBarVisible = true
-            authInteractor.createAccount(email, password, displayName, this, this)
+            authInteractor.createAccount(email, password, displayName, this, view)
         }
     }
 
