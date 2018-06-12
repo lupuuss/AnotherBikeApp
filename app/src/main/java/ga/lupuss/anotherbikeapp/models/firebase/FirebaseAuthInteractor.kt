@@ -20,7 +20,7 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
                 }
                 .addOnFailureListener(requestOwner) {
 
-                    Timber.d(it)
+                    Timber.e(it)
 
                     when (it) {
                         is FirebaseAuthInvalidCredentialsException -> onLoginDone?.onIncorrectCredentialsError()

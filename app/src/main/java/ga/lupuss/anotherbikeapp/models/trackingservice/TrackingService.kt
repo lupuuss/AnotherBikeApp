@@ -72,7 +72,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
                     locationDataReceivers.forEach { it.onNewLocation(savedRoute) }
                 }
 
-                Timber.v("NEW POINT = [${location.latitude}, ${location.longitude}]")
+                Timber.i ("NEW POINT = [${location.latitude}, ${location.longitude}]")
             }
         }
 
@@ -96,7 +96,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
                 }
             }
 
-            Timber.d("Location availability: %s", isLocationOk)
+            Timber.v("Location availability: $isLocationOk")
             locationDataReceivers.forEach { it.onLocationAvailability(isLocationOk) }
         }
 
@@ -156,12 +156,12 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
             }
         }
 
-        Timber.d("Service started")
+        Timber.v("Service started")
     }
 
     override fun onBind(p0: Intent?): IBinder? {
 
-        Timber.d("Bound %s", p0)
+        Timber.v("Bound $p0")
 
         if (!locationRequested) {
 
@@ -172,7 +172,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
     override fun onUnbind(intent: Intent?): Boolean {
 
-        Timber.d("Unbound > %s", intent)
+        Timber.v("Unbound > $intent")
         return super.onUnbind(intent)
     }
 
@@ -190,7 +190,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
                     null
             )
 
-            Timber.d("Location request send")
+            Timber.v("Location request send")
         }
 
         locationRequested = true
@@ -202,7 +202,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
         locationClient.removeLocationUpdates(locationCallback)
         statsManager.timer.stop()
         thread.quit()
-        Timber.d("Service destroyed.")
+        Timber.v("Service destroyed.")
     }
 
     fun connectLocationDataReceiver(locationDataReceiver: TrackingServiceInteractor.LocationDataReceiver) {

@@ -50,17 +50,17 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
         if (isFinishing && isServiceActive) {
 
-            Timber.d("Finishing activity...")
+            Timber.v("Finishing activity...")
             stopTracking()
 
         } else if (isServiceActive) {
 
-            Timber.d("Recreating activity...")
+            Timber.v("Recreating activity...")
             unbindTrackingService()
 
         } else {
 
-            Timber.d("No service. Clean destroy.")
+            Timber.v("No service. Clean destroy.")
         }
 
         resettableManager.reset()
@@ -97,7 +97,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
     private fun startTrackingService() {
 
-        Timber.d("Starting service...")
+        Timber.v("Starting service...")
         serviceParentActivity.startService(
                 Intent(serviceParentActivity, TrackingService::class.java)
         )
@@ -105,7 +105,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
     private fun bindTrackingService()  {
 
-        Timber.d("Binding service...")
+        Timber.v("Binding service...")
 
         serviceParentActivity.bindService(
                 Intent(serviceParentActivity, TrackingService::class.java),
@@ -118,7 +118,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
         p1 ?: throw IllegalStateException("Service should always return IBinder!")
 
-        Timber.d("Service connected")
+        Timber.v("Service connected")
 
         serviceBinder = p1 as TrackingService.ServiceBinder
 
@@ -145,7 +145,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
     private fun stopTrackingService() {
 
-        Timber.d("Stopping service...")
+        Timber.v("Stopping service...")
         serviceParentActivity.stopService(
                 Intent(serviceParentActivity, TrackingService::class.java)
         )
@@ -153,7 +153,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
     private fun unbindTrackingService() {
 
-        Timber.d("Unbinding service...")
+        Timber.v("Unbinding service...")
         serviceParentActivity.unbindService(this)
     }
 

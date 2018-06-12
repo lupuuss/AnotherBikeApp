@@ -27,7 +27,7 @@ class QueryLoadingManager(private val rootQuery: Query,
         rootQuery.addSnapshotListener { querySnapshot, exception ->
 
             exception?.let {
-                Timber.d("Query callback exception: $it")
+                Timber.e("Query callback exception: $it")
             }
 
             if (querySnapshot != null) {
@@ -98,11 +98,11 @@ class QueryLoadingManager(private val rootQuery: Query,
 
         val list = mutableListOf<Pair<DocumentChange.Type, Int>>()
 
-        Timber.d("New changes package >>> ")
+        Timber.v("New changes package >>> ")
 
         for (change in allChanges) {
 
-            Timber.d("${change.type} > ${change.document.data}")
+            Timber.v("${change.type} > ${change.document.data}")
 
             when (change.type) {
 
@@ -135,7 +135,7 @@ class QueryLoadingManager(private val rootQuery: Query,
             }
         }
 
-        Timber.d("End of package >>>")
+        Timber.v("End of package >>>")
 
         return list
     }
@@ -143,7 +143,7 @@ class QueryLoadingManager(private val rootQuery: Query,
 
     private fun notifyParent(type: DocumentChange.Type, i: Int) {
 
-        Timber.d("$type : $i")
+        Timber.v("$type : $i")
 
         when (type) {
 

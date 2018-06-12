@@ -160,7 +160,7 @@ class MainActivity
 
         mainPresenter.notifyOnDestroy(isFinishing)
         super.onDestroy()
-        Timber.d("MainActivity destroyed!")
+        Timber.v("MainActivity destroyed!")
     }
 
     // onClicks

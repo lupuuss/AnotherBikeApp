@@ -71,6 +71,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
             if (lastLocation != null && lastLocation!!.bearing == location.bearing) {
 
+                Timber.d("<< Same bearing! Last point is replaced! >>")
                 routeData.points[routeData.points.size - 1] =
                         LatLng(location.latitude, location.longitude)
 
@@ -78,6 +79,14 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
                 routeData.points.add(LatLng(location.latitude, location.longitude))
             }
+        } else {
+
+            when {
+                lastLocation == null -> Timber.d("Last location is null!")
+                location.distanceTo(lastLocation) == 0F -> Timber.d("Same position! Point is ignored!")
+                location.accuracy > 100 -> Timber.d("Accuracy is too low!")
+            }
+
         }
 
         lastLocation = location
@@ -101,9 +110,11 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         val distance = before.distanceTo(current)
         val speed = distance / (deltaTime / 1000)
 
+        Timber.d("<< Distance: $distance\tTime: $deltaTime\tSpeed: $speed >>")
+
         if (speed.isInfinite()) {
 
-            Timber.d("Infinite speed!")
+            Timber.w("Infinite speed!")
 
         } else {
 

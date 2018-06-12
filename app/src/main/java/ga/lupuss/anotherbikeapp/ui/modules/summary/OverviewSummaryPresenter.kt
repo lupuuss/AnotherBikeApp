@@ -6,7 +6,6 @@ import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import timber.log.Timber
 
 class OverviewSummaryPresenter(
         summaryView: SummaryView,
@@ -93,8 +92,6 @@ class OverviewSummaryPresenter(
 
         if (::name.isInitialized) {
 
-            Timber.d("${text?.toString()}|")
-            Timber.d("$name|")
             view.isSaveActionVisible = text.toString() != name
         }
     }

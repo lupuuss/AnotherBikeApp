@@ -55,7 +55,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
                 TrackingPresenter.Result.DONE -> {
 
-                    Timber.d("Service done. Data may be saved")
+                    Timber.v("Service done. Data may be saved")
 
                     val routeData = trackingServiceGovernor.serviceInteractor?.routeData
 
@@ -70,13 +70,13 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
                 TrackingPresenter.Result.NO_DATA_DONE -> {
 
-                    Timber.d("Service done, but no data")
+                    Timber.v("Service done, but no data")
                     trackingServiceGovernor.stopTracking()
                 }
 
                 TrackingPresenter.Result.NOT_DONE -> {
 
-                    Timber.d("Service is working...")
+                    Timber.v("Service is working...")
                 }
             }
         }
@@ -119,7 +119,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     override fun onFail(exception: Exception) {
 
         view.isProgressBarVisible = false
-        Timber.d(exception)
+        Timber.e(exception)
     }
 
     fun onClickShortRoute(position: Int) {

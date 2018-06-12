@@ -25,13 +25,11 @@ abstract class PreferencesInteractor {
                                   onThemeChangedListener: PreferencesInteractor.OnThemeChangedListener) {
 
         themeListeners[owner] = onThemeChangedListener
-        Timber.d("New theme listener: $owner")
     }
 
     fun removeOnThemeChangedListener(owner: Any) {
 
-        Timber.d("Remove theme listener: $owner!")
-        themeListeners.remove(owner) ?: Timber.w("Removing listener failed!")
+        themeListeners.remove(owner)
     }
 
     fun addOnUnitChangedListener(owner: Any,

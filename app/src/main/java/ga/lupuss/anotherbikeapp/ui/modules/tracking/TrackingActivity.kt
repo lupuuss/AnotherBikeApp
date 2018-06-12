@@ -192,7 +192,7 @@ class TrackingActivity : BaseActivity(),
     override fun onDestroy() {
         super.onDestroy()
 
-        Timber.d("Tracking activity destroyed!")
+        Timber.v("Tracking activity destroyed!")
         trackingPresenter.notifyOnDestroy(isFinishing)
     }
 

@@ -102,7 +102,7 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
         }
 
         if (routeReference.pointsReference == null)
-            Timber.d("Points reference is null!")
+            Timber.w("Points reference is null!")
 
 
         var routeData: RouteData? = null
@@ -139,7 +139,7 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
 
                 }.addOnFailureListener(requestOwner) {
 
-                    Timber.d(it)
+                    Timber.e(it)
 
                     checkRouteDataAndPostResult(null)
 
