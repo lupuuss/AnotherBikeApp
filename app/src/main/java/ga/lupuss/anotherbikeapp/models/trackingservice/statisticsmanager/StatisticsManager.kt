@@ -116,7 +116,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
             if (speed > minSpeedToCount) {
 
-                routeData.avgSpeed = math.measureAvgSpeed(speed)
+                routeData.avgSpeed = math.measureAverage(StatisticsMathProvider.AVG.SPEED, speed)
                 routeData.distance += distance
                 timer.unpause()
                 status = Status.RUNNING
@@ -127,7 +127,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
                 status = Status.PAUSE
             }
 
-            routeData.maxSpeed = math.measureMaxSpeed(speed, routeData.maxSpeed)
+            routeData.maxSpeed = math.measureMax(speed, routeData.maxSpeed)
 
             newStats()
 

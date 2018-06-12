@@ -15,7 +15,7 @@ class StatisticsMathProviderTest {
         var currentAvg = 0.0
 
         speeds.forEach {
-            currentAvg = math.measureAvgSpeed(it)
+            currentAvg = math.measureAverage(StatisticsMathProvider.AVG.SPEED, it)
         }
 
         assertEquals(speeds.average(), currentAvg)
