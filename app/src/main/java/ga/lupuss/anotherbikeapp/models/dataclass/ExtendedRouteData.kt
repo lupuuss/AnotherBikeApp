@@ -10,7 +10,7 @@ class ExtendedRouteData(
         duration: Long,
         startTimeStr: String,
         startTime: Long,
-        val points: MutableList<LatLng>
+        val points: List<LatLng>
 ) : RouteData(
         name = name,
         distance = distance,
@@ -19,4 +19,9 @@ class ExtendedRouteData(
         duration = duration,
         startTimeStr = startTimeStr,
         startTime = startTime
-)
+) {
+
+    fun toMutable() = MutableExtendedRouteData(
+            name, distance, avgSpeed, maxSpeed, duration, startTimeStr, startTime, points.toMutableList()
+    )
+}

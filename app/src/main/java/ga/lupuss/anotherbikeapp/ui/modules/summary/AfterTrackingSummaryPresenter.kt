@@ -31,9 +31,11 @@ class AfterTrackingSummaryPresenter(
 
         val name = view.getRouteNameFromEditText()
 
-        routeData.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+        val mutable = routeData.toMutable()
 
-        routesManager.saveRoute(routeData)
+        mutable.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+
+        routesManager.saveRoute(mutable.toImmutable())
         view.finishActivity()
     }
 

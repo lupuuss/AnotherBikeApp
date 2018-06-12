@@ -72,7 +72,9 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
 
     override fun readShortRouteData(position: Int): ShortRouteData {
 
-        return queryManager.readDocument(position).toFirebaseShortRouteData()
+        return queryManager.readDocument(position)
+                .toFirebaseShortRouteData()
+                .toShortRouteData()
     }
 
     override fun shortRouteDataCount() = queryManager.size
@@ -166,7 +168,7 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
                 })
                 .update(newPointsRef, FIREB_ROUTE, newRouteRef)
                 .set(userRef.collection(FIREB_ROUTES).document(), FirebaseShortRouteData().apply {
-                    fillWithShort(routeData)
+                    fillWith(routeData)
                     route = newRouteRef
                     points = newPointsRef
                 })

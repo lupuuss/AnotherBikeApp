@@ -42,7 +42,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         get() = routeData.points
 
     /** Contains values that should be saved in memory or on server. */
-    val routeData = ExtendedRouteData(
+    val routeData = MutableExtendedRouteData(
             name = null,
             points = mutableListOf(),
             avgSpeed = 0.0,

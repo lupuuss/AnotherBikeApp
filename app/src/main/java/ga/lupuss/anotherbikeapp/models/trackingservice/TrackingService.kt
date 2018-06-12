@@ -110,7 +110,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
         override val lastStats get() = this@TrackingService.lastStats
 
-        override val routeData get() = this@TrackingService.routeData
+        override val routeData get() = this@TrackingService.routeData.toImmutable()
 
         override fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
 

@@ -8,8 +8,8 @@ open class RouteData(
         avgSpeed: Double,
         duration: Long,
         startTime: Long,
-        var startTimeStr: String,
-        var maxSpeed: Double
+        val startTimeStr: String,
+        val maxSpeed: Double
 ) : ShortRouteData(name, distance, avgSpeed, duration, startTime) {
     fun getStatisticsMap(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit)
             : Map<Statistic.Name, Statistic<*>> {
