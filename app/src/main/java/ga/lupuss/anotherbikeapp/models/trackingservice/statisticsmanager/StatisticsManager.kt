@@ -37,12 +37,9 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     var onNewStats: ((stats: Map<Statistic.Name, Statistic<*>>) -> Unit)? = null
 
     var lastStats: Map<Statistic.Name, Statistic<*>>? = null
-    var lastLocation: Location? = null
+    private var lastLocation: Location? = null
     val savedRoute: List<LatLng>
         get() = routeData.points
-
-    private val altitudes = mutableListOf<Double>()
-    private val speeds = mutableListOf<Double>()
 
     /** Contains values that should be saved in memory or on server. */
     val routeData = ExtendedRouteData(
@@ -91,9 +88,6 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
         }
 
-        altitudes.add(location.altitude)
-        speeds.add(location.speed.toDouble())
-
         lastLocation = location
     }
 
@@ -108,33 +102,17 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
             newStats()
         }
 
-        val deltaTime = math.measureDeltaTime().toDouble()
-
         before ?: return
 
         val distance = before.distanceTo(current)
-        val speed = distance / (deltaTime / 1000)
+        this.speed = current.speed.toDouble()
 
-        if (speed > 8.3) Timber.w("<< Distance: $distance\tTime: $deltaTime\tSpeed: $speed >>")
-
-        if (altitudes.size == 10) {
-
-            Timber.i("Altitudes: $altitudes")
-            altitudes.clear()
-        }
-
-        if (speeds.size == 10) {
-            Timber.i("Speeds: $speeds")
-            speeds.clear()
-        }
 
         if (speed.isInfinite()) {
 
             Timber.w("Infinite speed!")
 
         } else {
-
-            this.speed = speed
 
             if (speed > minSpeedToCount) {
 
