@@ -41,6 +41,9 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     val savedRoute: List<LatLng>
         get() = routeData.points
 
+    private val altitudes = mutableListOf<Double>()
+    private val speeds = mutableListOf<Double>()
+
     /** Contains values that should be saved in memory or on server. */
     val routeData = ExtendedRouteData(
             name = null,
@@ -83,11 +86,13 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
             when {
                 lastLocation == null -> Timber.d("Last location is null!")
-                location.distanceTo(lastLocation) == 0F -> Timber.d("Same position! Point is ignored!")
-                location.accuracy > 100 -> Timber.d("Accuracy is too low!")
+                location.accuracy > 100 -> Timber.d("Accuracy is too low! -> ${location.accuracy} m")
             }
 
         }
+
+        altitudes.add(location.altitude)
+        speeds.add(location.speed.toDouble())
 
         lastLocation = location
     }
@@ -110,7 +115,18 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         val distance = before.distanceTo(current)
         val speed = distance / (deltaTime / 1000)
 
-        Timber.d("<< Distance: $distance\tTime: $deltaTime\tSpeed: $speed >>")
+        if (speed > 8.3) Timber.w("<< Distance: $distance\tTime: $deltaTime\tSpeed: $speed >>")
+
+        if (altitudes.size == 10) {
+
+            Timber.i("Altitudes: $altitudes")
+            altitudes.clear()
+        }
+
+        if (speeds.size == 10) {
+            Timber.i("Speeds: $speeds")
+            speeds.clear()
+        }
 
         if (speed.isInfinite()) {
 

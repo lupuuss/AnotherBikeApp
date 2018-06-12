@@ -72,7 +72,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
                     locationDataReceivers.forEach { it.onNewLocation(savedRoute) }
                 }
 
-                Timber.i ("NEW POINT = [${location.latitude}, ${location.longitude}]")
+                Timber.v ("NEW POINT = [${location.latitude}, ${location.longitude}]")
             }
         }
 

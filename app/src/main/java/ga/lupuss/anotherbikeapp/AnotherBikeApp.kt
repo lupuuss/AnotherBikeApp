@@ -42,7 +42,7 @@ class AnotherBikeApp : Application() {
             Timber.plant(Timber.DebugTree())
         } else if (applicationContext.checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-            Timber.plant(FileLoggingTree(this, System.currentTimeMillis()))
+            Timber.plant(FileLoggingTree(System.currentTimeMillis()))
         }
 
         AndroidThreeTen.init(this)
@@ -61,33 +61,28 @@ class AnotherBikeApp : Application() {
                 .build()
     }
 
-    inner class FileLoggingTree(context: Context, time: Long) : Timber.DebugTree() {
+    inner class FileLoggingTree(time: Long) : Timber.DebugTree() {
+
+        private val nl = System.getProperty("line.separator")
 
         private val mainLogsDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),  "/AnotherBikeAppLogs")
 
         private val logFile = File(mainLogsDir, "log$time.html")
 
-        init {
-            if (!mainLogsDir.exists()) {
-                mainLogsDir.mkdirs()
-            }
-
-            if (!logFile.exists()) {
-                logFile.createNewFile()
-            }
-        }
-
         override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
 
             if (priority == Log.VERBOSE) return
 
+            if (!mainLogsDir.exists()) {
+                mainLogsDir.mkdirs()
+            }
+
             val logTimeStamp = SimpleDateFormat("E MMM dd yyyy 'at' hh:mm:ss:SSS aaa", Locale.getDefault()).format(Date())
 
             try {
+                logFile.appendText("<p style=\"background:lightgray;\"><strong style=\"background:lightblue;\">" +
+                            "&nbsp&nbsp$logTimeStamp :&nbsp&nbsp</strong>&nbsp&nbsp$message</p> $nl")
 
-                logFile.printWriter().use {
-                    it.println("<p style=\"background:lightgray;\"><strong style=\"background:lightblue;\">&nbsp&nbsp$logTimeStamp :&nbsp&nbsp</strong>&nbsp&nbsp$message</p>")
-                }
 
             } catch (exception: Exception) {
 
