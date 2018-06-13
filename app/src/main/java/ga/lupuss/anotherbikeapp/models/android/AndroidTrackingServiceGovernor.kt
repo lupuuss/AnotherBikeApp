@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import ga.lupuss.anotherbikeapp.base.BaseActivity
@@ -98,9 +99,19 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
     private fun startTrackingService() {
 
         Timber.v("Starting service...")
-        serviceParentActivity.startService(
-                Intent(serviceParentActivity, TrackingService::class.java)
-        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            serviceParentActivity.startForegroundService(
+                    Intent(serviceParentActivity, TrackingService::class.java)
+            )
+
+        } else {
+
+            serviceParentActivity.startService(
+                    Intent(serviceParentActivity, TrackingService::class.java)
+            )
+        }
     }
 
     private fun bindTrackingService()  {
