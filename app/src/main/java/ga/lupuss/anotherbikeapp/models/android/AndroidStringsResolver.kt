@@ -48,8 +48,10 @@ class AndroidStringsResolver(private val context: Context) : StringsResolver {
 
         Statistic.Unit.M_S -> R.string.unitSpeedMs
         Statistic.Unit.KM_H -> R.string.unitSpeedKmh
+        Statistic.Unit.MPH -> R.string.unitSpeedMph
         Statistic.Unit.M -> R.string.unitDistanceM
         Statistic.Unit.KM -> R.string.unitDistanceKm
+        Statistic.Unit.MI -> R.string.unitDistanceMi
     })
 
     override fun resolve(stat: TimeStatistic): String {

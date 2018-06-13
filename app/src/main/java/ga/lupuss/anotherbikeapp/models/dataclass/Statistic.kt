@@ -31,8 +31,10 @@ sealed class Statistic<T> {
     enum class Unit(val convertParam: Double) {
         M_S(1.0), // SI unit
         KM_H( 3.6),
+        MPH(2.23693629),
         M( 1.0), // SI unit
-        KM(0.001)
+        KM(0.001),
+        MI(0.000621371192)
     }
 
     abstract val value: T

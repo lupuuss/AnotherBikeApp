@@ -6,8 +6,10 @@
 
     <string name="unitDistanceM" translatable="false">m</string>
     <string name="unitDistanceKm" translatable="false">km</string>
+    <string name="unitDistanceMi" translatable="false">mi</string>
     <string name="unitSpeedMs" translatable="false">m/s</string>
     <string name="unitSpeedKmh" translatable="false">km/h</string>
+    <string name="unitSpeedMph" translatable="false">mph</string>
 
     <!-- Stats names -->
 
