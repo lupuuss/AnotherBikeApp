@@ -190,7 +190,7 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback, TextWat
                             .position(points.last())
             )
 
-            map.fitToPoints(points, 150, 18F)
+            map.fitToPoints(points, 150, 18F, mapFrameSummary.width, mapFrameSummary.height)
         }
     }
 
