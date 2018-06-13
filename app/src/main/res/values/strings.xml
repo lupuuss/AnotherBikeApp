@@ -18,6 +18,10 @@
     <string name="duration">Duration</string>
     <string name="status">Status</string>
     <string name="startTime">Start time</string>
+    <string name="altitude">Altitude</string>
+    <string name="maxAltitude">Max altitude</string>
+    <string name="minAltitude">Min altitude</string>
+    <string name="avgAltitude">Avg altitude</string>
 
     <!-- Statuses -->
     <string name="pause">Pause</string>

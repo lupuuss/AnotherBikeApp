@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import kotlin.math.max
+import kotlin.math.min
 
 class StatisticsMathProvider(val timeProvider: () -> Long) {
 
@@ -29,5 +30,10 @@ class StatisticsMathProvider(val timeProvider: () -> Long) {
     fun measureMax(current: Double, max: Double): Double {
 
         return max(current, max)
+    }
+
+    fun measureMin(current: Double, min: Double): Double {
+
+        return min(current, min)
     }
 }

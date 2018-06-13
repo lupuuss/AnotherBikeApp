@@ -38,6 +38,10 @@ class AndroidStringsResolver(private val context: Context) : StringsResolver {
         Statistic.Name.DURATION -> R.string.duration
         Statistic.Name.STATUS -> R.string.status
         Statistic.Name.START_TIME -> R.string.startTime
+        Statistic.Name.ALTITUDE -> R.string.altitude
+        Statistic.Name.AVG_ALTITUDE -> R.string.avgAltitude
+        Statistic.Name.MAX_ALTITUDE -> R.string.maxAltitude
+        Statistic.Name.MIN_ALTITUDE -> R.string.minAltitude
     })
 
     override fun resolve(unit: Statistic.Unit): String = context.getString(when (unit) {

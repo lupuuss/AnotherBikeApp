@@ -50,13 +50,17 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
             distance = 0.0,
             duration = 0L,
             startTimeStr = "-",
-            startTime = 0L
+            startTime = 0L,
+            avgAltitude = 0.0,
+            maxAltitude = 0.0,
+            minAltitude = 0.0
     )
 
     // temporary stats
     // should't be saved
 
     private var speed = 0.0
+    private var altitude = 0.0
     var status: Status = Status.LOCATION_WAIT
         private set
 
@@ -106,7 +110,10 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
         val distance = before.distanceTo(current)
         this.speed = current.speed.toDouble()
+        this.altitude = current.altitude
 
+        routeData.maxAltitude = math.measureMax(altitude, routeData.maxAltitude)
+        routeData.minAltitude = math.measureMin(altitude, routeData.minAltitude)
 
         if (speed.isInfinite()) {
 
@@ -172,10 +179,13 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         return linkedMapOf(
                 Statistic.Name.STATUS to StatusStatistic(status),
                 Statistic.Name.DURATION to TimeStatistic(routeData.duration),
-                Statistic.Name.SPEED to UnitStatistic(speed, speedUnit),
                 Statistic.Name.DISTANCE to UnitStatistic(routeData.distance, distanceUnit),
+                Statistic.Name.SPEED to UnitStatistic(speed, speedUnit),
+                Statistic.Name.ALTITUDE to UnitStatistic(altitude, Statistic.Unit.M),
                 Statistic.Name.AVG_SPEED to UnitStatistic(routeData.avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(routeData.maxSpeed, speedUnit),
+                Statistic.Name.AVG_ALTITUDE to UnitStatistic(routeData.maxAltitude, Statistic.Unit.M),
+                Statistic.Name.MAX_ALTITUDE to UnitStatistic(routeData.minAltitude, Statistic.Unit.M),
                 Statistic.Name.START_TIME to StringStatistic(routeData.startTimeStr)
         )
     }

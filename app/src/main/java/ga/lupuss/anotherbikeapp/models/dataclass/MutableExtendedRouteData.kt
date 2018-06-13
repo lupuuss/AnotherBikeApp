@@ -10,10 +10,15 @@ class MutableExtendedRouteData(
         var duration: Long,
         var startTimeStr: String,
         var startTime: Long,
+        var avgAltitude: Double,
+        var maxAltitude: Double,
+        var minAltitude: Double,
         val points: MutableList<LatLng>
 ) {
 
     fun toImmutable() = ExtendedRouteData(
-            name, distance, avgSpeed, maxSpeed, duration, startTimeStr, startTime, points
+            name, distance, avgSpeed, maxSpeed,
+            duration, startTimeStr, startTime,
+            avgAltitude, maxAltitude, minAltitude, points
     )
 }

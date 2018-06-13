@@ -72,4 +72,9 @@
     <string name="delete">Usuń</string>
     <string name="messageDeleteRouteWarning">Czy na pewno chcesz usunąć tą trasę?</string>
     <string name="messageUnsavedState">Dane nie zostały zapisane. Czy jesteś pewny, że chcesz wyjść?</string>
+    <string name="lockMap">Zablokuj mapę</string>
+    <string name="altitude">Wysokość</string>
+    <string name="maxAltitude">Maks. wysokość</string>
+    <string name="minAltitude">Min. wysokość</string>
+    <string name="avgAltitude">Śr. wysokość</string>
 </resources>

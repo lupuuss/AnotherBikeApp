@@ -15,7 +15,11 @@ sealed class Statistic<T> {
         DISTANCE,
         DURATION,
         STATUS,
-        START_TIME;
+        START_TIME,
+        ALTITUDE,
+        AVG_ALTITUDE,
+        MAX_ALTITUDE,
+        MIN_ALTITUDE
     }
 
     /**
