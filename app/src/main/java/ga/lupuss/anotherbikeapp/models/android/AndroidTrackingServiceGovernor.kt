@@ -133,12 +133,9 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
         serviceBinder = p1 as TrackingService.ServiceBinder
 
-        if (!isServiceActive) {
-
-            isServiceActive = true
-            onServiceConnected?.onTrackingRequestDone()
-            onServiceConnected = null
-        }
+        onServiceConnected?.onTrackingRequestDone()
+        isServiceActive = true
+        onServiceConnected = null
     }
 
     override fun onServiceDisconnected(p0: ComponentName?) {
