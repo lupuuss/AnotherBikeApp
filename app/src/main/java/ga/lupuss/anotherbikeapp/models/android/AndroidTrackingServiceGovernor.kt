@@ -77,7 +77,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
         }
 
         when {
-            serviceBinder != null -> onTrackingRequestDone?.onTrackingInitDone() // Tracking activity connected to existing service
+            serviceBinder != null -> onTrackingRequestDone?.onTrackingRequestDone() // Tracking activity connected to existing service
 
             serviceParentActivity.checkLocationPermission() -> initTracking() // Starting new tracking service and tracking activity
 
@@ -88,7 +88,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
                 } else {
 
-                    onTrackingRequestDone?.onNoTrackingPermission()
+                    onTrackingRequestDone?.onTrackingRequestNoPermission()
                 }
             }
         }
@@ -136,7 +136,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
         if (!isServiceActive) {
 
             isServiceActive = true
-            onServiceConnected?.onTrackingInitDone()
+            onServiceConnected?.onTrackingRequestDone()
             onServiceConnected = null
         }
     }

@@ -19,8 +19,8 @@ abstract class TrackingServiceGovernor {
     }
 
     interface OnTrackingRequestDone {
-        fun onTrackingInitDone()
-        fun onNoTrackingPermission()
+        fun onTrackingRequestDone()
+        fun onTrackingRequestNoPermission()
     }
 
     private val serviceActivityListeners = mutableMapOf<Any, OnServiceActivityChangesListener>()

@@ -110,11 +110,11 @@ class AndroidTrackingServiceGovernorTest {
         trackingServiceGovernor.onServiceConnected(mock { }, serviceBinder)
 
         trackingServiceGovernor.startTracking(object : TrackingServiceGovernor.OnTrackingRequestDone{
-            override fun onTrackingInitDone() {
+            override fun onTrackingRequestDone() {
                 callbackTriggered++
             }
 
-            override fun onNoTrackingPermission() {}
+            override fun onTrackingRequestNoPermission() {}
         })
 
         assertEquals(1, callbackTriggered)
@@ -164,9 +164,9 @@ class AndroidTrackingServiceGovernorTest {
 
         trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.startTracking(object : TrackingServiceGovernor.OnTrackingRequestDone{
-            override fun onTrackingInitDone() {}
+            override fun onTrackingRequestDone() {}
 
-            override fun onNoTrackingPermission() {
+            override fun onTrackingRequestNoPermission() {
                 callbackTriggered++
             }
 
@@ -195,10 +195,10 @@ class AndroidTrackingServiceGovernorTest {
         val serviceBinder = mock<TrackingService.ServiceBinder> {  }
         trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.startTracking(object : TrackingServiceGovernor.OnTrackingRequestDone{
-            override fun onTrackingInitDone() {
+            override fun onTrackingRequestDone() {
                 callbackTriggered++
             }
-            override fun onNoTrackingPermission() {
+            override fun onTrackingRequestNoPermission() {
                 callbackTriggered++
             }
 
@@ -218,11 +218,11 @@ class AndroidTrackingServiceGovernorTest {
 
         trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.startTracking(object : TrackingServiceGovernor.OnTrackingRequestDone{
-            override fun onTrackingInitDone() {
+            override fun onTrackingRequestDone() {
                 callbackTriggered++
             }
 
-            override fun onNoTrackingPermission() {
+            override fun onTrackingRequestNoPermission() {
                 callbackTriggered++
             }
 

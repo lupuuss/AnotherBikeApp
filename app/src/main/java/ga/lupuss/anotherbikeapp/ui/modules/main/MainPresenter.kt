@@ -136,14 +136,19 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         trackingServiceGovernor.startTracking(this)
     }
 
-    override fun onTrackingInitDone() {
+    override fun onTrackingRequestDone() {
 
         view.startTrackingActivity()
     }
 
-    override fun onNoTrackingPermission() {
+    override fun onTrackingRequestNoPermission() {
 
         view.postMessage(Message.NO_PERMISSION)
+    }
+
+    override fun onServiceActivityChanged(state: Boolean) {
+
+        view.setTrackingButtonState(state)
     }
 
     fun onClickSettings() {
@@ -206,11 +211,6 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
             view.isNoDataTextVisible = true
         }
-    }
-
-    override fun onServiceActivityChanged(state: Boolean) {
-
-        view.setTrackingButtonState(state)
     }
 
     override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {

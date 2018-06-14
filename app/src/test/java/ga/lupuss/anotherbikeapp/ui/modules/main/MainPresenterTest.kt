@@ -211,7 +211,7 @@ class MainPresenterTest {
     @Test
     fun onTrackingInitDone_shouldStartTrackingActivity() {
 
-        mainPresenter.onTrackingInitDone()
+        mainPresenter.onTrackingRequestDone()
 
         verify(mainView, times(1)).startTrackingActivity()
     }
@@ -219,7 +219,7 @@ class MainPresenterTest {
     @Test
     fun onNoTrackingPermission_shouldShowNoPermissionMessage() {
 
-        mainPresenter.onNoTrackingPermission()
+        mainPresenter.onTrackingRequestNoPermission()
 
         verify(mainView, times(1)).postMessage(Message.NO_PERMISSION)
     }
