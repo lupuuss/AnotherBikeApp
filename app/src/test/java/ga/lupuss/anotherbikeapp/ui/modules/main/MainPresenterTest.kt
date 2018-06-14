@@ -103,7 +103,7 @@ class MainPresenterTest {
         mainPresenter.notifyOnDestroy(any())
 
         verify(trackingServiceGovernor, times(1)).removeOnServiceActivityChangesListener(mainPresenter)
-        verify(trackingServiceGovernor, times(1)).destroy(any())
+        verify(preferencesInteractor, times(1)).removeOnUnitChangedListener(mainPresenter)
         verify(routesManager, times(1)).removeOnRoutesDataChangedListener(mainPresenter)
     }
 

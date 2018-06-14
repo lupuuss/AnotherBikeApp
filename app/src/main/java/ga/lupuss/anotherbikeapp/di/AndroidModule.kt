@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 
 @Module(includes = [BasicModule::class])
 class AndroidModule(context: Context) {
@@ -30,4 +31,8 @@ class AndroidModule(context: Context) {
     @Provides
     @AnotherBikeAppScope
     fun androidStringResolver(context: Context): StringsResolver = AndroidStringsResolver(context)
+
+    @Provides
+    @AnotherBikeAppScope
+    fun trackingNotification() = TrackingNotification()
 }

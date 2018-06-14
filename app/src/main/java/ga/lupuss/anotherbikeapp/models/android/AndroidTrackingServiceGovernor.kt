@@ -21,7 +21,8 @@ import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import timber.log.Timber
 
 class AndroidTrackingServiceGovernor(
-        private val stringsResolver: StringsResolver
+        private val stringsResolver: StringsResolver,
+        private val trackingNotification: TrackingNotification
 
 ) : TrackingServiceGovernor(), ServiceConnection, TrackingServiceInteractor.OnStatsUpdateListener {
 
@@ -74,7 +75,7 @@ class AndroidTrackingServiceGovernor(
             Timber.v("No service. Clean destroy.")
         }
 
-        TrackingNotification.clearReferences()
+        trackingNotification.clearReferences()
         resettableManager.reset()
     }
 
@@ -146,7 +147,7 @@ class AndroidTrackingServiceGovernor(
 
         serviceBinder!!.initNotification(
                 TrackingNotification.ID,
-                TrackingNotification.build(serviceParentActivity, stringsResolver, serviceBinder!!.lastStats)
+                trackingNotification.build(serviceParentActivity, stringsResolver, serviceBinder!!.lastStats)
         )
 
         serviceBinder!!.addOnStatsUpdateListener(this)
@@ -159,7 +160,7 @@ class AndroidTrackingServiceGovernor(
     override fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>) {
 
         (serviceParentActivity.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager)
-                .notify(TrackingNotification.ID, TrackingNotification.build(
+                .notify(TrackingNotification.ID, trackingNotification.build(
                         serviceParentActivity, stringsResolver, stats
                 ))
 

@@ -11,10 +11,9 @@ import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 
-object TrackingNotification {
+class TrackingNotification {
 
-    val CHANNEL_STRING =  "trackingNotificationChannel"
-    val ID = 2137
+
 
     private var builder: NotificationCompat.Builder? = null
 
@@ -70,5 +69,10 @@ object TrackingNotification {
 
     fun clearReferences() {
         builder = null
+    }
+
+    companion object {
+        const val CHANNEL_STRING =  "trackingNotificationChannel"
+        const val ID = 2137
     }
 }

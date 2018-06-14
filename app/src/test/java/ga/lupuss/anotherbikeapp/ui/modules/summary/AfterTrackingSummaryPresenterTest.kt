@@ -80,7 +80,10 @@ class AfterTrackingSummaryPresenterTest {
                 0L,
                 "",
                 0L,
-                mutableListOf()
+                0.0,
+                0.0,
+                0.0,
+                listOf()
         )
 
         val routesManager: RoutesManager = mock { on { getTempRoute() }.then {
@@ -116,7 +119,10 @@ class AfterTrackingSummaryPresenterTest {
                 0L,
                 "",
                 0L,
-                mutableListOf()
+                0.0,
+                0.0,
+                0.0,
+                listOf()
         )
 
         val routesManager: RoutesManager = mock { on { getTempRoute() }.then {

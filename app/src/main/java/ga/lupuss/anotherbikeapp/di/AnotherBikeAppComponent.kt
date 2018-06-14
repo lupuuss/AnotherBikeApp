@@ -7,6 +7,7 @@ import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import java.util.*
 import javax.inject.Scope
 
@@ -21,6 +22,7 @@ interface AnotherBikeAppComponent {
     fun providesContext(): Context
     fun providesLocale(): Locale
     fun providesTimeProvider(): () -> Long
+    fun providesTrackingNotification(): TrackingNotification
 
     fun providesRoutesManager(): RoutesManager
     fun providesStringResolver(): StringsResolver

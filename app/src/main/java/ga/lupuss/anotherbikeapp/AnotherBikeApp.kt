@@ -47,7 +47,6 @@ class AnotherBikeApp : Application() {
         }
 
         AndroidThreeTen.init(this)
-        TrackingNotification.initNotificationChannelOreo(this)
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -61,6 +60,10 @@ class AnotherBikeApp : Application() {
                 .builder()
                 .androidModule(AndroidModule(this.applicationContext))
                 .build()
+
+        anotherBikeAppComponent
+                .providesTrackingNotification()
+                .initNotificationChannelOreo(this)
     }
 
     inner class FileLoggingTree(time: Long) : Timber.DebugTree() {

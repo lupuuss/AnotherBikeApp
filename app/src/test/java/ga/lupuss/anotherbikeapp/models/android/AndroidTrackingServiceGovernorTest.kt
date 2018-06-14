@@ -1,20 +1,25 @@
 package ga.lupuss.anotherbikeapp.models.android
 
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.os.Bundle
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class AndroidTrackingServiceGovernorTest {
 
-    private val trackingServiceGovernor = AndroidTrackingServiceGovernor()
+    private val notificationManager: NotificationManager = mock { }
+    private val trackingServiceGovernor = AndroidTrackingServiceGovernor(mock { }, mock { })
     private val parentActivity: BaseActivity = mock {
 
         on { checkLocationPermission() }.then { true }
+        on { getSystemService(Service.NOTIFICATION_SERVICE) }.then{ notificationManager }
     }
 
     private val bundleIsServiceActiveTrue = mock<Bundle> {
@@ -182,9 +187,22 @@ class AndroidTrackingServiceGovernorTest {
     fun onServiceConnected_shouldSetBinder() {
 
         val serviceBinder = mock<TrackingService.ServiceBinder> {  }
+
+        trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.onServiceConnected(mock {  }, serviceBinder)
 
+        verify(serviceBinder, times(1)).initNotification(eq(TrackingNotification.ID), anyOrNull())
+        verify(serviceBinder, times(1)).addOnStatsUpdateListener(trackingServiceGovernor)
         assert(trackingServiceGovernor.serviceBinder == serviceBinder)
+    }
+
+    @Test
+    fun onStatsUpdate_shouldNotifyNotification() {
+
+        trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
+        trackingServiceGovernor.onStatsUpdate(mock {  })
+
+        verify(notificationManager, times(1)).notify(eq(TrackingNotification.ID), anyOrNull())
     }
 
     @Test
@@ -208,37 +226,6 @@ class AndroidTrackingServiceGovernorTest {
         assertEquals(serviceBinder, trackingServiceGovernor.serviceBinder)
         assert(trackingServiceGovernor.isServiceActive)
         assertEquals(1, callbackTriggered)
-    }
-
-    @Test
-    fun onServiceConnected_shouldNotInitFieldsIfServiceIsActive() {
-
-        var callbackTriggered = 0
-
-
-        trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
-        trackingServiceGovernor.startTracking(object : TrackingServiceGovernor.OnTrackingRequestDone{
-            override fun onTrackingRequestDone() {
-                callbackTriggered++
-            }
-
-            override fun onTrackingRequestNoPermission() {
-                callbackTriggered++
-            }
-
-        })
-        trackingServiceGovernor.onServiceConnected(mock {  }, mock<TrackingService.ServiceBinder> {  })
-
-        val serviceBinder = mock<TrackingService.ServiceBinder> {  }
-
-        assertEquals(1, callbackTriggered)
-
-        trackingServiceGovernor.onServiceConnected(mock {  }, serviceBinder)
-
-        assertEquals(1, callbackTriggered)
-
-        assertEquals(serviceBinder, trackingServiceGovernor.serviceBinder)
-        assert(trackingServiceGovernor.isServiceActive)
     }
 
     @Test
