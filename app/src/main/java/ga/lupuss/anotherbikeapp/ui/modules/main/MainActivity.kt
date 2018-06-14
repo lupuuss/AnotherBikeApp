@@ -159,11 +159,34 @@ class MainActivity
     override fun onDestroy() {
 
         mainPresenter.notifyOnDestroy(isFinishing)
+        androidTrackingServiceGovernor.destroy(isFinishing)
         super.onDestroy()
         Timber.v("MainActivity destroyed!")
     }
 
     // onClicks
+
+    fun onClickTrackingButton(view: View) {
+
+        val animator = AnimatorInflater.loadAnimator(this, R.animator.tracking_button)
+        animator.setTarget(view)
+        animator.addListener(object : Animator.AnimatorListener {
+
+            override fun onAnimationRepeat(p0: Animator?) = Unit
+
+            override fun onAnimationCancel(p0: Animator?) = Unit
+
+            override fun onAnimationStart(p0: Animator?) = Unit
+
+            override fun onAnimationEnd(p0: Animator?) {
+
+                mainPresenter.onClickTrackingButton()
+            }
+
+        })
+
+        animator.start()
+    }
 
     // Recycler View
     override fun onItemClick(position: Int) {
@@ -186,28 +209,6 @@ class MainActivity
             }
         }
 
-    }
-
-    fun onClickTrackingButton(view: View) {
-
-        val animator = AnimatorInflater.loadAnimator(this, R.animator.tracking_button)
-        animator.setTarget(view)
-        animator.addListener(object : Animator.AnimatorListener {
-
-            override fun onAnimationRepeat(p0: Animator?) = Unit
-
-            override fun onAnimationCancel(p0: Animator?) = Unit
-
-            override fun onAnimationStart(p0: Animator?) = Unit
-
-            override fun onAnimationEnd(p0: Animator?) {
-
-                mainPresenter.onClickTrackingButton()
-            }
-
-        })
-
-        animator.start()
     }
 
     // MainView Impl

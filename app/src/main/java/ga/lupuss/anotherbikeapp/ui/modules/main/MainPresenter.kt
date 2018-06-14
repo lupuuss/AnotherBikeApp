@@ -86,7 +86,6 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
         super.notifyOnDestroy(isFinishing)
         trackingServiceGovernor.removeOnServiceActivityChangesListener(this)
-        trackingServiceGovernor.destroy(isFinishing)
         routesManager.removeOnRoutesDataChangedListener(this)
     }
 
