@@ -13,7 +13,8 @@ class FirebaseShortRouteData : MutableShortRouteData() {
             name = name,
             duration = duration,
             distance = distance,
-            avgSpeed = avgSpeed
+            avgSpeed = avgSpeed,
+            startTime = startTime
     )
 
 }
