@@ -87,6 +87,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
         super.notifyOnDestroy(isFinishing)
         trackingServiceGovernor.removeOnServiceActivityChangesListener(this)
         routesManager.removeOnRoutesDataChangedListener(this)
+        preferencesInteractor.removeOnUnitChangedListener(this)
     }
 
     fun notifyRecyclerReachedBottom() {
