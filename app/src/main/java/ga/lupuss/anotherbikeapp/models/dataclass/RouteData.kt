@@ -18,8 +18,8 @@ open class RouteData(
             : Map<Statistic.Name, Statistic<*>> {
 
         return linkedMapOf(
-                Statistic.Name.DISTANCE to UnitStatistic(distance, distanceUnit),
                 Statistic.Name.DURATION to TimeStatistic(duration),
+                Statistic.Name.DISTANCE to UnitStatistic(distance, distanceUnit),
                 Statistic.Name.AVG_SPEED to UnitStatistic(avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(maxSpeed, speedUnit),
                 Statistic.Name.AVG_ALTITUDE to UnitStatistic(avgAltitude, Statistic.Unit.M),

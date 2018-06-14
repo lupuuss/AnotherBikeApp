@@ -10,7 +10,10 @@ class FirebaseShortRouteData : MutableShortRouteData() {
     var points: DocumentReference? = null
 
     fun toShortRouteData() = ShortRouteData(
-            name, distance, avgSpeed, duration, startTime
+            name = name,
+            duration = duration,
+            distance = distance,
+            avgSpeed = avgSpeed
     )
 
 }

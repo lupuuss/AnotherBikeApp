@@ -17,8 +17,16 @@ class MutableExtendedRouteData(
 ) {
 
     fun toImmutable() = ExtendedRouteData(
-            name, distance, avgSpeed, maxSpeed,
-            duration, startTimeStr, startTime,
-            avgAltitude, maxAltitude, minAltitude, points
+            name = name,
+            distance = distance,
+            avgSpeed = avgSpeed,
+            maxSpeed = maxSpeed,
+            duration = duration,
+            startTimeStr = startTimeStr,
+            startTime = startTime,
+            avgAltitude = avgAltitude,
+            maxAltitude = maxAltitude,
+            minAltitude = minAltitude,
+            points = points.toList()
     )
 }

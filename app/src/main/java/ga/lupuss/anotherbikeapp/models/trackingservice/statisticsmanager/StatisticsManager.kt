@@ -137,7 +137,6 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
             routeData.maxSpeed = math.measureMax(speed, routeData.maxSpeed)
 
             newStats()
-
         }
     }
 
@@ -184,8 +183,9 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
                 Statistic.Name.ALTITUDE to UnitStatistic(altitude, Statistic.Unit.M),
                 Statistic.Name.AVG_SPEED to UnitStatistic(routeData.avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(routeData.maxSpeed, speedUnit),
-                Statistic.Name.AVG_ALTITUDE to UnitStatistic(routeData.maxAltitude, Statistic.Unit.M),
-                Statistic.Name.MAX_ALTITUDE to UnitStatistic(routeData.minAltitude, Statistic.Unit.M),
+                Statistic.Name.AVG_ALTITUDE to UnitStatistic(routeData.avgAltitude, Statistic.Unit.M),
+                Statistic.Name.MAX_ALTITUDE to UnitStatistic(routeData.maxAltitude, Statistic.Unit.M),
+                Statistic.Name.MIN_ALTITUDE to UnitStatistic(routeData.minAltitude, Statistic.Unit.M),
                 Statistic.Name.START_TIME to StringStatistic(routeData.startTimeStr)
         )
     }

@@ -19,6 +19,9 @@ class FirebaseRouteData : MutableShortRouteData() {
 
         super.fillWith(routeData)
         maxSpeed = routeData.maxSpeed
+        avgAltitude = routeData.avgAltitude
+        maxAltitude = routeData.maxAltitude
+        minAltitude = routeData.minAltitude
     }
 
     fun toRouteData(locale: Locale): RouteData {
