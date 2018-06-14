@@ -1,6 +1,8 @@
 package ga.lupuss.anotherbikeapp.models.trackingservice
 
 import android.Manifest
+import android.app.Notification
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.location.Location
@@ -11,6 +13,7 @@ import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import timber.log.Timber
 import javax.inject.Inject
@@ -104,6 +107,9 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
     inner class ServiceBinder : Binder(), TrackingServiceInteractor {
 
+        var isNotificationInitialized = false
+            private set
+
         override val lastLocationAvailability get() = this@TrackingService.lastLocationAvailability
 
         override val savedRoute get() = this@TrackingService.savedRoute
@@ -125,6 +131,11 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
         override fun removeOnStatsUpdateListener(onStatsUpdateListener: TrackingServiceInteractor.OnStatsUpdateListener) =
                 this@TrackingService.removeOnStatsUpdateListener(onStatsUpdateListener)
+
+        fun initNotification(id: Int, notification: Notification) {
+            this@TrackingService.startForeground(id, notification)
+            isNotificationInitialized = true
+        }
     }
 
     override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {

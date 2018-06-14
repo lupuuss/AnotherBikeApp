@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.android
 
+import android.app.NotificationManager
+import android.app.Service
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -10,12 +12,18 @@ import android.os.IBinder
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.kotlin.Resettable
 import ga.lupuss.anotherbikeapp.kotlin.ResettableManager
+import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
+import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import timber.log.Timber
 
-class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnection {
+class AndroidTrackingServiceGovernor(
+        private val stringsResolver: StringsResolver
+
+) : TrackingServiceGovernor(), ServiceConnection, TrackingServiceInteractor.OnStatsUpdateListener {
 
 
     private val resettableManager = ResettableManager()
@@ -49,6 +57,8 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
     override fun destroy(isFinishing: Boolean) {
 
+        serviceBinder?.removeOnStatsUpdateListener(this)
+
         if (isFinishing && isServiceActive) {
 
             Timber.v("Finishing activity...")
@@ -64,6 +74,7 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
             Timber.v("No service. Clean destroy.")
         }
 
+        TrackingNotification.clearReferences()
         resettableManager.reset()
     }
 
@@ -133,9 +144,25 @@ class AndroidTrackingServiceGovernor : TrackingServiceGovernor(), ServiceConnect
 
         serviceBinder = p1 as TrackingService.ServiceBinder
 
+        serviceBinder!!.initNotification(
+                TrackingNotification.ID,
+                TrackingNotification.build(serviceParentActivity, stringsResolver, serviceBinder!!.lastStats)
+        )
+
+        serviceBinder!!.addOnStatsUpdateListener(this)
+
         onServiceConnected?.onTrackingRequestDone()
         isServiceActive = true
         onServiceConnected = null
+    }
+
+    override fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>) {
+
+        (serviceParentActivity.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager)
+                .notify(TrackingNotification.ID, TrackingNotification.build(
+                        serviceParentActivity, stringsResolver, stats
+                ))
+
     }
 
     override fun onServiceDisconnected(p0: ComponentName?) {

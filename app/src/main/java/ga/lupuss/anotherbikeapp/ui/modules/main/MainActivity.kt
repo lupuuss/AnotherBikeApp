@@ -99,7 +99,7 @@ class MainActivity
         // Dagger MUST be first
         DaggerMainComponent.builder()
                 .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
-                .mainModule(MainModule(this, AndroidTrackingServiceGovernor()))
+                .mainModule(MainModule(this))
                 .build()
                 .inject(this)
 

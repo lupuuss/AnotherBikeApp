@@ -9,6 +9,7 @@ import com.squareup.leakcanary.LeakCanary
 import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
 import com.squareup.leakcanary.RefWatcher
+import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import java.io.File
 import java.text.SimpleDateFormat
@@ -46,6 +47,7 @@ class AnotherBikeApp : Application() {
         }
 
         AndroidThreeTen.init(this)
+        TrackingNotification.initNotificationChannelOreo(this)
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
