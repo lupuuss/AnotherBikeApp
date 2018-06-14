@@ -77,4 +77,5 @@
     <string name="maxAltitude">Maks. wysokość</string>
     <string name="minAltitude">Min. wysokość</string>
     <string name="avgAltitude">Śr. wysokość</string>
+    <string name="notification_description">Wyświetla podstawowe informacje o bieżącym śledzeniu.</string>
 </resources>

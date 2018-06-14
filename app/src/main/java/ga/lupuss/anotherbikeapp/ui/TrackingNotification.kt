@@ -21,11 +21,11 @@ class TrackingNotification {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            val name = "Simple name"
-            val description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            val name = context.getString(R.string.titleActivityTacking)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_STRING, name, importance)
-            channel.description = description
+            channel.setSound(null, null)
+            channel.description = context.getString(R.string.notification_description)
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             val notificationManager = context.getSystemService(NotificationManager::class.java)
