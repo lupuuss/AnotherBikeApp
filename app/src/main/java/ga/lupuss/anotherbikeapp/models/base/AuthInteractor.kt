@@ -17,7 +17,10 @@ interface AuthInteractor {
         fun onTooWeakPassword()
     }
 
-    interface OnDisplayNameSetDoneListener : OnAuthTaskDoneListener
+    interface OnDisplayNameSetDoneListener {
+        fun onSettingDisplayNameFail()
+        fun onSuccessNameChange()
+    }
 
     fun login(email: String,
               password: String,
@@ -34,7 +37,7 @@ interface AuthInteractor {
 
     fun getDisplayName(): String?
 
-    fun setDisplayName(displayName: String, onDisplayNameSetDone: OnDisplayNameSetDoneListener?)
+    fun setDisplayName(displayName: String, onDisplayNameSetDone: OnDisplayNameSetDoneListener?, requestOwner: Any? = null)
 
     fun signOut()
 

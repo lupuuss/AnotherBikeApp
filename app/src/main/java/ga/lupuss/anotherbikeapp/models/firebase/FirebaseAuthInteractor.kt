@@ -45,7 +45,7 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
                 .addOnSuccessListener(requestOwner) {
 
                     onCreateAccountDone?.onSuccess()
-                    setDisplayName(displayName, null)
+                    setDisplayName(displayName, null, requestOwner)
                 }
                 .addOnFailureListener(requestOwner) {
 
@@ -61,7 +61,11 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
     }
 
     override fun setDisplayName(displayName: String,
-                                onDisplayNameSetDone: AuthInteractor.OnDisplayNameSetDoneListener?) {
+                                onDisplayNameSetDone: AuthInteractor.OnDisplayNameSetDoneListener?,
+                                requestOwner: Any?) {
+
+        if (requestOwner !is Activity)
+            throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
 
         val userProfileChangeRequest = UserProfileChangeRequest
                 .Builder()
@@ -69,7 +73,13 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
                 .build()
 
         firebaseAuth.currentUser?.updateProfile(userProfileChangeRequest)
-                ?: onDisplayNameSetDone?.onUndefinedError()
+                ?.addOnSuccessListener(requestOwner) {
+                    onDisplayNameSetDone?.onSuccessNameChange()
+                }
+                ?.addOnFailureListener(requestOwner) {
+                    Timber.e(it)
+                    onDisplayNameSetDone?.onSettingDisplayNameFail()
+                }
     }
 
     override fun signOut() {
