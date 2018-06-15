@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.createaccount
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import javax.inject.Inject
 
 class CreateAccountPresenter @Inject constructor(private val authInteractor: AuthInteractor,
@@ -59,5 +58,15 @@ class CreateAccountPresenter @Inject constructor(private val authInteractor: Aut
     override fun onUndefinedError() {
         onAnyError()
         view.postMessage(Message.SOMETHING_GOES_WRONG)
+    }
+
+    override fun onIncorrectCredentialsError() {
+        onAnyError()
+        view.postMessage(Message.INVALID_CREDENTIALS_CREATING)
+    }
+
+    override fun onTooWeakPassword() {
+        onAnyError()
+        view.postMessage(Message.PASSWORD_IS_TOO_WEAK)
     }
 }

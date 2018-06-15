@@ -1,10 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
 import android.app.Activity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import timber.log.Timber
 
@@ -49,6 +46,17 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
 
                     onCreateAccountDone?.onSuccess()
                     setDisplayName(displayName, null)
+                }
+                .addOnFailureListener(requestOwner) {
+
+                    Timber.e(it)
+
+                    when (it) {
+                        is FirebaseAuthWeakPasswordException -> onCreateAccountDone?.onTooWeakPassword()
+                        is FirebaseAuthInvalidCredentialsException -> onCreateAccountDone?.onIncorrectCredentialsError()
+                        is FirebaseAuthUserCollisionException -> onCreateAccountDone?.onUserExist()
+                        else -> onCreateAccountDone?.onUndefinedError()
+                    }
                 }
     }
 

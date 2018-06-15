@@ -5,15 +5,16 @@ interface AuthInteractor {
     interface OnAuthTaskDoneListener {
         fun onSuccess()
         fun onUndefinedError()
+        fun onIncorrectCredentialsError()
     }
 
     interface OnLoginDoneListener : OnAuthTaskDoneListener {
-        fun onIncorrectCredentialsError()
         fun onUserNotExists()
     }
 
     interface OnAccountCreateDoneListener : OnAuthTaskDoneListener {
         fun onUserExist()
+        fun onTooWeakPassword()
     }
 
     interface OnDisplayNameSetDoneListener : OnAuthTaskDoneListener
