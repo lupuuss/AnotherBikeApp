@@ -9,7 +9,6 @@ import com.squareup.leakcanary.LeakCanary
 import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
 import com.squareup.leakcanary.RefWatcher
-import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import java.io.File
 import java.text.SimpleDateFormat
@@ -37,6 +36,9 @@ class AnotherBikeApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // avoids sdk memory leak
+        packageManager.getUserBadgedLabel("", android.os.Process.myUserHandle())
 
         if (BuildConfig.DEBUG) {
 
