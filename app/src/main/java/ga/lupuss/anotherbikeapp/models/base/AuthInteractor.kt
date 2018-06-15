@@ -5,7 +5,7 @@ interface AuthInteractor {
     interface OnAuthTaskDoneListener {
         fun onSuccess()
         fun onUndefinedError()
-        fun onIncorrectCredentialsError()
+        fun onInvalidCredentialsError()
     }
 
     interface OnLoginDoneListener : OnAuthTaskDoneListener {

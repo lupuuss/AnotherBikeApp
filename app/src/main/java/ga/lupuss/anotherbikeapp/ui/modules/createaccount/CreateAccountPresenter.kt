@@ -60,7 +60,7 @@ class CreateAccountPresenter @Inject constructor(private val authInteractor: Aut
         view.postMessage(Message.SOMETHING_GOES_WRONG)
     }
 
-    override fun onIncorrectCredentialsError() {
+    override fun onInvalidCredentialsError() {
         onAnyError()
         view.postMessage(Message.INVALID_CREDENTIALS_CREATING)
     }

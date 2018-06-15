@@ -19,7 +19,7 @@ class AndroidStringsResolver(private val context: Context) : StringsResolver {
         Message.FILL_ALL_FIELDS -> R.string.fillAllFields
         Message.NO_INTERNET_CONNECTION -> R.string.noInternetConnection
         Message.EMAIL_OR_PASSWORD_BLANK -> R.string.passwordOrEmailBlank
-        Message.INCORRECT_CREDENTIALS -> R.string.wrongCredentials
+        Message.INVALID_CREDENTIALS_LOGIN -> R.string.wrongCredentials
         Message.NO_PERMISSION -> R.string.noPermission
         Message.LOCATION_NOT_AVAILABLE -> R.string.locationNotAvailable
         Message.USER_NOT_EXISTS -> R.string.messageUserNotExists

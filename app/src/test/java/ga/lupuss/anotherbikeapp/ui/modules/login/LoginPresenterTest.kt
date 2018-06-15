@@ -77,12 +77,12 @@ class LoginPresenterTest {
 
     @Test
     fun onIncorrectCredentialsError_shouldEnableUiAndPostIncorrectCredentialsMessage() {
-        loginPresenter.onIncorrectCredentialsError()
+        loginPresenter.onInvalidCredentialsError()
 
         verify(loginView, times(1)).isUiEnable = true
         verify(loginView, times(1)).isSignInProgressBarVisible = false
         verify(loginView, times(1)).isSignInButtonTextVisible = true
-        verify(loginView, times(1)).postMessage(Message.INCORRECT_CREDENTIALS)
+        verify(loginView, times(1)).postMessage(Message.INVALID_CREDENTIALS_LOGIN)
     }
 
     @Test

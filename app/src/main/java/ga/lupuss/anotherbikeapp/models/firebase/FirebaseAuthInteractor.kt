@@ -21,7 +21,7 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
                     Timber.e(it)
 
                     when (it) {
-                        is FirebaseAuthInvalidCredentialsException -> onLoginDone?.onIncorrectCredentialsError()
+                        is FirebaseAuthInvalidCredentialsException -> onLoginDone?.onInvalidCredentialsError()
                         is FirebaseAuthInvalidUserException -> onLoginDone?.onUserNotExists()
                         else -> onLoginDone?.onUndefinedError()
                     }
@@ -53,7 +53,7 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
 
                     when (it) {
                         is FirebaseAuthWeakPasswordException -> onCreateAccountDone?.onTooWeakPassword()
-                        is FirebaseAuthInvalidCredentialsException -> onCreateAccountDone?.onIncorrectCredentialsError()
+                        is FirebaseAuthInvalidCredentialsException -> onCreateAccountDone?.onInvalidCredentialsError()
                         is FirebaseAuthUserCollisionException -> onCreateAccountDone?.onUserExist()
                         else -> onCreateAccountDone?.onUndefinedError()
                     }
