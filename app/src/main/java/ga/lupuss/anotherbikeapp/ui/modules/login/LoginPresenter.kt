@@ -50,6 +50,7 @@ class LoginPresenter @Inject constructor(private val loginInteractor: AuthIntera
 
     override fun onUserNotExists() {
 
+        view.postMessage(Message.USER_NOT_EXISTS)
     }
 
     override fun onIncorrectCredentialsError() {
