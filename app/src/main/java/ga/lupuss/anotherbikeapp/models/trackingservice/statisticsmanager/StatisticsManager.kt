@@ -112,8 +112,13 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         this.speed = current.speed.toDouble()
         this.altitude = current.altitude
 
-        routeData.maxAltitude = math.measureMax(altitude, routeData.maxAltitude)
-        routeData.minAltitude = math.measureMin(altitude, routeData.minAltitude)
+        if (altitude != 0.0){
+            routeData.maxAltitude = if (routeData.maxAltitude == 0.0) altitude else math.measureMax(altitude, routeData.maxAltitude)
+            routeData.minAltitude = if (routeData.minAltitude == 0.0) altitude else math.measureMin(altitude, routeData.minAltitude)
+            routeData.avgAltitude = math.measureAverage(StatisticsMathProvider.AVG.ALTITUDE, altitude)
+        }
+
+
 
         if (speed.isInfinite()) {
 
