@@ -87,6 +87,8 @@
     <string name="delete">Delete</string>
     <string name="messageUnsavedState">Data has not been saved. Are you sure you want to exit?</string>
     <string name="lockMap">Lock map</string>
-    <string name="notification_description">Displays basic intels about current tracking.</string>
-    <string name="messageUserNotExists">User with that email not exists.</string>
+    <string name="notification_description">Displays basic information about current tracking.</string>
+    <string name="messageUserNotExists">User with that email not exists!</string>
+    <string name="passwordIsTooWeak">The password must be at least 6 characters long!</string>
+    <string name="invalidCredentialsCreating">Incorrect email address format!</string>
 </resources>

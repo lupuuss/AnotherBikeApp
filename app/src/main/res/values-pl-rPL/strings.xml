@@ -78,4 +78,7 @@
     <string name="minAltitude">Min. wysokość</string>
     <string name="avgAltitude">Śr. wysokość</string>
     <string name="notification_description">Wyświetla podstawowe informacje o bieżącym śledzeniu.</string>
+    <string name="invalidCredentialsCreating">Niepoprawny format adresu email!</string>
+    <string name="passwordIsTooWeak">Hasło musi mieć co najmniej 6 znaków!</string>
+    <string name="messageUserNotExists">Użytkownik z tym emailem nie istnieje!</string>
 </resources>

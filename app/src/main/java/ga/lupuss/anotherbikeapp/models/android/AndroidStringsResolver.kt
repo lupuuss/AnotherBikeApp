@@ -23,6 +23,8 @@ class AndroidStringsResolver(private val context: Context) : StringsResolver {
         Message.NO_PERMISSION -> R.string.noPermission
         Message.LOCATION_NOT_AVAILABLE -> R.string.locationNotAvailable
         Message.USER_NOT_EXISTS -> R.string.messageUserNotExists
+        Message.PASSWORD_IS_TOO_WEAK -> R.string.passwordIsTooWeak
+        Message.INVALID_CREDENTIALS_CREATING -> R.string.invalidCredentialsCreating
     })
 
     override fun resolve(text: Text): String = context.getString(when (text) {
