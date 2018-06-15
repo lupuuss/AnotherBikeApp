@@ -46,7 +46,7 @@ class LoginPresenterTest {
         verify(loginView, times(1)).isSignInProgressBarVisible = true
         verify(loginView, times(1)).isSignInButtonTextVisible = false
         verify(loginInteractor, times(1))
-                .login("not blank", "not blank", loginPresenter, loginPresenter)
+                .login("not blank", "not blank", loginPresenter, loginView)
     }
 
     @Test
@@ -65,7 +65,14 @@ class LoginPresenterTest {
     }
 
     @Test
-    fun onUserNotExists_should() {
+    fun onUserNotExists_shouldEnableUiAndPostUserNotExistsMessage() {
+
+        loginPresenter.onUserNotExists()
+
+        verify(loginView, times(1)).isUiEnable = true
+        verify(loginView, times(1)).isSignInProgressBarVisible = false
+        verify(loginView, times(1)).isSignInButtonTextVisible = true
+        verify(loginView, times(1)).postMessage(Message.USER_NOT_EXISTS)
     }
 
     @Test
