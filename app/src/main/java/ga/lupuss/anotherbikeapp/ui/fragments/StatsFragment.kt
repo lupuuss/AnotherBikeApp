@@ -19,7 +19,7 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 /** Contains information about tracking. */
 class StatsFragment : Fragment() {
 
-    private lateinit var layout: LinearLayout
+    private var layout: LinearLayout? = null
     private lateinit var stringsResolver: StringsResolver
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -36,9 +36,9 @@ class StatsFragment : Fragment() {
 
     fun updateStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
-        if (layout.findViewById<View>(R.id.emptyStatsText) != null) {
+        if (layout!!.findViewById<View>(R.id.emptyStatsText) != null) {
 
-            layout.removeAllViews()
+            layout!!.removeAllViews()
             initStatsLayout(stats)
 
         } else {
@@ -51,7 +51,7 @@ class StatsFragment : Fragment() {
 
         for ((name, stat) in stats) {
 
-            layout.addView(
+            layout!!.addView(
                     ViewExtensions.createTextViewStatWithTag(
                             layoutInflater,
                             view!!.findViewById(R.id.statsContainer),
@@ -67,13 +67,14 @@ class StatsFragment : Fragment() {
 
         for ((name, stat) in stats) {
 
-            ViewExtensions.updateTextViewStatByTag(layout, name, stringsResolver.resolve(name, stat))
+            ViewExtensions.updateTextViewStatByTag(layout!!, name, stringsResolver.resolve(name, stat))
         }
     }
 
     override fun onDestroy() {
 
         super.onDestroy()
+        layout = null
         val refWatcher = AnotherBikeApp.getRefWatcher(activity)
         refWatcher.watch(this)
     }
