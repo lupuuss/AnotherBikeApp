@@ -5,7 +5,10 @@ import com.google.firebase.auth.*
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import timber.log.Timber
 
-class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInteractor {
+class FirebaseAuthInteractor(
+        private val firebaseAuth: FirebaseAuth,
+        private val userProfileChangeBuilder :UserProfileChangeRequest.Builder = UserProfileChangeRequest.Builder()
+) : AuthInteractor {
 
     override fun login(email: String, password: String, onLoginDone: AuthInteractor.OnLoginDoneListener?, requestOwner: Any?) {
 
@@ -67,16 +70,15 @@ class FirebaseAuthInteractor(private val firebaseAuth: FirebaseAuth) : AuthInter
         if (requestOwner !is Activity)
             throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
 
-        val userProfileChangeRequest = UserProfileChangeRequest
-                .Builder()
+        val userProfileChangeRequest = userProfileChangeBuilder
                 .setDisplayName(displayName)
                 .build()
 
-        firebaseAuth.currentUser?.updateProfile(userProfileChangeRequest)
-                ?.addOnSuccessListener(requestOwner) {
+        firebaseAuth.currentUser!!.updateProfile(userProfileChangeRequest)
+                .addOnSuccessListener(requestOwner) {
                     onDisplayNameSetDone?.onSuccessNameChange()
                 }
-                ?.addOnFailureListener(requestOwner) {
+                .addOnFailureListener(requestOwner) {
                     Timber.e(it)
                     onDisplayNameSetDone?.onSettingDisplayNameFail()
                 }
