@@ -40,11 +40,7 @@ class AnotherBikeApp : Application() {
 
         // avoids sdk memory leak
         packageManager.getUserBadgedLabel("", android.os.Process.myUserHandle())
-
-        if (BuildConfig.DEBUG) {
-
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(Timber.DebugTree())
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
