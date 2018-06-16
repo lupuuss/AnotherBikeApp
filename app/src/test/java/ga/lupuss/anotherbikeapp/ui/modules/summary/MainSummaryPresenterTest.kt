@@ -4,7 +4,7 @@ import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RouteReferenceSerializer
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRouteReference
+import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import org.junit.Test
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.memberProperties
@@ -39,7 +39,7 @@ class MainSummaryPresenterTest {
         summaryPresenter = MainSummaryPresenter(
                 mock {  },
                 mock { on { routeReferenceSerializer }.then {
-                    mock<RouteReferenceSerializer> { on { deserialize(any()) }.then { FirebaseRouteReference(mock{},mock{}, mock{}) } }
+                    mock<RouteReferenceSerializer> { on { deserialize(any()) }.then { FirebaseRouteReference(mock {}, mock {}, mock {}) } }
                 } },
                 mock {  },
                 mock {  })

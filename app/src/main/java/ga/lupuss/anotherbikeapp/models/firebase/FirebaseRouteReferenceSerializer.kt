@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RouteReferenceSerializer
+import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 
 class FirebaseRouteReferenceSerializer(private val gson: Gson,
                                        private val firestore: FirebaseFirestore) : RouteReferenceSerializer {

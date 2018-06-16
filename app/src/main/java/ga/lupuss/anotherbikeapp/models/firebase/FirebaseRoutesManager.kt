@@ -15,6 +15,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.RouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RouteReferenceSerializer
+import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import timber.log.Timber
 import java.lang.IllegalArgumentException
 import java.util.*
