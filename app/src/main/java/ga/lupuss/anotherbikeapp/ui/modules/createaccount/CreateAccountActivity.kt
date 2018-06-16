@@ -40,7 +40,7 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
 
     override var isCreateAccountButtonTextVisible: Boolean = true
         set(value) {
-            val color = signInButton.currentTextColor
+            val color = createNewAccountButton.currentTextColor
             val trans = if (value) 255 else 0
 
             createNewAccountButton.setTextColor(

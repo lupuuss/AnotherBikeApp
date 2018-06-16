@@ -41,7 +41,7 @@ class CreateAccountPresenter @Inject constructor(private val authInteractor: Aut
 
     private fun onAnyError() {
         view.isUiEnable = true
-        view.isCreateAccountButtonTextVisible = false
+        view.isCreateAccountButtonTextVisible = true
         view.isCreateAccountProgressBarVisible = false
     }
 
