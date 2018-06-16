@@ -16,37 +16,49 @@
         android:supportsRtl="true"
         android:theme="@style/GreyTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ui.modules.main.MainActivity" />
 
         <service
-            android:name=".models.trackingservice.TrackingService"
-            android:exported="false" />
-
+            android:name=".models.trackingservice.TrackingService" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".ui.modules.login.LoginActivity"
+            android:label="@string/login"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
+        <activity
+            android:name=".ui.modules.createaccount.CreateAccountActivity"
+            android:label="@string/createNewAccount"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".ui.modules.main.MainActivity"
+            android:label="@string/appName"
+            android:launchMode="singleInstance"/>
+
+        <activity
             android:name=".ui.modules.tracking.TrackingActivity"
-            android:label="@string/titleActivityTacking" />
+            android:label="@string/titleActivityTacking"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.modules.summary.SummaryActivity"
-            android:label="@string/summary" />
-        <activity
-            android:name=".ui.modules.login.LoginActivity"
-            android:label="@string/login" />
+            android:label="@string/summary"
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.StartActivity"
-            android:screenOrientation="locked">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.modules.createaccount.CreateAccountActivity"
-            android:label="@string/createNewAccount" />
         <activity android:name=".ui.modules.settings.SettingsActivity"
             android:label="@string/settings"/>
     </application>
