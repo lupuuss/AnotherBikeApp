@@ -21,7 +21,6 @@ import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainPresenter
-import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 
 class AndroidTrackingServiceGovernor(
