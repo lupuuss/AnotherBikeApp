@@ -184,6 +184,8 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
     override fun onUnbind(intent: Intent?): Boolean {
 
         Timber.v("Unbound > $intent")
+        onStatsUpdateListeners.clear()
+        locationDataReceivers.clear()
         return super.onUnbind(intent)
     }
 
@@ -210,6 +212,8 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
     override fun onDestroy() {
         super.onDestroy()
 
+        onStatsUpdateListeners.clear()
+        locationDataReceivers.clear()
         locationClient.removeLocationUpdates(locationCallback)
         statsManager.timer.stop()
         thread.quit()

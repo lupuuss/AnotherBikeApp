@@ -61,7 +61,7 @@ class AndroidTrackingServiceGovernor(
 
     override fun destroy(isFinishing: Boolean) {
 
-        serviceBinder?.removeOnStatsUpdateListener(this)
+        serviceBinder?.removeOnStatsUpdateListener(this) ?: Timber.w("")
 
         if (isFinishing && isServiceActive) {
 
@@ -177,10 +177,13 @@ class AndroidTrackingServiceGovernor(
 
     override fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>) {
 
-        (serviceParentActivity.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager)
-                .notify(TrackingNotification.ID, trackingNotification.build(
-                        serviceParentActivity, stringsResolver, stats, generateNotificationIntent()
-                ))
+        if (isServiceActive) {
+
+            (serviceParentActivity.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager)
+                    .notify(TrackingNotification.ID, trackingNotification.build(
+                            serviceParentActivity, stringsResolver, stats, generateNotificationIntent()
+                    ))
+        }
 
     }
 
