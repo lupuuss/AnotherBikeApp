@@ -13,17 +13,23 @@ import timber.log.Timber
  * Observes query and load its data in portions depends on limit.
  * Interface is adapted to RecyclerView.
  */
-class QueryLoadingManager(private val rootQuery: Query,
-                          private val limit: Long,
-                          private val listeners: List<OnDocumentChanged>) {
+class QueryLoadingManager {
 
     private val children = mutableListOf<DocumentSnapshot>()
     private var firstQueryNotification = true
-
     val size
         get() = children.size
 
-    init {
+    private lateinit var rootQuery: Query
+    private var listeners: List<OnDocumentChanged> = listOf()
+    private var limit: Long = FirebaseRoutesManager.DEFAULT_LIMIT
+
+    fun init(query: Query, listeners: List<OnDocumentChanged>?) {
+
+
+        this.rootQuery = query
+        listeners?.let { this.listeners = it }
+
         rootQuery.addSnapshotListener { querySnapshot, exception ->
 
             exception?.let {

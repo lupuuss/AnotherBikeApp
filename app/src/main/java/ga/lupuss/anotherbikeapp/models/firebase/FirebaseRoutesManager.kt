@@ -21,11 +21,15 @@ import java.lang.IllegalArgumentException
 import java.util.*
 
 
-class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
-                            private val firebaseFirestore: FirebaseFirestore,
-                            private val routeKeeper: TempRouteKeeper,
-                            private val locale: Locale,
-                            gson: Gson): RoutesManager {
+class FirebaseRoutesManager(
+        private val firebaseAuth: FirebaseAuth,
+        private val firebaseFirestore: FirebaseFirestore,
+        private val routeKeeper: TempRouteKeeper,
+        private val locale: Locale,
+        gson: Gson,
+        private val queryManager: QueryLoadingManager = QueryLoadingManager()
+
+): RoutesManager {
 
     private val onRoutesChangedListeners = mutableListOf<OnDocumentChanged>()
     private val userPath = "$FIREB_USERS/${firebaseAuth.currentUser!!.uid}"
@@ -34,8 +38,10 @@ class FirebaseRoutesManager(private val firebaseAuth: FirebaseAuth,
             .collection(routesPath)
             .orderBy(FIREB_START_TIME, Query.Direction.DESCENDING)
 
-    private val queryManager =
-            QueryLoadingManager(routesQuery, DEFAULT_LIMIT, onRoutesChangedListeners)
+    init {
+
+        queryManager.init(routesQuery, onRoutesChangedListeners)
+    }
 
 
     private fun DocumentSnapshot.toFirebaseShortRouteData(): FirebaseShortRouteData =
