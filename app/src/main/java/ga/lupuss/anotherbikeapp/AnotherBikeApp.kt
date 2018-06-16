@@ -36,6 +36,7 @@ class AnotherBikeApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AndroidThreeTen.init(this)
 
         // avoids sdk memory leak
         packageManager.getUserBadgedLabel("", android.os.Process.myUserHandle())
@@ -43,12 +44,7 @@ class AnotherBikeApp : Application() {
         if (BuildConfig.DEBUG) {
 
             Timber.plant(Timber.DebugTree())
-        } else if (applicationContext.checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-            Timber.plant(FileLoggingTree(System.currentTimeMillis()))
         }
-
-        AndroidThreeTen.init(this)
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -66,37 +62,5 @@ class AnotherBikeApp : Application() {
         anotherBikeAppComponent
                 .providesTrackingNotification()
                 .initNotificationChannelOreo(this)
-    }
-
-    inner class FileLoggingTree(time: Long) : Timber.DebugTree() {
-
-        private val nl = System.getProperty("line.separator")
-
-        private val mainLogsDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),  "/AnotherBikeAppLogs")
-
-        private val logFile = File(mainLogsDir, "log$time.html")
-
-        override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-
-            if (priority == Log.VERBOSE) return
-
-            if (!mainLogsDir.exists()) {
-                mainLogsDir.mkdirs()
-            }
-
-            val logTimeStamp = SimpleDateFormat("E MMM dd yyyy 'at' hh:mm:ss:SSS aaa", Locale.getDefault()).format(Date())
-
-            try {
-                logFile.appendText("<p style=\"background:lightgray;\"><strong style=\"background:lightblue;\">" +
-                            "&nbsp&nbsp$logTimeStamp :&nbsp&nbsp</strong>&nbsp&nbsp$message</p> $nl")
-
-
-            } catch (exception: Exception) {
-
-                exception.printStackTrace()
-                Timber.uproot(this)
-            }
-
-        }
     }
 }
