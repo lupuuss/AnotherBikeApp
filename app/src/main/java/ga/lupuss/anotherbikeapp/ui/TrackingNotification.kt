@@ -7,7 +7,6 @@ import ga.lupuss.anotherbikeapp.R
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.app.PendingIntent
-import android.content.Intent
 import android.os.Build
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -43,8 +42,9 @@ class TrackingNotification {
 
         val content =
                 if (statistic != null)
-                    "${stringsResolver.resolve(Statistic.Name.DURATION, statistic[Statistic.Name.DURATION]!!)} |" +
-                            " ${stringsResolver.resolve(Statistic.Name.DISTANCE, statistic[Statistic.Name.DISTANCE]!!)}"
+                    "${stringsResolver.resolve(statistic[Statistic.Name.DURATION]!!)}  |  " +
+                            "${stringsResolver.resolve(statistic[Statistic.Name.DISTANCE]!!)}  |  " +
+                            " ${stringsResolver.resolve(statistic[Statistic.Name.AVG_SPEED]!!)}"
                 else ""
 
         val title =
