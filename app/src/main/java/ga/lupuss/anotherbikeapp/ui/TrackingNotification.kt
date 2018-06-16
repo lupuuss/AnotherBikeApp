@@ -30,8 +30,7 @@ class TrackingNotification {
             channel.description = context.getString(R.string.notification_description)
             channel.enableVibration(false)
             channel.enableLights(false)
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+
             val notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
