@@ -44,19 +44,20 @@ class CreateAccountPresenterTest {
     }
 
     @Test
-    fun onClickSignIn_shouldInitSignInAndDisableUiIfEverythingIsOk() {
+    fun onClickCreateNewAccount_shouldInitSignInAndDisableUiIfEverythingIsOk() {
 
-        createAccountPresenter.onClickCreateNewAccount("not blank", "not blank","not blank")
+        createAccountPresenter
+                .onClickCreateNewAccount("correct@email.com", "moreThan6Chars","not blank")
 
         verify(createAccountView, times(1)).isUiEnable = false
-        verify(createAccountView, times(1)).isCreateAccountButtonTextVisible = false
         verify(createAccountView, times(1)).isCreateAccountProgressBarVisible = true
+        verify(createAccountView, times(1)).isCreateAccountButtonTextVisible = false
         verify(authInteractor, times(1)).createAccount(
-                "not blank",
-                "not blank",
+                "correct@email.com",
+                "moreThan6Chars",
                 "not blank",
                 createAccountPresenter,
-                createAccountPresenter
+                createAccountView
         )
     }
 
@@ -69,13 +70,13 @@ class CreateAccountPresenterTest {
     }
 
     @Test
-    fun onUserExist_shouldEnableUi() {
+    fun onUserExist_shouldEnableUiAndPostMessageUserExists() {
 
         createAccountPresenter.onUserExist()
 
         verify(createAccountView, times(1)).isUiEnable = true
         verify(createAccountView, times(1)).isCreateAccountProgressBarVisible = false
-        verify(createAccountView, times(1)).isCreateAccountButtonTextVisible = false
+        verify(createAccountView, times(1)).isCreateAccountButtonTextVisible = true
         verify(createAccountView, times(1)).postMessage(Message.USER_EXISTS)
     }
 
@@ -86,7 +87,7 @@ class CreateAccountPresenterTest {
 
         verify(createAccountView, times(1)).isUiEnable = true
         verify(createAccountView, times(1)).isCreateAccountProgressBarVisible = false
-        verify(createAccountView, times(1)).isCreateAccountButtonTextVisible = false
+        verify(createAccountView, times(1)).isCreateAccountButtonTextVisible = true
         verify(createAccountView, times(1)).postMessage(Message.SOMETHING_GOES_WRONG)
     }
 }
