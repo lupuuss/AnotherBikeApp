@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.android
 
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.ComponentName
 import android.content.Context
@@ -18,6 +19,9 @@ import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainPresenter
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import timber.log.Timber
 
 class AndroidTrackingServiceGovernor(
@@ -137,6 +141,16 @@ class AndroidTrackingServiceGovernor(
         )
     }
 
+    private fun generateNotificationIntent(): PendingIntent {
+        val intent = MainActivity.newIntent(serviceParentActivity)
+        intent.putExtra(MainActivity.REQUEST_CODE_KEY, MainPresenter.Request.TRACKING_NOTIFICATION_REQUEST)
+        return PendingIntent
+                .getActivity(serviceParentActivity,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
     override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
 
         p1 ?: throw IllegalStateException("Service should always return IBinder!")
@@ -147,7 +161,12 @@ class AndroidTrackingServiceGovernor(
 
         serviceBinder!!.initNotification(
                 TrackingNotification.ID,
-                trackingNotification.build(serviceParentActivity, stringsResolver, serviceBinder!!.lastStats)
+                trackingNotification.build(
+                        serviceParentActivity,
+                        stringsResolver,
+                        serviceBinder!!.lastStats,
+                        generateNotificationIntent()
+                )
         )
 
         serviceBinder!!.addOnStatsUpdateListener(this)
@@ -161,7 +180,7 @@ class AndroidTrackingServiceGovernor(
 
         (serviceParentActivity.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager)
                 .notify(TrackingNotification.ID, trackingNotification.build(
-                        serviceParentActivity, stringsResolver, stats
+                        serviceParentActivity, stringsResolver, stats, generateNotificationIntent()
                 ))
 
     }

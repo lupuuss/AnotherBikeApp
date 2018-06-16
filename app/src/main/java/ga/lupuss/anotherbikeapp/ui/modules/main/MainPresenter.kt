@@ -49,7 +49,11 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
 
-        if (requestCode == Request.TRACKING_ACTIVITY_REQUEST) {
+        if(requestCode == Request.TRACKING_NOTIFICATION_REQUEST) {
+
+            trackingServiceGovernor.startTracking(this)
+
+        } else if (requestCode == Request.TRACKING_ACTIVITY_REQUEST) {
 
             when (resultCode) {
 
@@ -79,6 +83,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
                     Timber.v("Service is working...")
                 }
             }
+
         }
     }
 
@@ -225,6 +230,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
     class Request {
         companion object {
             const val TRACKING_ACTIVITY_REQUEST = 0
+            const val TRACKING_NOTIFICATION_REQUEST = 1
         }
     }
 }

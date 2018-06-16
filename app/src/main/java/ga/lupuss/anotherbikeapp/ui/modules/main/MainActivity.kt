@@ -93,6 +93,13 @@ class MainActivity
         mainPresenter.notifyOnResult(requestCode, resultCode)
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        intent?.let {
+
+            mainPresenter.notifyOnResult(MainPresenter.Request.TRACKING_NOTIFICATION_REQUEST, 0)
+        }
+    }
+
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -138,6 +145,7 @@ class MainActivity
 
         mainPresenter.notifyOnViewReady()
     }
+
 
     override fun onSaveInstanceState(outState: Bundle?) {
 
@@ -308,6 +316,8 @@ class MainActivity
     }
 
     companion object {
+
+        const val REQUEST_CODE_KEY = "requestCodeKey"
 
         @JvmStatic
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)

@@ -6,6 +6,8 @@ import android.support.v4.app.NotificationCompat
 import ga.lupuss.anotherbikeapp.R
 import android.app.NotificationManager
 import android.app.NotificationChannel
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -26,6 +28,8 @@ class TrackingNotification {
             val channel = NotificationChannel(CHANNEL_STRING, name, importance)
             channel.setSound(null, null)
             channel.description = context.getString(R.string.notification_description)
+            channel.enableVibration(false)
+            channel.enableLights(false)
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             val notificationManager = context.getSystemService(NotificationManager::class.java)
@@ -35,7 +39,8 @@ class TrackingNotification {
 
     fun build(context: Context,
               stringsResolver: StringsResolver,
-              statistic: Map<Statistic.Name, Statistic<*>>?): Notification {
+              statistic: Map<Statistic.Name, Statistic<*>>?,
+              onClick: PendingIntent): Notification {
 
         val content =
                 if (statistic != null)
@@ -56,6 +61,7 @@ class TrackingNotification {
                     .setColor(context.theme.getColorForAttr(R.attr.colorPrimaryDark))
                     .setContentTitle(context.getString(R.string.trackingInProgress))
                     .setContentText(content)
+                    .setContentIntent(onClick)
                     .setOnlyAlertOnce(true)
         } else {
 
