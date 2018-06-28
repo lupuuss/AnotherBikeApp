@@ -68,10 +68,12 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
         refreshStats(lastLocation, location)
 
-        if ((lastLocation != null
-                        && location.distanceTo(lastLocation) != 0F
-                        && location.accuracy < 100)
-                || lastLocation == null) {
+        if (
+                lastLocation != null
+                && location.distanceTo(lastLocation) != 0F
+                && location.accuracy < 100
+                || lastLocation == null
+        ) {
 
             if (lastLocation != null && lastLocation!!.bearing == location.bearing) {
 
