@@ -8,6 +8,7 @@ import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class AndroidPreferencesInteractorTest {
@@ -64,8 +65,8 @@ class AndroidPreferencesInteractorTest {
             it.onSharedPreferenceChanged(any(), context.getString(R.string.prefUnitSpeedKey))
         }
 
-        assert(triggeredThemeChanges == 1)
-        assert(triggeredUnitChanges == 2)
+        assertEquals(1, triggeredThemeChanges)
+        assertEquals(2, triggeredUnitChanges)
 
     }
 
