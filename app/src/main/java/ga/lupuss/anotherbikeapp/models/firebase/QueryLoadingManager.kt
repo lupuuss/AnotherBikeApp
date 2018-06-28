@@ -1,9 +1,8 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
 import android.app.Activity
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
+import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -13,7 +12,10 @@ import timber.log.Timber
  * Observes query and load its data in portions depends on limit.
  * Interface is adapted to RecyclerView.
  */
-class QueryLoadingManager {
+class QueryLoadingManager(
+        private val backScheduler: Scheduler = Schedulers.io(),
+        private val frontScheduler: Scheduler = AndroidSchedulers.mainThread()
+) : EventListener<QuerySnapshot>  {
 
     private val children = mutableListOf<DocumentSnapshot>()
     private var firstQueryNotification = true
@@ -30,31 +32,33 @@ class QueryLoadingManager {
         this.rootQuery = query
         listeners?.let { this.listeners = it }
 
-        rootQuery.addSnapshotListener { querySnapshot, exception ->
+        rootQuery.addSnapshotListener(this)
+    }
 
-            exception?.let {
-                Timber.e("Query callback exception: $it")
-            }
+    override fun onEvent(querySnapshot: QuerySnapshot?, exception: FirebaseFirestoreException?) {
 
-            if (querySnapshot != null) {
-                if (!firstQueryNotification) {
+        exception?.let {
+            Timber.e("Query callback exception: $it")
+        }
 
-                    Single.create<List<Pair<DocumentChange.Type, Int>>> {
+        if (querySnapshot != null) {
+            if (!firstQueryNotification) {
 
-                        it.onSuccess(fetchDocumentChanges(querySnapshot.documentChanges))
+                Single.create<List<Pair<DocumentChange.Type, Int>>> {
 
-                    }.observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.io())
-                            .subscribe { res ->
-                                res.forEach { (first, second) ->
-                                    notifyParent(first, second)
-                                }
+                    it.onSuccess(fetchDocumentChanges(querySnapshot.documentChanges))
+
+                }.observeOn(frontScheduler)
+                        .subscribeOn(backScheduler)
+                        .subscribe { res ->
+                            res.forEach { (first, second) ->
+                                notifyParent(first, second)
                             }
-                }
-
-                firstQueryNotification = false
-
+                        }
             }
+
+            firstQueryNotification = false
+
         }
     }
 
@@ -145,7 +149,6 @@ class QueryLoadingManager {
 
         return list
     }
-
 
     private fun notifyParent(type: DocumentChange.Type, i: Int) {
 
