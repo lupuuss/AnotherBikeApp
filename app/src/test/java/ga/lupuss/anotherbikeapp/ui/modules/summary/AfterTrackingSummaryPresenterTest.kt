@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
-import com.google.android.gms.maps.model.LatLng
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
@@ -8,17 +7,26 @@ import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class AfterTrackingSummaryPresenterTest {
 
     private val summaryView: SummaryView = mock { }
 
-    private val routeData: ExtendedRouteData = mock {
-        on { name }.then { "name" }
-        on { points }.then { emptyList<LatLng>() }
-        on { getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM) }.then { mapOf<Statistic.Name, Statistic<*>>() }
-    }
+    private val routeData: ExtendedRouteData = ExtendedRouteData.Instance(
+            "name",
+            0.0,
+            0.0,
+            0.0,
+            0L,
+            "",
+            0L,
+            0.0,
+            0.0,
+            0.0,
+            emptyList()
+    )
 
     private val stringsResolver: StringsResolver = mock {
         on { resolve(Text.DEFAULT_ROUTE_NAME) }.then { "Route" }
@@ -30,35 +38,53 @@ class AfterTrackingSummaryPresenterTest {
     }
 
     @Test
-    fun notifyOnVieReady_whenAvailable_shouldShowRouteData() {
+    fun notifyOnViewReady_whenAvailable_shouldShowRouteData() {
 
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
                 mock { on { getTempRoute() }.then { routeData } },
-                mock {  },
-                mock {  }
+                stringsResolver,
+                preferencesInteractor
         )
 
         summaryPresenter.notifyOnViewReady()
 
         verify(summaryView, times(1)).showRouteLine(routeData.points)
         verify(summaryView, times(1)).showStatistics(
-                routeData.getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM)
+                routeData.toMutable().getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM)
         )
         verify(summaryView, times(1)).setNameLabelValue(routeData.name ?: "")
 
     }
 
     @Test
+    fun notifyOnViewReady_whenRouteNotAvailable_shouldFinishActivity() {
+
+        val summaryPresenter = AfterTrackingSummaryPresenter(
+                summaryView,
+                mock { on { getTempRoute() }.then { null } },
+                stringsResolver,
+                preferencesInteractor
+        )
+
+        summaryPresenter.notifyOnViewReady()
+
+        verify(summaryView, times(1)).finishActivity()
+    }
+
+    @Test
     fun onSaveClick_shouldSaveRouteAndFinishActivity() {
 
-        val routesManager: RoutesManager = mock { on { getTempRoute() }.then { routeData } }
+        val routesManager: RoutesManager = mock {
+            on { getTempRoute() }.then { routeData }
+        }
 
+        val summaryView = mock<SummaryView> { on { getRouteNameFromEditText() }.then { "" } }
         val summaryPresenter =  AfterTrackingSummaryPresenter(
                 summaryView,
                 routesManager,
                 stringsResolver,
-                mock { }
+                preferencesInteractor
         )
 
         summaryPresenter.notifyOnViewReady()
@@ -86,10 +112,12 @@ class AfterTrackingSummaryPresenterTest {
                 listOf()
         )
 
-        val routesManager: RoutesManager = mock { on { getTempRoute() }.then {
-            extendedRouteData
-        } }
-
+        val routesManager: RoutesManager = mock {
+            on { getTempRoute() }.then { extendedRouteData }
+            on { saveRoute(any())}.then {
+                assertEquals(stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME), it.getArgument<ExtendedRouteData>(0).name)
+            }
+        }
 
         val mockSummaryView: SummaryView = mock { on { getRouteNameFromEditText() }.then { "" } }
 
@@ -103,8 +131,7 @@ class AfterTrackingSummaryPresenterTest {
         summaryPresenter.notifyOnViewReady()
         summaryPresenter.onSaveClick()
 
-        verify(stringsResolver, times(1)).resolve(any<Text>())
-        assert(extendedRouteData.name == stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME))
+        verify(stringsResolver, atLeastOnce()).resolve(any<Text>())
         verify(mockSummaryView, times(1)).getRouteNameFromEditText()
     }
 
@@ -125,11 +152,12 @@ class AfterTrackingSummaryPresenterTest {
                 listOf()
         )
 
-        val routesManager: RoutesManager = mock { on { getTempRoute() }.then {
-            extendedRouteData
-        } }
-
         val expectedName = "Just name"
+        val routesManager: RoutesManager = mock {
+            on { getTempRoute() }.then { extendedRouteData }
+            on { saveRoute(any()) }.then { assertEquals(expectedName, it.getArgument<ExtendedRouteData>(0).name) }
+        }
+
         val mockSummaryView: SummaryView = mock { on { getRouteNameFromEditText() }.then { expectedName } }
 
         val summaryPresenter =  AfterTrackingSummaryPresenter(
@@ -143,7 +171,6 @@ class AfterTrackingSummaryPresenterTest {
         summaryPresenter.onSaveClick()
 
         verify(stringsResolver, never()).resolve(any<Text>())
-        assert(extendedRouteData.name == expectedName)
         verify(mockSummaryView, times(1)).getRouteNameFromEditText()
     }
 
