@@ -4,12 +4,12 @@ import com.google.firebase.firestore.DocumentReference
 import ga.lupuss.anotherbikeapp.models.dataclass.MutableShortRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 
-class FirebaseShortRouteData : MutableShortRouteData() {
+class FirebaseShortRouteData : MutableShortRouteData.Instance() {
 
     var route: DocumentReference? = null
     var points: DocumentReference? = null
 
-    fun toShortRouteData() = ShortRouteData(
+    fun toShortRouteData() = ShortRouteData.Instance(
             name = name,
             duration = duration,
             distance = distance,

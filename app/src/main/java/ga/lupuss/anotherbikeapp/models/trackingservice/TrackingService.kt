@@ -2,7 +2,6 @@ package ga.lupuss.anotherbikeapp.models.trackingservice
 
 import android.Manifest
 import android.app.Notification
-import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.location.Location
@@ -13,7 +12,6 @@ import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import timber.log.Timber
 import javax.inject.Inject
@@ -116,7 +114,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
         override val lastStats get() = this@TrackingService.lastStats
 
-        override val routeData get() = this@TrackingService.routeData.toImmutable()
+        override val routeData get() = this@TrackingService.routeData
 
         override fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
 

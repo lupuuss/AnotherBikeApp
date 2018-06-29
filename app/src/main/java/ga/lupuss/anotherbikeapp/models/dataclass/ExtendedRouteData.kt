@@ -2,32 +2,26 @@ package ga.lupuss.anotherbikeapp.models.dataclass
 
 import com.google.android.gms.maps.model.LatLng
 
-class ExtendedRouteData(
-        name: String?,
-        distance: Double,
-        avgSpeed: Double,
-        maxSpeed: Double,
-        duration: Long,
-        startTimeStr: String,
-        startTime: Long,
-        avgAltitude: Double,
-        maxAltitude: Double,
-        minAltitude: Double,
-        val points: List<LatLng>
-) : RouteData(
-        name = name,
-        distance = distance,
-        avgSpeed = avgSpeed,
-        maxSpeed = maxSpeed,
-        duration = duration,
-        startTimeStr = startTimeStr,
-        startTime = startTime,
-        avgAltitude = avgAltitude,
-        maxAltitude = maxAltitude,
-        minAltitude = minAltitude
-) {
+interface ExtendedRouteData : RouteData {
 
-    fun toMutable() = MutableExtendedRouteData(
+    val points: List<LatLng>
+
+    class Instance(
+            override val name: String?,
+            override val distance: Double,
+            override val avgSpeed: Double,
+            override val maxSpeed: Double,
+            override val duration: Long,
+            override val startTimeStr: String,
+            override val startTime: Long,
+            override val avgAltitude: Double,
+            override val maxAltitude: Double,
+            override val minAltitude: Double,
+            override val points: List<LatLng>
+    ) : ExtendedRouteData
+
+
+    fun toMutable() = MutableExtendedRouteData.Instance(
             name = name,
             distance = distance,
             avgSpeed = avgSpeed,

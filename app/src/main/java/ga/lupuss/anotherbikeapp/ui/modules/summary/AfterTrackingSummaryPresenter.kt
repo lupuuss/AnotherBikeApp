@@ -23,7 +23,6 @@ class AfterTrackingSummaryPresenter(
         routesManager.getTempRoute() ?: throw IllegalStateException("no route to show")
 
         routeData = routesManager.getTempRoute()!!
-
         showExtendedRouteData(routeData)
     }
 
@@ -35,7 +34,7 @@ class AfterTrackingSummaryPresenter(
 
         mutable.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
 
-        routesManager.saveRoute(mutable.toImmutable())
+        routesManager.saveRoute(mutable)
         view.finishActivity()
     }
 

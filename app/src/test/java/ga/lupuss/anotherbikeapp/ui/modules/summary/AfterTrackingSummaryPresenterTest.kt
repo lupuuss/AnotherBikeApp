@@ -72,7 +72,7 @@ class AfterTrackingSummaryPresenterTest {
     @Test
     fun onSaveClick_shouldApplyDefaultRouteNameIfNameNotAvailable() {
 
-        val extendedRouteData = ExtendedRouteData(
+        val extendedRouteData = ExtendedRouteData.Instance(
               null,
                 0.0,
                 0.0,
@@ -111,7 +111,7 @@ class AfterTrackingSummaryPresenterTest {
     @Test
     fun onSaveClick_shouldNotApplyDefaultRouteNameIfNameAvailable() {
 
-        val extendedRouteData = ExtendedRouteData(
+        val extendedRouteData = ExtendedRouteData.Instance(
                 null,
                 0.0,
                 0.0,
