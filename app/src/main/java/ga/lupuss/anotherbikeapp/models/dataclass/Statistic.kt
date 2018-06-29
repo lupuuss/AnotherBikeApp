@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.dataclass
 
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Status
+import java.util.*
 
 /**
  * Base class for any statistic.
@@ -38,6 +39,20 @@ sealed class Statistic<T> {
     }
 
     abstract val value: T
+
+    override fun equals(other: Any?): Boolean {
+
+        return if (other !is Statistic<*> || other.javaClass != javaClass) {
+
+            false
+
+        } else {
+
+            this.value == other.value
+        }
+    }
+
+    override fun hashCode(): Int = Objects.hash(value)
 }
 
 /** [Statistic] subclass that can contain [value] as double.
