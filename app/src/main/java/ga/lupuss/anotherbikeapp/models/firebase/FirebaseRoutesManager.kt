@@ -187,11 +187,11 @@ class FirebaseRoutesManager(
         if (routeReference !is FirebaseRouteReference)
             throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
 
-        firebaseFirestore.runTransaction {
-            it.update(routeReference.userRouteReference!!, FIREB_NAME, routeNameFromEditText)
-            it.update(routeReference.routeReference!!, FIREB_NAME, routeNameFromEditText)
-        }
-
+        firebaseFirestore
+                .batch()
+                .update(routeReference.userRouteReference!!, FIREB_NAME, routeNameFromEditText)
+                .update(routeReference.routeReference!!, FIREB_NAME, routeNameFromEditText)
+                .commit()
     }
 
     override fun deleteRoute(routeReference: RouteReference) {
