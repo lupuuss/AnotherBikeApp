@@ -5,6 +5,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import timber.log.Timber
 
 class AfterTrackingSummaryPresenter(
         summaryView: SummaryView,
@@ -20,10 +21,16 @@ class AfterTrackingSummaryPresenter(
 
     override fun notifyOnViewReady() {
 
-        routesManager.getTempRoute() ?: throw IllegalStateException("no route to show")
+        if (routesManager.getTempRoute() == null) {
 
-        routeData = routesManager.getTempRoute()!!
-        showExtendedRouteData(routeData)
+            view.finishActivity()
+            Timber.w("no route to show")
+
+        } else {
+
+            routeData = routesManager.getTempRoute()!!
+            showExtendedRouteData(routeData)
+        }
     }
 
     override fun onSaveClick() {
