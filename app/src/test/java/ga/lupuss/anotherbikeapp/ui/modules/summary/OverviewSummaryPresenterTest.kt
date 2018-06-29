@@ -131,7 +131,7 @@ class OverviewSummaryPresenterTest {
     }
 
     @Test
-    fun onExitRequest_shouldFinishActivityIfNameNotInitialized() {
+    fun onExitRequest_whenNameNotInitialized_shouldFinishActivity() {
 
         // name is not initialized by default
         summaryPresenter.onExitRequest()
@@ -140,7 +140,7 @@ class OverviewSummaryPresenterTest {
     }
 
     @Test
-    fun onExitRequest_shouldFinishActivityIfNameEqualNameFromEditText() {
+    fun onExitRequest_whenNameEqualNameFromEditText_shouldFinishActivity() {
 
         setPrivateNameValue(summaryPresenter, expectedName)
         summaryPresenter.onExitRequest()
@@ -149,7 +149,7 @@ class OverviewSummaryPresenterTest {
     }
 
     @Test
-    fun onExitRequest_shouldShowUnsavedStateDialogIfNameInitializedAndNotEqualNameFormEditText() {
+    fun onExitRequest_whenNameInitializedAndNotEqualNameFormEditText_shouldShowUnsavedStateDialog() {
 
         setPrivateNameValue(summaryPresenter, "Any different value!")
         summaryPresenter.onExitRequest()
@@ -170,7 +170,7 @@ class OverviewSummaryPresenterTest {
     }
 
     @Test
-    fun onNameEditTextChanged_shouldEnableSaveActionIfStringsNotEqual(){
+    fun onNameEditTextChanged_whenStringsNotEqual_shouldEnableSaveAction(){
 
         setPrivateNameValue(summaryPresenter, "Any different value!")
         summaryPresenter.onNameEditTextChanged(expectedName)
@@ -179,7 +179,7 @@ class OverviewSummaryPresenterTest {
     }
 
     @Test
-    fun onNameEditTextChanged_shouldDisableSaveActionIfStringsEqual(){
+    fun onNameEditTextChanged_whenStringsEqual_shouldDisableSaveAction(){
 
         setPrivateNameValue(summaryPresenter, expectedName)
         summaryPresenter.onNameEditTextChanged(expectedName)
@@ -188,7 +188,7 @@ class OverviewSummaryPresenterTest {
     }
 
     @Test
-    fun onNameEditTextChanged_shouldNotFailIfNameIsNotInitialized() {
+    fun onNameEditTextChanged_whenNameIsNotInitialized_shouldNotFail() {
 
         // name is not initialized by default
         summaryPresenter.onNameEditTextChanged("")

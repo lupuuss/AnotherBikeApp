@@ -61,7 +61,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun notifyOnResult_shouldStopTrackingIfResultCodeEqualsDone() {
+    fun notifyOnResult_shouldStopTracking_whenResultCodeEqualsDone() {
 
         mainPresenter.notifyOnResult(
                 MainPresenter.Request.TRACKING_ACTIVITY_REQUEST,
@@ -75,7 +75,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun notifyOnResult_shouldNotStopTrackingIfResultCodeEqualsNoData() {
+    fun notifyOnResult_shouldNotStopTracking_whenResultCodeEqualsNoData() {
 
         mainPresenter.notifyOnResult(
                 MainPresenter.Request.TRACKING_ACTIVITY_REQUEST,
@@ -87,7 +87,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun notifyOnResult_shouldStopTrackingIfResultCodeEqualsNotDone() {
+    fun notifyOnResult_shouldStopTracking_whenResultCodeEqualsNotDone() {
         mainPresenter.notifyOnResult(
                 MainPresenter.Request.TRACKING_ACTIVITY_REQUEST,
                 TrackingPresenter.Result.NOT_DONE
@@ -108,7 +108,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun notifyRecyclerReachedBottom_shouldLoadMoreShortRouteDataIfItIsAvailable() {
+    fun notifyRecyclerReachedBottom_whenItIsAvailable_shouldLoadMoreShortRouteData() {
 
         setLoadMoreAvailable(mainPresenter, true)
 
@@ -158,7 +158,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onDataEnd_shouldShowNoDataTextIfThereIsNoData() {
+    fun onDataEnd_whenThereIsNoData_shouldShowNoDataText() {
 
         val mainPresenter = MainPresenter(
                 mock { on { shortRouteDataCount() }.then { 0 } },
@@ -232,7 +232,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onClickSignOut_shouldSignOutAndStartLoginActivityIfTrackingNotInProgress() {
+    fun onClickSignOut_whenTrackingNotInProgress_shouldSignOutAndStartLoginActivity() {
 
         mainPresenter.onClickSignOut()
 
@@ -243,7 +243,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onClickSignOut_shouldShowExitWarningDialogIfTrackingInProgress() {
+    fun onClickSignOut_whenTrackingInProgress_shouldShowExitWarningDialog() {
 
         val mainPresenter = MainPresenter(
                 routesManager,
@@ -280,7 +280,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onExitRequest_shouldHideDrawerIfOpened() {
+    fun onExitRequest_whenDrawerOpened_shouldHideDrawer() {
         val mainView = mock<MainView> {
             on { isDrawerLayoutOpened }.then { true }
         }
@@ -299,7 +299,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onExitRequest_shouldFinishActivityIfTrackingNotInProgress() {
+    fun onExitRequest_whenTrackingNotInProgress_shouldFinishActivity() {
 
         mainPresenter.onExitRequest()
 
@@ -308,7 +308,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onExitRequest_shouldShowExitWarningDialogIfTrackingInProgress() {
+    fun onExitRequest_whenTrackingInProgress_shouldShowExitWarningDialog() {
         val mainPresenter = MainPresenter(
                 routesManager,
                 authInteractor,
@@ -354,7 +354,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onDocumentDeleted_shouldShowNoDataTextIfThereIsNoData() {
+    fun onDocumentDeleted_whenThereIsNoData_shouldShowNoDataText() {
         val mainPresenter = MainPresenter(
                 mock { on { shortRouteDataCount() }.then { 0 } },
                 authInteractor,

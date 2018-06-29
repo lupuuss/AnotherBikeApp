@@ -90,7 +90,7 @@ class MainSummaryPresenterTest {
     }
 
     @Test
-    fun notifyOnDestroy_shouldClearTempRouteIfFinishing() {
+    fun notifyOnDestroy_whenFinishing_shouldClearTempRoute() {
 
         val routesManager: RoutesManager = mock {  }
         val summaryPresenter = MainSummaryPresenter(mock { }, routesManager, mock {  }, mock {  })

@@ -65,7 +65,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onClickLockMap_shouldChangeTrackingViewIfRouteEnable() {
+    fun onClickLockMap_whenRouteEnable_shouldChangeTrackingView() {
 
         val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { list } })
 
@@ -79,7 +79,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onClickLockMap_shouldChangeTrackingViewIfRouteNotEnable() {
+    fun onClickLockMap_whenRouteNotEnable_shouldChangeTrackingView() {
 
         val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { emptyList<LatLng>() } })
 
@@ -92,7 +92,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onClickFinishTracking_shouldFinishActivityIfServiceIsNotInProgress() {
+    fun onClickFinishTracking_whenServiceIsNotInProgress_shouldFinishActivity() {
 
         val serviceInteractor: TrackingServiceInteractor = mock { on { isServiceInProgress() }.then { false }}
         val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
@@ -104,7 +104,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onClickFinishTracking_shouldShowWarningDialogAndFinishActivity() {
+    fun onClickFinishTracking_whenServiceInProgress_shouldShowWarningDialogAndFinishActivity() {
 
         val serviceInteractor: TrackingServiceInteractor = mock { on { isServiceInProgress() }.then { true }}
         val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
@@ -117,7 +117,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onNewLocation_shouldUpdateTrackingViewIfTrackLineReady() {
+    fun onNewLocation_whenTrackLineReady_shouldUpdateTrackingView() {
 
         // Track line is not ready
         val trackView: TrackingView = mock { on { isTrackLineReady() }.then { true } }
@@ -130,7 +130,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onNewLocation_shouldMoveTrackingViewCameraOnlyIfTrackLineIsReadyAndMapIsLocked() {
+    fun onNewLocation_whenTrackLineIsReadyAndMapIsLocked_shouldMoveTrackingViewCameraOnly() {
 
         val trackView: TrackingView = mock { on { isTrackLineReady() }.then { true } }
         val trackingPresenter = TrackingPresenter(trackView, mock { })
@@ -150,7 +150,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onLocationAvailability_shouldShowInfoIfLocationIsNotAvailable() {
+    fun onLocationAvailability_whenLocationIsNotAvailable_shouldShowInfo() {
 
         val trackingPresenter =
                 TrackingPresenter(trackingView, mock { on { isServiceInProgress() }.then { true } })
@@ -172,7 +172,7 @@ class TrackingPresenterTest {
     }
 
     @Test
-    fun onLocationAvailability_shouldShowMessageAndInfoIfLocationIsNotAvailableAndServiceIsNotInProgress() {
+    fun onLocationAvailability_whenLocationIsNotAvailableAndServiceIsNotInProgress_shouldShowMessageAndInfo() {
 
         val serviceInteractor: TrackingServiceInteractor = mock {  on { isServiceInProgress() }.then { false } }
         val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)

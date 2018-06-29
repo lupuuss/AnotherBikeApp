@@ -21,7 +21,7 @@ class CreateAccountPresenterTest {
     }
 
     @Test
-    fun onClickCreateNewAccount_shouldPostMessageBlankIfAnyFieldIsBlank() {
+    fun onClickCreateNewAccount_whenAnyFieldIsBlank_shouldPostMessageBlank() {
 
         createAccountPresenter.onClickCreateNewAccount("", "", "")
 
@@ -29,7 +29,7 @@ class CreateAccountPresenterTest {
     }
 
     @Test
-    fun onClickCreateNewAccount_shouldPostMessageNoInternetConnectionIfNoInternet() {
+    fun onClickCreateNewAccount_whenNoInternet_shouldPostMessageNoInternetConnection() {
 
         val createView = mock<CreateAccountView> { on { isOnline() }.then { false } }
         val createAccountPresenter = CreateAccountPresenter(
@@ -44,7 +44,7 @@ class CreateAccountPresenterTest {
     }
 
     @Test
-    fun onClickCreateNewAccount_shouldInitSignInAndDisableUiIfEverythingIsOk() {
+    fun onClickCreateNewAccount_whenEverythingIsOk_shouldInitSignInAndDisableUi() {
 
         createAccountPresenter
                 .onClickCreateNewAccount("correct@email.com", "moreThan6Chars","not blank")

@@ -30,7 +30,7 @@ class AfterTrackingSummaryPresenterTest {
     }
 
     @Test
-    fun notifyOnVieReady_shouldShowRouteDataIfAvailable() {
+    fun notifyOnVieReady_whenAvailable_shouldShowRouteData() {
 
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
@@ -70,7 +70,7 @@ class AfterTrackingSummaryPresenterTest {
     }
 
     @Test
-    fun onSaveClick_shouldApplyDefaultRouteNameIfNameNotAvailable() {
+    fun onSaveClick_whenNameNotAvailable_shouldApplyDefaultRouteName() {
 
         val extendedRouteData = ExtendedRouteData.Instance(
               null,
@@ -109,7 +109,7 @@ class AfterTrackingSummaryPresenterTest {
     }
 
     @Test
-    fun onSaveClick_shouldNotApplyDefaultRouteNameIfNameAvailable() {
+    fun onSaveClick_whenNameAvailable_shouldNotApplyDefaultRouteName() {
 
         val extendedRouteData = ExtendedRouteData.Instance(
                 null,

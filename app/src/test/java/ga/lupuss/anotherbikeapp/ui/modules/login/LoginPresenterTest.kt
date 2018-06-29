@@ -16,7 +16,7 @@ class LoginPresenterTest {
 
 
     @Test
-    fun onClickSignIn_shouldPostMessageBlankIfAnyFieldIsBlank() {
+    fun onClickSignIn_whenAnyFieldIsBlank_shouldPostMessageBlank() {
 
         loginPresenter.onClickSignIn("", "notblank")
 
@@ -24,7 +24,7 @@ class LoginPresenterTest {
     }
 
     @Test
-    fun onClickSignIn_shouldPostMessageNoInternetConnectionIfNoInternet() {
+    fun onClickSignIn_whenNoInternet_shouldPostMessageNoInternetConnection() {
 
         val loginView = mock<LoginView> { on { isOnline() }.then { false } }
         val loginPresenter = LoginPresenter(
@@ -38,7 +38,7 @@ class LoginPresenterTest {
     }
 
     @Test
-    fun onClickSignIn_shouldInitSignInIfEverythingIsOk() {
+    fun onClickSignInn_whenEverythingIsOk_shouldInitSignI() {
 
         loginPresenter.onClickSignIn("not blank", "not blank")
 

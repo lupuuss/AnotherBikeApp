@@ -33,7 +33,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun init_shouldBindServiceIfRestoringState() {
+    fun init_whenRestoringState_shouldBindService() {
 
         trackingServiceGovernor.init(
                 parentActivity,
@@ -81,7 +81,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun destroy_shouldStopTrackingIfFinishingAndIfServiceIsActive() {
+    fun destroy_whenFinishingAndServiceIsActive_shouldStopTracking() {
 
         trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.onServiceConnected(mock {  }, mock<TrackingService.ServiceBinder> {  })
@@ -95,7 +95,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun destroy_shouldUnbindServiceIfNotFinishingAndIfServiceIsActive() {
+    fun destroy_whenNotFinishingAndServiceIsActive_shouldUnbindService() {
 
         trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.onServiceConnected(mock {  }, mock<TrackingService.ServiceBinder> {  })
@@ -106,7 +106,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun startTracking_shouldInvokeCallbackWithoutInitializingTrackingIfBinderIsNotNull() {
+    fun startTracking_whenBinderIsNotNull_shouldInvokeCallbackWithoutInitializingTracking() {
 
         var callbackTriggered = 0
         val serviceBinder = mock<TrackingService.ServiceBinder> {  }
@@ -128,7 +128,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun startTracking_shouldInitTrackingIfPermissionIsOk() {
+    fun startTracking_whenPermissionIsOk_shouldInitTracking() {
 
         trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.startTracking(mock {  })
@@ -140,7 +140,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun startTracking_shouldInitTrackingIfUserAcceptedPermission() {
+    fun startTracking_shouldInitTracking_whenUserAcceptedPermission() {
 
         val parentActivity = mock<BaseActivity> {
             on { checkLocationPermission() }.then { false }
@@ -157,7 +157,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun startTracking_shouldTriggerCallbackIfUserRejectPermission() {
+    fun startTracking_shouldTriggerCallback_whenUserRejectPermission() {
 
         val parentActivity = mock<BaseActivity> {
             on { checkLocationPermission() }.then { false }
@@ -206,7 +206,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun onServiceConnected_shouldInitFieldsIfServiceIsNotActive() {
+    fun onServiceConnected_shouldInitFields_whenServiceIsNotActive() {
 
         var callbackTriggered = 0
 
