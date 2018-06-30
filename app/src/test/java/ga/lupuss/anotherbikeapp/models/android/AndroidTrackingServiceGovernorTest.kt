@@ -197,9 +197,9 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun onStatsUpdate_shouldNotifyNotification() {
+    fun onStatsUpdate_whenServiceIsActive_shouldNotifyNotification() {
 
-        trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
+        trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveTrue)
         trackingServiceGovernor.onStatsUpdate(mock {  })
 
         verify(notificationManager, times(1)).notify(eq(TrackingNotification.ID), anyOrNull())

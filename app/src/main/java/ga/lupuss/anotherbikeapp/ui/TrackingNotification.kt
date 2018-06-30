@@ -7,10 +7,14 @@ import ga.lupuss.anotherbikeapp.R
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
+import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainPresenter
 
 class TrackingNotification {
 
@@ -33,6 +37,18 @@ class TrackingNotification {
             val notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    fun generatePendingIntent(intent: Intent, parentActivity: BaseActivity): PendingIntent {
+
+        intent.putExtra(MainActivity.REQUEST_CODE_KEY, MainPresenter.Request.TRACKING_NOTIFICATION_REQUEST)
+
+        return PendingIntent.getActivity(
+                parentActivity,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
     fun build(context: Context,
