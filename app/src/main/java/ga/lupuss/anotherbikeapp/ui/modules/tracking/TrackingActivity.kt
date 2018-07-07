@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 
 class TrackingActivity : BaseActivity(),
-        OnMapReadyCallback, TrackingView {
+        OnMapReadyCallback, TrackingView, ViewTreeObserver.OnGlobalLayoutListener {
 
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
@@ -125,15 +125,15 @@ class TrackingActivity : BaseActivity(),
 
         infoContainerVisibility = View.INVISIBLE
 
-        statsContainer.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        statsContainer.viewTreeObserver.addOnGlobalLayoutListener(this)
+    }
 
-            override fun onGlobalLayout() {
+    override fun onGlobalLayout() {
 
-                setInfoContainerExpandState(isInfoContainerExpand, false)
-                onMapAnLayoutReady.layoutReady()
-                statsContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
-            }
-        })
+        setInfoContainerExpandState(isInfoContainerExpand, false)
+        onMapAnLayoutReady.layoutReady()
+
+        statsContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 
     private fun getIBinderFromIntent(): TrackingService.ServiceBinder {
