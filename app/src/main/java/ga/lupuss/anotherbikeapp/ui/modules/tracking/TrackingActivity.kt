@@ -31,8 +31,12 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class TrackingActivity : BaseActivity(),
-        OnMapReadyCallback, TrackingView, ViewTreeObserver.OnGlobalLayoutListener {
+class TrackingActivity
+    : BaseActivity(),
+        OnMapReadyCallback,
+        TrackingView,
+        ViewTreeObserver.OnGlobalLayoutListener,
+        OnMapAndLayoutReady.Listener {
 
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
@@ -90,12 +94,7 @@ class TrackingActivity : BaseActivity(),
             field = value
         }
 
-    private val onMapAnLayoutReady = OnMapAndLayoutReady {
-
-        infoContainerVisibility = View.VISIBLE
-        adjustCameraToInfoContainer()
-        setOnTouchInfoContainerExpandButton()
-    }
+    private val onMapAnLayoutReady = OnMapAndLayoutReady(this)
 
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,6 +177,13 @@ class TrackingActivity : BaseActivity(),
         theme.resolveAttribute(R.attr.googleMapStyleJson, typedValue, true)
 
         return typedValue.string as String
+    }
+
+    override fun onMapAndLayoutReady() {
+
+        infoContainerVisibility = View.VISIBLE
+        adjustCameraToInfoContainer()
+        setOnTouchInfoContainerExpandButton()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

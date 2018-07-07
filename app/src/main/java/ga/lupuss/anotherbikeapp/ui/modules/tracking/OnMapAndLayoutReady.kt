@@ -1,6 +1,11 @@
 package ga.lupuss.anotherbikeapp.ui.modules.tracking
 
-class OnMapAndLayoutReady(private val onMapAndLayoutReady: () -> Unit) {
+class OnMapAndLayoutReady(private val onMapAndLayoutReady: Listener) {
+
+    interface Listener {
+
+        fun onMapAndLayoutReady()
+    }
 
     private var isMapReady = false
     private var isLayoutReady = false
@@ -17,7 +22,7 @@ class OnMapAndLayoutReady(private val onMapAndLayoutReady: () -> Unit) {
 
     private fun checkChanges() {
         if (isMapReady && isLayoutReady) {
-            onMapAndLayoutReady.invoke()
+            onMapAndLayoutReady.onMapAndLayoutReady()
         }
     }
 
