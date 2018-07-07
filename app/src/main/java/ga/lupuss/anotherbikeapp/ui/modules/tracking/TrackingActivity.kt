@@ -102,11 +102,9 @@ class TrackingActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //Dagger MUST be first
-        DaggerTrackingComponent
-                .builder()
-                .anotherBikeAppComponent((this.application as AnotherBikeApp).anotherBikeAppComponent)
-                .trackingModule(TrackingModule(this, getIBinderFromIntent() as TrackingServiceInteractor))
-                .build()
+        AnotherBikeApp
+                .get(this.application)
+                .trackingComponent(this, getIBinderFromIntent())
                 .inject(this)
         
         super.onCreate(savedInstanceState)

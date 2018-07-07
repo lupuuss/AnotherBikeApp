@@ -9,13 +9,18 @@ import com.squareup.leakcanary.LeakCanary
 import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
 import com.squareup.leakcanary.RefWatcher
+import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingView
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AnotherBikeApp : Application() {
+open class AnotherBikeApp : Application() {
 
     lateinit var anotherBikeAppComponent: AnotherBikeAppComponent
 
@@ -42,13 +47,16 @@ class AnotherBikeApp : Application() {
         packageManager.getUserBadgedLabel("", android.os.Process.myUserHandle())
         Timber.plant(Timber.DebugTree())
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
+        if (!isInUnitTests()) {
 
-        refWatcher = LeakCanary.install(this)
+            if (LeakCanary.isInAnalyzerProcess(this)) {
+                // This process is dedicated to LeakCanary for heap analysis.
+                // You should not init your app in this process.
+                return
+            }
+
+            refWatcher = LeakCanary.install(this)
+        }
 
         anotherBikeAppComponent = DaggerAnotherBikeAppComponent
                 .builder()
@@ -58,5 +66,16 @@ class AnotherBikeApp : Application() {
         anotherBikeAppComponent
                 .providesTrackingNotification()
                 .initNotificationChannelOreo(this)
+    }
+
+    protected open fun isInUnitTests() = false
+
+    open fun trackingComponent(view: TrackingView, trackingServiceInteractor: TrackingServiceInteractor): TrackingComponent {
+
+        return DaggerTrackingComponent
+                .builder()
+                .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .trackingModule(TrackingModule(view, trackingServiceInteractor))
+                .build()
     }
 }
