@@ -60,7 +60,7 @@ class TrackingPresenterTest {
 
     private fun verifyTrackingViewChanges(serviceInteractor: TrackingServiceInteractor) {
 
-        verify(trackingView, times(1)).mapLockButtonState = trackingView.mapLockButtonState
+        verify(trackingView, times(1)).isMapButtonInLockState = trackingView.isMapButtonInLockState
         verify(trackingView, times(1)).isInfoWaitForLocationVisible = !serviceInteractor.lastLocationAvailability
     }
 
@@ -70,10 +70,10 @@ class TrackingPresenterTest {
         val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { list } })
 
         trackingPresenter.onClickLockMap()
-        verify(trackingView, times(1)).mapLockButtonState = false
+        verify(trackingView, times(1)).isMapButtonInLockState = false
 
         trackingPresenter.onClickLockMap()
-        verify(trackingView, times(1)).mapLockButtonState = true
+        verify(trackingView, times(1)).isMapButtonInLockState = true
         verify(trackingView, times(1)).moveMapCamera(list.last())
 
     }
@@ -84,10 +84,10 @@ class TrackingPresenterTest {
         val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { emptyList<LatLng>() } })
 
         trackingPresenter.onClickLockMap()
-        verify(trackingView, times(1)).mapLockButtonState = false
+        verify(trackingView, times(1)).isMapButtonInLockState = false
 
         trackingPresenter.onClickLockMap()
-        verify(trackingView, times(1)).mapLockButtonState = true
+        verify(trackingView, times(1)).isMapButtonInLockState = true
         verify(trackingView, never()).moveMapCamera(any())
     }
 

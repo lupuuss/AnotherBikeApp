@@ -19,7 +19,6 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
-import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
@@ -69,7 +68,7 @@ class TrackingActivity : BaseActivity(),
             field = value
         }
 
-    override var mapLockButtonState: Boolean = true
+    override var isMapButtonInLockState: Boolean = true
         set(value) {
 
             mapLockButton?.let {
@@ -115,7 +114,7 @@ class TrackingActivity : BaseActivity(),
         unfreezeInstanceState(savedInstanceState)
         savedInstanceState?.let {
 
-            mapLockButtonState = (it[LOCK_BUTTON_STATE_KEY] as Boolean?) ?: mapLockButtonState
+            isMapButtonInLockState = (it[LOCK_BUTTON_STATE_KEY] as Boolean?) ?: isMapButtonInLockState
         }
 
         //init google map
@@ -184,7 +183,7 @@ class TrackingActivity : BaseActivity(),
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         freezeInstanceState(outState!!)
-        outState.putBoolean(LOCK_BUTTON_STATE_KEY, mapLockButtonState)
+        outState.putBoolean(LOCK_BUTTON_STATE_KEY, isMapButtonInLockState)
     }
 
     override fun onDestroy() {

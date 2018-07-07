@@ -21,7 +21,7 @@ class TrackingPresenter @Inject constructor(
     private var followMyLocation: Boolean = true
         set(value) {
 
-            view.mapLockButtonState = value
+            view.isMapButtonInLockState = value
             field = value
         }
 
@@ -45,7 +45,7 @@ class TrackingPresenter @Inject constructor(
             view.updateStats(it)
         }
 
-        followMyLocation = view.mapLockButtonState
+        followMyLocation = view.isMapButtonInLockState
 
         isLocationAvailable = serviceInteractor.lastLocationAvailability
 
