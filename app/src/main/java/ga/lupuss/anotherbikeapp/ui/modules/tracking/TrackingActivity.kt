@@ -150,8 +150,9 @@ class TrackingActivity
 
         super.onMapReady(googleMap)
 
-        trackLineOptions =
-                PolylineOptions().color(theme.getColorForAttr(R.attr.trackLineColor)).width(15F)
+        trackLineOptions = PolylineOptions()
+                .color(theme.getColorForAttr(R.attr.trackLineColor))
+                .width(15F)
 
         defaultMarkerOptions = MarkerOptions().icon(
                 ViewExtensions.getDefaultMarkerIconForColor(theme.getColorForAttr(R.attr.markersColor))
