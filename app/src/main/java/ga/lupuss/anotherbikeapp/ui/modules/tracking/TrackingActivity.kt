@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import com.google.android.gms.maps.*
@@ -18,7 +17,7 @@ import com.tinsuke.icekick.extension.unfreezeInstanceState
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.base.BaseMapActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
@@ -32,8 +31,7 @@ import javax.inject.Inject
 
 
 class TrackingActivity
-    : BaseActivity(),
-        OnMapReadyCallback,
+    : BaseMapActivity(),
         TrackingView,
         ViewTreeObserver.OnGlobalLayoutListener,
         OnMapAndLayoutReady.Listener {
@@ -48,7 +46,6 @@ class TrackingActivity
     )
 
     private val defaultMapZoom = 16.5F
-    private lateinit var map: GoogleMap
 
     private var trackLine: Polyline? = null
     private lateinit var trackLineOptions: PolylineOptions
@@ -149,7 +146,9 @@ class TrackingActivity
     }
 
     @SuppressLint("MissingPermission")
-    override fun onMapReady(googleMap: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap?) {
+
+        super.onMapReady(googleMap)
 
         trackLineOptions =
                 PolylineOptions().color(theme.getColorForAttr(R.attr.trackLineColor)).width(15F)
@@ -158,25 +157,14 @@ class TrackingActivity
                 ViewExtensions.getDefaultMarkerIconForColor(theme.getColorForAttr(R.attr.markersColor))
         )
 
-        map = googleMap
-
         onMapAnLayoutReady.mapReady()
 
         map.apply {
             uiSettings.isMyLocationButtonEnabled = false
             isMyLocationEnabled = true
-            setMapStyle(MapStyleOptions(getGoogleMapStyleFromTheme()))
         }
 
         trackingPresenter.notifyOnViewReady()
-    }
-
-    private fun getGoogleMapStyleFromTheme(): String {
-
-        val typedValue = TypedValue()
-        theme.resolveAttribute(R.attr.googleMapStyleJson, typedValue, true)
-
-        return typedValue.string as String
     }
 
     override fun onMapAndLayoutReady() {

@@ -11,11 +11,13 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.base.BaseMapActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
@@ -25,12 +27,10 @@ import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
 
-class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
+class SummaryActivity : BaseMapActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
 
     @Inject
     lateinit var summaryPresenter: MainSummaryPresenter
-
-    lateinit var map: GoogleMap
 
     private lateinit var mode: SummaryPresenter.Mode
     private lateinit var rejectItem: MenuItem
@@ -110,9 +110,9 @@ class SummaryActivity : BaseActivity(), SummaryView, OnMapReadyCallback, TextWat
         (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(this)
     }
 
-    override fun onMapReady(map: GoogleMap?) {
+    override fun onMapReady(googleMap: GoogleMap?) {
 
-        this.map = map!!
+        super.onMapReady(googleMap)
         summaryPresenter.notifyOnViewReady()
     }
 
