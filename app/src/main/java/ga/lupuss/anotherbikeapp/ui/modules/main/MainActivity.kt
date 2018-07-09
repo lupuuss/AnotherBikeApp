@@ -146,7 +146,6 @@ class MainActivity
         mainPresenter.notifyOnViewReady()
     }
 
-
     override fun onSaveInstanceState(outState: Bundle?) {
 
         super.onSaveInstanceState(outState)
