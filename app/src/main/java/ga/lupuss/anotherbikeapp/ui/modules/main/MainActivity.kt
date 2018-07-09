@@ -128,7 +128,7 @@ class MainActivity
         recyclerViewAdapter.setOnItemClickListener(this)
 
         routesHistoryRecycler.apply {
-            setItemViewCacheSize(3)
+            setItemViewCacheSize(10)
             isNestedScrollingEnabled = false
             this.adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
