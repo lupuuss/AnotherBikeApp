@@ -71,7 +71,6 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
         if (
                 lastLocation != null
                 && location.distanceTo(lastLocation) != 0F
-                && location.accuracy < 100
                 || lastLocation == null
         ) {
 
@@ -84,12 +83,6 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
             } else {
 
                 routeData.points.add(LatLng(location.latitude, location.longitude))
-            }
-        } else {
-
-            when {
-                lastLocation == null -> Timber.d("Last location is null!")
-                location.accuracy > 100 -> Timber.d("Accuracy is too low! -> ${location.accuracy} m")
             }
 
         }
