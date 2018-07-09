@@ -12,10 +12,15 @@ import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountComponent
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountModule
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountView
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.DaggerCreateAccountComponent
+import ga.lupuss.anotherbikeapp.ui.modules.login.DaggerLoginComponent
+import ga.lupuss.anotherbikeapp.ui.modules.login.LoginComponent
+import ga.lupuss.anotherbikeapp.ui.modules.login.LoginModule
+import ga.lupuss.anotherbikeapp.ui.modules.login.LoginView
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingView
+import kotlin.math.log
 
 
 open class AnotherBikeApp : Application() {
@@ -83,6 +88,15 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .anotherBikeAppComponent(this.anotherBikeAppComponent)
                 .createAccountModule(CreateAccountModule(createAccountView))
+                .build()
+    }
+
+    open fun loginComponent(loginView: LoginView): LoginComponent {
+
+        return DaggerLoginComponent
+                .builder()
+                .loginModule(LoginModule(loginView))
+                .anotherBikeAppComponent(this.anotherBikeAppComponent)
                 .build()
     }
 }

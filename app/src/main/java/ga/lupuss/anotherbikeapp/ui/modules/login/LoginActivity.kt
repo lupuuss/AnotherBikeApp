@@ -68,11 +68,8 @@ class LoginActivity : BaseActivity(), LoginView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Dagger MUST be first
-        DaggerLoginComponent
-                .builder()
-                .loginModule(LoginModule(this))
-                .anotherBikeAppComponent(getAnotherBikeApp().anotherBikeAppComponent)
-                .build()
+        AnotherBikeApp.get(this.application)
+                .loginComponent(this)
                 .inject(this)
 
         super.onCreate(savedInstanceState)
