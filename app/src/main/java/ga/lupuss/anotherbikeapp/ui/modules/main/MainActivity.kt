@@ -252,7 +252,7 @@ class MainActivity
         routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
     }
 
-    override fun setDrawerHeaderInfos(displayName: String?, email: String?) {
+    override fun setDrawerHeaderInfo(displayName: String?, email: String?) {
 
         drawerListView.addHeaderView(
                 layoutInflater.inflate(

@@ -6,13 +6,13 @@ apply plugin: 'io.fabric'
 
 android {
 
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "ga.lupuss.anotherbikeapp"
         minSdkVersion 22
         //noinspection OldTargetApi
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -40,7 +40,7 @@ android {
 dependencies {
 
     ext {
-        support_library_version = '26.1.0'
+        support_library_version = '27.1.1'
         google_play_services_version = '15.0.0'
     }
 
@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.nhaarman:mockito-kotlin:1.5.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
 
-    // leakcanary
+    // leakCanary
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
@@ -80,9 +80,10 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${support_library_version}"
     implementation "com.android.support:support-v4:${support_library_version}"
     implementation "com.android.support:appcompat-v7:${support_library_version}"
+    implementation "com.android.support:design:${support_library_version}"
     implementation "com.android.support:gridlayout-v7:${support_library_version}"
     implementation "com.android.support:preference-v7:${support_library_version}"
-    implementation "com.android.support.constraint:constraint-layout:1.1.1"
+    implementation "com.android.support.constraint:constraint-layout:1.1.2"
 
     // dagger
     implementation 'com.google.dagger:dagger:2.15'

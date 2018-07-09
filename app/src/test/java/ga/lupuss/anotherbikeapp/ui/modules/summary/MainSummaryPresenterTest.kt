@@ -44,7 +44,7 @@ class MainSummaryPresenterTest {
                 mock {  },
                 mock {  })
 
-        val string = "referencejson"
+        val string = "referenceJson"
         summaryPresenter.initMode(SummaryPresenter.Mode.OVERVIEW, string)
 
         obj = summaryPresenter::class

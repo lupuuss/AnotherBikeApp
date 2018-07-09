@@ -18,8 +18,8 @@ class AndroidStringsResolverTest {
 
     companion object {
 
-        lateinit var context: Context
-        lateinit var stringsResolver: AndroidStringsResolver
+        private lateinit var context: Context
+        private lateinit var stringsResolver: AndroidStringsResolver
 
         @BeforeClass
         @JvmStatic

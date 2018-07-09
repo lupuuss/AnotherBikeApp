@@ -54,7 +54,6 @@
     <string name="login">Sign in</string>
     <string name="email" translatable="false">Email</string>
     <string name="password">Password</string>
-    <string name="noAccount">Use without account</string>
     <string name="createNewAccount">Create new account</string>
     <string name="user">User</string>
     <string name="newAccount">New account</string>
@@ -68,7 +67,7 @@
     <string name="userExists">User with that email already exists!</string>
     <string name="signOut">Sign out</string>
     <string name="settings">Settings</string>
-    <string name="dataLostWarning">Tracking is in progess. If you exit app, data is lost. Are you sure you want exit?</string>
+    <string name="dataLostWarning">Tracking is in progress. If you exit app, data is lost. Are you sure you want exit?</string>
     <string name="exit">Exit</string>
     <string name="prefThemesKey" translatable="false">keyThemes</string>
     <string name="prefThemesTitle">Theme</string>

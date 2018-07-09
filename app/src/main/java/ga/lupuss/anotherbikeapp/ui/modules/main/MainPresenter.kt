@@ -38,7 +38,7 @@ class MainPresenter @Inject constructor(private val routesManager: RoutesManager
 
         view.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
         view.isNoDataTextVisible = false
-        view.setDrawerHeaderInfos(authInteractor.getDisplayName(), authInteractor.getEmail())
+        view.setDrawerHeaderInfo(authInteractor.getDisplayName(), authInteractor.getEmail())
 
         preferencesInteractor.addOnUnitChangedListener(this, this)
         trackingServiceGovernor.addOnServiceActivityChangesListener(this, this)

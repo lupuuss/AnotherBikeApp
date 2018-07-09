@@ -22,10 +22,9 @@ class StatsFragment : Fragment() {
     private var layout: LinearLayout? = null
     private lateinit var stringsResolver: StringsResolver
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val mainView = inflater!!.inflate(R.layout.fragment_stats, container, false)
+        val mainView = inflater.inflate(R.layout.fragment_stats, container, false)
                 as ScrollView
         layout = mainView.findViewById(R.id.statsContainer)
 
@@ -75,7 +74,7 @@ class StatsFragment : Fragment() {
 
         super.onDestroy()
         layout = null
-        val refWatcher = AnotherBikeApp.getRefWatcher(activity)
+        val refWatcher = AnotherBikeApp.getRefWatcher(this.activity!!.applicationContext)
         refWatcher.watch(this)
     }
 }

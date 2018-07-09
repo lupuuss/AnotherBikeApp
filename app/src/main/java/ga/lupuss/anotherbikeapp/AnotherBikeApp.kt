@@ -2,22 +2,16 @@ package ga.lupuss.anotherbikeapp
 
 import android.app.Application
 import android.content.Context
-import android.os.Environment
-import android.util.Log
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
 import com.squareup.leakcanary.RefWatcher
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
-import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingView
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 open class AnotherBikeApp : Application() {

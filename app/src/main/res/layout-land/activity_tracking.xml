@@ -87,7 +87,7 @@
         android:id="@+id/infoWaitForLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/wait_for_loaction_landscape_background"
+        android:background="@drawable/wait_for_location_landscape_background"
         android:elevation="2dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

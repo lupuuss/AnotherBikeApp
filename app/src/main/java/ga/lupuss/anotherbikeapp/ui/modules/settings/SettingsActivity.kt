@@ -26,6 +26,6 @@ class SettingsActivity : BaseActivity() {
     companion object {
 
         @JvmStatic
-        fun newIntent(conext: Context) = Intent(conext, SettingsActivity::class.java)
+        fun newIntent(context: Context) = Intent(context, SettingsActivity::class.java)
     }
 }

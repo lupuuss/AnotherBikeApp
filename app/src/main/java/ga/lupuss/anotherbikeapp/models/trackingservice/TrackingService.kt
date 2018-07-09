@@ -105,8 +105,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
 
     inner class ServiceBinder : Binder(), TrackingServiceInteractor {
 
-        var isNotificationInitialized = false
-            private set
+        private var isNotificationInitialized = false
 
         override val lastLocationAvailability get() = this@TrackingService.lastLocationAvailability
 

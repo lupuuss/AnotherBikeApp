@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.main
 
-import com.google.gson.Gson
 import dagger.Component
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
 import javax.inject.Scope

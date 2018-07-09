@@ -39,7 +39,7 @@ class RoutesHistoryRecyclerViewAdapter(
             speedTextView = findTextView(R.id.speedStat)
             durationTextView = findTextView(R.id.durationStat)
             distanceTextView = findTextView(R.id.distanceStat)
-            whenTextView = findTextView(R.id.`when`)
+            whenTextView = findTextView(R.id.whenText)
             labelTextView = findTextView(R.id.label)
         }
 
@@ -72,10 +72,10 @@ class RoutesHistoryRecyclerViewAdapter(
         listeners.add(onItemClickListener)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val constraintLayout = LayoutInflater
-                .from(parent?.context)
+                .from(parent.context)
                 .inflate(R.layout.saved_route_layout, parent, false)
                 as ConstraintLayout
 

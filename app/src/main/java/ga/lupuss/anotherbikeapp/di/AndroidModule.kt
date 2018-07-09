@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.support.v4.os.ConfigurationCompat
 import dagger.Module
@@ -25,7 +26,7 @@ class AndroidModule(context: Context) {
 
     @Provides
     @AnotherBikeAppScope
-    fun sharedPreferences(context: Context) =
+    fun sharedPreferences(context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
 
     @Provides

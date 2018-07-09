@@ -6,7 +6,7 @@
     </string-array>
 
     <!-- MUST fit AppTheme enum -->
-    <string-array name="themeKeys">
+    <string-array name="themeKeys" translatable="false">
         <item>GREY</item>
         <item>ORANGE</item>
     </string-array>
@@ -18,7 +18,7 @@
     </string-array>
 
     <!-- MUST fit Statistic.Unit enum -->
-    <string-array name="speedUnitKeys">
+    <string-array name="speedUnitKeys" translatable="false">
         <item>KM_H</item>
         <item>M_S</item>
         <item>MPH</item>
@@ -31,7 +31,7 @@
     </string-array>
 
     <!-- MUST fit Statistic.Unit enum -->
-    <string-array name="distanceUnitKeys">
+    <string-array name="distanceUnitKeys" translatable="false">
         <item>KM</item>
         <item>M</item>
         <item>MI</item>

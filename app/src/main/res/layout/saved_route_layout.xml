@@ -20,13 +20,13 @@
         android:maxLines="1"
         android:ellipsize="end"
         tools:ignore="HardcodedText"
-        app:layout_constraintEnd_toStartOf="@id/when"
+        app:layout_constraintEnd_toStartOf="@id/whenText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/when"
+        android:id="@+id/whenText"
         android:text="3 d. temu"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"

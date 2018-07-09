@@ -21,7 +21,7 @@ interface MainView : BaseView {
     fun notifyRecyclerItemInserted(position: Int, size: Int)
 
     val isDrawerLayoutOpened: Boolean
-    fun setDrawerHeaderInfos(displayName: String?, email: String?)
+    fun setDrawerHeaderInfo(displayName: String?, email: String?)
     fun startLoginActivity()
     fun showExitWarningDialog(onYesClick: () -> Unit)
     fun hideDrawer()

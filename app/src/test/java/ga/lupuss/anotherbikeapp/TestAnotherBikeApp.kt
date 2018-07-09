@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp
 
-import android.content.Context
 import com.nhaarman.mockito_kotlin.mock
 import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
@@ -13,11 +12,11 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingView
 
 class TestAnotherBikeApp : AnotherBikeApp() {
 
-    val preferencesInteractor = mock<PreferencesInteractor> {
+    private val preferencesInteractor = mock<PreferencesInteractor> {
         on { appTheme }.then { AppTheme.GREY }
     }
 
-    lateinit var stringsResolver: StringsResolver
+    private lateinit var stringsResolver: StringsResolver
 
     override fun onCreate() {
         super.onCreate()

@@ -18,7 +18,7 @@ class LoginPresenterTest {
     @Test
     fun onClickSignIn_whenAnyFieldIsBlank_shouldPostMessageBlank() {
 
-        loginPresenter.onClickSignIn("", "notblank")
+        loginPresenter.onClickSignIn("", "notBlank")
 
         verify(loginView, times(1)).postMessage(Message.EMAIL_OR_PASSWORD_BLANK)
     }

@@ -45,7 +45,7 @@ class MainPresenterTest {
         // preparing view
         verify(mainView, times(1)).setTrackingButtonState(any())
         verify(mainView, times(1)).isNoDataTextVisible = false
-        verify(mainView, times(1)).setDrawerHeaderInfos(null, null)
+        verify(mainView, times(1)).setDrawerHeaderInfo(null, null)
 
         // registering listeners
         verify(preferencesInteractor, times(1))

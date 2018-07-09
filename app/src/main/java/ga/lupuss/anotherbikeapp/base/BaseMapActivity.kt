@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.base
 
-import android.os.Bundle
 import android.util.TypedValue
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

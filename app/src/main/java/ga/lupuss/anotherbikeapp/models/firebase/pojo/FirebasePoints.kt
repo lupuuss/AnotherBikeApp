@@ -7,6 +7,7 @@ import com.google.firebase.firestore.GeoPoint
 class FirebasePoints {
 
     var points: List<GeoPoint>? = null
+    @Suppress("unused")
     var route: DocumentReference? = null
     fun pointsAsLatLngL(): MutableList<LatLng>? {
 

@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.view.GestureDetector
@@ -102,6 +103,7 @@ class StatsContainerOnTouchListener(context: Context,
 
     })
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(p0: View?, motionEvent: MotionEvent): Boolean {
 
         val result = gestureDetector.onTouchEvent(motionEvent)
