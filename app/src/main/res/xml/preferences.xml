@@ -8,6 +8,13 @@
         android:entryValues="@array/themeKeys"
         android:defaultValue="GREY"/>
 
+    <!--suppress AndroidElementNotAllowed -->
+    <SwitchPreferenceCompat
+        android:key="@string/prefIsMapThemeEnableKey"
+        android:title="@string/prefIsMapThemeEnableTitle"
+        android:summary="@string/prefIsMapThemeEnableSummary"
+        android:defaultValue="true"/>
+
     <ListPreference
         android:key="@string/prefUnitSpeedKey"
         android:title="@string/prefUnitSpeedTitle"

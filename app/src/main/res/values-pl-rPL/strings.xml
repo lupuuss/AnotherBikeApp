@@ -81,4 +81,6 @@
     <string name="invalidCredentialsCreating">Niepoprawny format adresu email!</string>
     <string name="passwordIsTooWeak">Hasło musi mieć co najmniej 6 znaków!</string>
     <string name="messageUserNotExists">Użytkownik z tym emailem nie istnieje!</string>
+    <string name="prefIsMapThemeEnableTitle">Niestandardowy motyw mapy</string>
+    <string name="prefIsMapThemeEnableSummary">Zezwalaj na niestandardowy motyw mapy</string>
 </resources>

@@ -2,7 +2,6 @@ package ga.lupuss.anotherbikeapp.models.base
 
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import timber.log.Timber
 
 abstract class PreferencesInteractor {
 
@@ -14,12 +13,18 @@ abstract class PreferencesInteractor {
         fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit)
     }
 
+    interface OnMapThemeEnableListener {
+        fun onMapThemeEnable(isMapThemeEnable: Boolean)
+    }
+
     protected val themeListeners = mutableMapOf<Any, PreferencesInteractor.OnThemeChangedListener>()
     protected val unitListeners = mutableMapOf<Any, PreferencesInteractor.OnUnitChangedListener>()
+    protected val mapThemeListeners = mutableMapOf<Any, PreferencesInteractor.OnMapThemeEnableListener>()
 
     abstract var appTheme: AppTheme
     abstract var speedUnit: Statistic.Unit
     abstract var distanceUnit: Statistic.Unit
+    abstract var isMapThemeEnable: Boolean
 
     fun addOnThemeChangedListener(owner: Any,
                                   onThemeChangedListener: PreferencesInteractor.OnThemeChangedListener) {
@@ -41,5 +46,15 @@ abstract class PreferencesInteractor {
     fun removeOnUnitChangedListener(owner: Any) {
 
         unitListeners.remove(owner)
+    }
+
+    fun addOnMapThemeEnableListener(owner: Any, onMapThemeEnableListener: OnMapThemeEnableListener) {
+
+        mapThemeListeners[owner] = onMapThemeEnableListener
+    }
+
+    fun removeOnMapThemeEnableListener(owner: Any) {
+
+        mapThemeListeners.remove(owner)
     }
 }

@@ -13,6 +13,7 @@ class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferen
     private val themeKey = context.getString(R.string.prefThemesKey)
     private val speedUnitKey = context.getString(R.string.prefUnitSpeedKey)
     private val distanceUnitKey = context.getString(R.string.prefUnitDistanceKey)
+    private val isMapThemeEnableKey = context.getString(R.string.prefIsMapThemeEnableKey)
 
     private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
 
@@ -21,6 +22,7 @@ class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferen
             themeKey -> themeListeners.forEach { it.value.onThemeChanged(appTheme) }
             speedUnitKey -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
             distanceUnitKey -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
+            isMapThemeEnableKey -> mapThemeListeners.forEach { it.value.onMapThemeEnable(isMapThemeEnable) }
         }
 
     }
@@ -36,8 +38,18 @@ class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferen
                 .apply()
     }
 
+    private fun putPref(key: String, value: Boolean) {
+        sharedPreferences
+                .edit()
+                .putBoolean(key, value)
+                .apply()
+    }
+
     private fun getPref(key: String, defaultValue: String) =
             sharedPreferences.getString(key, defaultValue)
+
+    private fun getPref(key: String, defaultValue: Boolean) =
+            sharedPreferences.getBoolean(key, defaultValue)
 
     override var appTheme: AppTheme
         get() = AppTheme.valueOf(getPref(themeKey, AppTheme.GREY.toString()))
@@ -53,7 +65,11 @@ class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferen
     override var distanceUnit: Statistic.Unit
         get() = Statistic.Unit.valueOf(getPref(distanceUnitKey, Statistic.Unit.KM.toString()))
         set(value) {
-
             putPref(distanceUnitKey, value.toString())
+        }
+    override var isMapThemeEnable: Boolean
+        get() = getPref(isMapThemeEnableKey, true)
+        set(value) {
+            putPref(isMapThemeEnableKey, value)
         }
 }

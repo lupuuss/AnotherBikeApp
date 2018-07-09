@@ -79,6 +79,9 @@
     <string name="prefUnitDistanceKey" translatable="false">unitDistanceKey</string>
     <string name="prefUnitDistanceTitle">Distance unit</string>
     <string name="prefUnitDistanceSummary">Change distance unit</string>
+    <string name="prefIsMapThemeEnableKey" translatable="false">isMapThemeEnable</string>
+    <string name="prefIsMapThemeEnableTitle">Custom map theme</string>
+    <string name="prefIsMapThemeEnableSummary">Enable custom map theme</string>
     <string name="themeGrey">Grey</string>
     <string name="themeOrange">Orange</string>
     <string name="open">Open</string>
