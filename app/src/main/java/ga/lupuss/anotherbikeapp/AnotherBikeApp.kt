@@ -16,6 +16,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.login.DaggerLoginComponent
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginComponent
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginModule
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginView
+import ga.lupuss.anotherbikeapp.ui.modules.main.DaggerMainComponent
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainComponent
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainModule
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainView
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
@@ -95,8 +99,17 @@ open class AnotherBikeApp : Application() {
 
         return DaggerLoginComponent
                 .builder()
-                .loginModule(LoginModule(loginView))
                 .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .loginModule(LoginModule(loginView))
+                .build()
+    }
+
+    open fun mainComponent(mainView: MainView): MainComponent {
+
+        return DaggerMainComponent
+                .builder()
+                .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .mainModule(MainModule(mainView))
                 .build()
     }
 }

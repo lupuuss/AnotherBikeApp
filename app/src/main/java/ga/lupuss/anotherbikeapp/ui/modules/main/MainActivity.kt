@@ -104,10 +104,8 @@ class MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Dagger MUST be first
-        DaggerMainComponent.builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
-                .mainModule(MainModule(this))
-                .build()
+        AnotherBikeApp.get(this.application)
+                .mainComponent(this)
                 .inject(this)
 
         super.onCreate(savedInstanceState)
