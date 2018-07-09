@@ -15,6 +15,8 @@ abstract class BaseMapActivity : BaseActivity(), OnMapReadyCallback, Preferences
     override fun onMapReady(googleMap: GoogleMap?) {
         this.map = googleMap!!
 
+        map.uiSettings.isZoomControlsEnabled = true
+
         if (preferencesInteractor.isMapThemeEnable) {
 
             map.setMapStyle(MapStyleOptions(getGoogleMapStyleFromTheme()))
