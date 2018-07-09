@@ -13,8 +13,6 @@ import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.email_edit_text.*
-import kotlinx.android.synthetic.main.password_edit_text.*
 import javax.inject.Inject
 
 @Suppress("UNUSED_PARAMETER")
@@ -27,8 +25,8 @@ class LoginActivity : BaseActivity(), LoginView {
         set(value) {
 
             signInButton?.isEnabled = value
-            passwordEditText?.isEnabled = value
-            emailEditText?.isEnabled = value
+            passwordEditInclude?.isEnabled = value
+            emailEditInclude?.isEnabled = value
             createNewAccountButton?.isEnabled = value
             field = value
         }
