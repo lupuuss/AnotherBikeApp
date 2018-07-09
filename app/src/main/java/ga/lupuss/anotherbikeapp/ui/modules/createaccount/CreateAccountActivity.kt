@@ -27,7 +27,6 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
             passwordEditText?.isEnabled = value
             emailEditText?.isEnabled = value
             displayNameEditText?.isEnabled = value
-            createNewAccountButton?.isEnabled = value
             field = value
         }
 
