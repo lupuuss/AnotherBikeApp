@@ -27,15 +27,15 @@ class CreateAccountActivityTest {
     private val mockedPresenter = mock<CreateAccountPresenter> { }
 
     private fun createBundle(isUiEnable: Boolean,
-                             isCreateAccountProgressBarVisable: Boolean,
-                             isCreateAccountButtonVisable: Boolean): Bundle {
+                             isCreateAccountProgressBarVisible: Boolean,
+                             isCreateAccountButtonVisible: Boolean): Bundle {
         val bundle = Bundle()
 
         bundle.putBoolean(CreateAccountActivity.IS_UI_ENABLE_KEY, isUiEnable)
         bundle.putBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_PROGRESSBAR_VISIBLE,
-                isCreateAccountProgressBarVisable)
+                isCreateAccountProgressBarVisible)
         bundle.putBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE,
-                isCreateAccountButtonVisable)
+                isCreateAccountButtonVisible)
 
         return bundle
     }
