@@ -3,8 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.main
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
-import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
+import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 
 @Module
@@ -21,4 +20,12 @@ class MainModule(view: MainView) {
             trackingNotification: TrackingNotification
 
     ): TrackingServiceGovernor = AndroidTrackingServiceGovernor(stringsResolver, trackingNotification)
+
+    @Provides
+    @MainComponentScope
+    fun providesMainPresenter(routesManager: RoutesManager,
+                              authInteractor: AuthInteractor,
+                              preferencesInteractor: PreferencesInteractor
+                              , trackingServiceGovernor: TrackingServiceGovernor): MainPresenter =
+            MainPresenter(routesManager, authInteractor, preferencesInteractor, trackingServiceGovernor, mainView)
 }

@@ -12,11 +12,11 @@ import javax.inject.Inject
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [view].
  */
-class MainPresenter @Inject constructor(private val routesManager: RoutesManager,
-                                        private val authInteractor: AuthInteractor,
-                                        private val preferencesInteractor: PreferencesInteractor,
-                                        private val trackingServiceGovernor: TrackingServiceGovernor,
-                                        mainView: MainView)
+class MainPresenter(private val routesManager: RoutesManager,
+                    private val authInteractor: AuthInteractor,
+                    private val preferencesInteractor: PreferencesInteractor,
+                    private val trackingServiceGovernor: TrackingServiceGovernor,
+                    mainView: MainView)
     :   Presenter<MainView>(),
         OnDocumentChanged,
         TrackingServiceGovernor.OnServiceActivityChangesListener,
