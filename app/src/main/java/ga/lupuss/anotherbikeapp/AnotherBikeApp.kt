@@ -8,6 +8,10 @@ import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
 import com.squareup.leakcanary.RefWatcher
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
+import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountComponent
+import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountModule
+import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountView
+import ga.lupuss.anotherbikeapp.ui.modules.createaccount.DaggerCreateAccountComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
@@ -70,6 +74,15 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .anotherBikeAppComponent(this.anotherBikeAppComponent)
                 .trackingModule(TrackingModule(view, trackingServiceInteractor))
+                .build()
+    }
+
+    open fun createAccountComponent(createAccountView: CreateAccountView): CreateAccountComponent {
+
+        return DaggerCreateAccountComponent
+                .builder()
+                .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .createAccountModule(CreateAccountModule(createAccountView))
                 .build()
     }
 }

@@ -56,13 +56,8 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Dagger MUST be first
-        DaggerCreateAccountComponent
-                .builder()
-                .createAccountModule(CreateAccountModule(this))
-                .anotherBikeAppComponent(
-                        (this.application as AnotherBikeApp).anotherBikeAppComponent
-                )
-                .build()
+        AnotherBikeApp.get(application)
+                .createAccountComponent(this)
                 .inject(this)
 
         super.onCreate(savedInstanceState)
