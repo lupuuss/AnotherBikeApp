@@ -10,8 +10,6 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_create_account.*
-import kotlinx.android.synthetic.main.email_edit_text.*
-import kotlinx.android.synthetic.main.password_edit_text.*
 import javax.inject.Inject
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 
