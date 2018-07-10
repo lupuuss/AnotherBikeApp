@@ -28,7 +28,6 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingView
-import kotlin.math.log
 
 
 open class AnotherBikeApp : Application() {

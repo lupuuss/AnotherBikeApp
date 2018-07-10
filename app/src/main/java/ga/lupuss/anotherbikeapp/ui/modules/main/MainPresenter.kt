@@ -8,7 +8,6 @@ import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingPresenter
 import timber.log.Timber
 
-import javax.inject.Inject
 /**
  * Presenter associated with [MainActivity]. [MainActivity] must implement [view].
  */

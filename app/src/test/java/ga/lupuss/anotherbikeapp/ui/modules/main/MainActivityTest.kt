@@ -2,7 +2,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.main
 
 import android.content.ComponentName
 import android.content.Intent
-import android.support.transition.Slide
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AlertDialog
