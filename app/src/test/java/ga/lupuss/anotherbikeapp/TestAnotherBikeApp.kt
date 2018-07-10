@@ -19,6 +19,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.login.LoginComponent
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginModule
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginView
 import ga.lupuss.anotherbikeapp.ui.modules.main.*
+import ga.lupuss.anotherbikeapp.ui.modules.summary.DaggerSummaryComponent
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryComponent
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryModule
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryView
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
@@ -51,6 +55,7 @@ class TestAnotherBikeApp : AnotherBikeApp() {
     }
 
     override fun isInUnitTests(): Boolean = true
+
     override fun trackingComponent(view: TrackingView, trackingServiceInteractor: TrackingServiceInteractor): TrackingComponent {
         return DaggerTrackingComponent.builder()
                 .anotherBikeAppComponent(mockAnotherBikeAppComponent)
@@ -89,6 +94,14 @@ class TestAnotherBikeApp : AnotherBikeApp() {
                         on { distanceUnit }.then { Statistic.Unit.KM }
                     }}
                 })
+                .build()
+    }
+
+    override fun summaryComponent(summaryView: SummaryView): SummaryComponent {
+
+        return DaggerSummaryComponent.builder()
+                .anotherBikeAppComponent(mockAnotherBikeAppComponent)
+                .summaryModule(SummaryModule(summaryView))
                 .build()
     }
 }
