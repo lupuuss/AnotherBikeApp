@@ -1,6 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
-import junit.framework.TestCase.assertEquals
+import junit.framework.Assert
 import org.junit.Test
 
 class StatisticsMathProviderTest {
@@ -18,7 +18,6 @@ class StatisticsMathProviderTest {
             currentAvg = math.measureAverage(StatisticsMathProvider.AVG.SPEED, it)
         }
 
-        assertEquals(speeds.average(), currentAvg)
-
+        Assert.assertEquals(speeds.average(), currentAvg)
     }
 }

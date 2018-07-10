@@ -14,7 +14,7 @@ import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
-import org.junit.Assert.*
+import junit.framework.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -52,27 +52,27 @@ class LoginActivityTest {
                 createBundle(false, true, false)
         ).get()
 
-        assertEquals(false, activity.isUiEnable)
-        assertEquals(true, activity.isSignInProgressBarVisible)
-        assertEquals(false, activity.isSignInButtonTextVisible)
+        Assert.assertEquals(false, activity.isUiEnable)
+        Assert.assertEquals(true, activity.isSignInProgressBarVisible)
+        Assert.assertEquals(false, activity.isSignInButtonTextVisible)
 
         activityController = Robolectric.buildActivity(LoginActivity::class.java)
         activity = activityController.create(
                 createBundle(true, true, true)
         ).get()
 
-        assertEquals(true, activity.isUiEnable)
-        assertEquals(true, activity.isSignInProgressBarVisible)
-        assertEquals(true, activity.isSignInButtonTextVisible)
+        Assert.assertEquals(true, activity.isUiEnable)
+        Assert.assertEquals(true, activity.isSignInProgressBarVisible)
+        Assert.assertEquals(true, activity.isSignInButtonTextVisible)
 
         activityController = Robolectric.buildActivity(LoginActivity::class.java)
         activity = activityController.create(
                 createBundle(false, false, false)
         ).get()
 
-        assertEquals(false, activity.isUiEnable)
-        assertEquals(false, activity.isSignInProgressBarVisible)
-        assertEquals(false, activity.isSignInButtonTextVisible)
+        Assert.assertEquals(false, activity.isUiEnable)
+        Assert.assertEquals(false, activity.isSignInProgressBarVisible)
+        Assert.assertEquals(false, activity.isSignInButtonTextVisible)
     }
 
     @Test
@@ -107,9 +107,9 @@ class LoginActivityTest {
 
         activityController.saveInstanceState(bundle)
 
-        assertEquals(true, bundle.getBoolean(LoginActivity.IS_UI_ENABLE_KEY))
-        assertEquals(true, bundle.getBoolean(LoginActivity.IS_SIGN_IN_BUTTON_TEXT_VISIBLE))
-        assertEquals(true, bundle.getBoolean(LoginActivity.IS_SIGN_IN_PROGRESSBAR_VISIBLE))
+        Assert.assertEquals(true, bundle.getBoolean(LoginActivity.IS_UI_ENABLE_KEY))
+        Assert.assertEquals(true, bundle.getBoolean(LoginActivity.IS_SIGN_IN_BUTTON_TEXT_VISIBLE))
+        Assert.assertEquals(true, bundle.getBoolean(LoginActivity.IS_SIGN_IN_PROGRESSBAR_VISIBLE))
 
         activityController = Robolectric.buildActivity(LoginActivity::class.java)
         activity = activityController
@@ -125,9 +125,9 @@ class LoginActivityTest {
 
         activityController.saveInstanceState(bundle)
 
-        assertEquals(false, bundle.getBoolean(LoginActivity.IS_UI_ENABLE_KEY))
-        assertEquals(false, bundle.getBoolean(LoginActivity.IS_SIGN_IN_BUTTON_TEXT_VISIBLE))
-        assertEquals(true, bundle.getBoolean(LoginActivity.IS_SIGN_IN_PROGRESSBAR_VISIBLE))
+        Assert.assertEquals(false, bundle.getBoolean(LoginActivity.IS_UI_ENABLE_KEY))
+        Assert.assertEquals(false, bundle.getBoolean(LoginActivity.IS_SIGN_IN_BUTTON_TEXT_VISIBLE))
+        Assert.assertEquals(true, bundle.getBoolean(LoginActivity.IS_SIGN_IN_PROGRESSBAR_VISIBLE))
     }
 
     @Test
@@ -157,9 +157,9 @@ class LoginActivityTest {
         activity.isUiEnable = false
         activity.isUiEnable = true
 
-        assertEquals(true, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
-        assertEquals(true, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
-        assertEquals(true, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
+        Assert.assertEquals(true, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
+        Assert.assertEquals(true, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
+        Assert.assertEquals(true, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
     }
 
     @Test
@@ -168,9 +168,9 @@ class LoginActivityTest {
         activity.isUiEnable = true
         activity.isUiEnable = false
 
-        assertEquals(false, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
-        assertEquals(false, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
-        assertEquals(false, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
+        Assert.assertEquals(false, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
+        Assert.assertEquals(false, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
+        Assert.assertEquals(false, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
     }
 
     @Test
@@ -178,7 +178,7 @@ class LoginActivityTest {
         activity.isSignInProgressBarVisible = false
         activity.isSignInProgressBarVisible = true
 
-        assertEquals(View.VISIBLE, activity.findViewById<View>(R.id.signInProgressBar).visibility)
+        Assert.assertEquals(View.VISIBLE, activity.findViewById<View>(R.id.signInProgressBar).visibility)
     }
 
     @Test
@@ -186,7 +186,7 @@ class LoginActivityTest {
         activity.isSignInProgressBarVisible = true
         activity.isSignInProgressBarVisible = false
 
-        assertEquals(View.GONE, activity.findViewById<View>(R.id.signInProgressBar).visibility)
+        Assert.assertEquals(View.GONE, activity.findViewById<View>(R.id.signInProgressBar).visibility)
     }
 
     @Test
@@ -195,7 +195,7 @@ class LoginActivityTest {
         activity.isSignInButtonTextVisible = false
         activity.isSignInButtonTextVisible = true
 
-        assertEquals(255,
+        Assert.assertEquals(255,
                 Color.alpha(activity.findViewById<TextView>(R.id.signInButton).currentTextColor))
     }
 
@@ -205,7 +205,7 @@ class LoginActivityTest {
         activity.isSignInButtonTextVisible = true
         activity.isSignInButtonTextVisible = false
 
-        assertEquals(0,
+        Assert.assertEquals(0,
                 Color.alpha(activity.findViewById<TextView>(R.id.signInButton).currentTextColor))
     }
 
@@ -215,7 +215,7 @@ class LoginActivityTest {
         activity.startMainActivity()
         val shadow = Shadows.shadowOf(activity)
 
-        assertEquals(ComponentName(activity, MainActivity::class.java), shadow.peekNextStartedActivity().component)
+        Assert.assertEquals(ComponentName(activity, MainActivity::class.java), shadow.peekNextStartedActivity().component)
     }
 
     @Test
@@ -224,6 +224,6 @@ class LoginActivityTest {
         activity.startCreateAccountActivity()
         val shadow = Shadows.shadowOf(activity)
 
-        assertEquals(ComponentName(activity, CreateAccountActivity::class.java), shadow.peekNextStartedActivity().component)
+        Assert.assertEquals(ComponentName(activity, CreateAccountActivity::class.java), shadow.peekNextStartedActivity().component)
     }
 }

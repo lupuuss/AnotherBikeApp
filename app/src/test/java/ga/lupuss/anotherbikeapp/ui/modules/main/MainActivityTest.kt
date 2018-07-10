@@ -46,7 +46,7 @@ class MainActivityTest {
         val view = activity.findViewById<TextView>(R.id.noDataText)
         activity.isNoDataTextVisible = true
 
-        assertEquals(View.VISIBLE, view.visibility)
+        Assert.assertEquals(View.VISIBLE, view.visibility)
     }
 
     @Test
@@ -55,7 +55,7 @@ class MainActivityTest {
         val view = activity.findViewById<TextView>(R.id.noDataText)
         activity.isNoDataTextVisible = false
 
-        assertEquals(View.INVISIBLE, view.visibility)
+        Assert.assertEquals(View.INVISIBLE, view.visibility)
     }
 
     @Test
@@ -64,7 +64,7 @@ class MainActivityTest {
         val view = activity.findViewById<View>(R.id.routesHistoryRecycler)
         activity.isRoutesHistoryVisible = true
 
-        assertEquals(View.VISIBLE, view.visibility)
+        Assert.assertEquals(View.VISIBLE, view.visibility)
     }
 
     @Test
@@ -73,7 +73,7 @@ class MainActivityTest {
         val view = activity.findViewById<View>(R.id.routesHistoryRecycler)
         activity.isRoutesHistoryVisible = false
 
-        assertEquals(View.INVISIBLE, view.visibility)
+        Assert.assertEquals(View.INVISIBLE, view.visibility)
     }
 
     @Test
@@ -82,7 +82,7 @@ class MainActivityTest {
         val view = activity.findViewById<View>(R.id.recyclerProgressBar)
         activity.isProgressBarVisible = true
 
-        assertEquals(View.VISIBLE, view.visibility)
+        Assert.assertEquals(View.VISIBLE, view.visibility)
     }
 
     @Test
@@ -91,7 +91,7 @@ class MainActivityTest {
         val view = activity.findViewById<View>(R.id.recyclerProgressBar)
         activity.isProgressBarVisible = false
 
-        assertEquals(View.GONE, view.visibility)
+        Assert.assertEquals(View.GONE, view.visibility)
     }
 
     @Test
@@ -99,10 +99,10 @@ class MainActivityTest {
         val view = activity.findViewById<DrawerLayout>(R.id.drawerLayout)
 
         view.openDrawer(GravityCompat.START, false)
-        assertEquals(true, activity.isDrawerLayoutOpened)
+        Assert.assertEquals(true, activity.isDrawerLayoutOpened)
 
         view.closeDrawer(GravityCompat.START, false)
-        assertEquals(false, activity.isDrawerLayoutOpened)
+        Assert.assertEquals(false, activity.isDrawerLayoutOpened)
     }
 
     @Test
@@ -124,14 +124,14 @@ class MainActivityTest {
 
         val drawerListView = activity.findViewById<ListView>(R.id.drawerListView)
 
-        assertEquals(DrawerListViewAdapter::class.java, drawerListView.adapter::class.java)
-        assertEquals(activity, drawerListView.onItemClickListener)
+        Assert.assertEquals(DrawerListViewAdapter::class.java, drawerListView.adapter::class.java)
+        Assert.assertEquals(activity, drawerListView.onItemClickListener)
 
         val recyclerView = activity.findViewById<RecyclerView>(R.id.routesHistoryRecycler)
 
-        assertEquals(false, recyclerView.isNestedScrollingEnabled)
-        assertEquals(RoutesHistoryRecyclerViewAdapter::class.java, recyclerView.adapter::class.java)
-        assertEquals(LinearLayoutManager::class.java, recyclerView.layoutManager::class.java)
+        Assert.assertEquals(false, recyclerView.isNestedScrollingEnabled)
+        Assert.assertEquals(RoutesHistoryRecyclerViewAdapter::class.java, recyclerView.adapter::class.java)
+        Assert.assertEquals(LinearLayoutManager::class.java, recyclerView.layoutManager::class.java)
     }
 
     @Test
@@ -248,7 +248,7 @@ class MainActivityTest {
 
         if (item is Pair<*, *> && item.first is MainActivity.ItemName) {
 
-            assertEquals(MainActivity.ItemName.SIGN_OUT, item.first)
+            Assert.assertEquals(MainActivity.ItemName.SIGN_OUT, item.first)
             verify(activity.mainPresenter, times(1)).onClickSignOut()
             verify(activity.mainPresenter, never()).onClickSettings()
 
@@ -269,7 +269,7 @@ class MainActivityTest {
 
         if (item is Pair<*, *> && item.first is MainActivity.ItemName) {
 
-            assertEquals(MainActivity.ItemName.SETTINGS, item.first)
+            Assert.assertEquals(MainActivity.ItemName.SETTINGS, item.first)
             verify(activity.mainPresenter, never()).onClickSignOut()
             verify(activity.mainPresenter, times(1)).onClickSettings()
 
@@ -285,7 +285,7 @@ class MainActivityTest {
 
         activity.hideDrawer()
 
-        assertEquals(false,
+        Assert.assertEquals(false,
                 activity.findViewById<DrawerLayout>(R.id.drawerLayout).isDrawerOpen(GravityCompat.START))
     }
 
@@ -294,7 +294,7 @@ class MainActivityTest {
 
         activity.setTrackingButtonState(true)
 
-        assertEquals(activity.getString(R.string.continueTracking), activity.findViewById<Button>(R.id.trackingButton).text)
+        Assert.assertEquals(activity.getString(R.string.continueTracking), activity.findViewById<Button>(R.id.trackingButton).text)
     }
 
     @Test

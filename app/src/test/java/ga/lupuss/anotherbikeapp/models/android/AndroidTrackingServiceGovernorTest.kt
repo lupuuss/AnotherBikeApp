@@ -9,7 +9,7 @@ import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
-import junit.framework.TestCase.assertEquals
+import junit.framework.Assert
 import org.junit.Test
 
 class AndroidTrackingServiceGovernorTest {
@@ -122,7 +122,7 @@ class AndroidTrackingServiceGovernorTest {
             override fun onTrackingRequestNoPermission() {}
         })
 
-        assertEquals(1, callbackTriggered)
+        Assert.assertEquals(1, callbackTriggered)
         verify(parentActivity, never()).startService(any())
         verify(parentActivity, never()).bindService(any(), any(), any())
     }
@@ -177,7 +177,7 @@ class AndroidTrackingServiceGovernorTest {
 
         })
 
-        assertEquals(1, callbackTriggered)
+        Assert.assertEquals(1, callbackTriggered)
         verify(parentActivity, times(1)).requestLocationPermission(any())
         verify(parentActivity, never()).startService(any())
         verify(parentActivity, never()).bindService(any(),any(),any())
@@ -223,9 +223,9 @@ class AndroidTrackingServiceGovernorTest {
         })
         trackingServiceGovernor.onServiceConnected(mock {  }, serviceBinder)
 
-        assertEquals(serviceBinder, trackingServiceGovernor.serviceBinder)
+        Assert.assertEquals(serviceBinder, trackingServiceGovernor.serviceBinder)
         assert(trackingServiceGovernor.isServiceActive)
-        assertEquals(1, callbackTriggered)
+        Assert.assertEquals(1, callbackTriggered)
     }
 
     @Test

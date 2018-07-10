@@ -5,7 +5,7 @@ import android.widget.ImageButton
 import com.nhaarman.mockito_kotlin.mock
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -33,28 +33,28 @@ class TrackingActivityTest {
         val statsContainerExpandButtonIcon = trackingActivity.findViewById<View>(R.id.statsContainerExpandButtonIcon)
         val shortStatsContainer = trackingActivity.findViewById<View>(R.id.shortStatsContainer)
 
-        assertEquals(TrackingPresenter.Result.NOT_DONE, Shadows.shadowOf(trackingActivity).resultCode)
-        assertEquals(View.INVISIBLE, statsContainer.visibility)
-        assertEquals(View.INVISIBLE, statsContainerExpandButton.visibility)
-        assertEquals(View.INVISIBLE, statsContainerExpandButtonIcon.visibility)
-        assertEquals(0F, shortStatsContainer.alpha)
-        assertEquals(true, trackingActivity.isMapButtonInLockState)
+        Assert.assertEquals(TrackingPresenter.Result.NOT_DONE, Shadows.shadowOf(trackingActivity).resultCode)
+        Assert.assertEquals(View.INVISIBLE, statsContainer.visibility)
+        Assert.assertEquals(View.INVISIBLE, statsContainerExpandButton.visibility)
+        Assert.assertEquals(View.INVISIBLE, statsContainerExpandButtonIcon.visibility)
+        Assert.assertEquals(0F, shortStatsContainer.alpha)
+        Assert.assertEquals(true, trackingActivity.isMapButtonInLockState)
     }
 
     @Test
     fun isInfoWaitForLocationVisible_whenTrue_shouldSetVisibilityToVisible() {
 
         trackingActivity.isInfoWaitForLocationVisible = true
-        assertEquals(View.VISIBLE ,trackingActivity.findViewById<View>(R.id.infoWaitForLocation).visibility)
-        assertEquals(true, trackingActivity.isInfoWaitForLocationVisible)
+        Assert.assertEquals(View.VISIBLE ,trackingActivity.findViewById<View>(R.id.infoWaitForLocation).visibility)
+        Assert.assertEquals(true, trackingActivity.isInfoWaitForLocationVisible)
     }
 
     @Test
     fun isInfoWaitForLocationVisible_whenFalse_shouldSetVisibilityToInvisible() {
 
         trackingActivity.isInfoWaitForLocationVisible = false
-        assertEquals(View.INVISIBLE ,trackingActivity.findViewById<View>(R.id.infoWaitForLocation).visibility)
-        assertEquals(false, trackingActivity.isInfoWaitForLocationVisible)
+        Assert.assertEquals(View.INVISIBLE ,trackingActivity.findViewById<View>(R.id.infoWaitForLocation).visibility)
+        Assert.assertEquals(false, trackingActivity.isInfoWaitForLocationVisible)
     }
 
     @Test
@@ -65,9 +65,9 @@ class TrackingActivityTest {
         val shadow = Shadows.shadowOf(view.drawable)
         val shadowBack = Shadows.shadowOf(view.background)
 
-        assertEquals(R.drawable.ic_lock_24dp, shadow.createdFromResId)
-        assertEquals(R.drawable.button_lock_back, shadowBack.createdFromResId)
-        assertEquals(true, trackingActivity.isMapButtonInLockState)
+        Assert.assertEquals(R.drawable.ic_lock_24dp, shadow.createdFromResId)
+        Assert.assertEquals(R.drawable.button_lock_back, shadowBack.createdFromResId)
+        Assert.assertEquals(true, trackingActivity.isMapButtonInLockState)
     }
 
     @Test
@@ -78,9 +78,9 @@ class TrackingActivityTest {
         val shadow = Shadows.shadowOf(view.drawable)
         val shadowBack = Shadows.shadowOf(view.background)
 
-        assertEquals(R.drawable.ic_unlock_24dp, shadow.createdFromResId)
-        assertEquals(R.drawable.button_unlock_back, shadowBack.createdFromResId)
-        assertEquals(false, trackingActivity.isMapButtonInLockState)
+        Assert.assertEquals(R.drawable.ic_unlock_24dp, shadow.createdFromResId)
+        Assert.assertEquals(R.drawable.button_unlock_back, shadowBack.createdFromResId)
+        Assert.assertEquals(false, trackingActivity.isMapButtonInLockState)
     }
 
 }

@@ -11,8 +11,7 @@ import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
-import kotlinx.android.synthetic.main.activity_login.view.*
-import org.junit.Assert.*
+import junit.framework.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -48,27 +47,27 @@ class CreateAccountActivityTest {
                 createBundle(false, true, false)
         ).get()
 
-        assertEquals(false, activity.isUiEnable)
-        assertEquals(true, activity.isCreateAccountProgressBarVisible)
-        assertEquals(false, activity.isCreateAccountButtonTextVisible)
+        Assert.assertEquals(false, activity.isUiEnable)
+        Assert.assertEquals(true, activity.isCreateAccountProgressBarVisible)
+        Assert.assertEquals(false, activity.isCreateAccountButtonTextVisible)
 
         activityController = Robolectric.buildActivity(CreateAccountActivity::class.java)
         activity = activityController.create(
                 createBundle(true, true, true)
         ).get()
 
-        assertEquals(true, activity.isUiEnable)
-        assertEquals(true, activity.isCreateAccountProgressBarVisible)
-        assertEquals(true, activity.isCreateAccountButtonTextVisible)
+        Assert.assertEquals(true, activity.isUiEnable)
+        Assert.assertEquals(true, activity.isCreateAccountProgressBarVisible)
+        Assert.assertEquals(true, activity.isCreateAccountButtonTextVisible)
 
         activityController = Robolectric.buildActivity(CreateAccountActivity::class.java)
         activity = activityController.create(
                 createBundle(false, false, false)
         ).get()
 
-        assertEquals(false, activity.isUiEnable)
-        assertEquals(false, activity.isCreateAccountProgressBarVisible)
-        assertEquals(false, activity.isCreateAccountButtonTextVisible)
+        Assert.assertEquals(false, activity.isUiEnable)
+        Assert.assertEquals(false, activity.isCreateAccountProgressBarVisible)
+        Assert.assertEquals(false, activity.isCreateAccountButtonTextVisible)
     }
 
     @Test
@@ -103,9 +102,9 @@ class CreateAccountActivityTest {
 
         activityController.saveInstanceState(bundle)
 
-        assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_UI_ENABLE_KEY))
-        assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE))
-        assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_PROGRESSBAR_VISIBLE))
+        Assert.assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_UI_ENABLE_KEY))
+        Assert.assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE))
+        Assert.assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_PROGRESSBAR_VISIBLE))
 
         activityController = Robolectric.buildActivity(CreateAccountActivity::class.java)
         activity = activityController
@@ -121,9 +120,9 @@ class CreateAccountActivityTest {
 
         activityController.saveInstanceState(bundle)
 
-        assertEquals(false, bundle.getBoolean(CreateAccountActivity.IS_UI_ENABLE_KEY))
-        assertEquals(false, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE))
-        assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_PROGRESSBAR_VISIBLE))
+        Assert.assertEquals(false, bundle.getBoolean(CreateAccountActivity.IS_UI_ENABLE_KEY))
+        Assert.assertEquals(false, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_BUTTON_TEXT_VISIBLE))
+        Assert.assertEquals(true, bundle.getBoolean(CreateAccountActivity.IS_CREATE_ACCOUNT_PROGRESSBAR_VISIBLE))
     }
 
     @Test
@@ -154,10 +153,10 @@ class CreateAccountActivityTest {
         activity.isUiEnable = false
         activity.isUiEnable = true
 
-        assertEquals(true, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
-        assertEquals(true, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
-        assertEquals(true, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
-        assertEquals(true, activity.findViewById<View>(R.id.displayNameEditText).isEnabled)
+        Assert.assertEquals(true, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
+        Assert.assertEquals(true, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
+        Assert.assertEquals(true, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
+        Assert.assertEquals(true, activity.findViewById<View>(R.id.displayNameEditText).isEnabled)
     }
 
     @Test
@@ -166,10 +165,10 @@ class CreateAccountActivityTest {
         activity.isUiEnable = true
         activity.isUiEnable = false
 
-        assertEquals(false, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
-        assertEquals(false, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
-        assertEquals(false, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
-        assertEquals(false, activity.findViewById<View>(R.id.displayNameEditText).isEnabled)
+        Assert.assertEquals(false, activity.findViewById<View>(R.id.createNewAccountButton).isEnabled)
+        Assert.assertEquals(false, activity.findViewById<View>(R.id.passwordEditInclude).isEnabled)
+        Assert.assertEquals(false, activity.findViewById<View>(R.id.emailEditInclude).isEnabled)
+        Assert.assertEquals(false, activity.findViewById<View>(R.id.displayNameEditText).isEnabled)
     }
 
     @Test
@@ -177,7 +176,7 @@ class CreateAccountActivityTest {
         activity.isCreateAccountProgressBarVisible = false
         activity.isCreateAccountProgressBarVisible = true
 
-        assertEquals(View.VISIBLE, activity.findViewById<View>(R.id.createAccountProgressBar).visibility)
+        Assert.assertEquals(View.VISIBLE, activity.findViewById<View>(R.id.createAccountProgressBar).visibility)
     }
 
     @Test
@@ -185,7 +184,7 @@ class CreateAccountActivityTest {
         activity.isCreateAccountProgressBarVisible = true
         activity.isCreateAccountProgressBarVisible = false
 
-        assertEquals(View.GONE, activity.findViewById<View>(R.id.createAccountProgressBar).visibility)
+        Assert.assertEquals(View.GONE, activity.findViewById<View>(R.id.createAccountProgressBar).visibility)
     }
 
     @Test
@@ -194,7 +193,7 @@ class CreateAccountActivityTest {
         activity.isCreateAccountButtonTextVisible = false
         activity.isCreateAccountButtonTextVisible = true
 
-        assertEquals(255,
+        Assert.assertEquals(255,
                 Color.alpha(activity.findViewById<TextView>(R.id.createNewAccountButton).currentTextColor))
     }
 
@@ -204,7 +203,7 @@ class CreateAccountActivityTest {
         activity.isCreateAccountButtonTextVisible = true
         activity.isCreateAccountButtonTextVisible = false
 
-        assertEquals(0,
+        Assert.assertEquals(0,
                 Color.alpha(activity.findViewById<TextView>(R.id.createNewAccountButton).currentTextColor))
     }
 }

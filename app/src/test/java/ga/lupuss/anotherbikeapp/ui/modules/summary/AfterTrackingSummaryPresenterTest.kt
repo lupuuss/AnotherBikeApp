@@ -7,7 +7,7 @@ import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import junit.framework.TestCase.assertEquals
+import org.junit.Assert
 import org.junit.Test
 
 class AfterTrackingSummaryPresenterTest {
@@ -115,7 +115,7 @@ class AfterTrackingSummaryPresenterTest {
         val routesManager: RoutesManager = mock {
             on { getTempRoute() }.then { extendedRouteData }
             on { saveRoute(any())}.then {
-                assertEquals(stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME), it.getArgument<ExtendedRouteData>(0).name)
+                Assert.assertEquals(stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME), it.getArgument<ExtendedRouteData>(0).name)
             }
         }
 
@@ -155,7 +155,7 @@ class AfterTrackingSummaryPresenterTest {
         val expectedName = "Just name"
         val routesManager: RoutesManager = mock {
             on { getTempRoute() }.then { extendedRouteData }
-            on { saveRoute(any()) }.then { assertEquals(expectedName, it.getArgument<ExtendedRouteData>(0).name) }
+            on { saveRoute(any()) }.then { Assert.assertEquals(expectedName, it.getArgument<ExtendedRouteData>(0).name) }
         }
 
         val mockSummaryView: SummaryView = mock { on { getRouteNameFromEditText() }.then { expectedName } }
