@@ -20,6 +20,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.main.DaggerMainComponent
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainComponent
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainModule
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainView
+import ga.lupuss.anotherbikeapp.ui.modules.summary.DaggerSummaryComponent
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryComponent
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryModule
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryView
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
@@ -81,7 +85,7 @@ open class AnotherBikeApp : Application() {
 
         return DaggerTrackingComponent
                 .builder()
-                .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .anotherBikeAppComponent(anotherBikeAppComponent)
                 .trackingModule(TrackingModule(view, trackingServiceInteractor))
                 .build()
     }
@@ -90,7 +94,7 @@ open class AnotherBikeApp : Application() {
 
         return DaggerCreateAccountComponent
                 .builder()
-                .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .anotherBikeAppComponent(anotherBikeAppComponent)
                 .createAccountModule(CreateAccountModule(createAccountView))
                 .build()
     }
@@ -99,7 +103,7 @@ open class AnotherBikeApp : Application() {
 
         return DaggerLoginComponent
                 .builder()
-                .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .anotherBikeAppComponent(anotherBikeAppComponent)
                 .loginModule(LoginModule(loginView))
                 .build()
     }
@@ -110,6 +114,15 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .anotherBikeAppComponent(this.anotherBikeAppComponent)
                 .mainModule(MainModule(mainView))
+                .build()
+    }
+
+    open fun summaryComponent(summaryView: SummaryView): SummaryComponent {
+
+        return DaggerSummaryComponent
+                .builder()
+                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .summaryModule(SummaryModule(summaryView))
                 .build()
     }
 }

@@ -82,11 +82,8 @@ class SummaryActivity : BaseMapActivity(), SummaryView, OnMapReadyCallback, Text
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Dagger MUST be first
-        DaggerSummaryComponent
-                .builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
-                .summaryModule(SummaryModule(this))
-                .build()
+        AnotherBikeApp.get(application)
+                .summaryComponent(this)
                 .inject(this)
 
         super.onCreate(savedInstanceState)
