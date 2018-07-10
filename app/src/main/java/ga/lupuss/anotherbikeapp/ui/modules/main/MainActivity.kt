@@ -28,7 +28,6 @@ import android.widget.TextView
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
-import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.addOnAnimationEndListener
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
@@ -173,7 +172,7 @@ class MainActivity
 
     // onClicks
 
-    fun onClickTrackingButton(view: View) {
+    fun onClickTrackingButton(view: View): Animator {
 
         val animator = AnimatorInflater.loadAnimator(this, R.animator.tracking_button)
         animator.setTarget(view)
@@ -182,6 +181,7 @@ class MainActivity
         }
 
         animator.start()
+        return animator
     }
 
     // Recycler View
