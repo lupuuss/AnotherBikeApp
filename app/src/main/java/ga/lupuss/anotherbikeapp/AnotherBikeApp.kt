@@ -47,7 +47,7 @@ open class AnotherBikeApp : Application() {
         }
     }
 
-    lateinit var refWatcher: RefWatcher
+    open lateinit var refWatcher: RefWatcher
 
     override fun onCreate() {
         super.onCreate()
