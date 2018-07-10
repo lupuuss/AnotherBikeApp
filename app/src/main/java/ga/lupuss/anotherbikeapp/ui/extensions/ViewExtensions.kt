@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.ui.extensions
 
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.support.v4.graphics.ColorUtils
 import android.view.LayoutInflater
@@ -22,6 +23,24 @@ var View.isGone
 
         visibility = if (value) View.GONE else View.VISIBLE
     }
+
+fun Animator.addOnAnimationEndListener(onEnd: (() -> Unit)?) {
+
+    this.addListener(object : Animator.AnimatorListener {
+
+        override fun onAnimationRepeat(p0: Animator?) = Unit
+
+        override fun onAnimationCancel(p0: Animator?) = Unit
+
+        override fun onAnimationStart(p0: Animator?) = Unit
+
+        override fun onAnimationEnd(p0: Animator?) {
+
+            onEnd?.invoke()
+        }
+
+    })
+}
 
 
 @SuppressLint("SetTextI18n")

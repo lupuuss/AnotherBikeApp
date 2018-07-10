@@ -28,6 +28,8 @@ import android.widget.TextView
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
+import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
+import ga.lupuss.anotherbikeapp.ui.extensions.addOnAnimationEndListener
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
@@ -175,20 +177,9 @@ class MainActivity
 
         val animator = AnimatorInflater.loadAnimator(this, R.animator.tracking_button)
         animator.setTarget(view)
-        animator.addListener(object : Animator.AnimatorListener {
-
-            override fun onAnimationRepeat(p0: Animator?) = Unit
-
-            override fun onAnimationCancel(p0: Animator?) = Unit
-
-            override fun onAnimationStart(p0: Animator?) = Unit
-
-            override fun onAnimationEnd(p0: Animator?) {
-
-                mainPresenter.onClickTrackingButton()
-            }
-
-        })
+        animator.addOnAnimationEndListener {
+            mainPresenter.onClickTrackingButton()
+        }
 
         animator.start()
     }
