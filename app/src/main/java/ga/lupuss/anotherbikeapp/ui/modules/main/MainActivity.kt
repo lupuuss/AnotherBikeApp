@@ -172,7 +172,13 @@ class MainActivity
 
     // onClicks
 
-    fun onClickTrackingButton(view: View): Animator {
+    // delegates to onClickTrackingButtonHelper to avoid "incorrect method signature" in XML onClick
+    fun onClickTrackingButton(view: View) {
+
+        onClickTrackingButtonHelper(view)
+    }
+
+    fun onClickTrackingButtonHelper(view: View): Animator {
 
         val animator = AnimatorInflater.loadAnimator(this, R.animator.tracking_button)
         animator.setTarget(view)

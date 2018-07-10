@@ -221,7 +221,13 @@ class MainActivityTest {
     @Test
     fun onClickTrackingButton_shouldNotifyPresenter() {
 
-        activity.onClickTrackingButton(mock {  }).end()
+        val activity = spy(this.activity)
+
+        activity.onClickTrackingButton(mock { })
+
+        verify(activity, times(1)).onClickTrackingButtonHelper(any())
+
+        activity.onClickTrackingButtonHelper(mock {  }).end()
 
         verify(activity.mainPresenter, times(1)).onClickTrackingButton()
     }
