@@ -3,10 +3,8 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
-import javax.inject.Inject
 
-
-class MainSummaryPresenter @Inject constructor(
+class MainSummaryPresenter(
         summaryView: SummaryView,
         override val routesManager: RoutesManager,
         override val stringsResolver: StringsResolver,
