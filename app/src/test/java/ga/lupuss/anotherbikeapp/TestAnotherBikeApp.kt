@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
+import com.squareup.leakcanary.RefWatcher
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
 import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
@@ -19,10 +20,7 @@ import ga.lupuss.anotherbikeapp.ui.modules.login.LoginComponent
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginModule
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginView
 import ga.lupuss.anotherbikeapp.ui.modules.main.*
-import ga.lupuss.anotherbikeapp.ui.modules.summary.DaggerSummaryComponent
-import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryComponent
-import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryModule
-import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryView
+import ga.lupuss.anotherbikeapp.ui.modules.summary.*
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
@@ -48,6 +46,10 @@ class TestAnotherBikeApp : AnotherBikeApp() {
         on { providesRoutesManager() }.then { routesManager }
         on { providesTrackingNotification() }.then { trackingNotification }
     }
+
+    override var refWatcher: RefWatcher
+        get() = mock {}
+        set(value) {}
 
     override fun onCreate() {
         super.onCreate()
@@ -101,7 +103,10 @@ class TestAnotherBikeApp : AnotherBikeApp() {
 
         return DaggerSummaryComponent.builder()
                 .anotherBikeAppComponent(mockAnotherBikeAppComponent)
-                .summaryModule(SummaryModule(summaryView))
+                .summaryModule(mock {
+                    on { this.summaryView }.then { summaryView }
+                    on { providesSummaryPresenter(any(), any(), any(), any()) }.then { mock<MainSummaryPresenter> {} }
+                })
                 .build()
     }
 }
