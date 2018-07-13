@@ -140,7 +140,7 @@ class MainActivityTest {
         val activity = controller.create().start().resume().newIntent(mock{}).get()
 
         verify(activity.mainPresenter, times(1))
-                .notifyOnResult(MainPresenter.Request.TRACKING_NOTIFICATION_REQUEST, 0)
+                .notifyOnResult(any(), eq(0))
     }
 
     @Test
