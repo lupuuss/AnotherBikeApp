@@ -97,7 +97,10 @@ class MainActivity
     override fun onNewIntent(intent: Intent?) {
         intent?.let {
 
-            mainPresenter.notifyOnResult(it.extras?.get(MainActivity.REQUEST_CODE_KEY) as? Int ?: -1, 0)
+            mainPresenter.notifyOnResult(
+                    it.extras?.get(MainActivity.REQUEST_CODE_KEY) as? Int ?: -1,
+                    0
+            )
         }
     }
 
