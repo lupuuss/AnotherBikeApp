@@ -47,15 +47,29 @@ class AndroidStringsResolver(private val context: Context) : StringsResolver {
         Statistic.Name.MIN_ALTITUDE -> R.string.minAltitude
     })
 
-    override fun resolve(unit: Statistic.Unit): String = context.getString(when (unit) {
+    override fun resolve(unit: Statistic.Unit): String {
+        return context.getString(
 
-        Statistic.Unit.M_S -> R.string.unitSpeedMs
-        Statistic.Unit.KM_H -> R.string.unitSpeedKmh
-        Statistic.Unit.MPH -> R.string.unitSpeedMph
-        Statistic.Unit.M -> R.string.unitDistanceM
-        Statistic.Unit.KM -> R.string.unitDistanceKm
-        Statistic.Unit.MI -> R.string.unitDistanceMi
-    })
+                when (unit) {
+
+                    is Statistic.Unit.Speed -> when (unit) {
+
+                        Statistic.Unit.Speed.M_S ->  R.string.unitSpeedMs
+                        Statistic.Unit.Speed.KM_H ->  R.string.unitSpeedKmh
+                        Statistic.Unit.Speed.MPH -> R.string.unitSpeedMph
+                    }
+
+                    is Statistic.Unit.Distance -> when (unit) {
+
+                        Statistic.Unit.Distance.M -> R.string.unitDistanceM
+                        Statistic.Unit.Distance.KM -> R.string.unitDistanceKm
+                        Statistic.Unit.Distance.MI -> R.string.unitDistanceMi
+                    }
+
+                    else -> throw IllegalArgumentException("Unknown implementation of Statistic.Unit")
+                }
+        )
+    }
 
     override fun resolve(stat: TimeStatistic): String {
 

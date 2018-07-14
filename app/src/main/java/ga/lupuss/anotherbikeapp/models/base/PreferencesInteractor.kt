@@ -10,7 +10,7 @@ abstract class PreferencesInteractor {
     }
 
     interface OnUnitChangedListener {
-        fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit)
+        fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance)
     }
 
     interface OnMapThemeEnableListener {
@@ -22,8 +22,8 @@ abstract class PreferencesInteractor {
     protected val mapThemeListeners = mutableMapOf<Any, PreferencesInteractor.OnMapThemeEnableListener>()
 
     abstract var appTheme: AppTheme
-    abstract var speedUnit: Statistic.Unit
-    abstract var distanceUnit: Statistic.Unit
+    abstract var speedUnit: Statistic.Unit.Speed
+    abstract var distanceUnit: Statistic.Unit.Distance
     abstract var isMapThemeEnable: Boolean
 
     fun addOnThemeChangedListener(owner: Any,

@@ -57,13 +57,13 @@ class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferen
             putPref(themeKey, value.toString())
         }
 
-    override var speedUnit: Statistic.Unit
-        get() = Statistic.Unit.valueOf(getPref(speedUnitKey, Statistic.Unit.KM_H.toString()))
+    override var speedUnit: Statistic.Unit.Speed
+        get() = Statistic.Unit.Speed.valueOf(getPref(speedUnitKey, Statistic.Unit.Speed.KM_H.toString()))
         set(value) {
             putPref(speedUnitKey, value.toString())
         }
-    override var distanceUnit: Statistic.Unit
-        get() = Statistic.Unit.valueOf(getPref(distanceUnitKey, Statistic.Unit.KM.toString()))
+    override var distanceUnit: Statistic.Unit.Distance
+        get() = Statistic.Unit.Distance.valueOf(getPref(distanceUnitKey, Statistic.Unit.Distance.KM.toString()))
         set(value) {
             putPref(distanceUnitKey, value.toString())
         }

@@ -218,7 +218,7 @@ class MainPresenter(private val routesManager: RoutesManager,
         }
     }
 
-    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
+    override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
 
         this.speedUnit = speedUnit
         this.distanceUnit = distanceUnit

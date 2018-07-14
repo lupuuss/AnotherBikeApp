@@ -17,7 +17,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
                                             private val math: StatisticsMathProvider,
                                             preferencesInteractor: PreferencesInteractor) {
 
-    private val kmh5 = 5 / Statistic.Unit.KM_H.convertParam // 5 km/h in m/s
+    private val kmh5 = 5 / Statistic.Unit.Speed.KM_H.convertParam // 5 km/h in m/s
 
     init {
 
@@ -180,12 +180,12 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
                 Statistic.Name.DURATION to TimeStatistic(routeData.duration),
                 Statistic.Name.DISTANCE to UnitStatistic(routeData.distance, distanceUnit),
                 Statistic.Name.SPEED to UnitStatistic(speed, speedUnit),
-                Statistic.Name.ALTITUDE to UnitStatistic(altitude, Statistic.Unit.M),
+                Statistic.Name.ALTITUDE to UnitStatistic(altitude, Statistic.Unit.Distance.M),
                 Statistic.Name.AVG_SPEED to UnitStatistic(routeData.avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(routeData.maxSpeed, speedUnit),
-                Statistic.Name.AVG_ALTITUDE to UnitStatistic(routeData.avgAltitude, Statistic.Unit.M),
-                Statistic.Name.MAX_ALTITUDE to UnitStatistic(routeData.maxAltitude, Statistic.Unit.M),
-                Statistic.Name.MIN_ALTITUDE to UnitStatistic(routeData.minAltitude, Statistic.Unit.M),
+                Statistic.Name.AVG_ALTITUDE to UnitStatistic(routeData.avgAltitude, Statistic.Unit.Distance.M),
+                Statistic.Name.MAX_ALTITUDE to UnitStatistic(routeData.maxAltitude, Statistic.Unit.Distance.M),
+                Statistic.Name.MIN_ALTITUDE to UnitStatistic(routeData.minAltitude, Statistic.Unit.Distance.M),
                 Statistic.Name.START_TIME to StringStatistic(routeData.startTimeStr)
         )
     }

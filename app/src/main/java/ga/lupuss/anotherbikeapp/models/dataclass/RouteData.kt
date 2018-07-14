@@ -31,9 +31,9 @@ interface RouteData : ShortRouteData {
                 Statistic.Name.DISTANCE to UnitStatistic(distance, distanceUnit),
                 Statistic.Name.AVG_SPEED to UnitStatistic(avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(maxSpeed, speedUnit),
-                Statistic.Name.AVG_ALTITUDE to UnitStatistic(avgAltitude, Statistic.Unit.M),
-                Statistic.Name.MAX_ALTITUDE to UnitStatistic(maxAltitude, Statistic.Unit.M),
-                Statistic.Name.MIN_ALTITUDE to UnitStatistic(minAltitude, Statistic.Unit.M),
+                Statistic.Name.AVG_ALTITUDE to UnitStatistic(avgAltitude, Statistic.Unit.Distance.M),
+                Statistic.Name.MAX_ALTITUDE to UnitStatistic(maxAltitude, Statistic.Unit.Distance.M),
+                Statistic.Name.MIN_ALTITUDE to UnitStatistic(minAltitude, Statistic.Unit.Distance.M),
                 Statistic.Name.START_TIME to StringStatistic(startTimeStr)
         )
     }

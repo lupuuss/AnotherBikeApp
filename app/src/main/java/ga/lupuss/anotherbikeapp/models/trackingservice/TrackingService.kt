@@ -135,7 +135,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
         }
     }
 
-    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
+    override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
 
         statsManager.speedUnit = speedUnit
         statsManager.distanceUnit = distanceUnit
