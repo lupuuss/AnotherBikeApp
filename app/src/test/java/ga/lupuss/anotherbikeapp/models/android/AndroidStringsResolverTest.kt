@@ -51,10 +51,16 @@ class AndroidStringsResolverTest {
             assert(stringsResolver.resolve(unitName) != "")
         }
 
-        for (unit in Statistic.Unit.values()) {
+        for (unit in Statistic.Unit.Speed.values()) {
 
             assert(stringsResolver.resolve(unit) != "")
         }
+
+        for (unit in Statistic.Unit.Distance.values()) {
+
+            assert(stringsResolver.resolve(unit) != "")
+        }
+
 
         for (status in Status.values()) {
 
@@ -89,7 +95,7 @@ class AndroidStringsResolverTest {
         assert(
                 stringsResolver.resolve(
                     Statistic.Name.SPEED,
-                    UnitStatistic(3.0, Statistic.Unit.KM_H)
+                    UnitStatistic(3.0, Statistic.Unit.Speed.KM_H)
                 ).matches(Regex(".+: .+"))
         )
     }
@@ -98,7 +104,7 @@ class AndroidStringsResolverTest {
     fun resolveForUnitStat_shouldAlwaysReturnProperlyFormattedString() {
 
         assert(
-                stringsResolver.resolve(UnitStatistic(3.0, Statistic.Unit.KM_H))
+                stringsResolver.resolve(UnitStatistic(3.0, Statistic.Unit.Speed.KM_H))
                         .matches(Regex("(\\d*\\.)?\\d+ .+"))
         )
     }

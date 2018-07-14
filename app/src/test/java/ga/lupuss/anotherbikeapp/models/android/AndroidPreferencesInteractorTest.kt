@@ -51,7 +51,7 @@ class AndroidPreferencesInteractorTest {
         preferencesInteractor.addOnUnitChangedListener(
                 this,
                 object : PreferencesInteractor.OnUnitChangedListener {
-                    override fun onUnitChanged(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit) {
+                    override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
                         triggeredUnitChanges++
                     }
 

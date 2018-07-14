@@ -383,10 +383,10 @@ class MainPresenterTest {
     @Test
     fun onUnitChanged_changeUnitsAndRefreshRecycler() {
 
-        mainPresenter.onUnitChanged(Statistic.Unit.KM_H, Statistic.Unit.KM)
+        mainPresenter.onUnitChanged(Statistic.Unit.Speed.KM_H, Statistic.Unit.Distance.KM)
 
-        assert(mainPresenter.speedUnit == Statistic.Unit.KM_H)
-        assert(mainPresenter.distanceUnit == Statistic.Unit.KM)
+        assert(mainPresenter.speedUnit == Statistic.Unit.Speed.KM_H)
+        assert(mainPresenter.distanceUnit == Statistic.Unit.Distance.KM)
         verify(mainView, times(1)).refreshRecyclerAdapter()
     }
 

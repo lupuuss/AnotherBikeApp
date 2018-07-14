@@ -33,8 +33,8 @@ class AfterTrackingSummaryPresenterTest {
     }
 
     private val preferencesInteractor: PreferencesInteractor = mock {
-        on { speedUnit }.then { Statistic.Unit.KM_H }
-        on { distanceUnit }.then { Statistic.Unit.KM }
+        on { speedUnit }.then { Statistic.Unit.Speed.KM_H }
+        on { distanceUnit }.then { Statistic.Unit.Distance.KM }
     }
 
     @Test
@@ -51,7 +51,7 @@ class AfterTrackingSummaryPresenterTest {
 
         verify(summaryView, times(1)).showRouteLine(routeData.points)
         verify(summaryView, times(1)).showStatistics(
-                routeData.toMutable().getStatisticsMap(Statistic.Unit.KM_H, Statistic.Unit.KM)
+                routeData.toMutable().getStatisticsMap(Statistic.Unit.Speed.KM_H, Statistic.Unit.Distance.KM)
         )
         verify(summaryView, times(1)).setNameLabelValue(routeData.name ?: "")
 

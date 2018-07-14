@@ -92,8 +92,8 @@ class TestAnotherBikeApp : AnotherBikeApp() {
                         on { onHistoryRecyclerItemRequest(0) }.then {
                             ShortRouteData.Instance("", 0.0, 0.0, 0L, 0L)
                         }
-                        on { speedUnit }.then { Statistic.Unit.KM_H }
-                        on { distanceUnit }.then { Statistic.Unit.KM }
+                        on { speedUnit }.then { Statistic.Unit.Speed.KM_H }
+                        on { distanceUnit }.then { Statistic.Unit.Distance.KM }
                     }}
                 })
                 .build()
