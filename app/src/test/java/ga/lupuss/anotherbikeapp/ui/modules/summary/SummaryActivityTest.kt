@@ -1,23 +1,24 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
+import android.support.v4.app.FragmentManager
+import android.support.v7.app.AlertDialog
+import android.view.View
 import android.widget.EditText
-import com.google.android.gms.maps.GoogleMap
+import android.widget.TextView
 import com.google.android.gms.maps.UiSettings
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
-import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
-import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
+import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import junit.framework.Assert
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.`when`
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.Shadows
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowDialog
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestAnotherBikeApp::class)
@@ -40,6 +41,76 @@ class SummaryActivityTest {
     }
 
     @Test
+    fun isRouteEditLineVisible_whenTrue_shouldShowRouteEditLine() {
+
+        activity.isRouteEditLineVisible = false
+        activity.isRouteEditLineVisible = true
+
+        val nameLabel = activity.findViewById<TextView>(R.id.nameLabel)
+        val routeNameEdit = activity.findViewById<EditText>(R.id.routeNameEdit)
+
+        Assert.assertEquals(View.VISIBLE, nameLabel.visibility)
+        Assert.assertEquals(View.VISIBLE, routeNameEdit.visibility)
+    }
+
+    @Test
+    fun isRouteEditLineVisible_whenFalse_shouldHideRouteEditLine() {
+
+        activity.isRouteEditLineVisible = true
+        activity.isRouteEditLineVisible = false
+
+        val nameLabel = activity.findViewById<TextView>(R.id.nameLabel)
+        val routeNameEdit = activity.findViewById<EditText>(R.id.routeNameEdit)
+
+        Assert.assertEquals(View.INVISIBLE, nameLabel.visibility)
+        Assert.assertEquals(View.INVISIBLE, routeNameEdit.visibility)
+    }
+
+    @Test
+    fun isStatsFragmentVisible_whenTrue_shouldShowStatsFragment() {
+
+        activity.isStatsFragmentVisible = false
+        activity.isStatsFragmentVisible = true
+
+        val statsFragmentWrapper = activity.findViewById<View>(R.id.statsFragmentWrapper)
+
+        Assert.assertEquals(View.VISIBLE, statsFragmentWrapper.visibility)
+    }
+
+    @Test
+    fun isStatsFragmentVisible_whenFalse_shouldHideStatsFragment() {
+
+        activity.isStatsFragmentVisible = true
+        activity.isStatsFragmentVisible = false
+
+        val statsFragmentWrapper = activity.findViewById<View>(R.id.statsFragmentWrapper)
+
+        Assert.assertEquals(View.INVISIBLE, statsFragmentWrapper.visibility)
+    }
+
+    @Test
+    fun isProgressBarVisible_whenTrue_shouldShowProgressBar() {
+
+        activity.isProgressBarVisible = false
+        activity.isProgressBarVisible = true
+
+        val progressBar = activity.findViewById<View>(R.id.summaryProgressBar)
+
+        Assert.assertEquals(View.VISIBLE, progressBar.visibility)
+    }
+
+    @Test
+    fun isProgressBarVisible_whenFalse_shouldShowProgressBar() {
+
+        activity.isProgressBarVisible = true
+        activity.isProgressBarVisible = false
+
+        val progressBar = activity.findViewById<View>(R.id.summaryProgressBar)
+
+        Assert.assertEquals(View.INVISIBLE, progressBar.visibility)
+    }
+
+    @Test
     fun onCreate_whenModeAfterTracking_shouldInitStuffProperly() {
 
         verify(activity.summaryPresenter, times(1))
@@ -55,34 +126,6 @@ class SummaryActivityTest {
 
         verify(activity.summaryPresenter, times(1))
                 .notifyOnViewReady()
-    }
-
-    @Test
-    fun onCreateOptionsMenu_whenAfterTracking_shouldShowOrHideItems() {
-
-        Assert.assertEquals(
-                activity.isRejectActionVisible,
-                Shadows.shadowOf(activity).optionsMenu.findItem(R.id.itemRejectRoute).isVisible
-        )
-
-        Assert.assertEquals(
-                activity.isSaveActionVisible,
-                Shadows.shadowOf(activity).optionsMenu.findItem(R.id.itemSaveRoute).isVisible
-        )
-    }
-
-    @Test
-    fun onCreateOptionsMenu_whenOverview_shouldShowOrHideItems() {
-
-        Assert.assertEquals(
-                activity.isRejectActionVisible,
-                Shadows.shadowOf(activity).optionsMenu.findItem(R.id.itemRejectRoute).isVisible
-        )
-
-        Assert.assertEquals(
-                activity.isSaveActionVisible,
-                Shadows.shadowOf(activity).optionsMenu.findItem(R.id.itemSaveRoute).isVisible
-        )
     }
 
     @Test
@@ -124,7 +167,6 @@ class SummaryActivityTest {
         verify(activity.summaryPresenter, times(1)).onRejectClick()
     }
 
-
     @Test
     fun setNameLabelValue_shouldChangeRouteNameEditText() {
 
@@ -135,20 +177,97 @@ class SummaryActivityTest {
     }
 
     @Test
-    fun showRouteLine_shouldSetLineProperly() {
-        val mapMock = mock<GoogleMap> { on { uiSettings }.then { mock<UiSettings> {} } }
+    fun showStatistics_shouldCallUpdateStatsOnStatsFragment() {
 
-        val list = listOf(LatLng(0.0, 0.0))
-        activity.onMapReady(mapMock)
+        val spiedActivity = spy(activity)
+        val mockedFragment = mock<StatsFragment> { }
 
-        val icon = ViewExtensions
-                .getDefaultMarkerIconForColor(activity.theme.getColorForAttr(R.attr.markersColor))
-        activity.showRouteLine(list)
-        verify(mapMock, times(1)).addMarker(
-                MarkerOptions().title(activity.getString(R.string.start))
-                        .icon(icon)
-                        .position(list.first())
-        )
+        `when`(spiedActivity.supportFragmentManager).then {
+            mock<FragmentManager> {
+                on { findFragmentById(R.id.statsFragment) }.then { mockedFragment }
+            }
+        }
+
+        spiedActivity.showStatistics(mapOf())
+
+        verify(mockedFragment, times(1)).updateStats(any())
+    }
+
+    @Test
+    fun showRejectDialog_shouldShowDialog() {
+        var triggered = 0
+
+        activity.showRejectDialog {
+            triggered++
+        }
+
+        val dialog =  ShadowDialog.getLatestDialog() as AlertDialog
+
+        Assert.assertEquals(true, dialog.isShowing)
+
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+
+        // Title and message should be tested too, but AFAIK it's not possible with android.support.v7.app.AlertDialog
+        // android.app.AlertDialog cannot be used, because of styles problem
+
+        Assert.assertEquals(1, triggered)
+        Assert.assertEquals(activity.getString(R.string.reject), dialog.getButton(AlertDialog.BUTTON_POSITIVE).text)
+        Assert.assertEquals(activity.getString(R.string.cancel), dialog.getButton(AlertDialog.BUTTON_NEGATIVE).text)
+    }
+
+    @Test
+    fun showDeleteDialog_shouldShowDialog() {
+        var triggered = 0
+
+        activity.showDeleteDialog {
+            triggered++
+        }
+
+        val dialog =  ShadowDialog.getLatestDialog() as AlertDialog
+
+        Assert.assertEquals(true, dialog.isShowing)
+
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+
+        // Title and message should be tested too, but AFAIK it's not possible with android.support.v7.app.AlertDialog
+        // android.app.AlertDialog cannot be used, because of styles problem
+
+        Assert.assertEquals(1, triggered)
+        Assert.assertEquals(activity.getString(R.string.delete), dialog.getButton(AlertDialog.BUTTON_POSITIVE).text)
+        Assert.assertEquals(activity.getString(R.string.cancel), dialog.getButton(AlertDialog.BUTTON_NEGATIVE).text)
+    }
+
+    @Test
+    fun showUnsavedStateDialog_shouldShowDialog() {
+        var triggered = 0
+
+        activity.showUnsavedStateDialog {
+            triggered++
+        }
+
+        val dialog =  ShadowDialog.getLatestDialog() as AlertDialog
+
+        Assert.assertEquals(true, dialog.isShowing)
+
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+
+        // Title and message should be tested too, but AFAIK it's not possible with android.support.v7.app.AlertDialog
+        // android.app.AlertDialog cannot be used, because of styles problem
+
+        Assert.assertEquals(1, triggered)
+        Assert.assertEquals(activity.getString(R.string.exit), dialog.getButton(AlertDialog.BUTTON_POSITIVE).text)
+        Assert.assertEquals(activity.getString(R.string.cancel), dialog.getButton(AlertDialog.BUTTON_NEGATIVE).text)
+    }
+
+    @Test
+    fun getRouteNameFromEditText_shouldReturnProperValueFromView() {
+
+        activity.findViewById<TextView>(R.id.routeNameEdit).text = "TestString"
+
+        Assert.assertEquals("TestString", activity.getRouteNameFromEditText())
     }
 
 }
