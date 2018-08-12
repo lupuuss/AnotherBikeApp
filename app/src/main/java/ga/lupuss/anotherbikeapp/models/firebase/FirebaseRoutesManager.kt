@@ -142,7 +142,7 @@ class FirebaseRoutesManager(
                     routeReference.pointsReference?.get()
                 }.addOnSuccessListener(requestOwner) {
 
-                    val points = if (it.exists()) it.toFirebasePoints().pointsAsLatLngL() else null
+                    val points = if (it.exists()) it.toFirebasePoints().pointsAsLatLngList() else null
 
                     checkRouteDataAndPostResult(points)
 
