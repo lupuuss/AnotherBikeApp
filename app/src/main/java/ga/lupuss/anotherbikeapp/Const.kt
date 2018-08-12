@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp
 
+const val WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/"
+
 enum class Message {
     ACCOUNT_CREATED,
     USER_EXISTS,
