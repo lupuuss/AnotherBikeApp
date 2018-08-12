@@ -62,7 +62,7 @@ class AnotherBikeAppModule {
                             .newBuilder()
                             .addQueryParameter("APPID", context.getString(R.string.open_weather_key))
                             .addQueryParameter("lang", locale.country)
-                            .addQueryParameter("units", "metrical")
+                            .addQueryParameter("units", "metric")
                             .build()
 
                     val builder = originalRequest
