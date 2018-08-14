@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.models.weather.pojo
 
 import com.google.gson.annotations.SerializedName
 
-data class RawWeatherForecastData(
+data class RawWeatherData(
         var list: List<WeatherUnit>,
         var city: City
 ) {
@@ -20,7 +20,7 @@ data class RawWeatherForecastData(
     }
 
     data class WeatherUnit(
-            var dt: Int,
+            var dt: Long,
             var main: Main,
             var weather: List<Weather>,
             var clouds: Clouds,

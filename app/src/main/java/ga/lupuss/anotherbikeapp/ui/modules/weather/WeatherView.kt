@@ -1,9 +1,9 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
-import ga.lupuss.anotherbikeapp.models.weather.pojo.RawWeatherForecastData
+import ga.lupuss.anotherbikeapp.base.BaseView
+import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 
-interface WeatherView {
+interface WeatherView : BaseView {
 
-    fun loadWeatherImage(name: String)
-    fun updateWeather(data: RawWeatherForecastData)
+    fun updateWeather(data: WeatherData)
 }

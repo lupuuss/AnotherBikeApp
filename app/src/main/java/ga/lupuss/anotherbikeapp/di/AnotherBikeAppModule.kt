@@ -5,8 +5,6 @@ import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
-import com.squareup.okhttp.Interceptor
-import com.squareup.okhttp.Response
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.R
@@ -19,12 +17,10 @@ import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
-import okhttp3.Credentials
+import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
-import java.io.IOException
 import java.util.*
 
 @Module()
@@ -84,4 +80,9 @@ class AnotherBikeAppModule {
                     .client(okHttpClient)
                     .build()
                     .create(WeatherApi::class.java)
+
+    @Provides
+    @AnotherBikeAppScope
+    fun providesWeatherManager(weatherApi: WeatherApi, timeProvider: () -> Long) =
+            WeatherManager(weatherApi, timeProvider)
 }

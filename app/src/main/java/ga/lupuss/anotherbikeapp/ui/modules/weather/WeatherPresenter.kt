@@ -1,42 +1,53 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
+import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.kotlin.Resettable
 import ga.lupuss.anotherbikeapp.kotlin.ResettableManager
-import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
-import ga.lupuss.anotherbikeapp.models.weather.pojo.RawWeatherForecastData
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import timber.log.Timber
+import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
+import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
+import java.util.*
 import javax.inject.Inject
 
-class WeatherPresenter @Inject constructor(private val weatherApi: WeatherApi,
-                                           weatherView: WeatherView) {
-    private val resettableManager = ResettableManager()
-    var weatherView: WeatherView by Resettable(resettableManager)
+class WeatherPresenter @Inject constructor(
+        private val weatherManager: WeatherManager,
+        weatherView: WeatherView
+) : Presenter<WeatherView>(), WeatherManager.OnNewWeatherListener, WeatherManager.OnWeatherRefreshFailureListener {
 
     init {
-        this.weatherView = weatherView
+        this.view = weatherView
     }
 
-    fun requestWeatherData() {
+    override fun notifyOnViewReady() {
 
-        weatherApi.getWeatherForecastForCoords(0.0, 0.0).enqueue(object : Callback<RawWeatherForecastData> {
-            override fun onFailure(call: Call<RawWeatherForecastData>?, t: Throwable?) {
+        weatherManager.lastWeatherData?.let {
+            view.updateWeather(it)
+        }
 
-            }
-
-            override fun onResponse(call: Call<RawWeatherForecastData>?, response: Response<RawWeatherForecastData>?) {
-
-                weatherView.updateWeather(response!!.body()!!)
-                weatherView.loadWeatherImage(response.body()!!.list.first().weather.first().icon)
-                Timber.d("http://openweathermap.org/img/w/${response.body()!!.list.first().weather.first().icon}.png")
-            }
-        })
+        weatherManager.addOnNewWeatherListener(this)
+        weatherManager.refreshWeatherData(52.173040, 20.268581, this)
     }
 
-    fun onDestroyView() {
+    override fun onNewWeatherData(weatherData: WeatherData) {
 
-        resettableManager.reset()
+        view.updateWeather(weatherData)
     }
+
+    override fun onWeatherRefreshFailure(exception: Exception?) {
+
+        exception?.let {
+            view.makeToast(exception.toString())
+        }
+    }
+
+    fun onRefreshButtonClick() {
+
+        weatherManager.refreshWeatherData(Random().nextDouble(), Random().nextDouble(), this)
+    }
+
+    override fun notifyOnDestroy(isFinishing: Boolean) {
+        weatherManager.removeOnNewWeatherListener(this)
+        weatherManager.removeOnWeatherRefreshFailureListener(this)
+        super.notifyOnDestroy(isFinishing)
+    }
+
 }

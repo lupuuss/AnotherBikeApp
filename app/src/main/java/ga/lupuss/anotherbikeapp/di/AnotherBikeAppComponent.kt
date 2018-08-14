@@ -8,6 +8,7 @@ import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
+import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import java.util.*
 import javax.inject.Scope
@@ -29,5 +30,5 @@ interface AnotherBikeAppComponent {
     fun providesStringResolver(): StringsResolver
     fun providesAuthInteractor(): AuthInteractor
     fun providesPreferencesInteractor(): PreferencesInteractor
-    fun providesWeatherApi(): WeatherApi
+    fun providesWeatherManager(): WeatherManager
 }
