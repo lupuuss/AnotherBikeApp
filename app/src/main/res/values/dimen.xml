@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mainLabelPadding">5dp</dimen>
+    <dimen name="mainLabelElevation">2dp</dimen>
+    <dimen name="mainLabelHeight">30dp</dimen>
+    <dimen name="mainLabelTextSize">15sp</dimen>
+</resources>

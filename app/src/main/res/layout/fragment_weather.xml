@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.modules.weather.WeatherFragment"
+    android:background="?android:colorPrimary">
+
+    <TextView
+        android:id="@+id/weatherLabel"
+        android:background="?android:colorPrimaryDark"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:height="@dimen/mainLabelHeight"
+        android:text="@string/weather"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:padding="@dimen/mainLabelPadding"
+        android:textSize="@dimen/mainLabelTextSize"
+        android:elevation="@dimen/mainLabelElevation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_refresh_24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weatherLabel"
+        android:contentDescription="@string/refresh"/>
+
+    <ImageView
+        android:background="@drawable/circle"
+        android:layout_marginTop="10dp"
+        android:id="@+id/weatherImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weatherLabel"
+        android:src="@drawable/ic_warning_black_24dp"
+        tools:ignore="ContentDescription"
+        android:padding="20dp"/>
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/weatherImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="-"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noDataAvailable"
+        app:layout_constraintTop_toBottomOf="@id/temperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="10dp"/>
+
+</android.support.constraint.ConstraintLayout>

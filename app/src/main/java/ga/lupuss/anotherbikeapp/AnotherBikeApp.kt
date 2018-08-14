@@ -28,6 +28,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.DaggerTrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingComponent
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingModule
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingView
+import ga.lupuss.anotherbikeapp.ui.modules.weather.DaggerWeatherComponent
+import ga.lupuss.anotherbikeapp.ui.modules.weather.WeatherComponent
+import ga.lupuss.anotherbikeapp.ui.modules.weather.WeatherModule
+import ga.lupuss.anotherbikeapp.ui.modules.weather.WeatherView
 
 
 open class AnotherBikeApp : Application() {
@@ -122,6 +126,15 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .anotherBikeAppComponent(anotherBikeAppComponent)
                 .summaryModule(SummaryModule(summaryView))
+                .build()
+    }
+
+    open fun weatherComponent(weatherView: WeatherView): WeatherComponent {
+
+        return DaggerWeatherComponent
+                .builder()
+                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .weatherModule(WeatherModule(weatherView))
                 .build()
     }
 }

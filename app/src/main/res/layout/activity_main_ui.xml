@@ -11,6 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/routesHistoryLabel"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,19 +30,30 @@
             android:text="@string/startTracking"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <fragment
+                android:id="@+id/weatherFragment"
+                android:name="ga.lupuss.anotherbikeapp.ui.modules.weather.WeatherFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_weather" />
+        </FrameLayout>
     </LinearLayout>
 
     <TextView
+        android:height="@dimen/mainLabelHeight"
         android:id="@+id/routesHistoryLabel"
-        android:elevation="2dp"
+        android:elevation="@dimen/mainLabelElevation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?android:colorPrimaryDark"
-        android:padding="5dp"
+        android:padding="@dimen/mainLabelPadding"
         android:text="@string/routesHistory"
         android:textAllCaps="true"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="@dimen/mainLabelTextSize"
         app:layout_constraintTop_toBottomOf="@id/topView"
         app:layout_constraintBottom_toTopOf="@id/recyclerWrapper"
         app:layout_constraintStart_toStartOf="parent"

@@ -93,4 +93,6 @@
     <string name="messageUserNotExists">User with that email not exists!</string>
     <string name="passwordIsTooWeak">The password must be at least 6 characters long!</string>
     <string name="invalidCredentialsCreating">Incorrect email address format!</string>
+    <string name="weather">Weather</string>
+    <string name="refresh">Refresh</string>
 </resources>

@@ -82,4 +82,5 @@
     <string name="messageUserNotExists">Użytkownik z tym emailem nie istnieje!</string>
     <string name="prefIsMapThemeEnableTitle">Niestandardowy motyw mapy</string>
     <string name="prefIsMapThemeEnableSummary">Zezwalaj na niestandardowy motyw mapy</string>
+    <string name="weather">Pogoda</string>
 </resources>
