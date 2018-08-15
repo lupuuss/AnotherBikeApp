@@ -21,7 +21,8 @@
             android:text="@string/newAccount"
             android:textAlignment="center"
             android:layout_marginTop="70dp"
-            android:textSize="30sp"/>
+            android:textSize="@dimen/loginLabelTextSize"
+            tools:ignore="SpUsage" />
 
         <include layout="@layout/email_edit_text"
             android:id="@+id/emailEditInclude"
