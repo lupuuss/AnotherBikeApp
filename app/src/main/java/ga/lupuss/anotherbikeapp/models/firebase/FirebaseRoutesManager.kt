@@ -4,9 +4,9 @@ package ga.lupuss.anotherbikeapp.models.firebase
 import android.app.Activity
 import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
@@ -23,7 +23,7 @@ import java.util.*
 
 
 class FirebaseRoutesManager(
-        private val firebaseAuth: FirebaseAuth,
+        private val authInteractor: AuthInteractor,
         private val firebaseFirestore: FirebaseFirestore,
         private val routeKeeper: TempRouteKeeper,
         private val locale: Locale,
@@ -33,7 +33,7 @@ class FirebaseRoutesManager(
 ): RoutesManager {
 
     private val onRoutesChangedListeners = mutableListOf<OnDocumentChanged>()
-    private val userPath = "$FIREB_USERS/${firebaseAuth.currentUser!!.uid}"
+    private val userPath = "$FIREB_USERS/${authInteractor.userUid!!}"
     private val routesPath = "$userPath/$FIREB_ROUTES"
     private val routesQuery = firebaseFirestore
             .collection(routesPath)
@@ -169,7 +169,7 @@ class FirebaseRoutesManager(
 
         val newPointsRef = firebaseFirestore.collection(FIREB_POINTS).document()
         val newRouteRef = firebaseFirestore.collection(FIREB_ROUTES).document()
-        val userRef = firebaseFirestore.collection(FIREB_USERS).document(firebaseAuth.currentUser!!.uid)
+        val userRef = firebaseFirestore.collection(FIREB_USERS).document(authInteractor.userUid!!)
 
         firebaseFirestore
                 .batch()

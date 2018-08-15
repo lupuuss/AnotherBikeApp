@@ -4,10 +4,11 @@ import android.os.Handler
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.Component
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
+import ga.lupuss.anotherbikeapp.di.UserComponent
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsMathProvider
 import javax.inject.Scope
 
-@Component(dependencies = [AnotherBikeAppComponent::class], modules = [TrackingServiceModule::class])
+@Component(dependencies = [UserComponent::class], modules = [TrackingServiceModule::class])
 @TrackingServiceScope
 interface TrackingServiceComponent {
 

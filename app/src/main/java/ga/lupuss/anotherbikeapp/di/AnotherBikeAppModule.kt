@@ -28,21 +28,7 @@ class AnotherBikeAppModule {
 
     @Provides
     @AnotherBikeAppScope
-    fun providesRoutesManager(firebaseAuth: FirebaseAuth,
-                              routesKeeper: TempRouteKeeper,
-                              firebaseFirestore: FirebaseFirestore,
-                              locale: Locale,
-                              gson: Gson): RoutesManager =
-            FirebaseRoutesManager(firebaseAuth, firebaseFirestore, routesKeeper, locale, gson)
-
-    @Provides
-    @AnotherBikeAppScope
     fun providesAuthInteractor(firebaseAuth: FirebaseAuth): AuthInteractor = FirebaseAuthInteractor(firebaseAuth)
-
-    @Provides
-    @AnotherBikeAppScope
-    fun providesPreferencesInteractor(sharedPreferences: SharedPreferences, context: Context): PreferencesInteractor =
-            AndroidPreferencesInteractor(sharedPreferences, context)
 
     @Provides
     @AnotherBikeAppScope
@@ -80,9 +66,4 @@ class AnotherBikeAppModule {
                     .client(okHttpClient)
                     .build()
                     .create(WeatherApi::class.java)
-
-    @Provides
-    @AnotherBikeAppScope
-    fun providesWeatherManager(weatherApi: WeatherApi, timeProvider: () -> Long) =
-            WeatherManager(weatherApi, timeProvider)
 }

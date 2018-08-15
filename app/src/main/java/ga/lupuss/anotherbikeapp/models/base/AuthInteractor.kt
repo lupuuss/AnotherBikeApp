@@ -22,6 +22,8 @@ interface AuthInteractor {
         fun onSuccessNameChange()
     }
 
+    val userUid: String?
+
     fun login(email: String,
               password: String,
               onLoginDone: OnLoginDoneListener?,

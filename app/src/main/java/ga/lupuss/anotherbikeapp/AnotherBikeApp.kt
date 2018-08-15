@@ -42,6 +42,8 @@ open class AnotherBikeApp : Application() {
 
     lateinit var anotherBikeAppComponent: AnotherBikeAppComponent
 
+    var userComponent: UserComponent? = null
+
     companion object {
 
         fun get(application: Application): AnotherBikeApp {
@@ -88,11 +90,21 @@ open class AnotherBikeApp : Application() {
 
     protected open fun isInUnitTests() = false
 
+    fun initUserModule() {
+        userComponent = DaggerUserComponent.builder()
+                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .build()
+    }
+
+    fun destroyUserComponent() {
+        userComponent = null
+    }
+
     open fun trackingComponent(view: TrackingView, trackingServiceInteractor: TrackingServiceInteractor): TrackingComponent {
 
         return DaggerTrackingComponent
                 .builder()
-                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .userComponent(userComponent!!)
                 .trackingModule(TrackingModule(view, trackingServiceInteractor))
                 .build()
     }
@@ -119,7 +131,7 @@ open class AnotherBikeApp : Application() {
 
         return DaggerMainComponent
                 .builder()
-                .anotherBikeAppComponent(this.anotherBikeAppComponent)
+                .userComponent(userComponent!!)
                 .mainModule(MainModule(mainView))
                 .build()
     }
@@ -128,7 +140,7 @@ open class AnotherBikeApp : Application() {
 
         return DaggerSummaryComponent
                 .builder()
-                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .userComponent(userComponent!!)
                 .summaryModule(SummaryModule(summaryView))
                 .build()
     }
@@ -137,7 +149,7 @@ open class AnotherBikeApp : Application() {
 
         return DaggerWeatherComponent
                 .builder()
-                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .userComponent(userComponent!!)
                 .weatherModule(WeatherModule(weatherView))
                 .build()
     }
@@ -145,7 +157,7 @@ open class AnotherBikeApp : Application() {
     open fun routesHistoryComponent(routesHistoryView: RoutesHistoryView): RoutesHistoryComponent {
         return DaggerRoutesHistoryComponent
                 .builder()
-                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .userComponent(userComponent!!)
                 .routesHistoryModule(RoutesHistoryModule(routesHistoryView))
                 .build()
     }

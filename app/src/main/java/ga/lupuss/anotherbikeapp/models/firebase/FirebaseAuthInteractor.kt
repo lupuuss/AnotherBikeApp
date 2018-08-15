@@ -10,6 +10,9 @@ class FirebaseAuthInteractor(
         private val userProfileChangeBuilder :UserProfileChangeRequest.Builder = UserProfileChangeRequest.Builder()
 ) : AuthInteractor {
 
+    override val userUid
+        get() = firebaseAuth.currentUser?.uid
+
     override fun login(email: String, password: String, onLoginDone: AuthInteractor.OnLoginDoneListener?, requestOwner: Any?) {
 
         if (requestOwner !is Activity)

@@ -146,7 +146,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
         super.onCreate()
 
         DaggerTrackingServiceComponent.builder()
-                .anotherBikeAppComponent(AnotherBikeApp.get(this.application).anotherBikeAppComponent)
+                .userComponent(AnotherBikeApp.get(this.application).userComponent!!)
                 .build()
                 .inject(this)
 

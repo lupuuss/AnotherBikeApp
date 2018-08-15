@@ -2,13 +2,15 @@ package ga.lupuss.anotherbikeapp.models.android
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 
-class AndroidPreferencesInteractor(private val sharedPreferences: SharedPreferences,
-                                   context: Context) : PreferencesInteractor() {
+class AndroidPreferencesInteractor(context: Context) : PreferencesInteractor() {
+
+    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private val themeKey = context.getString(R.string.prefThemesKey)
     private val speedUnitKey = context.getString(R.string.prefUnitSpeedKey)

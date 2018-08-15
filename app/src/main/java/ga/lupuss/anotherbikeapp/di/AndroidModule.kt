@@ -26,11 +26,6 @@ class AndroidModule(context: Context) {
 
     @Provides
     @AnotherBikeAppScope
-    fun sharedPreferences(context: Context): SharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(context)
-
-    @Provides
-    @AnotherBikeAppScope
     fun androidStringResolver(context: Context): StringsResolver = AndroidStringsResolver(context)
 
     @Provides

@@ -14,7 +14,7 @@ class SettingsActivity : ThemedBaseActivity() {
 
         DaggerSettingsComponent
                 .builder()
-                .anotherBikeAppComponent((this.application as AnotherBikeApp).anotherBikeAppComponent)
+                .userComponent((this.application as AnotherBikeApp).userComponent!!)
                 .build()
                 .inject(this)
 
