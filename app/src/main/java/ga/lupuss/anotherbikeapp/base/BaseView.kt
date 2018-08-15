@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp.base
 
+import android.annotation.SuppressLint
+import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 
 interface BaseView {
@@ -10,4 +12,5 @@ interface BaseView {
     fun checkLocationPermission(): Boolean
     fun finishActivity()
     fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit)
+    fun getLastKnownLocation(): LatLng?
 }

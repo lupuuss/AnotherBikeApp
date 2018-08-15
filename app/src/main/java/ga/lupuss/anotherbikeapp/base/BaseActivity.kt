@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.base
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.Toast
+import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
@@ -121,5 +123,14 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
         return netInfo != null && netInfo.isConnectedOrConnecting
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun getLastKnownLocation(): LatLng {
+
+        val location = (getSystemService(Context.LOCATION_SERVICE) as LocationManager)
+                .getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+        return LatLng(location.latitude, location.longitude)
     }
 }

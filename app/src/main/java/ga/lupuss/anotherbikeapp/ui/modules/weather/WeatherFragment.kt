@@ -11,13 +11,26 @@ import android.view.ViewGroup
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.di.BaseFragment
+import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
+import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import kotlinx.android.synthetic.main.fragment_weather.*
 import javax.inject.Inject
 
 class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
 
+
+    override var isRefreshButtonVisible: Boolean = true
+        set(value) {
+
+            refreshButton?.isVisible = value
+        }
+
+    override var isRefreshProgressBarVisible: Boolean = false
+        set(value) {
+
+            refreshProgressBar?.isVisible = value
+        }
     @Inject
     lateinit var presenter: WeatherPresenter
 
@@ -59,7 +72,7 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
     override fun updateWeather(data: WeatherData) {
 
         description.text = data.forecast.first().description.capitalize()
-        temperature.text = data.forecast.first().temperature.toString() + " ℃"
+        temperature.text = Math.round(data.forecast.first().temperature).toString() + " ℃"
 
         locationText.text = data.location ?: requireContext().getString(R.string.nameNotAvailable)
 

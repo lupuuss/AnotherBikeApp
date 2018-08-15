@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
+import com.google.android.gms.maps.model.LatLng
+import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
@@ -22,12 +24,48 @@ class WeatherPresenter @Inject constructor(
         }
 
         weatherManager.addOnNewWeatherListener(this)
-        weatherManager.refreshWeatherData(52.173040, 20.268581, this)
+        refreshWeatherManager()
+    }
+
+    private fun refreshWeatherManager() {
+
+        fun refresh(latLng: LatLng?) {
+
+            if (latLng != null) {
+
+                weatherManager.refreshWeatherData(latLng.latitude, latLng.longitude, this)
+
+            } else {
+
+                view.postMessage(Message.LOCATION_NOT_AVAILABLE)
+            }
+        }
+
+        if (view.checkLocationPermission()) {
+
+            refresh(view.getLastKnownLocation())
+            return
+        }
+
+        view.requestLocationPermission {
+
+            if (it) {
+
+                refresh(view.getLastKnownLocation())
+
+            } else {
+
+                view.postMessage(Message.LOCATION_NOT_AVAILABLE)
+
+            }
+        }
     }
 
     override fun onNewWeatherData(weatherData: WeatherData) {
 
         view.updateWeather(weatherData)
+        view.isRefreshButtonVisible = true
+        view.isRefreshProgressBarVisible = false
     }
 
     override fun onWeatherRefreshFailure(exception: Exception?) {
@@ -35,11 +73,15 @@ class WeatherPresenter @Inject constructor(
         exception?.let {
             view.makeToast(exception.toString())
         }
+        view.isRefreshButtonVisible = true
+        view.isRefreshProgressBarVisible = false
     }
 
     fun onClickRefreshButton() {
 
-        weatherManager.refreshWeatherData(Random().nextDouble() * 90.0, Random().nextDouble() * 180.0, this)
+        view.isRefreshButtonVisible = false
+        view.isRefreshProgressBarVisible = true
+        refreshWeatherManager()
     }
 
     fun onClickLocationInfo() {
@@ -48,7 +90,6 @@ class WeatherPresenter @Inject constructor(
             view.redirectToGoogleMaps(it.lat, it.lng, it.location)
         }
     }
-
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
         weatherManager.removeOnNewWeatherListener(this)

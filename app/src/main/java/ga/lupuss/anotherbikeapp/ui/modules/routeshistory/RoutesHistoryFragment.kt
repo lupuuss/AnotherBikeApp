@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.di.BaseFragment
+import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
