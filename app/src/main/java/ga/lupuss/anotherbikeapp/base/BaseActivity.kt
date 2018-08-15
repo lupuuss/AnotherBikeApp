@@ -3,34 +3,28 @@ package ga.lupuss.anotherbikeapp.base
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.MenuItem
-import android.widget.Toast
 import android.net.ConnectivityManager
+import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.PermissionChecker
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import ga.lupuss.anotherbikeapp.AppTheme
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
+import android.view.MenuItem
+import android.widget.Toast
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import javax.inject.Inject
 
-
-abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteractor.OnThemeChangedListener {
+abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     private lateinit var toast: Toast
 
     @Inject
     lateinit var stringsResolver: StringsResolver
-
-    @Inject
-    lateinit var preferencesInteractor: PreferencesInteractor
 
     private val locationPermissionRequestCode = 1
     private var onLocationPermissionRequestResult: ((Boolean) -> Unit)? = null
@@ -46,8 +40,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         toast = Toast.makeText(this, "empty", Toast.LENGTH_LONG)
-        setTheme(preferencesInteractor.appTheme)
-        preferencesInteractor.addOnThemeChangedListener(this, this)
     }
 
     fun activateToolbar(toolbar: Toolbar) {
@@ -89,29 +81,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, PreferencesInteract
                     ?.invoke(grantResults[0] == PermissionChecker.PERMISSION_GRANTED)
         }
 
-    }
-
-    override fun onDestroy() {
-        preferencesInteractor.removeOnThemeChangedListener(this)
-        super.onDestroy()
-    }
-
-    private fun setTheme(theme: AppTheme) {
-
-        setTheme(when (theme) {
-            AppTheme.GREY -> R.style.GreyTheme
-            AppTheme.ORANGE -> R.style.OrangeTheme
-        })
-    }
-
-    private fun applyTheme(theme: AppTheme) {
-        setTheme(theme)
-        recreate()
-    }
-
-    override fun onThemeChanged(theme: AppTheme) {
-
-        applyTheme(theme)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

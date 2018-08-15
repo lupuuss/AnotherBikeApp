@@ -11,7 +11,7 @@ import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 
@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.activity_main_ui.*
  * Main user's interface.
  */
 class MainActivity
-    : BaseActivity(),
+    : ThemedBaseActivity(),
         MainView,
         AdapterView.OnItemClickListener {
 

@@ -17,7 +17,7 @@ import com.tinsuke.icekick.extension.unfreezeInstanceState
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.BaseMapActivity
+import ga.lupuss.anotherbikeapp.base.ThemedBaseMapActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 
 class TrackingActivity
-    : BaseMapActivity(),
+    : ThemedBaseMapActivity(),
         TrackingView,
         ViewTreeObserver.OnGlobalLayoutListener,
         OnMapAndLayoutReady.Listener {

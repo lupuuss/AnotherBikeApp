@@ -5,7 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.os.Bundle
 import com.nhaarman.mockito_kotlin.*
-import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
@@ -16,7 +16,7 @@ class AndroidTrackingServiceGovernorTest {
 
     private val notificationManager: NotificationManager = mock { }
     private val trackingServiceGovernor = AndroidTrackingServiceGovernor(mock { }, mock { })
-    private val parentActivity: BaseActivity = mock {
+    private val parentActivity: ThemedBaseActivity = mock {
 
         on { checkLocationPermission() }.then { true }
         on { getSystemService(Service.NOTIFICATION_SERVICE) }.then{ notificationManager }
@@ -142,7 +142,7 @@ class AndroidTrackingServiceGovernorTest {
     @Test
     fun startTracking_shouldInitTracking_whenUserAcceptedPermission() {
 
-        val parentActivity = mock<BaseActivity> {
+        val parentActivity = mock<ThemedBaseActivity> {
             on { checkLocationPermission() }.then { false }
             on { requestLocationPermission(any()) }
                     .then { (it.getArgument(0) as ((Boolean) -> Unit)?)?.invoke(true) } // imitates user's consent
@@ -159,7 +159,7 @@ class AndroidTrackingServiceGovernorTest {
     @Test
     fun startTracking_shouldTriggerCallback_whenUserRejectPermission() {
 
-        val parentActivity = mock<BaseActivity> {
+        val parentActivity = mock<ThemedBaseActivity> {
             on { checkLocationPermission() }.then { false }
             on { requestLocationPermission(any()) }
                     .then { (it.getArgument(0) as ((Boolean) -> Unit)?)?.invoke(false) } // imitates user's rejection

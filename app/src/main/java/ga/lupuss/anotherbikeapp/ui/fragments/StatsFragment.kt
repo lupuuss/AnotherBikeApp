@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
@@ -28,7 +28,7 @@ class StatsFragment : Fragment() {
                 as ScrollView
         layout = mainView.findViewById(R.id.statsContainer)
 
-        stringsResolver = (this.activity as BaseActivity).stringsResolver
+        stringsResolver = (this.activity as ThemedBaseActivity).stringsResolver
 
         return mainView
     }

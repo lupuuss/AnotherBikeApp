@@ -9,7 +9,7 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
 import ga.lupuss.anotherbikeapp.kotlin.Resettable
 import ga.lupuss.anotherbikeapp.kotlin.ResettableManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
@@ -29,7 +29,7 @@ class AndroidTrackingServiceGovernor(
 
 
     private val resettableManager = ResettableManager()
-    private var serviceParentActivity: BaseActivity by Resettable(resettableManager)
+    private var serviceParentActivity: ThemedBaseActivity by Resettable(resettableManager)
 
     override var serviceBinder: TrackingService.ServiceBinder? = null
         private set
@@ -40,7 +40,7 @@ class AndroidTrackingServiceGovernor(
 
     private var onServiceConnected: OnTrackingRequestDone? = null
 
-    fun init(parentActivity: BaseActivity, savedInstanceState: Bundle?) {
+    fun init(parentActivity: ThemedBaseActivity, savedInstanceState: Bundle?) {
 
         serviceParentActivity = parentActivity
 
