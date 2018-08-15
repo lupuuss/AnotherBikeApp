@@ -37,15 +37,22 @@ class WeatherPresenter @Inject constructor(
         }
     }
 
-    fun onRefreshButtonClick() {
+    fun onClickRefreshButton() {
 
         weatherManager.refreshWeatherData(Random().nextDouble() * 90.0, Random().nextDouble() * 180.0, this)
     }
+
+    fun onClickLocationInfo() {
+
+        weatherManager.lastWeatherData?.let {
+            view.redirectToGoogleMaps(it.lat, it.lng, it.location)
+        }
+    }
+
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
         weatherManager.removeOnNewWeatherListener(this)
         weatherManager.removeOnWeatherRefreshFailureListener(this)
         super.notifyOnDestroy(isFinishing)
     }
-
 }

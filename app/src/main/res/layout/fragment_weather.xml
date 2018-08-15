@@ -8,33 +8,39 @@
     android:background="?android:colorPrimary"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/locationText"
-        android:text="@string/locationNotAvailableShort"
-        android:textSize="15sp"
+    <LinearLayout
+        android:id="@+id/locationInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
+        android:orientation="vertical"
+        android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/weatherImage"/>
+        app:layout_constraintEnd_toStartOf="@id/weatherImage">
 
-    <TextView
-        android:id="@+id/coordsText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginTop="10dp"
-        android:text="-"
-        app:layout_constraintTop_toBottomOf="@id/locationText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/weatherImage"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/locationText"
+            android:text="@string/locationNotAvailableShort"
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <TextView
+            android:id="@+id/coordsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:text="-"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/refreshButton"

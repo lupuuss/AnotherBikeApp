@@ -2,11 +2,12 @@ package ga.lupuss.anotherbikeapp.ui.modules.weather
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
@@ -29,14 +30,13 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        makeToast("EchoxD")
         return inflater.inflate(R.layout.fragment_weather, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        makeToast("Echo")
         refreshButton.setOnClickListener(this)
+        locationInfo.setOnClickListener(this)
         presenter.notifyOnViewReady()
     }
 
@@ -45,7 +45,12 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
         when(p0!!.id) {
             R.id.refreshButton -> {
 
-                presenter.onRefreshButtonClick()
+                presenter.onClickRefreshButton()
+            }
+
+            R.id.locationInfo -> {
+
+                presenter.onClickLocationInfo()
             }
         }
     }
@@ -53,13 +58,10 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
     @SuppressLint("SetTextI18n")
     override fun updateWeather(data: WeatherData) {
 
-        description.text = data.forecast.first().description
+        description.text = data.forecast.first().description.capitalize()
         temperature.text = data.forecast.first().temperature.toString() + " ℃"
 
-        locationText.text = if (data.location != null)
-            data.location
-        else
-            requireContext().getString(R.string.nameNotAvailable)
+        locationText.text = data.location ?: requireContext().getString(R.string.nameNotAvailable)
 
         coordsText.text = "${data.lat}, ${data.lng}"
 
@@ -69,6 +71,16 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
                         "drawable", requireContext().packageName
                 )
         )
+    }
+
+    override fun redirectToGoogleMaps(lat: Double, lng: Double, name: String?) {
+
+        val nameVal = name ?: getString(R.string.unknownLocation)
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=$lat,$lng($nameVal)"))
+        intent.resolveActivity(context!!.packageManager)?.let {
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {

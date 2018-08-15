@@ -86,4 +86,5 @@
     <string name="refresh">Odśwież</string>
     <string name="locationNotAvailableShort">Lokalizacja nie jest dostęna…</string>
     <string name="nameNotAvailable">Nazwa lokalizacji nie jest znana</string>
+    <string name="unknownLocation">Nieznana lokalizacja</string>
 </resources>

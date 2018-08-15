@@ -6,4 +6,5 @@ import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 interface WeatherView : BaseView {
 
     fun updateWeather(data: WeatherData)
+    fun redirectToGoogleMaps(lat: Double, lng: Double, name: String?)
 }
