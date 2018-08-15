@@ -54,6 +54,14 @@ class WeatherFragment : Fragment(), WeatherView, View.OnClickListener {
 
         description.text = data.forecast.first().description
         temperature.text = data.forecast.first().temperature.toString() + " ℃"
+
+        locationText.text = if (data.location != null)
+            data.location
+        else
+            requireContext().getString(R.string.nameNotAvailable)
+
+        coordsText.text = "${data.lat}, ${data.lng}"
+
         weatherImage.setImageResource(
                 requireContext().resources.getIdentifier(
                         "weather${data.forecast.first().iconName}",

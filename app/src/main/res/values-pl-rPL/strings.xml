@@ -83,4 +83,7 @@
     <string name="prefIsMapThemeEnableTitle">Niestandardowy motyw mapy</string>
     <string name="prefIsMapThemeEnableSummary">Zezwalaj na niestandardowy motyw mapy</string>
     <string name="weather">Pogoda</string>
+    <string name="refresh">Odśwież</string>
+    <string name="locationNotAvailableShort">Lokalizacja nie jest dostęna…</string>
+    <string name="nameNotAvailable">Nazwa lokalizacji nie jest znana</string>
 </resources>

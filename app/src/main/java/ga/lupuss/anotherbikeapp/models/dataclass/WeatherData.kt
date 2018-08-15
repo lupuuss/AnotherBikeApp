@@ -8,6 +8,9 @@ class WeatherData(
 ) {
 
     val forecast = mutableListOf<WeatherUnit>()
+    val location: String?
+    val lat: Double
+    val lng: Double
 
     init {
 
@@ -25,6 +28,14 @@ class WeatherData(
                             description = it.weather.first().description)
             )
         }
+
+        lat = weatherData.city.coord.lat
+        lng = weatherData.city.coord.lon
+
+        location = if (weatherData.city.country != null)
+            "${weatherData.city.name}, ${weatherData.city.country}"
+        else
+            null
     }
 
     data class WeatherUnit(

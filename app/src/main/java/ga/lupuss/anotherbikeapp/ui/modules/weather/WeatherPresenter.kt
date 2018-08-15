@@ -41,7 +41,7 @@ class WeatherPresenter @Inject constructor(
 
     fun onRefreshButtonClick() {
 
-        weatherManager.refreshWeatherData(Random().nextDouble(), Random().nextDouble(), this)
+        weatherManager.refreshWeatherData(Random().nextDouble() * 90.0, Random().nextDouble() * 180.0, this)
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {

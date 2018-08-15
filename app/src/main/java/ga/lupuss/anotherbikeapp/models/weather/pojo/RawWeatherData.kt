@@ -10,7 +10,7 @@ data class RawWeatherData(
             var id: Int,
             var name: String,
             var coord: Coord,
-            var country: String,
+            var country: String?,
             var population: Int
     ) {
         data class Coord(

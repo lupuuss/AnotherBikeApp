@@ -5,48 +5,59 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.modules.weather.WeatherFragment"
-    android:background="?android:colorPrimary">
+    android:background="?android:colorPrimary"
+    android:padding="10dp">
 
     <TextView
-        android:id="@+id/weatherLabel"
-        android:background="?android:colorPrimaryDark"
+        android:id="@+id/locationText"
+        android:text="@string/locationNotAvailableShort"
+        android:textSize="15sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:height="@dimen/mainLabelHeight"
-        android:text="@string/weather"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:padding="@dimen/mainLabelPadding"
-        android:textSize="@dimen/mainLabelTextSize"
-        android:elevation="@dimen/mainLabelElevation"
-        app:layout_constraintTop_toTopOf="parent"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weatherImage"/>
+
+    <TextView
+        android:id="@+id/coordsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:text="-"
+        app:layout_constraintTop_toBottomOf="@id/locationText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weatherImage"
+        tools:ignore="HardcodedText" />
 
     <ImageButton
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_refresh_24dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weatherLabel"
+        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/refresh" />
 
     <ImageView
-        android:background="@drawable/circle"
-        android:layout_marginTop="10dp"
         android:id="@+id/weatherImage"
+        android:background="@drawable/circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weatherLabel"
+        app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_priority_high_64dp"
         tools:ignore="ContentDescription"
         android:padding="20dp"/>
+
     <TextView
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
