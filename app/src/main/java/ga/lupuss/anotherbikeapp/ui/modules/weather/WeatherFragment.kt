@@ -3,21 +3,19 @@ package ga.lupuss.anotherbikeapp.ui.modules.weather
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
-import ga.lupuss.anotherbikeapp.Message
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.BaseActivity
+import ga.lupuss.anotherbikeapp.di.BaseFragment
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import kotlinx.android.synthetic.main.fragment_weather.*
 import javax.inject.Inject
 
-class WeatherFragment : Fragment(), WeatherView, View.OnClickListener {
+class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
 
     @Inject
     lateinit var presenter: WeatherPresenter
@@ -31,12 +29,15 @@ class WeatherFragment : Fragment(), WeatherView, View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_weather, container, false)
+        makeToast("EchoxD")
+        return inflater.inflate(R.layout.fragment_weather, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        makeToast("Echo")
+        refreshButton.setOnClickListener(this)
         presenter.notifyOnViewReady()
-        view.findViewById<ImageButton>(R.id.refreshButton).setOnClickListener(this)
-
-        return view
     }
 
     override fun onClick(p0: View?) {
@@ -70,27 +71,9 @@ class WeatherFragment : Fragment(), WeatherView, View.OnClickListener {
         )
     }
 
-    override fun postMessage(message: Message) {
-        (activity as? BaseActivity)?.postMessage(message)
-    }
+    override fun onDestroyView() {
+        super.onDestroyView()
 
-    override fun makeToast(str: String) {
-        (activity as? BaseActivity)?.makeToast(str)
-    }
-
-    override fun isOnline(): Boolean {
-        return (activity as? BaseActivity)?.isOnline() ?: false
-    }
-
-    override fun checkLocationPermission(): Boolean {
-        return  (activity as? BaseActivity)?.checkLocationPermission() ?: false
-    }
-
-    override fun finishActivity() {
-        (activity as? BaseActivity)?.finishActivity()
-    }
-
-    override fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
-        (activity as? BaseActivity)?.requestLocationPermission(onLocationPermissionRequestResult)
+        presenter.notifyOnDestroy(true)
     }
 }

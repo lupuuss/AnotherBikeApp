@@ -20,6 +20,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.main.DaggerMainComponent
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainComponent
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainModule
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainView
+import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.DaggerRoutesHistoryComponent
+import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryComponent
+import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryModule
+import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryView
 import ga.lupuss.anotherbikeapp.ui.modules.summary.DaggerSummaryComponent
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryComponent
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryModule
@@ -135,6 +139,14 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .anotherBikeAppComponent(anotherBikeAppComponent)
                 .weatherModule(WeatherModule(weatherView))
+                .build()
+    }
+
+    open fun routesHistoryComponent(routesHistoryView: RoutesHistoryView): RoutesHistoryComponent {
+        return DaggerRoutesHistoryComponent
+                .builder()
+                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .routesHistoryModule(RoutesHistoryModule(routesHistoryView))
                 .build()
     }
 }

@@ -3,8 +3,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.main
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.*
-import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
-import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingPresenter
 import timber.log.Timber
 
@@ -13,37 +11,23 @@ import timber.log.Timber
  */
 class MainPresenter(private val routesManager: RoutesManager,
                     private val authInteractor: AuthInteractor,
-                    private val preferencesInteractor: PreferencesInteractor,
                     private val trackingServiceGovernor: TrackingServiceGovernor,
                     mainView: MainView)
     :   Presenter<MainView>(),
-        OnDocumentChanged,
         TrackingServiceGovernor.OnServiceActivityChangesListener,
-        PreferencesInteractor.OnUnitChangedListener,
-        RoutesManager.OnRequestMoreShortRouteDataListener,
         TrackingServiceGovernor.OnTrackingRequestDone {
 
     init {
         this.view = mainView
     }
 
-    var speedUnit: Statistic.Unit = preferencesInteractor.speedUnit
-    var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
-
-    private var loadMoreAvailable = true
-
     override fun notifyOnViewReady() {
         super.notifyOnViewReady()
 
         view.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
-        view.isNoDataTextVisible = false
         view.setDrawerHeaderInfo(authInteractor.getDisplayName(), authInteractor.getEmail())
 
-        preferencesInteractor.addOnUnitChangedListener(this, this)
         trackingServiceGovernor.addOnServiceActivityChangesListener(this, this)
-        routesManager.addRoutesDataChangedListener(this)
-
-        onLoadMoreRequest()
     }
 
     override fun notifyOnResult(requestCode: Int, resultCode: Int) {
@@ -90,50 +74,6 @@ class MainPresenter(private val routesManager: RoutesManager,
 
         super.notifyOnDestroy(isFinishing)
         trackingServiceGovernor.removeOnServiceActivityChangesListener(this)
-        routesManager.removeOnRoutesDataChangedListener(this)
-        preferencesInteractor.removeOnUnitChangedListener(this)
-    }
-
-    fun notifyRecyclerReachedBottom() {
-
-        onLoadMoreRequest()
-    }
-
-    private fun onLoadMoreRequest() {
-
-        if (loadMoreAvailable) {
-
-            view.isProgressBarVisible = true
-
-            routesManager.requestMoreShortRouteData(this, view)
-        }
-    }
-
-    override fun onDataEnd() {
-
-        view.isProgressBarVisible = false
-
-        loadMoreAvailable = false
-
-        if (routesManager.shortRouteDataCount() == 0)
-            view.isNoDataTextVisible = true
-
-    }
-
-    override fun onFail(exception: Exception) {
-
-        view.isProgressBarVisible = false
-        Timber.e(exception)
-    }
-
-    fun onClickShortRoute(position: Int) {
-
-        view.startSummaryActivity(
-                routesManager.routeReferenceSerializer.serialize(
-                        routesManager.getRouteReference(position)
-                )
-        )
-
     }
 
     fun onClickTrackingButton() {
@@ -178,10 +118,6 @@ class MainPresenter(private val routesManager: RoutesManager,
         view.finishActivity()
     }
 
-    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
-
-    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.shortRouteDataCount()
-
     fun onExitRequest() {
 
         if (view.isDrawerLayoutOpened) {
@@ -197,33 +133,6 @@ class MainPresenter(private val routesManager: RoutesManager,
 
             view.showExitWarningDialog({ view.finishActivity() })
         }
-    }
-
-    override fun onNewDocument(position: Int) {
-
-        view.isNoDataTextVisible = false
-        view.notifyRecyclerItemInserted(position, routesManager.shortRouteDataCount())
-    }
-
-    override fun onDocumentModified(position: Int) {
-        view.notifyRecyclerItemChanged(position)
-    }
-
-    override fun onDocumentDeleted(position: Int) {
-        view.notifyRecyclerItemRemoved(position, routesManager.shortRouteDataCount())
-
-        if (routesManager.shortRouteDataCount() == 0) {
-
-            view.isNoDataTextVisible = true
-        }
-    }
-
-    override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
-
-        this.speedUnit = speedUnit
-        this.distanceUnit = distanceUnit
-
-        view.refreshRecyclerAdapter()
     }
 
     class Request {

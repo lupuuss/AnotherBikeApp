@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.models.firebase
 
 
 import android.app.Activity
+import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -67,13 +68,20 @@ class FirebaseRoutesManager(
 
     override fun requestMoreShortRouteData(onRequestMoreShortRouteDataListener: RoutesManager.OnRequestMoreShortRouteDataListener?, requestOwner: Any?) {
 
-        if (requestOwner !is Activity)
+        var owner = requestOwner
+
+        if (owner is Fragment) {
+
+            owner = owner.requireActivity()
+        }
+
+        if (owner !is Activity)
             throw IllegalArgumentException("Request owner should be an activity!")
 
         queryManager.loadMoreDocuments(
                 { onRequestMoreShortRouteDataListener?.onDataEnd() },
                 { onRequestMoreShortRouteDataListener?.onFail(it) },
-                requestOwner
+                owner
         )
     }
 

@@ -7,21 +7,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
-import ga.lupuss.anotherbikeapp.dpToPixels
-import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
-import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 
 import timber.log.Timber
 import javax.inject.Inject
-import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AlertDialog
 import android.widget.AdapterView
 import android.widget.TextView
@@ -29,8 +24,6 @@ import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.extensions.addOnAnimationEndListener
-import ga.lupuss.anotherbikeapp.ui.extensions.isGone
-import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,8 +36,7 @@ import kotlinx.android.synthetic.main.activity_main_ui.*
 class MainActivity
     : BaseActivity(),
         MainView,
-        AdapterView.OnItemClickListener,
-        RoutesHistoryRecyclerViewAdapter.OnItemClickListener {
+        AdapterView.OnItemClickListener {
 
     enum class ItemName {
         SIGN_OUT, SETTINGS
@@ -73,16 +65,6 @@ class MainActivity
             Pair(ItemName.SIGN_OUT, StrIconRes(R.string.signOut, R.drawable.ic_sign_out_24dp)),
             Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
     )
-
-    override var isNoDataTextVisible: Boolean = true
-        set(value){ noDataText?.isVisible = value }
-
-
-    override var isRoutesHistoryVisible: Boolean = true
-        set(value) { routesHistoryRecycler?.isVisible = value }
-
-    override var isProgressBarVisible: Boolean = true
-        set(value) { recyclerProgressBar?.isGone = !value }
 
     override var isDrawerLayoutOpened = false
         get() = drawerLayout?.isDrawerOpen(GravityCompat.START) ?: false
@@ -120,30 +102,6 @@ class MainActivity
 
         drawerListView.adapter = DrawerListViewAdapter(drawerListViewChildren, layoutInflater)
         drawerListView.onItemClickListener = this
-
-        val recyclerViewAdapter = RoutesHistoryRecyclerViewAdapter(
-                mainPresenter::onHistoryRecyclerItemRequest,
-                mainPresenter::onHistoryRecyclerItemCountRequest,
-                mainPresenter::speedUnit,
-                mainPresenter::distanceUnit,
-                stringsResolver
-        )
-
-        recyclerViewAdapter.setOnItemClickListener(this)
-
-        routesHistoryRecycler.apply {
-            setItemViewCacheSize(10)
-            isNestedScrollingEnabled = false
-            this.adapter = recyclerViewAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            addItemDecoration(BottomSpaceItemDecoration(dpToPixels(this@MainActivity, 5F)))
-        }
-
-        recyclerWrapper.setOnScrollChangeListener({ v: NestedScrollView?, _, _, _, _ ->
-
-            if (!v!!.canScrollVertically(1))
-                mainPresenter.notifyRecyclerReachedBottom()
-        })
 
         mainPresenter.notifyOnViewReady()
     }
@@ -193,12 +151,6 @@ class MainActivity
         return animator
     }
 
-    // Recycler View
-    override fun onItemClick(position: Int) {
-
-        mainPresenter.onClickShortRoute(position)
-    }
-
     // Drawer Layout
     override fun onItemClick(adapterView: AdapterView<*>, view: View?, i: Int, l: Long) {
 
@@ -228,25 +180,6 @@ class MainActivity
         trackingButton.setText(
                 if (trackingInProgress) R.string.continueTracking else R.string.startTracking
         )
-    }
-
-    override fun refreshRecyclerAdapter() {
-        routesHistoryRecycler.adapter.notifyDataSetChanged()
-    }
-
-    override fun notifyRecyclerItemChanged(position: Int) {
-
-        routesHistoryRecycler.adapter.notifyItemChanged(position)
-    }
-
-    override fun notifyRecyclerItemRemoved(position: Int, size: Int) {
-        routesHistoryRecycler.adapter.notifyItemRemoved(position)
-        routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
-    }
-
-    override fun notifyRecyclerItemInserted(position: Int, size: Int) {
-        routesHistoryRecycler.adapter.notifyItemInserted(position)
-        routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
     }
 
     override fun setDrawerHeaderInfo(displayName: String?, email: String?) {
@@ -305,11 +238,6 @@ class MainActivity
     override fun startSummaryActivity() {
 
         startActivity(SummaryActivity.newIntent(this))
-    }
-
-    override fun startSummaryActivity(docRef: String) {
-
-        startActivity(SummaryActivity.newIntent(this, docRef))
     }
 
     companion object {

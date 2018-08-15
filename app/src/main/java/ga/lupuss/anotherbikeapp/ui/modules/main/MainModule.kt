@@ -25,7 +25,6 @@ class MainModule(view: MainView) {
     @MainComponentScope
     fun providesMainPresenter(routesManager: RoutesManager,
                               authInteractor: AuthInteractor,
-                              preferencesInteractor: PreferencesInteractor
-                              , trackingServiceGovernor: TrackingServiceGovernor): MainPresenter =
-            MainPresenter(routesManager, authInteractor, preferencesInteractor, trackingServiceGovernor, mainView)
+                              trackingServiceGovernor: TrackingServiceGovernor): MainPresenter =
+            MainPresenter(routesManager, authInteractor, trackingServiceGovernor, mainView)
 }

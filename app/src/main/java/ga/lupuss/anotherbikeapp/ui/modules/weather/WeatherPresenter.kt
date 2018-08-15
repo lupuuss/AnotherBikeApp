@@ -1,8 +1,6 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.kotlin.Resettable
-import ga.lupuss.anotherbikeapp.kotlin.ResettableManager
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
 import java.util.*

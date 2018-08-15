@@ -4,4 +4,5 @@
     <dimen name="mainLabelElevation">2dp</dimen>
     <dimen name="mainLabelHeight">30dp</dimen>
     <dimen name="mainLabelTextSize">15sp</dimen>
+    <dimen name="mainUiMargin">20dp</dimen>
 </resources>
