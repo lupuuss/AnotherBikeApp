@@ -20,7 +20,7 @@ class WeatherData(
                             windSpeed = it.wind.speed,
                             windDeg = it.wind.deg,
                             clouds = it.clouds.all,
-                            rainVolume = it.rain.h,
+                            rainVolume = it.rain?.h ?: 0.0,
                             iconName = it.weather.first().icon,
                             description = it.weather.first().description)
             )
