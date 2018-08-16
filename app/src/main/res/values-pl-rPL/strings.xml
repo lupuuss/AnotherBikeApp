@@ -60,8 +60,8 @@
     <string name="exit">Wyjdź</string>
     <string name="prefThemesTitle">Motyw</string>
     <string name="prefThemesSummary">Zmień motyw</string>
-    <string name="themeGrey">Szary</string>
-    <string name="themeOrange">Pomarańczowy</string>
+    <string name="themeDark">Ciemny</string>
+    <string name="themeLight">Jasny</string>
     <string name="open">Otwórz</string>
     <string name="close">Zamknij</string>
     <string name="prefUnitDistanceTitle">Jednostka odległości</string>

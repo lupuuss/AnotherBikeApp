@@ -54,7 +54,7 @@ class AndroidPreferencesInteractor(context: Context) : PreferencesInteractor() {
             sharedPreferences.getBoolean(key, defaultValue)
 
     override var appTheme: AppTheme
-        get() = AppTheme.valueOf(getPref(themeKey, AppTheme.GREY.toString()))
+        get() = AppTheme.valueOf(getPref(themeKey, AppTheme.LIGHT.toString()))
         set(value) {
             putPref(themeKey, value.toString())
         }

@@ -6,7 +6,7 @@
         android:summary="@string/prefThemesSummary"
         android:entries="@array/themes"
         android:entryValues="@array/themeKeys"
-        android:defaultValue="GREY"/>
+        android:defaultValue="DARK"/>
 
     <!--suppress AndroidElementNotAllowed -->
     <SwitchPreferenceCompat

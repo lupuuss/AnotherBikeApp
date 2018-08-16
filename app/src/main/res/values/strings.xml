@@ -81,8 +81,8 @@
     <string name="prefIsMapThemeEnableKey" translatable="false">isMapThemeEnable</string>
     <string name="prefIsMapThemeEnableTitle">Custom map theme</string>
     <string name="prefIsMapThemeEnableSummary">Enable custom map theme</string>
-    <string name="themeGrey">Grey</string>
-    <string name="themeOrange">Orange</string>
+    <string name="themeDark">Dark</string>
+    <string name="themeLight">Light</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="messageDeleteRouteWarning">Are you sure you want to delete this route?</string>

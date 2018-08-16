@@ -18,7 +18,7 @@ enum class Message {
 }
 
 enum class AppTheme {
-    GREY, ORANGE
+    LIGHT, DARK
 }
 
 enum class Text {

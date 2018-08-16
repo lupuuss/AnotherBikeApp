@@ -10,7 +10,7 @@
         android:id="@+id/toolbarMain"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        android:background="?android:colorPrimary"
+        android:background="?attr/colorSecondaryDark"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

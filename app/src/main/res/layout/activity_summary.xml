@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.modules.summary.SummaryActivity"
-    android:background="?android:colorAccent"
+    android:background="?android:colorPrimary"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarSummary"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        android:background="?android:colorPrimary"
+        android:background="?attr/colorSecondaryDark"
         app:title="@string/summary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/mapFrameSummary"/>
@@ -60,7 +60,7 @@
         android:elevation="2dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:indeterminateTint="?android:textColor"
+        android:indeterminateTint="?android:colorAccent"
         android:layout_margin="60dp"
         app:layout_constraintBottom_toBottomOf="@id/statsFragmentWrapper"
         app:layout_constraintTop_toTopOf="@id/statsFragmentWrapper"

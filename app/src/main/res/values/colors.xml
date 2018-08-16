@@ -3,19 +3,22 @@
 
     <color name="defaultGoogleCurrentLocationColor">#4285f4</color>
 
-    <!-- Grey theme -->
+    <!-- Dark theme -->
 
-    <color name="greyThemePrimaryColor">#424242</color>
-    <color name="greyThemePrimaryLightColor">#6d6d6d</color>
-    <color name="greyThemePrimaryLightColor2">#c86d6d6d</color>
-    <color name="greyThemePrimaryDarkColor">#1b1b1b</color>
-    <color name="greyThemePrimaryTextColor">#ffffff</color>
+    <color name="darkThemePrimaryColor">#303030</color>
+    <color name="darkThemePrimaryDarkColor">#1b1b1b</color>
+    <color name="darkThemeSecondaryDarkColor">#262626</color>
+    <color name="darkThemeAccentColor">#ac2200</color>
+    <color name="darkThemeSecondaryAccentColor">#800000</color>
+    <color name="darkThemeTextColor">#FFF</color>
 
-    <!-- Deep Orange theme -->
+    <!-- Light theme -->
 
-    <color name="orangeThemePrimaryColor">#dd2c00</color>
-    <color name="orangeThemePrimaryLightColor">#ff6434</color>
-    <color name="orangeThemePrimaryLightColor2">#c8ff6434</color>
-    <color name="orangeThemePrimaryDarkColor">#a30000</color>
-    <color name="orangeThemePrimaryTextColor">#ffffff</color>
+
+    <color name="lightThemePrimaryColor">#FFF</color>
+    <color name="lightThemePrimaryDarkColor">#b9b9b9</color>
+    <color name="lightThemeSecondaryDarkColor">#d6d6d6</color>
+    <color name="lightThemeAccentColor">#89caff</color>
+    <color name="lightThemeSecondaryAccentColor">#0d47a1</color>
+    <color name="lightThemeTextColor">#000</color>
 </resources>

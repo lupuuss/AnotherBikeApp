@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.modules.tracking.TrackingActivity"
-    android:background="?android:colorAccent"
+    android:background="?android:colorPrimary"
     android:animateLayoutChanges="true">
 
     <android.support.v7.widget.Toolbar
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         android:elevation="4dp"
-        android:background="?android:colorPrimary"
+        android:background="?colorSecondaryDark"
         app:title="@string/titleActivityTacking" />
 
     <ImageButton

@@ -29,8 +29,8 @@ abstract class ThemedBaseActivity : BaseActivity(), BaseView, PreferencesInterac
     private fun setTheme(theme: AppTheme) {
 
         setTheme(when (theme) {
-            AppTheme.GREY -> R.style.GreyTheme
-            AppTheme.ORANGE -> R.style.OrangeTheme
+            AppTheme.LIGHT -> R.style.LightTheme
+            AppTheme.DARK -> R.style.DarkTheme
         })
     }
 

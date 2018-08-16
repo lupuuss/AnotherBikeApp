@@ -126,10 +126,11 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     }
 
     @SuppressLint("MissingPermission")
-    override fun getLastKnownLocation(): LatLng {
+    override fun getLastKnownLocation(): LatLng? {
 
         val location = (getSystemService(Context.LOCATION_SERVICE) as LocationManager)
                 .getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                ?: return null
 
         return LatLng(location.latitude, location.longitude)
     }

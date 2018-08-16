@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="colorSecondaryDark" format="reference|color"/>
+    <attr name="colorSecondaryAccent" format="reference|color"/>
     <attr name="shortStatsBackground" format="reference|color" />
     <attr name="trackLineColor" format="reference|color"/>
     <attr name="markersColor" format="reference|color"/>

@@ -73,7 +73,7 @@ class TrackingNotification {
 
             builder = NotificationCompat.Builder(context, CHANNEL_STRING)
                     .setSmallIcon(R.drawable.ic_notification_24dp)
-                    .setColor(context.theme.getColorForAttr(R.attr.colorPrimaryDark))
+                    .setColor(context.theme.getColorForAttr(R.attr.colorAccent))
                     .setContentTitle(context.getString(R.string.trackingInProgress))
                     .setContentText(content)
                     .setContentIntent(onClick)

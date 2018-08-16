@@ -66,15 +66,13 @@
 
     <ImageView
         android:id="@+id/weatherImage"
-        android:background="@drawable/circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_priority_high_64dp"
-        tools:ignore="ContentDescription"
-        android:padding="20dp"/>
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/temperature"

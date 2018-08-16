@@ -8,4 +8,4 @@
     tools:ignore="HardcodedText"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="?android:colorAccent"/>
+    tools:background="?android:colorPrimary"/>
