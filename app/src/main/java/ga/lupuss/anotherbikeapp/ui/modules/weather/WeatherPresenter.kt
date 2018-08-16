@@ -1,11 +1,9 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
-import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
-import java.util.*
 import javax.inject.Inject
 
 class WeatherPresenter @Inject constructor(
@@ -29,21 +27,25 @@ class WeatherPresenter @Inject constructor(
 
     private fun refreshWeatherManager() {
 
-        fun refresh(latLng: LatLng?) {
+        fun tryToRefresh() {
 
-            if (latLng != null) {
+            view.requestSingleLocationUpdate { ok, location ->
 
-                weatherManager.refreshWeatherData(latLng.latitude, latLng.longitude, this)
+                if (ok) {
 
-            } else {
+                    weatherManager.refreshWeatherData(location.latitude, location.longitude, this)
 
-                view.postMessage(Message.LOCATION_NOT_AVAILABLE)
+                } else {
+
+                    onWeatherRefreshFailure(null)
+                    view.postMessage(Message.LOCATION_NOT_AVAILABLE)
+                }
             }
         }
 
         if (view.checkLocationPermission()) {
 
-            refresh(view.getLastKnownLocation())
+            tryToRefresh()
             return
         }
 
@@ -51,10 +53,11 @@ class WeatherPresenter @Inject constructor(
 
             if (it) {
 
-                refresh(view.getLastKnownLocation())
+                tryToRefresh()
 
             } else {
 
+                onWeatherRefreshFailure(null)
                 view.postMessage(Message.LOCATION_NOT_AVAILABLE)
 
             }

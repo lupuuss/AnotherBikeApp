@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.base
 
+import android.location.Location
 import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
@@ -37,7 +38,8 @@ abstract class BaseFragment : Fragment(), BaseView {
         (activity as? ThemedBaseActivity)?.requestLocationPermission(onLocationPermissionRequestResult)
     }
 
-    override fun getLastKnownLocation(): LatLng? {
-        return (activity as? BaseActivity)?.getLastKnownLocation()
+    override fun requestSingleLocationUpdate(onComplete: (Boolean, Location) -> Unit) {
+
+        (activity as? ThemedBaseActivity)?.requestSingleLocationUpdate(onComplete)
     }
 }

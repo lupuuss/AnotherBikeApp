@@ -3,7 +3,10 @@ package ga.lupuss.anotherbikeapp.base
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
+import android.location.LocationProvider
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -14,6 +17,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.Toast
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
@@ -126,12 +131,11 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     }
 
     @SuppressLint("MissingPermission")
-    override fun getLastKnownLocation(): LatLng? {
+    override fun requestSingleLocationUpdate(onComplete: (Boolean, Location) -> Unit) {
 
-        val location = (getSystemService(Context.LOCATION_SERVICE) as LocationManager)
-                .getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                ?: return null
+        LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnCompleteListener {
 
-        return LatLng(location.latitude, location.longitude)
+            onComplete.invoke(it.isSuccessful, it.result)
+        }
     }
 }
