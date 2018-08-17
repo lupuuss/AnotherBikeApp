@@ -22,7 +22,7 @@ class StartActivity : AppCompatActivity() {
             val intent: Intent = if (AnotherBikeApp.get(this.application)
                             .anotherBikeAppComponent.providesAuthInteractor().isUserLogged()) {
 
-                AnotherBikeApp.get(this.application).initUserModule()
+                AnotherBikeApp.get(this.application).initUserComponent()
                 MainActivity.newIntent(this)
 
             } else {

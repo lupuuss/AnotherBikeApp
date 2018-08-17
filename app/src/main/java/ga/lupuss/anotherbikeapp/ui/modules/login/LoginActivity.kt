@@ -100,7 +100,7 @@ class LoginActivity : BaseActivity(), LoginView {
 
     override fun startMainActivity() {
 
-        AnotherBikeApp.get(this.application).initUserModule()
+        AnotherBikeApp.get(this.application).initUserComponent()
         startActivity(MainActivity.newIntent(this))
     }
 

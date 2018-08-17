@@ -14,7 +14,7 @@ class SignInVerifier(private val authInteractor: AuthInteractor) {
 
             if (app.userComponent == null) {
 
-                app.initUserModule()
+                app.initUserComponent()
             }
         }
     }

@@ -96,7 +96,7 @@ open class AnotherBikeApp : Application() {
 
     protected open fun isInUnitTests() = false
 
-    fun initUserModule() {
+    fun initUserComponent() {
         userComponent = DaggerUserComponent.builder()
                 .anotherBikeAppComponent(anotherBikeAppComponent)
                 .build()
