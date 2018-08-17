@@ -12,6 +12,10 @@ class SettingsActivity : ThemedBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        AnotherBikeApp.get(application)
+                .signInVerifier
+                .verifySignedIn(this)
+
         DaggerSettingsComponent
                 .builder()
                 .userComponent((this.application as AnotherBikeApp).userComponent!!)

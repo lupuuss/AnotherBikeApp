@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
@@ -41,6 +42,10 @@ class RoutesHistoryFragment
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+
+        AnotherBikeApp.get(requireActivity().application)
+                .signInVerifier
+                .verifySignedIn(this.requireActivity() as BaseActivity)
 
         AnotherBikeApp
                 .get(requireActivity().application)

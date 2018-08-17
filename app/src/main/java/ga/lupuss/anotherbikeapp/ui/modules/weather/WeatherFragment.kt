@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
@@ -37,7 +38,14 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        AnotherBikeApp.get(this.activity!!.application).weatherComponent(this).inject(this)
+        AnotherBikeApp.get(requireActivity().application)
+                .signInVerifier
+                .verifySignedIn(this.requireActivity() as BaseActivity)
+
+        AnotherBikeApp
+                .get(this.activity!!.application)
+                .weatherComponent(this)
+                .inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

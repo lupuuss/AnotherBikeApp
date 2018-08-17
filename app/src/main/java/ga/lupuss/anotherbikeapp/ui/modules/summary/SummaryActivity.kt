@@ -82,6 +82,11 @@ class SummaryActivity : ThemedBaseMapActivity(), SummaryView, OnMapReadyCallback
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Dagger MUST be first
+
+        AnotherBikeApp.get(application)
+                .signInVerifier
+                .verifySignedIn(this)
+
         AnotherBikeApp.get(application)
                 .summaryComponent(this)
                 .inject(this)

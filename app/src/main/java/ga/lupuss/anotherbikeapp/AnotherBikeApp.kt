@@ -2,11 +2,13 @@ package ga.lupuss.anotherbikeapp
 
 import android.app.Application
 import android.content.Context
+import com.google.android.gms.signin.SignIn
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import ga.lupuss.anotherbikeapp.di.*
 import timber.log.Timber
 import com.squareup.leakcanary.RefWatcher
+import ga.lupuss.anotherbikeapp.models.SignInVerifier
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountComponent
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountModule
@@ -39,6 +41,8 @@ import ga.lupuss.anotherbikeapp.ui.modules.weather.WeatherView
 
 
 open class AnotherBikeApp : Application() {
+
+    lateinit var signInVerifier: SignInVerifier
 
     lateinit var anotherBikeAppComponent: AnotherBikeAppComponent
 
@@ -86,6 +90,8 @@ open class AnotherBikeApp : Application() {
         anotherBikeAppComponent
                 .providesTrackingNotification()
                 .initNotificationChannelOreo(this)
+
+        signInVerifier = SignInVerifier(anotherBikeAppComponent.providesAuthInteractor())
     }
 
     protected open fun isInUnitTests() = false
@@ -94,10 +100,6 @@ open class AnotherBikeApp : Application() {
         userComponent = DaggerUserComponent.builder()
                 .anotherBikeAppComponent(anotherBikeAppComponent)
                 .build()
-    }
-
-    fun destroyUserComponent() {
-        userComponent = null
     }
 
     open fun trackingComponent(view: TrackingView, trackingServiceInteractor: TrackingServiceInteractor): TrackingComponent {

@@ -97,6 +97,11 @@ class TrackingActivity
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //Dagger MUST be first
+
+        AnotherBikeApp.get(application)
+                .signInVerifier
+                .verifySignedIn(this)
+
         AnotherBikeApp
                 .get(this.application)
                 .trackingComponent(this, getIBinderFromIntent())
