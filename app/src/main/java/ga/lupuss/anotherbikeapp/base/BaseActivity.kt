@@ -71,15 +71,45 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
-    override fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
+    override fun provideLocationPermission(onLocationPermissionRequestResult: (isSuccessful: Boolean) -> Unit) {
 
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionRequestCode)
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-        this.onLocationPermissionRequestResult = onLocationPermissionRequestResult
+            onLocationPermissionRequestResult.invoke(true)
+
+        } else {
+
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionRequestCode)
+
+            this.onLocationPermissionRequestResult = onLocationPermissionRequestResult
+        }
+    }
+
+    override fun provideLocationPermission(onLocationPermissionGranted: () -> Unit, onLocationPermissionRefused: () -> Unit) {
+
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            onLocationPermissionGranted.invoke()
+
+        } else {
+
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionRequestCode)
+
+            this.onLocationPermissionRequestResult = {
+
+                if (it) {
+                    onLocationPermissionGranted.invoke()
+                } else {
+                    onLocationPermissionRefused.invoke()
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == locationPermissionRequestCode) {
@@ -87,7 +117,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
             onLocationPermissionRequestResult
                     ?.invoke(grantResults[0] == PermissionChecker.PERMISSION_GRANTED)
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -117,8 +146,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         makeToast(stringsResolver.resolve(message))
     }
 
-    override fun checkLocationPermission(): Boolean = this.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-
     override fun finishActivity() {
         finish()
     }
@@ -131,7 +158,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     }
 
     @SuppressLint("MissingPermission")
-    override fun requestSingleLocationUpdate(onComplete: (Boolean, Location) -> Unit) {
+    override fun requestSingleLocationUpdate(onComplete: (Boolean, Location?) -> Unit) {
 
         LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnCompleteListener {
 

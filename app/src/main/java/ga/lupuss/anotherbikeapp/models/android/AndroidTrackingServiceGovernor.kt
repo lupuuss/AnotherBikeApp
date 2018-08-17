@@ -82,31 +82,25 @@ class AndroidTrackingServiceGovernor(
 
     override fun startTracking(onTrackingRequestDone: OnTrackingRequestDone?) {
 
-        fun initTracking(){
+        if(serviceBinder != null) {
 
-            onServiceConnected = onTrackingRequestDone
-            startTrackingService()
-            bindTrackingService()
+            onTrackingRequestDone?.onTrackingRequestDone() // Tracking activity connected to existing service
+            return
         }
 
-        when {
-            serviceBinder != null -> onTrackingRequestDone?.onTrackingRequestDone() // Tracking activity connected to existing service
+        serviceParentActivity.provideLocationPermission {
 
-            serviceParentActivity.checkLocationPermission() -> initTracking() // Starting new tracking service and tracking activity
+            if (it) {
 
-            else -> serviceParentActivity.requestLocationPermission {
-                if (it) {
+                onServiceConnected = onTrackingRequestDone
+                startTrackingService()
+                bindTrackingService()
 
-                    initTracking()
+            } else {
 
-                } else {
-
-                    onTrackingRequestDone?.onTrackingRequestNoPermission()
-                }
+                onTrackingRequestDone?.onTrackingRequestNoPermission()
             }
         }
-
-
     }
 
     private fun startTrackingService() {

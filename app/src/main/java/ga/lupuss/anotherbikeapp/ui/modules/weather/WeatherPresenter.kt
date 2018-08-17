@@ -27,41 +27,25 @@ class WeatherPresenter @Inject constructor(
 
     private fun refreshWeatherManager() {
 
-        fun tryToRefresh() {
+        view.provideLocationPermission(
+                onLocationPermissionGranted = {
 
-            view.requestSingleLocationUpdate { ok, location ->
+                    view.requestSingleLocationUpdate { ok, location ->
 
-                if (ok) {
+                        if (ok && location != null) {
 
-                    weatherManager.refreshWeatherData(location.latitude, location.longitude, this)
+                            weatherManager.refreshWeatherData(location.latitude, location.longitude, this)
+                        } else {
 
-                } else {
-
+                            onWeatherRefreshFailure(null)
+                            view.postMessage(Message.LOCATION_NOT_AVAILABLE)
+                        }
+                    }
+                },
+                onLocationPermissionRefused = {
                     onWeatherRefreshFailure(null)
                     view.postMessage(Message.LOCATION_NOT_AVAILABLE)
-                }
-            }
-        }
-
-        if (view.checkLocationPermission()) {
-
-            tryToRefresh()
-            return
-        }
-
-        view.requestLocationPermission {
-
-            if (it) {
-
-                tryToRefresh()
-
-            } else {
-
-                onWeatherRefreshFailure(null)
-                view.postMessage(Message.LOCATION_NOT_AVAILABLE)
-
-            }
-        }
+                })
     }
 
     override fun onNewWeatherData(weatherData: WeatherData) {

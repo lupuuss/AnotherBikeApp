@@ -2,10 +2,7 @@ package ga.lupuss.anotherbikeapp.base
 
 import android.location.Location
 import android.support.v4.app.Fragment
-import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
-import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
-import ga.lupuss.anotherbikeapp.base.BaseView
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import javax.inject.Inject
 
@@ -26,19 +23,19 @@ abstract class BaseFragment : Fragment(), BaseView {
         return (activity as? ThemedBaseActivity)?.isOnline() ?: false
     }
 
-    override fun checkLocationPermission(): Boolean {
-        return  (activity as? ThemedBaseActivity)?.checkLocationPermission() ?: false
-    }
-
     override fun finishActivity() {
         (activity as? ThemedBaseActivity)?.finishActivity()
     }
 
-    override fun requestLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
-        (activity as? ThemedBaseActivity)?.requestLocationPermission(onLocationPermissionRequestResult)
+    override fun provideLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
+        (activity as? ThemedBaseActivity)?.provideLocationPermission(onLocationPermissionRequestResult)
     }
 
-    override fun requestSingleLocationUpdate(onComplete: (Boolean, Location) -> Unit) {
+    override fun provideLocationPermission(onLocationPermissionGranted: () -> Unit, onLocationPermissionRefused: () -> Unit) {
+        (activity as? ThemedBaseActivity)?.provideLocationPermission(onLocationPermissionGranted, onLocationPermissionRefused)
+    }
+
+    override fun requestSingleLocationUpdate(onComplete: (Boolean, Location?) -> Unit) {
 
         (activity as? ThemedBaseActivity)?.requestSingleLocationUpdate(onComplete)
     }
