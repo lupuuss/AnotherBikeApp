@@ -20,7 +20,6 @@
         <item name="googleMapStyleJson">@string/mapStyleDarkTheme</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="android:navigationBarColor">@color/darkThemePrimaryColor</item>
     </style>
 
     <style name="DarkDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -28,10 +27,12 @@
         <item name="android:colorAccent">@color/darkThemeAccentColor</item>
         <item name="android:textColor">@color/darkThemeTextColor</item>
         <item name="android:textColorPrimary">@color/darkThemeTextColor</item>
+        <item name="android:textColorSecondary">@color/darkThemeTextColor</item>
         <item name="android:windowIsFloating">true</item>
         <item name="buttonBarNegativeButtonStyle">@style/DarkNegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/DarkPositiveButtonStyle</item>
         <item name="android:colorControlActivated">@color/darkThemeAccentColor</item>
+        <item name="textColorAlertDialogListItem">@color/darkThemeTextColor</item>
     </style>
 
     <style name="DarkNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
@@ -62,7 +63,6 @@
         <item name="googleMapStyleJson">@string/mapStyleDarkTheme</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="android:navigationBarColor">@color/darkThemePrimaryColor</item>
     </style>
 
     <style name="LightDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -70,10 +70,12 @@
         <item name="android:colorAccent">@color/lightThemeAccentColor</item>
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
+        <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
         <item name="android:windowIsFloating">true</item>
         <item name="buttonBarNegativeButtonStyle">@style/LightNegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/LightPositiveButtonStyle</item>
         <item name="android:colorControlActivated">@color/lightThemeAccentColor</item>
+        <item name="textColorAlertDialogListItem">@color/lightThemeTextColor</item>
     </style>
 
     <style name="LightNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
