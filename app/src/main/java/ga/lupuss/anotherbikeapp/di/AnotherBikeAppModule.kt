@@ -1,23 +1,15 @@
 package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.WEATHER_API_URL
-import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
-import ga.lupuss.anotherbikeapp.models.firebase.TempRouteKeeper
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
-import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

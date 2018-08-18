@@ -1,17 +1,12 @@
 package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import dagger.Component
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
-import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import java.util.*
 import javax.inject.Scope
