@@ -96,18 +96,23 @@ class TrackingActivity
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //Dagger MUST be first
+        setResult(TrackingPresenter.Result.NO_DATA_DONE)
+        requiresVerification()
+        super.onCreate(savedInstanceState)
+    }
 
-        AnotherBikeApp.get(application)
-                .signInVerifier
-                .verifySignedIn(this)
+    override fun onCreatePostVerification(savedInstanceState: Bundle?) {
+
+        // Dagger MUST be first
+        // super method requires it
 
         AnotherBikeApp
                 .get(this.application)
                 .trackingComponent(this, getIBinderFromIntent())
                 .inject(this)
-        
-        super.onCreate(savedInstanceState)
+
+        super.onCreatePostVerification(savedInstanceState)
+
         setContentView(R.layout.activity_tracking)
         activateToolbar(toolbarMain)
         setResult(TrackingPresenter.Result.NOT_DONE)
@@ -151,9 +156,9 @@ class TrackingActivity
     }
 
     @SuppressLint("MissingPermission")
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReadyPostVerification(googleMap: GoogleMap?) {
 
-        super.onMapReady(googleMap)
+        super.onMapReadyPostVerification(googleMap)
 
         trackLineOptions = PolylineOptions()
                 .color(theme.getColorForAttr(R.attr.trackLineColor))
@@ -188,8 +193,11 @@ class TrackingActivity
 
     override fun onDestroy() {
         super.onDestroy()
-
         Timber.v("Tracking activity destroyed!")
+    }
+
+    override fun onDestroyPostVerification() {
+        super.onDestroyPostVerification()
         trackingPresenter.notifyOnDestroy(isFinishing)
     }
 

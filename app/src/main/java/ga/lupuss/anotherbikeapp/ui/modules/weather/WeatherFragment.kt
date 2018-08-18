@@ -36,16 +36,21 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
     lateinit var presenter: WeatherPresenter
 
     override fun onAttach(context: Context?) {
+        requiresVerification()
         super.onAttach(context)
+    }
 
-        AnotherBikeApp.get(requireActivity().application)
-                .signInVerifier
-                .verifySignedIn(this.requireActivity() as BaseActivity)
+    override fun onAttachPostVerification(context: Context?) {
+
+        // Dagger MUST be first
+        // super method requires it
 
         AnotherBikeApp
                 .get(this.activity!!.application)
                 .weatherComponent(this)
                 .inject(this)
+
+        super.onAttachPostVerification(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +59,8 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
         return inflater.inflate(R.layout.fragment_weather, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreatedPostVerification(view, savedInstanceState)
 
         refreshButton.setOnClickListener(this)
         locationInfo.setOnClickListener(this)
@@ -104,9 +110,8 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
+    override fun onDestroyViewPostVerification() {
+        super.onDestroyViewPostVerification()
         presenter.notifyOnDestroy(true)
     }
 }

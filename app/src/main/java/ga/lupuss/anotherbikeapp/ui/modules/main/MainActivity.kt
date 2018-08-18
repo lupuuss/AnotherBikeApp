@@ -89,13 +89,22 @@ class MainActivity
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        requiresVerification()
+
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreatePostVerification(savedInstanceState: Bundle?) {
+
         // Dagger MUST be first
+        // super method requires it
 
         AnotherBikeApp.get(this.application)
                 .mainComponent(this)
                 .inject(this)
 
-        super.onCreate(savedInstanceState)
+        super.onCreatePostVerification(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         androidTrackingServiceGovernor.init(this, savedInstanceState)
 
@@ -125,11 +134,14 @@ class MainActivity
     }
 
     override fun onDestroy() {
-
-        mainPresenter.notifyOnDestroy(isFinishing)
-        androidTrackingServiceGovernor.destroy(isFinishing)
         super.onDestroy()
         Timber.v("MainActivity destroyed!")
+    }
+
+    override fun onDestroyPostVerification() {
+        super.onDestroyPostVerification()
+        mainPresenter.notifyOnDestroy(isFinishing)
+        androidTrackingServiceGovernor.destroy(isFinishing)
     }
 
     // onClicks

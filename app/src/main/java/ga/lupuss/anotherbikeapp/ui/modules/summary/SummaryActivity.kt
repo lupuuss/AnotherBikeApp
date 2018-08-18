@@ -81,17 +81,21 @@ class SummaryActivity : ThemedBaseMapActivity(), SummaryView, OnMapReadyCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        // Dagger MUST be first
+        requiresVerification()
+        super.onCreate(savedInstanceState)
+    }
 
-        AnotherBikeApp.get(application)
-                .signInVerifier
-                .verifySignedIn(this)
+    override fun onCreatePostVerification(savedInstanceState: Bundle?) {
+
+        // Dagger MUST be first
+        // super method requires it
 
         AnotherBikeApp.get(application)
                 .summaryComponent(this)
                 .inject(this)
 
-        super.onCreate(savedInstanceState)
+        super.onCreatePostVerification(savedInstanceState)
+
         setContentView(R.layout.activity_summary)
         activateToolbar(toolbarSummary)
 
@@ -110,9 +114,8 @@ class SummaryActivity : ThemedBaseMapActivity(), SummaryView, OnMapReadyCallback
         (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(this)
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-
-        super.onMapReady(googleMap)
+    override fun onMapReadyPostVerification(googleMap: GoogleMap?) {
+        super.onMapReadyPostVerification(googleMap)
         summaryPresenter.notifyOnViewReady()
     }
 
@@ -134,12 +137,10 @@ class SummaryActivity : ThemedBaseMapActivity(), SummaryView, OnMapReadyCallback
         summaryPresenter.onExitRequest()
     }
 
-    override fun onDestroy() {
-
-        super.onDestroy()
+    override fun onDestroyPostVerification() {
+        super.onDestroyPostVerification()
         summaryPresenter.notifyOnDestroy(isFinishing)
     }
-
     override fun afterTextChanged(p0: Editable?) {}
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}

@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.base
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import ga.lupuss.anotherbikeapp.AppTheme
 import ga.lupuss.anotherbikeapp.R
@@ -14,15 +13,16 @@ abstract class ThemedBaseActivity : BaseActivity(), BaseView, PreferencesInterac
     @Inject
     lateinit var preferencesInteractor: PreferencesInteractor
 
-    @SuppressLint("ShowToast")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreatePostVerification(savedInstanceState: Bundle?) {
+        super.onCreatePostVerification(savedInstanceState)
+
         setTheme(preferencesInteractor.appTheme)
         preferencesInteractor.addOnThemeChangedListener(this, this)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyPostVerification() {
+        super.onDestroyPostVerification()
+
         preferencesInteractor.removeOnThemeChangedListener(this)
     }
 

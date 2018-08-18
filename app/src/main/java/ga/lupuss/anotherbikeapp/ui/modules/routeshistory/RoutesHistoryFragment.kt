@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
@@ -41,16 +40,22 @@ class RoutesHistoryFragment
         set(value) { recyclerProgressBar?.isGone = !value }
 
     override fun onAttach(context: Context?) {
-        super.onAttach(context)
 
-        AnotherBikeApp.get(requireActivity().application)
-                .signInVerifier
-                .verifySignedIn(this.requireActivity() as BaseActivity)
+        requiresVerification()
+        super.onAttach(context)
+    }
+
+    override fun onAttachPostVerification(context: Context?) {
+
+        // Dagger MUST be first
+        // super method requires it
 
         AnotherBikeApp
                 .get(requireActivity().application)
                 .routesHistoryComponent(this)
                 .inject(this)
+
+        super.onAttachPostVerification(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -59,8 +64,9 @@ class RoutesHistoryFragment
         return inflater.inflate(R.layout.fragment_routes_history, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreatedPostVerification(view, savedInstanceState)
+
         val recyclerViewAdapter = RoutesHistoryRecyclerViewAdapter(
                 routesHistoryPresenter::onHistoryRecyclerItemRequest,
                 routesHistoryPresenter::onHistoryRecyclerItemCountRequest,
@@ -92,10 +98,9 @@ class RoutesHistoryFragment
         routesHistoryPresenter.notifyOnViewReady()
     }
 
-    override fun onDestroyView() {
-
+    override fun onDestroyViewPostVerification() {
+        super.onDestroyViewPostVerification()
         routesHistoryPresenter.notifyOnDestroy(true)
-        super.onDestroyView()
     }
 
     // Recycler View

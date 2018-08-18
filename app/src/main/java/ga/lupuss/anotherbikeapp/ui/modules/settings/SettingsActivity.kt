@@ -12,9 +12,14 @@ class SettingsActivity : ThemedBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        AnotherBikeApp.get(application)
-                .signInVerifier
-                .verifySignedIn(this)
+        requiresVerification()
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreatePostVerification(savedInstanceState: Bundle?) {
+
+        // Dagger MUST be first
+        // super method requires it
 
         DaggerSettingsComponent
                 .builder()
@@ -22,7 +27,8 @@ class SettingsActivity : ThemedBaseActivity() {
                 .build()
                 .inject(this)
 
-        super.onCreate(savedInstanceState)
+        super.onCreatePostVerification(savedInstanceState)
+
         setContentView(R.layout.activity_settings)
         activateToolbar(toolbarSettings)
     }

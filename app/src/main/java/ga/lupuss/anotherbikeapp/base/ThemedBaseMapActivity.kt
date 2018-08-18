@@ -12,6 +12,15 @@ abstract class ThemedBaseMapActivity : ThemedBaseActivity(), OnMapReadyCallback,
     protected lateinit var map: GoogleMap
 
     override fun onMapReady(googleMap: GoogleMap?) {
+
+        if (verificationPassed || !requiresPassedVerification) {
+
+            onMapReadyPostVerification(googleMap)
+        }
+    }
+
+    open fun onMapReadyPostVerification(googleMap: GoogleMap?) {
+
         this.map = googleMap!!
 
         map.uiSettings.isZoomControlsEnabled = true
@@ -38,8 +47,8 @@ abstract class ThemedBaseMapActivity : ThemedBaseActivity(), OnMapReadyCallback,
         return typedValue.string as String
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyPostVerification() {
+        super.onDestroyPostVerification()
         preferencesInteractor.removeOnMapThemeEnableListener(this)
     }
 }

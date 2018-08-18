@@ -20,8 +20,10 @@ import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.models.SignInVerifier
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import javax.inject.Inject
@@ -35,6 +37,9 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     private val locationPermissionRequestCode = 1
     private var onLocationPermissionRequestResult: ((Boolean) -> Unit)? = null
+    protected var requiresPassedVerification = false
+    protected var verificationPassed = false
+    private lateinit var signInVerifier: SignInVerifier
 
     private enum class HomeActionMode {
         DRAWER_TOGGLE, BACK
@@ -47,6 +52,47 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         toast = Toast.makeText(this, "empty", Toast.LENGTH_LONG)
+        signInVerifier = AnotherBikeApp.get(application).signInVerifier
+
+        if (requiresPassedVerification) {
+
+            verificationPassed = signInVerifier.verifySignedIn(this)
+        }
+
+
+        if (verificationPassed || !requiresPassedVerification) {
+
+            onCreatePostVerification(savedInstanceState)
+        }
+    }
+
+    open fun onCreatePostVerification(savedInstanceState: Bundle?) {}
+
+    override fun onResume() {
+        super.onResume()
+
+        if (verificationPassed || !requiresPassedVerification) {
+
+            onResumePostVerification()
+        }
+    }
+
+    open fun onResumePostVerification() {}
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (verificationPassed || !requiresPassedVerification) {
+
+            onDestroyPostVerification()
+        }
+    }
+
+    open fun onDestroyPostVerification() {}
+
+    fun requiresVerification() {
+
+        requiresPassedVerification = true
     }
 
     fun activateToolbar(toolbar: Toolbar) {
