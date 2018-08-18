@@ -21,7 +21,6 @@
 
         <TextView
             android:id="@+id/locationText"
-            android:text="@string/locationNotAvailableShort"
             android:textSize="15sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,9 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:layout_marginTop="5dp"
-            android:text="-"
-            tools:ignore="HardcodedText" />
+            android:layout_marginTop="5dp" />
     </LinearLayout>
 
     <ImageButton
@@ -81,7 +78,6 @@
         app:layout_constraintTop_toBottomOf="@id/weatherImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="-"
         tools:ignore="HardcodedText" />
 
     <TextView
