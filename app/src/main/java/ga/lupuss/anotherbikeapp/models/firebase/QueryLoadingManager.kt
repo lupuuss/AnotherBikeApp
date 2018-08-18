@@ -2,8 +2,8 @@ package ga.lupuss.anotherbikeapp.models.firebase
 
 import android.app.Activity
 import com.google.firebase.firestore.*
+import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -18,20 +18,34 @@ class QueryLoadingManager(
 ) : EventListener<QuerySnapshot>  {
 
     private val children = mutableListOf<DocumentSnapshot>()
-    private var firstQueryNotification = true
     val size
         get() = children.size
 
     private lateinit var rootQuery: Query
-    private var listeners: List<OnDocumentChanged> = listOf()
+    private var listeners: MutableList<OnDocumentChanged> = mutableListOf()
     private var limit: Long = FirebaseRoutesManager.DEFAULT_LIMIT
+    var isQueryListeningInitialized = false
+        private set
 
-    fun init(query: Query, listeners: List<OnDocumentChanged>?) {
 
+    fun setTargetQuery(query: Query) {
 
-        this.rootQuery = query
-        listeners?.let { this.listeners = it }
+        rootQuery = query
+    }
 
+    fun addRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged) {
+
+        listeners.add(onRoutesChangedListener)
+    }
+
+    fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged) {
+
+        listeners.remove(onRoutesChangedListener)
+    }
+
+    fun initQueryListening() {
+
+        isQueryListeningInitialized = true
         rootQuery.addSnapshotListener(this)
     }
 
@@ -42,24 +56,58 @@ class QueryLoadingManager(
         }
 
         if (querySnapshot != null) {
-            if (!firstQueryNotification) {
 
-                Single.create<List<Pair<DocumentChange.Type, Int>>> {
+            fetchDocuments(querySnapshot.documentChanges)
+        }
+    }
 
-                    it.onSuccess(fetchDocumentChanges(querySnapshot.documentChanges))
+    private fun fetchDocuments(documentChanges: List<DocumentChange>) {
 
-                }.observeOn(frontScheduler)
-                        .subscribeOn(backScheduler)
-                        .subscribe { res ->
-                            res.forEach { (first, second) ->
-                                notifyParent(first, second)
+        Observable.create<Pair<DocumentChange.Type,Int>> {
+
+            documentChanges.forEach { change ->
+
+                Timber.i("$change, ${change.type}, ${change.oldIndex}, ${change.newIndex}, ${change.document.id}")
+
+                when (change.type) {
+
+                    DocumentChange.Type.ADDED -> {
+
+                        if (change.newIndex in 0..children.size) {
+
+                            val isLocallySaved = children.find { it.id == change.document.id } != null
+
+                            if (change.newIndex < children.size && !isLocallySaved) {
+
+                                children.add(change.newIndex, change.document)
+                                it.onNext(Pair(change.type, change.newIndex))
+
                             }
                         }
+                    }
+
+                    DocumentChange.Type.REMOVED -> {
+                        if (change.oldIndex in 0 until children.size)
+                            children.removeAt(change.oldIndex)
+
+                        it.onNext(Pair(change.type, change.oldIndex))
+                    }
+
+                    DocumentChange.Type.MODIFIED -> {
+                        if (change.newIndex in 0 until children.size)
+                            children[change.newIndex] = change.document
+
+                        it.onNext(Pair(change.type, change.newIndex))
+                    }
+                }
             }
 
-            firstQueryNotification = false
+        }.observeOn(frontScheduler)
+                .subscribeOn(backScheduler)
+                .subscribe { (first, second) ->
 
-        }
+                    notifyParent(first, second)
+                }
     }
 
     fun readDocument(position: Int): DocumentSnapshot {
@@ -102,52 +150,6 @@ class QueryLoadingManager(
                 .addOnFailureListener(activity) {
                     onFail?.invoke(it)
                 }
-    }
-
-    private fun fetchDocumentChanges(allChanges: List<DocumentChange>): List<Pair<DocumentChange.Type, Int>> {
-
-        val list = mutableListOf<Pair<DocumentChange.Type, Int>>()
-
-        Timber.v("New changes package >>> ")
-
-        for (change in allChanges) {
-
-            Timber.v("${change.type} > ${change.document.data}")
-
-            when (change.type) {
-
-                DocumentChange.Type.ADDED -> {
-
-                    if (change.newIndex in 0..children.size) {
-
-                        if (change.newIndex < children.size) {
-                            children.add(change.newIndex, change.document)
-                        } else {
-                            children.add(change.document)
-                        }
-                        list.add(Pair(change.type, change.newIndex))
-                    }
-                }
-
-                DocumentChange.Type.REMOVED -> {
-                    if (change.oldIndex in 0 until children.size)
-                        children.removeAt(change.oldIndex)
-
-                    list.add(Pair(change.type, change.oldIndex))
-                }
-
-                DocumentChange.Type.MODIFIED -> {
-                    if (change.newIndex in 0 until children.size)
-                        children[change.newIndex] = change.document
-
-                    list.add(Pair(change.type, change.newIndex))
-                }
-            }
-        }
-
-        Timber.v("End of package >>>")
-
-        return list
     }
 
     private fun notifyParent(type: DocumentChange.Type, i: Int) {

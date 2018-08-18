@@ -30,7 +30,7 @@ class FirebaseRoutesManager(
         gson: Gson,
         private val queryManager: QueryLoadingManager = QueryLoadingManager()
 
-): RoutesManager {
+): RoutesManager, OnDocumentChanged{
 
     private val onRoutesChangedListeners = mutableListOf<OnDocumentChanged>()
     private val userPath = "$FIREB_USERS/${authInteractor.userUid!!}"
@@ -38,11 +38,6 @@ class FirebaseRoutesManager(
     private val routesQuery = firebaseFirestore
             .collection(routesPath)
             .orderBy(FIREB_START_TIME, Query.Direction.DESCENDING)
-
-    init {
-
-        queryManager.init(routesQuery, onRoutesChangedListeners)
-    }
 
 
     private fun DocumentSnapshot.toFirebaseShortRouteData(): FirebaseShortRouteData =
@@ -55,6 +50,32 @@ class FirebaseRoutesManager(
             this.toObject(FirebasePoints::class.java)!!
 
     override val routeReferenceSerializer: RouteReferenceSerializer = FirebaseRouteReferenceSerializer(gson, firebaseFirestore)
+
+    init {
+
+        queryManager.setTargetQuery(routesQuery)
+        queryManager.addRoutesDataChangedListener(this)
+    }
+
+    override fun onNewDocument(position: Int) {
+
+        onRoutesChangedListeners.forEach { it.onNewDocument(position) }
+
+        if (!queryManager.isQueryListeningInitialized) {
+
+            queryManager.initQueryListening()
+        }
+    }
+
+    override fun onDocumentDeleted(position: Int) {
+
+        onRoutesChangedListeners.forEach { it.onDocumentDeleted(position) }
+    }
+
+    override fun onDocumentModified(position: Int) {
+
+        onRoutesChangedListeners.forEach { it.onDocumentModified(position) }
+    }
 
     override fun addRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged) {
 
