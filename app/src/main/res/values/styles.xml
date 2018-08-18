@@ -9,6 +9,7 @@
         <item name="colorAccent">@color/darkThemeAccentColor</item>
         <item name="colorSecondaryDark">@color/darkThemeSecondaryDarkColor</item>
         <item name="colorSecondaryAccent">@color/darkThemeSecondaryAccentColor</item>
+        <item name="android:textColorHint">@color/darkThemeTextColorHint</item>
         <item name="android:textColor">@color/darkThemeTextColor</item>
         <item name="android:textColorPrimary">@color/darkThemeTextColor</item>
         <item name="android:textColorSecondary">@color/darkThemeTextColor</item>

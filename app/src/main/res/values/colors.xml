@@ -11,6 +11,7 @@
     <color name="darkThemeAccentColor">#ac2200</color>
     <color name="darkThemeSecondaryAccentColor">#800000</color>
     <color name="darkThemeTextColor">#FFF</color>
+    <color name="darkThemeTextColorHint">#aaffffff</color>
 
     <!-- Light theme -->
 
