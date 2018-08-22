@@ -35,6 +35,6 @@ class UserModule {
 
     @Provides
     @UserComponentScope
-    fun providesWeatherManager(weatherApi: WeatherApi, timeProvider: () -> Long) =
-            WeatherManager(weatherApi, timeProvider)
+    fun providesWeatherManager(weatherApi: WeatherApi, timeProvider: () -> Long, locale: Locale) =
+            WeatherManager(weatherApi, timeProvider, locale)
 }

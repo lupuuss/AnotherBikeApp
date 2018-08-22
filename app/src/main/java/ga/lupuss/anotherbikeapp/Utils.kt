@@ -68,3 +68,9 @@ fun timeToFormattedString(locale: Locale, time: Long): String {
     val simpleDateFormat = SimpleDateFormat("HH:mm dd-MM-yyyy", locale)
     return simpleDateFormat.format(Calendar.getInstance().apply { timeInMillis = time }.time)
 }
+
+fun timeToHourMinutes(locale: Locale, calendar: Calendar): String {
+
+    val simpleDateFormat = SimpleDateFormat("HH:mm", locale)
+    return simpleDateFormat.format(calendar.time)
+}

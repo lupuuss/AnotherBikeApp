@@ -98,4 +98,5 @@
     <string name="locationNotAvailableShort">Location not available…</string>
     <string name="nameNotAvailable">Location\'s name is unknown</string>
     <string name="unknownLocation">Unknown location</string>
+    <string name="now">Now</string>
 </resources>

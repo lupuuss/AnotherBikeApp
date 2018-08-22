@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/locationText"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -29,24 +29,63 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:focusable="true"
-            android:focusableInTouchMode="true" />
+            android:focusableInTouchMode="true"
+            tools:text="Warsaw, PL"/>
 
         <TextView
             android:id="@+id/coordsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:layout_marginTop="1dp" />
+            android:layout_marginTop="1dp"
+            tools:text="50.2122, 20.2122"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/timeInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/weatherImage">
+
+        <TextView
+            android:id="@+id/dayText"
+            android:textSize="12sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textAlignment="textEnd"
+            tools:text="Friday"/>
+
+        <TextView
+            android:id="@+id/hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="1dp"
+            android:textAlignment="textEnd"
+            tools:text="Now"/>
     </LinearLayout>
 
     <ImageButton
+        android:layout_marginTop="5dp"
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_refresh_24dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/timeInfo"
+        app:layout_constraintBottom_toBottomOf="@id/description"
         android:contentDescription="@string/refresh" />
 
     <ProgressBar
@@ -69,7 +108,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_priority_high_64dp"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/weather01d"/>
 
     <TextView
         android:id="@+id/temperature"
@@ -78,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@id/weatherImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="HardcodedText" />
+        tools:text="20 °C"/>
 
     <TextView
         android:id="@+id/description"
@@ -88,6 +128,33 @@
         app:layout_constraintTop_toBottomOf="@id/temperature"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        tools:text="Sky is clear"/>
+
+    <SeekBar
+        android:id="@+id/weatherSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:max="8"
+        android:enabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <HorizontalScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherSeekBar">
+
+        <LinearLayout
+            android:id="@+id/daysContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -12,6 +12,7 @@ import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
@@ -55,6 +56,7 @@ class AnotherBikeAppModule {
             Retrofit.Builder()
                     .baseUrl(WEATHER_API_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(okHttpClient)
                     .build()
                     .create(WeatherApi::class.java)

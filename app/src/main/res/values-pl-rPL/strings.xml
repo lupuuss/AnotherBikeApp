@@ -87,4 +87,5 @@
     <string name="locationNotAvailableShort">Lokalizacja nie jest dostęna…</string>
     <string name="nameNotAvailable">Nazwa lokalizacji nie jest znana</string>
     <string name="unknownLocation">Nieznana lokalizacja</string>
+    <string name="now">Teraz</string>
 </resources>

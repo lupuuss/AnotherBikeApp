@@ -15,10 +15,12 @@ class WeatherPresenter @Inject constructor(
         this.view = weatherView
     }
 
+    private var currentDay = 0
+
     override fun notifyOnViewReady() {
 
         weatherManager.lastWeatherData?.let {
-            view.updateWeather(it)
+            view.setWeather(it, 0, 0)
         }
 
         weatherManager.addOnNewWeatherListener(this)
@@ -50,7 +52,9 @@ class WeatherPresenter @Inject constructor(
 
     override fun onNewWeatherData(weatherData: WeatherData) {
 
-        view.updateWeather(weatherData)
+        view.resetSeekBar()
+
+        view.setWeather(weatherData, 0, 0)
         view.isRefreshButtonVisible = true
         view.isRefreshProgressBarVisible = false
     }
@@ -76,6 +80,21 @@ class WeatherPresenter @Inject constructor(
         weatherManager.lastWeatherData?.let {
             view.redirectToGoogleMaps(it.lat, it.lng, it.location)
         }
+    }
+
+    fun onWeatherSeekBarPositionChanged(position: Int) {
+
+        weatherManager.lastWeatherData?.let {
+
+            view.setWeather(it, position, currentDay)
+        }
+    }
+
+    fun onClickWeatherDay(day: Int) {
+
+        currentDay = day
+        view.setWeather(weatherManager.lastWeatherData!!, 0, currentDay)
+        view.resetSeekBar()
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
