@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.models.firebase
 
 import android.app.Activity
 import com.google.firebase.firestore.*
+import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,8 +14,7 @@ import timber.log.Timber
  * Interface is adapted to RecyclerView.
  */
 class QueryLoadingManager(
-        private val backScheduler: Scheduler = Schedulers.io(),
-        private val frontScheduler: Scheduler = AndroidSchedulers.mainThread()
+    private val schedulersPackage: SchedulersPackage
 ) : EventListener<QuerySnapshot>  {
 
     private val children = mutableListOf<DocumentSnapshot>()
@@ -102,8 +102,8 @@ class QueryLoadingManager(
                 }
             }
 
-        }.observeOn(frontScheduler)
-                .subscribeOn(backScheduler)
+        }.observeOn(schedulersPackage.frontScheduler)
+                .subscribeOn(schedulersPackage.backScheduler)
                 .subscribe { (first, second) ->
 
                     notifyParent(first, second)

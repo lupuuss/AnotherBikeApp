@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
+import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
@@ -28,7 +29,8 @@ class FirebaseRoutesManager(
         private val routeKeeper: TempRouteKeeper,
         private val locale: Locale,
         gson: Gson,
-        private val queryManager: QueryLoadingManager = QueryLoadingManager()
+        schedulersPackage: SchedulersPackage,
+        private val queryManager: QueryLoadingManager = QueryLoadingManager(schedulersPackage)
 
 ): RoutesManager, OnDocumentChanged{
 
