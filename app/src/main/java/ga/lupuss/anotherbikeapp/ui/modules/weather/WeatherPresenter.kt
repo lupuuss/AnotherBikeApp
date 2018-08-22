@@ -2,8 +2,9 @@ package ga.lupuss.anotherbikeapp.ui.modules.weather
 
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.base.WeatherManager
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
-import ga.lupuss.anotherbikeapp.models.weather.WeatherManager
+import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherManager
 import javax.inject.Inject
 
 class WeatherPresenter @Inject constructor(

@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.weather
 
+import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
+import ga.lupuss.anotherbikeapp.models.base.WeatherManager
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawCurrentWeatherData
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawForecastData
@@ -10,30 +12,18 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.util.*
 
-class WeatherManager(
-        private val weatherApi: WeatherApi,
+class OpenWeatherManager(
+        private val weatherApi: OpenWeatherApi,
         private val timeProvider: () -> Long,
         private val locale: Locale,
-        private val backScheduler: Scheduler = Schedulers.io(),
-        private val frontScheduler: Scheduler = AndroidSchedulers.mainThread()
-) {
+        private val schedulersPackage: SchedulersPackage
+) : WeatherManager() {
 
-    interface OnNewWeatherListener {
-        fun onNewWeatherData(weatherData: WeatherData)
-    }
 
-    interface OnWeatherRefreshFailureListener {
-
-        fun onWeatherRefreshFailure(exception: Exception?)
-    }
-
-    private val weatherListeners: MutableList<OnNewWeatherListener> = mutableListOf()
-    private val refreshFailure: MutableList<OnWeatherRefreshFailureListener> = mutableListOf()
-
-    var lastWeatherData: WeatherData? = null
+    override var lastWeatherData: WeatherData? = null
         private set
 
-    fun refreshWeatherData(lat: Double, lng: Double, onWeatherRefreshFailureListener: OnWeatherRefreshFailureListener) {
+    override fun refreshWeatherData(lat: Double, lng: Double, onWeatherRefreshFailureListener: WeatherManager.OnWeatherRefreshFailureListener) {
 
         refreshFailure.add(onWeatherRefreshFailureListener)
 
@@ -41,15 +31,15 @@ class WeatherManager(
 
         weatherApi
                 .getWeatherForecastForCoords(lat, lng)
-                .observeOn(frontScheduler)
-                .subscribeOn(backScheduler)
+                .observeOn(schedulersPackage.frontScheduler)
+                .subscribeOn(schedulersPackage.backScheduler)
                 .onErrorResumeNext{ Single.error<RawForecastData>(it) }
                 .flatMap {
                     forecast = it
                     weatherApi
                             .getCurrentWeatherForCoords(lat, lng)
-                            .subscribeOn(backScheduler)
-                            .observeOn(frontScheduler)
+                            .subscribeOn(schedulersPackage.backScheduler)
+                            .observeOn(schedulersPackage.frontScheduler)
                 }.subscribe { rawData, exception ->
 
                     exception?.let {
@@ -62,21 +52,6 @@ class WeatherManager(
                         onWeatherDataCompleted(forecast!!, rawData)
                     }
                 }
-    }
-
-    fun removeOnWeatherRefreshFailureListener(onWeatherRefreshFailureListener: OnWeatherRefreshFailureListener) {
-
-        refreshFailure.remove(onWeatherRefreshFailureListener)
-    }
-
-    fun removeOnNewWeatherListener(onNewWeatherListener: OnNewWeatherListener) {
-
-        weatherListeners.remove(onNewWeatherListener)
-    }
-
-    fun addOnNewWeatherListener(onNewWeatherListener: OnNewWeatherListener) {
-
-        weatherListeners.add(onNewWeatherListener)
     }
 
     private fun onFailure(t: Throwable?) {

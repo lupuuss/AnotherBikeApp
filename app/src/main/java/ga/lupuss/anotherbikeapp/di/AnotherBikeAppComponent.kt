@@ -4,9 +4,10 @@ import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import dagger.Component
+import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.StringsResolver
-import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
+import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherApi
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import java.util.*
 import javax.inject.Scope
@@ -27,5 +28,6 @@ interface AnotherBikeAppComponent {
     fun providesStringResolver(): StringsResolver
     fun providesFirebaseFirestore(): FirebaseFirestore
     fun providesAuthInteractor(): AuthInteractor
-    fun providesWeatherApi(): WeatherApi
+    fun providesWeatherApi(): OpenWeatherApi
+    fun providesSchedulers(): SchedulersPackage
 }

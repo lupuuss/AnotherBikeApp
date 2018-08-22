@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface WeatherApi {
+interface OpenWeatherApi {
 
     @GET("forecast")
     fun getWeatherForecastForCoords(@Query("lat")lat: Double, @Query("lon")lng: Double): Single<RawForecastData>

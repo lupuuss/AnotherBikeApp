@@ -9,7 +9,7 @@ import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.WEATHER_API_URL
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.weather.WeatherApi
+import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -52,12 +52,12 @@ class AnotherBikeAppModule {
 
     @Provides
     @AnotherBikeAppScope
-    fun providesWeatherApi(gson: Gson, okHttpClient: OkHttpClient): WeatherApi =
+    fun providesWeatherApi(gson: Gson, okHttpClient: OkHttpClient): OpenWeatherApi =
             Retrofit.Builder()
                     .baseUrl(WEATHER_API_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(okHttpClient)
                     .build()
-                    .create(WeatherApi::class.java)
+                    .create(OpenWeatherApi::class.java)
 }

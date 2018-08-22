@@ -3,6 +3,9 @@ package ga.lupuss.anotherbikeapp.di
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 @Module
 class BasicModule {
@@ -16,4 +19,9 @@ class BasicModule {
         @Provides
         @AnotherBikeAppScope
         get
+
+    @Provides
+    @AnotherBikeAppScope
+    fun providesSchedulersPackage(): SchedulersPackage =
+            SchedulersPackage(Schedulers.io(), AndroidSchedulers.mainThread())
 }
