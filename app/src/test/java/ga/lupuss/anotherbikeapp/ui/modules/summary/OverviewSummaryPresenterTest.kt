@@ -5,7 +5,7 @@ import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import org.junit.Test
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.memberProperties
@@ -21,12 +21,12 @@ class OverviewSummaryPresenterTest {
     }
     private val routesManager: RoutesManager = mock {  }
     private val resolvedString = "resolvedString"
-    private val stringsResolver: StringsResolver = mock { on { resolve(Text.DEFAULT_ROUTE_NAME) }.then { resolvedString } }
+    private val resourceResolver: ResourceResolver = mock { on { resolve(Text.DEFAULT_ROUTE_NAME) }.then { resolvedString } }
     private val preferencesInteractor: PreferencesInteractor = mock {  }
     private val routeReference: RouteReference = mock { }
 
     private val summaryPresenter =
-            OverviewSummaryPresenter(summaryView, routesManager, stringsResolver, preferencesInteractor)
+            OverviewSummaryPresenter(summaryView, routesManager, resourceResolver, preferencesInteractor)
 
     private fun mockPrivateRouteReference(summaryPresenter: OverviewSummaryPresenter) {
         (summaryPresenter::class.memberProperties
@@ -103,11 +103,11 @@ class OverviewSummaryPresenterTest {
 
         summaryPresenter.onDataOk( mock { on { name }.then { null } })
         assert(getPrivateNameValue(summaryPresenter) == resolvedString)
-        verify(stringsResolver, times(1)).resolve(Text.DEFAULT_ROUTE_NAME)
+        verify(resourceResolver, times(1)).resolve(Text.DEFAULT_ROUTE_NAME)
 
         summaryPresenter.onDataOk( mock { on { name }.then { expectedName }})
         assert(getPrivateNameValue(summaryPresenter) == expectedName)
-        verify(stringsResolver, times(1)).resolve(Text.DEFAULT_ROUTE_NAME) // as it was before second call
+        verify(resourceResolver, times(1)).resolve(Text.DEFAULT_ROUTE_NAME) // as it was before second call
     }
 
     @Test

@@ -10,7 +10,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
@@ -52,20 +52,20 @@ class TrackingNotification {
     }
 
     fun build(context: Context,
-              stringsResolver: StringsResolver,
+              resourceResolver: ResourceResolver,
               statistic: Map<Statistic.Name, Statistic<*>>?,
               onClick: PendingIntent): Notification {
 
         val content =
                 if (statistic != null)
-                    "${stringsResolver.resolve(statistic[Statistic.Name.DURATION]!!)}  |  " +
-                            "${stringsResolver.resolve(statistic[Statistic.Name.DISTANCE]!!)}  |  " +
-                            " ${stringsResolver.resolve(statistic[Statistic.Name.AVG_SPEED]!!)}"
+                    "${resourceResolver.resolve(statistic[Statistic.Name.DURATION]!!)}  |  " +
+                            "${resourceResolver.resolve(statistic[Statistic.Name.DISTANCE]!!)}  |  " +
+                            " ${resourceResolver.resolve(statistic[Statistic.Name.AVG_SPEED]!!)}"
                 else ""
 
         val title =
                 if (statistic != null)
-                    stringsResolver.resolve(statistic[Statistic.Name.STATUS]!!)
+                    resourceResolver.resolve(statistic[Statistic.Name.STATUS]!!)
                 else
                     context.getString(R.string.trackingInProgress)
 

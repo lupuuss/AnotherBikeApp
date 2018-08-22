@@ -4,13 +4,13 @@ import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 
 class OverviewSummaryPresenter(
         summaryView: SummaryView,
         override val routesManager: RoutesManager,
-        override val stringsResolver: StringsResolver,
+        override val resourceResolver: ResourceResolver,
         override val preferencesInteractor: PreferencesInteractor
 
 ) : SummaryPresenter(summaryView), RoutesManager.OnRequestExtendedRouteDataListener  {
@@ -46,7 +46,7 @@ class OverviewSummaryPresenter(
             view.isProgressBarVisible = false
             view.isStatsFragmentVisible = true
             view.isRejectActionVisible = true
-            name = routeData.name ?: stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+            name = routeData.name ?: resourceResolver.resolve(Text.DEFAULT_ROUTE_NAME)
             showExtendedRouteData(routeData)
         }
 

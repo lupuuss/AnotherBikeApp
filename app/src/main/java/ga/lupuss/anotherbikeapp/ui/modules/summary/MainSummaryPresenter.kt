@@ -2,12 +2,12 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 
 class MainSummaryPresenter(
         summaryView: SummaryView,
         override val routesManager: RoutesManager,
-        override val stringsResolver: StringsResolver,
+        override val resourceResolver: ResourceResolver,
         override val preferencesInteractor: PreferencesInteractor
 
 ): SummaryPresenter(summaryView) {
@@ -22,10 +22,10 @@ class MainSummaryPresenter(
         val summaryPresenter = when (mode) {
 
             SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY->
-                AfterTrackingSummaryPresenter(view, routesManager, stringsResolver, preferencesInteractor)
+                AfterTrackingSummaryPresenter(view, routesManager, resourceResolver, preferencesInteractor)
 
             SummaryPresenter.Mode.OVERVIEW->
-                OverviewSummaryPresenter(view, routesManager, stringsResolver, preferencesInteractor)
+                OverviewSummaryPresenter(view, routesManager, resourceResolver, preferencesInteractor)
         }
 
         if (summaryPresenter is OverviewSummaryPresenter) {

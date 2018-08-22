@@ -8,7 +8,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.TimeStatistic
 import ga.lupuss.anotherbikeapp.models.dataclass.UnitStatistic
 
 
-interface StringsResolver {
+interface ResourceResolver {
     fun resolve(message: Message): String
     fun resolve(text: Text): String
     fun resolve(unit: Statistic.Unit): String

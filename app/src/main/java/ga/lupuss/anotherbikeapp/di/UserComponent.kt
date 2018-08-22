@@ -20,7 +20,7 @@ interface UserComponent {
     fun providesLocale(): Locale
     fun providesTimeProvider(): () -> Long
     fun providesTrackingNotification(): TrackingNotification
-    fun providesStringResolver(): StringsResolver
+    fun providesStringResolver(): ResourceResolver
     fun providesAuthInteractor(): AuthInteractor
 
     fun providesRoutesManager(): RoutesManager

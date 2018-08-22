@@ -1,10 +1,9 @@
 package ga.lupuss.anotherbikeapp
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.squareup.leakcanary.RefWatcher
 import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
-import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
+import ga.lupuss.anotherbikeapp.models.android.AndroidResourceResolver
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
@@ -35,13 +34,13 @@ class TestAnotherBikeApp : AnotherBikeApp() {
     private val trackingServiceGovernor: AndroidTrackingServiceGovernor = mock {
         on { serviceBinder }.then { mock<TrackingService.ServiceBinder>{} }
     }
-    private lateinit var stringsResolver: StringsResolver
+    private lateinit var resourceResolver: ResourceResolver
     private val routesManager: RoutesManager = mock { }
     private val trackingNotification: TrackingNotification = mock { }
 
     private val mockAnotherBikeAppComponent = mock<AnotherBikeAppComponent> {
         on { providesPreferencesInteractor() }.then { preferencesInteractor }
-        on { providesStringResolver() }.then { stringsResolver }
+        on { providesStringResolver() }.then { resourceResolver }
         on { providesAuthInteractor() }.then { authInteractor }
         on { providesRoutesManager() }.then { routesManager }
         on { providesTrackingNotification() }.then { trackingNotification }
@@ -53,7 +52,7 @@ class TestAnotherBikeApp : AnotherBikeApp() {
 
     override fun onCreate() {
         super.onCreate()
-        stringsResolver = AndroidStringsResolver(this)
+        resourceResolver = AndroidResourceResolver(this)
     }
 
     override fun isInUnitTests(): Boolean = true

@@ -4,9 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.location.LocationProvider
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -17,14 +14,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.Toast
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.SignInVerifier
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import javax.inject.Inject
 
@@ -33,7 +28,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     private lateinit var toast: Toast
 
     @Inject
-    lateinit var stringsResolver: StringsResolver
+    lateinit var resourceResolver: ResourceResolver
 
     private val locationPermissionRequestCode = 1
     private var onLocationPermissionRequestResult: ((Boolean) -> Unit)? = null
@@ -189,7 +184,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     override fun postMessage(message: Message) {
 
-        makeToast(stringsResolver.resolve(message))
+        makeToast(resourceResolver.resolve(message))
     }
 
     override fun finishActivity() {

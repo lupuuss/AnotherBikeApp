@@ -4,12 +4,12 @@ import android.content.Context
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.Text
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Status
 
 @Suppress("REDUNDANT_ELSE_IN_WHEN")
-class AndroidStringsResolver(private val context: Context) : StringsResolver {
+class AndroidResourceResolver(private val context: Context) : ResourceResolver {
 
     override fun resolve(message: Message): String = context.getString(when (message) {
 

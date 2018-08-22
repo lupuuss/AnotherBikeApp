@@ -4,13 +4,13 @@ import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import timber.log.Timber
 
 class AfterTrackingSummaryPresenter(
         summaryView: SummaryView,
         override val routesManager: RoutesManager,
-        override val stringsResolver: StringsResolver,
+        override val resourceResolver: ResourceResolver,
         override val preferencesInteractor: PreferencesInteractor
 
 ) : SummaryPresenter(summaryView) {
@@ -39,7 +39,7 @@ class AfterTrackingSummaryPresenter(
 
         val mutable = routeData.toMutable()
 
-        mutable.name = if (name != "") name else stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+        mutable.name = if (name != "") name else resourceResolver.resolve(Text.DEFAULT_ROUTE_NAME)
 
         routesManager.saveRoute(mutable)
         view.finishActivity()

@@ -16,10 +16,10 @@ class MainModule(view: MainView) {
     @Provides
     @MainComponentScope
     fun providesTrackingServiceGovernor(
-            stringsResolver: StringsResolver,
+            resourceResolver: ResourceResolver,
             trackingNotification: TrackingNotification
 
-    ): TrackingServiceGovernor = AndroidTrackingServiceGovernor(stringsResolver, trackingNotification)
+    ): TrackingServiceGovernor = AndroidTrackingServiceGovernor(resourceResolver, trackingNotification)
 
     @Provides
     @MainComponentScope

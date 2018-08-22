@@ -12,7 +12,7 @@ import android.os.IBinder
 import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
 import ga.lupuss.anotherbikeapp.kotlin.Resettable
 import ga.lupuss.anotherbikeapp.kotlin.ResettableManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -22,7 +22,7 @@ import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import timber.log.Timber
 
 class AndroidTrackingServiceGovernor(
-        private val stringsResolver: StringsResolver,
+        private val resourceResolver: ResourceResolver,
         private val trackingNotification: TrackingNotification
 
 ) : TrackingServiceGovernor(), ServiceConnection, TrackingServiceInteractor.OnStatsUpdateListener {
@@ -144,7 +144,7 @@ class AndroidTrackingServiceGovernor(
                 TrackingNotification.ID,
                 trackingNotification.build(
                         serviceParentActivity,
-                        stringsResolver,
+                        resourceResolver,
                         serviceBinder!!.lastStats,
                         trackingNotification.generatePendingIntent(
                                 MainActivity.newIntent(serviceParentActivity),
@@ -167,7 +167,7 @@ class AndroidTrackingServiceGovernor(
             (serviceParentActivity.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager)
                     .notify(TrackingNotification.ID, trackingNotification.build(
                             serviceParentActivity,
-                            stringsResolver,
+                            resourceResolver,
                             stats,
                             trackingNotification.generatePendingIntent(
                                     MainActivity.newIntent(serviceParentActivity),

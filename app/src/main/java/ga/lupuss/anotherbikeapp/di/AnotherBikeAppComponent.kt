@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import dagger.Component
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherApi
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import java.util.*
@@ -25,7 +25,7 @@ interface AnotherBikeAppComponent {
     fun providesTimeProvider(): () -> Long
     fun providesTrackingNotification(): TrackingNotification
 
-    fun providesStringResolver(): StringsResolver
+    fun providesResourceResolver(): ResourceResolver
     fun providesFirebaseFirestore(): FirebaseFirestore
     fun providesAuthInteractor(): AuthInteractor
     fun providesWeatherApi(): OpenWeatherApi

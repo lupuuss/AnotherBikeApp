@@ -14,12 +14,12 @@ import org.junit.Test
 
 import org.junit.BeforeClass
 
-class AndroidStringsResolverTest {
+class AndroidResourceResolverTest {
 
     companion object {
 
         private lateinit var context: Context
-        private lateinit var stringsResolver: AndroidStringsResolver
+        private lateinit var stringsResolver: AndroidResourceResolver
 
         @BeforeClass
         @JvmStatic
@@ -29,7 +29,7 @@ class AndroidStringsResolverTest {
                 on { it.getString(any()) }.then { "Not empty string" }
             }
 
-            stringsResolver = AndroidStringsResolver(context)
+            stringsResolver = AndroidResourceResolver(context)
         }
     }
 

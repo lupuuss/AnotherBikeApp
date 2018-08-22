@@ -4,7 +4,7 @@ import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 
 abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryView>() {
 
@@ -13,7 +13,7 @@ abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryVi
     }
 
     abstract val routesManager: RoutesManager
-    abstract val stringsResolver: StringsResolver
+    abstract val resourceResolver: ResourceResolver
     abstract val preferencesInteractor: PreferencesInteractor
 
     enum class Mode {

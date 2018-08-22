@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 
 @Module
 class SummaryModule(summaryView: SummaryView) {
@@ -17,7 +17,7 @@ class SummaryModule(summaryView: SummaryView) {
     @Provides
     fun providesSummaryPresenter(summaryView: SummaryView,
                                  routesManager: RoutesManager,
-                                 stringsResolver: StringsResolver,
+                                 resourceResolver: ResourceResolver,
                                  preferencesInteractor: PreferencesInteractor): MainSummaryPresenter =
-            MainSummaryPresenter(summaryView, routesManager, stringsResolver, preferencesInteractor)
+            MainSummaryPresenter(summaryView, routesManager, resourceResolver, preferencesInteractor)
 }

@@ -8,13 +8,13 @@ import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.models.SignInVerifier
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import javax.inject.Inject
 
 abstract class BaseFragment : Fragment(), BaseView {
 
     @Inject
-    lateinit var stringsResolver: StringsResolver
+    lateinit var resourceResolver: ResourceResolver
     private lateinit var signInVerifier: SignInVerifier
     private var requiresPassedVerification = false
     private var verificationPassed = false

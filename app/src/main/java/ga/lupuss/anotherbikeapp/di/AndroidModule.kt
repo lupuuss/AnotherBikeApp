@@ -1,13 +1,11 @@
 package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import android.support.v4.os.ConfigurationCompat
 import dagger.Module
 import dagger.Provides
-import ga.lupuss.anotherbikeapp.models.android.AndroidStringsResolver
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.android.AndroidResourceResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 
 @Module(includes = [BasicModule::class])
@@ -26,7 +24,7 @@ class AndroidModule(context: Context) {
 
     @Provides
     @AnotherBikeAppScope
-    fun androidStringResolver(context: Context): StringsResolver = AndroidStringsResolver(context)
+    fun androidStringResolver(context: Context): ResourceResolver = AndroidResourceResolver(context)
 
     @Provides
     @AnotherBikeAppScope

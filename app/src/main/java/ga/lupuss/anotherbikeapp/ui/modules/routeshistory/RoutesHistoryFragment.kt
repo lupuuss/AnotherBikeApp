@@ -72,7 +72,7 @@ class RoutesHistoryFragment
                 routesHistoryPresenter::onHistoryRecyclerItemCountRequest,
                 routesHistoryPresenter::speedUnit,
                 routesHistoryPresenter::distanceUnit,
-                stringsResolver
+                resourceResolver
         )
 
         recyclerViewAdapter.setOnItemClickListener(this)

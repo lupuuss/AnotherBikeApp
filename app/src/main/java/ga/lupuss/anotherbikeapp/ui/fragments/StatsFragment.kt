@@ -10,7 +10,7 @@ import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
@@ -20,7 +20,7 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 class StatsFragment : Fragment() {
 
     private var layout: LinearLayout? = null
-    private lateinit var stringsResolver: StringsResolver
+    private lateinit var resourceResolver: ResourceResolver
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -28,7 +28,7 @@ class StatsFragment : Fragment() {
                 as ScrollView
         layout = mainView.findViewById(R.id.statsContainer)
 
-        stringsResolver = (this.activity as ThemedBaseActivity).stringsResolver
+        resourceResolver = (this.activity as ThemedBaseActivity).resourceResolver
 
         return mainView
     }
@@ -56,7 +56,7 @@ class StatsFragment : Fragment() {
                             view!!.findViewById(R.id.statsContainer),
                             R.layout.activity_tracking_stat,
                             name,
-                            stringsResolver.resolve(name, stat)
+                            resourceResolver.resolve(name, stat)
                     )
             )
         }
@@ -66,7 +66,7 @@ class StatsFragment : Fragment() {
 
         for ((name, stat) in stats) {
 
-            ViewExtensions.updateTextViewStatByTag(layout!!, name, stringsResolver.resolve(name, stat))
+            ViewExtensions.updateTextViewStatByTag(layout!!, name, resourceResolver.resolve(name, stat))
         }
     }
 

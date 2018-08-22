@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.dataclass.TimeStatistic
@@ -18,7 +18,7 @@ class RoutesHistoryRecyclerViewAdapter(
         private val sizeCallback: () -> Int,
         private val speedUnitCallback: () -> Statistic.Unit,
         private val distanceUnitCallback: () -> Statistic.Unit,
-        private val stringsResolver: StringsResolver
+        private val resourceResolver: ResourceResolver
 
 ) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
 
@@ -53,9 +53,9 @@ class RoutesHistoryRecyclerViewAdapter(
 
             val context = constraintLayout.context.applicationContext
 
-            speedTextView.text = stringsResolver.resolve(UnitStatistic(routeData.avgSpeed, speedUnitCallback.invoke()))
-            distanceTextView.text = stringsResolver.resolve(UnitStatistic(routeData.distance, distanceUnitCallback.invoke()))
-            durationTextView.text = stringsResolver.resolve(TimeStatistic(routeData.duration))
+            speedTextView.text = resourceResolver.resolve(UnitStatistic(routeData.avgSpeed, speedUnitCallback.invoke()))
+            distanceTextView.text = resourceResolver.resolve(UnitStatistic(routeData.distance, distanceUnitCallback.invoke()))
+            durationTextView.text = resourceResolver.resolve(TimeStatistic(routeData.duration))
             whenTextView.text = resolveTimeString(context, routeData.startTime)
 
             labelTextView.text = routeData.name

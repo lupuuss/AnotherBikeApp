@@ -273,7 +273,7 @@ class TrackingActivity
                     (shortStatsContainer as ViewGroup),
                     R.layout.activity_tracking_short_stat,
                     statName,
-                    stringsResolver.resolve(statName, stats[statName]!!)
+                    resourceResolver.resolve(statName, stats[statName]!!)
             ))
         }
 
@@ -284,7 +284,7 @@ class TrackingActivity
         for (statName in shortStatsListToDisplay) {
 
             shortStatsContainer.findViewWithTag<TextView>(statName).text =
-                    stringsResolver.resolve(statName, stats[statName]!!)
+                    resourceResolver.resolve(statName, stats[statName]!!)
         }
     }
 

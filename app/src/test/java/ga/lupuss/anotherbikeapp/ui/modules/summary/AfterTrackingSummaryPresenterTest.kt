@@ -4,7 +4,7 @@ import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.StringsResolver
+import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import org.junit.Assert
@@ -28,7 +28,7 @@ class AfterTrackingSummaryPresenterTest {
             emptyList()
     )
 
-    private val stringsResolver: StringsResolver = mock {
+    private val resourceResolver: ResourceResolver = mock {
         on { resolve(Text.DEFAULT_ROUTE_NAME) }.then { "Route" }
     }
 
@@ -43,7 +43,7 @@ class AfterTrackingSummaryPresenterTest {
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
                 mock { on { getTempRoute() }.then { routeData } },
-                stringsResolver,
+                resourceResolver,
                 preferencesInteractor
         )
 
@@ -63,7 +63,7 @@ class AfterTrackingSummaryPresenterTest {
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
                 mock { on { getTempRoute() }.then { null } },
-                stringsResolver,
+                resourceResolver,
                 preferencesInteractor
         )
 
@@ -83,7 +83,7 @@ class AfterTrackingSummaryPresenterTest {
         val summaryPresenter =  AfterTrackingSummaryPresenter(
                 summaryView,
                 routesManager,
-                stringsResolver,
+                resourceResolver,
                 preferencesInteractor
         )
 
@@ -115,7 +115,7 @@ class AfterTrackingSummaryPresenterTest {
         val routesManager: RoutesManager = mock {
             on { getTempRoute() }.then { extendedRouteData }
             on { saveRoute(any())}.then {
-                Assert.assertEquals(stringsResolver.resolve(Text.DEFAULT_ROUTE_NAME), it.getArgument<ExtendedRouteData>(0).name)
+                Assert.assertEquals(resourceResolver.resolve(Text.DEFAULT_ROUTE_NAME), it.getArgument<ExtendedRouteData>(0).name)
             }
         }
 
@@ -124,14 +124,14 @@ class AfterTrackingSummaryPresenterTest {
         val summaryPresenter =  AfterTrackingSummaryPresenter(
                 mockSummaryView,
                 routesManager,
-                stringsResolver,
+                resourceResolver,
                 preferencesInteractor
         )
 
         summaryPresenter.notifyOnViewReady()
         summaryPresenter.onSaveClick()
 
-        verify(stringsResolver, atLeastOnce()).resolve(any<Text>())
+        verify(resourceResolver, atLeastOnce()).resolve(any<Text>())
         verify(mockSummaryView, times(1)).getRouteNameFromEditText()
     }
 
@@ -163,14 +163,14 @@ class AfterTrackingSummaryPresenterTest {
         val summaryPresenter =  AfterTrackingSummaryPresenter(
                 mockSummaryView,
                 routesManager,
-                stringsResolver,
+                resourceResolver,
                 preferencesInteractor
         )
 
         summaryPresenter.notifyOnViewReady()
         summaryPresenter.onSaveClick()
 
-        verify(stringsResolver, never()).resolve(any<Text>())
+        verify(resourceResolver, never()).resolve(any<Text>())
         verify(mockSummaryView, times(1)).getRouteNameFromEditText()
     }
 
