@@ -12,7 +12,7 @@ class WeatherData(
         currentWeatherData: RawCurrentWeatherData,
         locale: Locale,
         iconMapper: (String) -> WeatherIcon,
-        val downloadTime: Long
+        @Suppress("unused") val downloadTime: Long
 ) {
 
     val forecast = mutableListOf<WeatherUnit>()

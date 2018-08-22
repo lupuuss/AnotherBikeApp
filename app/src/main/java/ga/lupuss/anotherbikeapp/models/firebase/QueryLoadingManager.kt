@@ -4,9 +4,6 @@ import android.app.Activity
 import com.google.firebase.firestore.*
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 /**
@@ -38,6 +35,7 @@ class QueryLoadingManager(
         listeners.add(onRoutesChangedListener)
     }
 
+    @Suppress("unused")
     fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged) {
 
         listeners.remove(onRoutesChangedListener)

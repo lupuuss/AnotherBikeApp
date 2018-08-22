@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.models.trackingservice
 import android.os.Handler
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.Component
-import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
 import ga.lupuss.anotherbikeapp.di.UserComponent
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsMathProvider
 import javax.inject.Scope

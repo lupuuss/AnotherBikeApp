@@ -27,7 +27,7 @@ enum class Text {
 
 enum class WeatherIcon(
         val rank: Float = 1.0F,
-        val isDay: Boolean = true
+        @Suppress("unused") val isDay: Boolean = true
 ) {
 //  DAY                                 NIGHT
     SUNNY_D,                            SUNNY_N(isDay = false),

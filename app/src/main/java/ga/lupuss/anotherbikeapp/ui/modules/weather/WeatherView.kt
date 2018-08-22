@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
-import android.annotation.SuppressLint
 import ga.lupuss.anotherbikeapp.base.BaseView
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 

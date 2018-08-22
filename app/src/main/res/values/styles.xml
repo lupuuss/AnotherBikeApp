@@ -52,7 +52,7 @@
         <item name="colorPrimaryDark">@color/lightThemePrimaryDarkColor</item>
         <item name="colorAccent">@color/lightThemeAccentColor</item>
         <item name="colorSecondaryDark">@color/lightThemeSecondaryDarkColor</item>
-        <item name="colorSecondaryAccent">@color/lightThemeAccentColor</item>
+        <item name="colorSecondaryAccent">@color/lightThemeSecondaryAccentColor</item>
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>

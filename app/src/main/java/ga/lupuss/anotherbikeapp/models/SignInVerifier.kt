@@ -12,19 +12,19 @@ class SignInVerifier(private val authInteractor: AuthInteractor) {
 
         val app = AnotherBikeApp.get(baseActivity.application)
 
-        if (authInteractor.isUserLogged()) {
+        return if (authInteractor.isUserLogged()) {
 
             if (app.userComponent == null) {
 
                 app.initUserComponent()
             }
-            return true
+            true
         } else {
 
             baseActivity.startActivity(LoginActivity.newIntent(baseActivity))
             baseActivity.finish()
 
-            return false
+            false
         }
     }
 

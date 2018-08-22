@@ -1,7 +1,6 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
 import dagger.Component
-import ga.lupuss.anotherbikeapp.di.AnotherBikeAppComponent
 import ga.lupuss.anotherbikeapp.di.UserComponent
 import javax.inject.Scope
 

@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.models.weather
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawCurrentWeatherData
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawForecastData
 import io.reactivex.Single
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
