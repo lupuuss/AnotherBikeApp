@@ -24,3 +24,19 @@ enum class AppTheme {
 enum class Text {
     DEFAULT_ROUTE_NAME
 }
+
+enum class WeatherIcon(
+        val rank: Float = 1.0F,
+        val isDay: Boolean = true
+) {
+//  DAY                                 NIGHT
+    SUNNY_D,                            SUNNY_N(isDay = false),
+    FEW_CLOUDS_D,                       FEW_CLOUDS_N(isDay = false),
+    SCATTERED_CLOUDS_D(rank = 1.5F),    SCATTERED_CLOUDS_N(rank = 1.5F, isDay = false),
+    BROKEN_CLOUDS_D(rank = 2.0F),       BROKEN_CLOUDS_N(rank = 2.0F, isDay = false),
+    SHOWER_RAIN_D(rank = 3.0F),         SHOWER_RAIN_N(rank = 3.0F, isDay = false),
+    RAIN_D(rank = 3.0F),                RAIN_N(rank = 3.0F, isDay = false),
+    THUNDERSTORM_D(rank = 4.0F),        THUNDERSTORM_N(rank = 4.0F, isDay = false),
+    SNOW_D(rank = 3.0F),                SNOW_N(rank = 3.0F, isDay = false),
+    MIST_D,                             MIST_N
+}
