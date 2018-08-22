@@ -29,6 +29,9 @@ class WeatherPresenter @Inject constructor(
 
     private fun refreshWeatherManager() {
 
+        view.isRefreshButtonVisible = false
+        view.isRefreshProgressBarVisible = true
+
         view.provideLocationPermission(
                 onLocationPermissionGranted = {
 
@@ -70,8 +73,6 @@ class WeatherPresenter @Inject constructor(
 
     fun onClickRefreshButton() {
 
-        view.isRefreshButtonVisible = false
-        view.isRefreshProgressBarVisible = true
         refreshWeatherManager()
     }
 
