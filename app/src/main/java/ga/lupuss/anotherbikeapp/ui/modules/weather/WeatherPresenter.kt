@@ -4,7 +4,6 @@ import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.WeatherManager
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
-import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherManager
 import javax.inject.Inject
 
 class WeatherPresenter @Inject constructor(
@@ -21,7 +20,7 @@ class WeatherPresenter @Inject constructor(
     override fun notifyOnViewReady() {
 
         weatherManager.lastWeatherData?.let {
-            view.setWeather(it, 0, 0)
+            view.setWeather(it)
         }
 
         weatherManager.addOnNewWeatherListener(this)
@@ -55,7 +54,7 @@ class WeatherPresenter @Inject constructor(
 
         view.resetSeekBar()
 
-        view.setWeather(weatherData, 0, 0)
+        view.setWeather(weatherData)
         view.isRefreshButtonVisible = true
         view.isRefreshProgressBarVisible = false
     }
@@ -87,14 +86,15 @@ class WeatherPresenter @Inject constructor(
 
         weatherManager.lastWeatherData?.let {
 
-            view.setWeather(it, position, currentDay)
+            view.updateWeather(it, position, currentDay, currentDay)
         }
     }
 
     fun onClickWeatherDay(day: Int) {
 
+        val dayBefore = currentDay
         currentDay = day
-        view.setWeather(weatherManager.lastWeatherData!!, 0, currentDay)
+        view.updateWeather(weatherManager.lastWeatherData!!, 0, currentDay, dayBefore)
         view.resetSeekBar()
     }
 

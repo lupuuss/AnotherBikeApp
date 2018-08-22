@@ -9,6 +9,8 @@ interface WeatherView : BaseView {
     var isRefreshProgressBarVisible: Boolean
 
     fun redirectToGoogleMaps(lat: Double, lng: Double, name: String?)
-    fun setWeather(data: WeatherData, position: Int, day: Int)
     fun resetSeekBar()
+
+    fun updateWeather(data: WeatherData, position: Int, currentDay: Int, dayBefore: Int)
+    fun setWeather(data: WeatherData)
 }

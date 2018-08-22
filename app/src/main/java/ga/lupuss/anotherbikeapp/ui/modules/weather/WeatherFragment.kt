@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +12,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import ga.lupuss.anotherbikeapp.AnotherBikeApp
+import ga.lupuss.anotherbikeapp.*
 
-import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
-import ga.lupuss.anotherbikeapp.timeToHourMinutes
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import kotlinx.android.synthetic.main.fragment_weather.*
 import java.text.SimpleDateFormat
@@ -105,16 +101,68 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener, SeekB
     }
 
     @SuppressLint("SetTextI18n")
-    override fun setWeather(data: WeatherData, position: Int, day: Int) {
+    override fun setWeather(data: WeatherData) {
 
-        val realPosition = position + data.daysInfo[day].startIndex
+        val realPosition = 0
 
         val locale =  AnotherBikeApp
                 .get(this.requireActivity().application)
                 .anotherBikeAppComponent
                 .providesLocale()
 
-        hour.text = if (position == 0 && day == 0) getString(R.string.now)
+        hour.text = getString(R.string.now)
+
+        dayText.text = SimpleDateFormat("EEEE" ,locale)
+                .format(data.forecast[realPosition].time.time)
+                .capitalize()
+
+        description.text = data.forecast[realPosition].description.capitalize()
+        temperature.text = Math.round(data.forecast[realPosition].temperature).toString() + " ℃"
+
+        locationText.text = data.location ?: requireContext().getString(R.string.nameNotAvailable)
+
+        coordsText.text = "${data.lat}, ${data.lng}"
+
+        weatherImage.setImageResource(
+                resolveIcon(data.forecast[realPosition].icon)
+        )
+
+        daysContainer.removeAllViews()
+
+        data.daysInfo.forEachIndexed { index, it ->
+
+            val dayView = this.layoutInflater.inflate(R.layout.fragment_weather_day, daysContainer, false)
+
+            dayView.findViewById<ImageView>(R.id.weatherDayImage).setImageResource(
+                    resolveIcon(it.icon)
+            )
+
+            dayView.findViewById<TextView>(R.id.minTemp).text = it.minTemp.roundToInt().toString() + " ℃"
+            dayView.findViewById<TextView>(R.id.maxTemp).text = it.maxTemp.roundToInt().toString() + " ℃"
+            dayView.findViewById<TextView>(R.id.dayOfWeekText).text = SimpleDateFormat("E" ,locale)
+                    .format(data.forecast[it.startIndex].time.time)
+            dayView.tag = index
+            dayView.setOnClickListener(this)
+
+            if (index == 0) {
+
+                dayView.background = ContextCompat.getDrawable(this.requireContext(), R.drawable.weather_day_back_current)
+            }
+
+            daysContainer.addView(dayView)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun updateWeather(data: WeatherData, position: Int, currentDay: Int, dayBefore: Int) {
+        val realPosition = position + data.daysInfo[currentDay].startIndex
+
+        val locale =  AnotherBikeApp
+                .get(this.requireActivity().application)
+                .anotherBikeAppComponent
+                .providesLocale()
+
+        hour.text = if (position == 0 && currentDay == 0) getString(R.string.now)
 
         else timeToHourMinutes(
                 locale,
@@ -133,38 +181,38 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener, SeekB
         coordsText.text = "${data.lat}, ${data.lng}"
 
         weatherImage.setImageResource(
-                requireContext().resources.getIdentifier(
-                        "weather${data.forecast[realPosition].iconName}",
-                        "drawable", requireContext().packageName
-                )
+                resolveIcon(data.forecast[realPosition].icon)
         )
 
-        daysContainer.removeAllViews()
+        if (dayBefore != currentDay) {
 
-        data.daysInfo.forEachIndexed { index, it ->
+            daysContainer.getChildAt(currentDay).setBackgroundResource(R.drawable.weather_day_back_current)
+            daysContainer.getChildAt(dayBefore).setBackgroundResource(R.drawable.weather_day_back)
+        }
+    }
+    
+    private fun resolveIcon(weatherIcon: WeatherIcon): Int {
+        return when(weatherIcon) {
 
-            val dayView = this.layoutInflater.inflate(R.layout.fragment_weather_day, daysContainer, false)
-
-            dayView.findViewById<ImageView>(R.id.weatherDayImage).setImageResource(
-                    requireContext().resources.getIdentifier(
-                            "weather${it.icon}",
-                            "drawable", requireContext().packageName
-                    )
-            )
-
-            dayView.findViewById<TextView>(R.id.minTemp).text = it.minTemp.roundToInt().toString() + " ℃"
-            dayView.findViewById<TextView>(R.id.maxTemp).text = it.maxTemp.roundToInt().toString() + " ℃"
-            dayView.findViewById<TextView>(R.id.dayOfWeekText).text = SimpleDateFormat("E" ,locale)
-                    .format(data.forecast[it.startIndex].time.time)
-            dayView.tag = index
-            dayView.setOnClickListener(this)
-
-            if (index == day) {
-
-                dayView.background = ContextCompat.getDrawable(this.requireContext(), R.drawable.weather_day_back_current)
-            }
-
-            daysContainer.addView(dayView)
+            WeatherIcon.SUNNY_D -> R.drawable.weather_clear_sky_day
+            WeatherIcon.SUNNY_N -> R.drawable.weather_clear_sky_night
+            WeatherIcon.FEW_CLOUDS_D -> R.drawable.weather_few_clouds_day
+            WeatherIcon.FEW_CLOUDS_N -> R.drawable.weather_few_clodus_night
+            WeatherIcon.SCATTERED_CLOUDS_D -> R.drawable.weather_scattered_clouds
+            WeatherIcon.SCATTERED_CLOUDS_N -> R.drawable.weather_scattered_clouds
+            WeatherIcon.BROKEN_CLOUDS_D -> R.drawable.weather_scattered_clouds
+            WeatherIcon.BROKEN_CLOUDS_N -> R.drawable.weather_scattered_clouds
+            WeatherIcon.SHOWER_RAIN_D -> R.drawable.weather_shower_rain
+            WeatherIcon.SHOWER_RAIN_N -> R.drawable.weather_shower_rain
+            WeatherIcon.RAIN_D -> R.drawable.weather_rain_day
+            WeatherIcon.RAIN_N -> R.drawable.weather_rain_night
+            WeatherIcon.THUNDERSTORM_D -> R.drawable.weather_thunderstorm
+            WeatherIcon.THUNDERSTORM_N -> R.drawable.weather_thunderstorm
+            WeatherIcon.SNOW_D -> R.drawable.weather_snow_day
+            WeatherIcon.SNOW_N -> R.drawable.weather_snow_night
+            WeatherIcon.MIST_D -> R.drawable.weather_mist_day
+            WeatherIcon.MIST_N -> R.drawable.weather_mist_night
+            WeatherIcon.EMPTY -> R.drawable.ic_priority_high_64dp
         }
     }
 

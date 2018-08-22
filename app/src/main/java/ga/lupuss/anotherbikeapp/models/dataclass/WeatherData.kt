@@ -1,8 +1,8 @@
 package ga.lupuss.anotherbikeapp.models.dataclass
 
+import ga.lupuss.anotherbikeapp.WeatherIcon
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawCurrentWeatherData
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawForecastData
-import timber.log.Timber
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -11,6 +11,7 @@ class WeatherData(
         forecastData: RawForecastData,
         currentWeatherData: RawCurrentWeatherData,
         locale: Locale,
+        iconMapper: (String) -> WeatherIcon,
         val downloadTime: Long
 ) {
 
@@ -22,8 +23,20 @@ class WeatherData(
 
     init {
 
+        fillForecast(currentWeatherData, forecastData, locale, iconMapper)
 
+        lat = currentWeatherData.coord.lat
+        lng = currentWeatherData.coord.lon
 
+        location = if (currentWeatherData.sys.country != null)
+            "${currentWeatherData.name}, ${currentWeatherData.sys.country}"
+        else
+            null
+
+        fillDaysInfo()
+    }
+
+    private fun fillForecast(currentWeatherData: RawCurrentWeatherData, forecastData: RawForecastData, locale: Locale, iconMapper: (String) -> WeatherIcon) {
         forecast.add(
                 WeatherUnit(
                         time = Calendar.getInstance(locale).apply { timeInMillis = currentWeatherData.dt * 1000 }, // seconds to ms
@@ -34,7 +47,7 @@ class WeatherData(
                         windDeg = currentWeatherData.wind.deg,
                         clouds = currentWeatherData.clouds.all,
                         rainVolume = currentWeatherData.rain?.h ?: 0.0,
-                        iconName = currentWeatherData.weather.first().icon,
+                        icon = iconMapper.invoke(currentWeatherData.weather.first().icon),
                         description = currentWeatherData.weather.first().description
                 )
         )
@@ -50,24 +63,20 @@ class WeatherData(
                             windDeg = it.wind.deg,
                             clouds = it.clouds.all,
                             rainVolume = it.rain?.h ?: 0.0,
-                            iconName = it.weather.first().icon,
+                            icon = iconMapper.invoke(it.weather.first().icon),
                             description = it.weather.first().description)
             )
         }
 
-        lat = currentWeatherData.coord.lat
-        lng = currentWeatherData.coord.lon
+    }
 
-        location = if (currentWeatherData.sys.country != null)
-            "${currentWeatherData.name}, ${currentWeatherData.sys.country}"
-        else
-            null
+    private fun fillDaysInfo() {
 
         var lastDayOfWeek = forecast[0].time.get(Calendar.DAY_OF_WEEK)
         var tempMin: Double? = null
         var tempMax: Double? = null
         var startIndex = 0
-        val iconsCounter = mutableMapOf<String, Int>()
+        val iconsCounter = mutableMapOf<WeatherIcon, Float>()
 
         forecast.forEachIndexed { index, it ->
 
@@ -93,16 +102,18 @@ class WeatherData(
             }
 
 
-            val iconName = it.iconName.replace("n", "d")
-            val count = iconsCounter[iconName]
+            val icon = WeatherIcon.valueOf(
+                    it.icon.name.replaceAfterLast("_", "D")
+            )
+            val count = iconsCounter[icon]
 
             if (count == null) {
 
-                iconsCounter[iconName] = 1
+                iconsCounter[icon] = icon.rank
 
             } else {
 
-                iconsCounter[iconName] = count + 1
+                iconsCounter[icon] = count + icon.rank
             }
 
             tempMin = if(tempMin == null) {
@@ -122,8 +133,6 @@ class WeatherData(
                 max(it.temperature, tempMax!!)
             }
         }
-
-        Timber.d(daysInfo.toString())
     }
 
     data class WeatherUnit(
@@ -135,13 +144,13 @@ class WeatherData(
             val windDeg: Double,
             val clouds: Int,
             val rainVolume: Double,
-            val iconName: String,
+            val icon: WeatherIcon,
             val description: String
     )
 
     data class DayInfo(
             val startIndex: Int,
-            val icon: String,
+            val icon: WeatherIcon,
             val minTemp: Double,
             val maxTemp: Double,
             val dayOfWeek: Int

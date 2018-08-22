@@ -1,14 +1,12 @@
 package ga.lupuss.anotherbikeapp.models.weather
 
+import ga.lupuss.anotherbikeapp.WeatherIcon
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.base.WeatherManager
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawCurrentWeatherData
 import ga.lupuss.anotherbikeapp.models.weather.pojo.RawForecastData
-import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.util.*
 
@@ -54,6 +52,32 @@ class OpenWeatherManager(
                 }
     }
 
+    private fun resolveIcon(icon: String): WeatherIcon {
+
+        return when(icon) {
+
+            "01d" -> WeatherIcon.SUNNY_D
+            "01n" -> WeatherIcon.SUNNY_N
+            "02d" -> WeatherIcon.FEW_CLOUDS_D
+            "02n" -> WeatherIcon.FEW_CLOUDS_N
+            "03d" -> WeatherIcon.SCATTERED_CLOUDS_D
+            "03n" -> WeatherIcon.SCATTERED_CLOUDS_N
+            "04d" -> WeatherIcon.BROKEN_CLOUDS_D
+            "04n" -> WeatherIcon.BROKEN_CLOUDS_N
+            "09d" -> WeatherIcon.SHOWER_RAIN_D
+            "09n" -> WeatherIcon.SHOWER_RAIN_N
+            "10d" -> WeatherIcon.RAIN_D
+            "10n" -> WeatherIcon.RAIN_N
+            "11d" -> WeatherIcon.THUNDERSTORM_D
+            "11n" -> WeatherIcon.THUNDERSTORM_N
+            "13d" -> WeatherIcon.SNOW_D
+            "13n" -> WeatherIcon.SNOW_N
+            "50d" -> WeatherIcon.MIST_D
+            "50n" -> WeatherIcon.MIST_N
+            else -> WeatherIcon.EMPTY
+        }
+    }
+
     private fun onFailure(t: Throwable?) {
 
         Timber.d("Weather data fail: $t")
@@ -69,7 +93,7 @@ class OpenWeatherManager(
 
         refreshFailure.clear()
 
-        lastWeatherData = WeatherData(forecastData,currentWeatherData, locale, timeProvider.invoke())
+        lastWeatherData = WeatherData(forecastData,currentWeatherData, locale, { resolveIcon(it) },timeProvider.invoke())
         weatherListeners.forEach {
             it.onNewWeatherData(lastWeatherData!!)
         }

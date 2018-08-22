@@ -38,5 +38,7 @@ enum class WeatherIcon(
     RAIN_D(rank = 3.0F),                RAIN_N(rank = 3.0F, isDay = false),
     THUNDERSTORM_D(rank = 4.0F),        THUNDERSTORM_N(rank = 4.0F, isDay = false),
     SNOW_D(rank = 3.0F),                SNOW_N(rank = 3.0F, isDay = false),
-    MIST_D,                             MIST_N
+    MIST_D,                             MIST_N,
+
+    EMPTY(rank = 0F)
 }
