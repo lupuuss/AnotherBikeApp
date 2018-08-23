@@ -1,6 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.base
 
-import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
+import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 
@@ -18,8 +18,9 @@ interface RoutesManager {
 
     val routeReferenceSerializer: RouteReferenceSerializer
 
-    fun addRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged)
-    fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged)
+    fun refresh(onRequestMoreShortRouteDataListener: RoutesManager.OnRequestMoreShortRouteDataListener?, requestOwner: Any?)
+    fun addRoutesDataChangedListener(onRoutesChangedListener: OnDataSetChanged)
+    fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDataSetChanged)
     fun requestMoreShortRouteData(
             onRequestMoreShortRouteDataListener: OnRequestMoreShortRouteDataListener?,
             requestOwner: Any? = null

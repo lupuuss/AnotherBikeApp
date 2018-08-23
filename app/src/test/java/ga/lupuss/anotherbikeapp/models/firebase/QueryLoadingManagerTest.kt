@@ -16,7 +16,7 @@ class QueryLoadingManagerTest {
     private val queryLoadingManager = QueryLoadingManager(testScheduler, testScheduler)
 
     private val query = mock<Query>{}
-    private val listenerTest = mock<OnDocumentChanged> {  }
+    private val listenerTest = mock<OnDataSetChanged> {  }
     private val listeners = mutableListOf(listenerTest)
 
     @Test

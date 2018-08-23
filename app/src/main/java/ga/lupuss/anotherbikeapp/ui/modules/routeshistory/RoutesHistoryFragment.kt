@@ -111,6 +111,12 @@ class RoutesHistoryFragment
         routesHistoryPresenter.notifyRecyclerReachedBottom()
     }
 
+    override fun onClickRefreshButton() {
+        super.onClickRefreshButton()
+
+        routesHistoryPresenter.onClickRefreshButton()
+    }
+
     // Recycler View
     override fun onItemClick(position: Int) {
 

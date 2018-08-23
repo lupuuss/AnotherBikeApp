@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
-import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
@@ -28,13 +27,15 @@ class FirebaseRoutesManager(
         private val firebaseFirestore: FirebaseFirestore,
         private val routeKeeper: TempRouteKeeper,
         private val locale: Locale,
-        gson: Gson,
-        schedulersPackage: SchedulersPackage,
-        private val queryManager: QueryLoadingManager = QueryLoadingManager(schedulersPackage)
+        gson: Gson
 
-): RoutesManager, OnDocumentChanged{
+): RoutesManager, OnDataSetChanged{
 
-    private val onRoutesChangedListeners = mutableListOf<OnDocumentChanged>()
+    private val children = mutableListOf<FirebaseShortRouteData>()
+
+    private val limit: Long = DEFAULT_LIMIT
+
+    private val onRoutesChangedListeners = mutableListOf<OnDataSetChanged>()
     private val userPath = "$FIREB_USERS/${authInteractor.userUid!!}"
     private val routesPath = "$userPath/$FIREB_ROUTES"
     private val routesQuery = firebaseFirestore
@@ -43,7 +44,9 @@ class FirebaseRoutesManager(
 
 
     private fun DocumentSnapshot.toFirebaseShortRouteData(): FirebaseShortRouteData =
-            this.toObject(FirebaseShortRouteData::class.java)!!
+            this.toObject(FirebaseShortRouteData::class.java)!!.apply {
+                reference = this@toFirebaseShortRouteData.reference
+            }
 
     private fun DocumentSnapshot.toFirebaseRouteData(): FirebaseRouteData =
             this.toObject(FirebaseRouteData::class.java)!!
@@ -53,20 +56,10 @@ class FirebaseRoutesManager(
 
     override val routeReferenceSerializer: RouteReferenceSerializer = FirebaseRouteReferenceSerializer(gson, firebaseFirestore)
 
-    init {
-
-        queryManager.setTargetQuery(routesQuery)
-        queryManager.addRoutesDataChangedListener(this)
-    }
 
     override fun onNewDocument(position: Int) {
 
         onRoutesChangedListeners.forEach { it.onNewDocument(position) }
-
-        if (!queryManager.isQueryListeningInitialized) {
-
-            queryManager.initQueryListening()
-        }
     }
 
     override fun onDocumentDeleted(position: Int) {
@@ -79,12 +72,17 @@ class FirebaseRoutesManager(
         onRoutesChangedListeners.forEach { it.onDocumentModified(position) }
     }
 
-    override fun addRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged) {
+    override fun onDataSetChanged() {
+
+        onRoutesChangedListeners.forEach { it.onDataSetChanged() }
+    }
+
+    override fun addRoutesDataChangedListener(onRoutesChangedListener: OnDataSetChanged) {
 
         onRoutesChangedListeners.add(onRoutesChangedListener)
     }
 
-    override fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDocumentChanged) {
+    override fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDataSetChanged) {
 
         onRoutesChangedListeners.remove(onRoutesChangedListener)
     }
@@ -101,28 +99,61 @@ class FirebaseRoutesManager(
         if (owner !is Activity)
             throw IllegalArgumentException("Request owner should be an activity!")
 
-        queryManager.loadMoreDocuments(
-                { onRequestMoreShortRouteDataListener?.onDataEnd() },
-                { onRequestMoreShortRouteDataListener?.onFail(it) },
-                owner
-        )
+        val query = if (children.isNotEmpty()) {
+
+            routesQuery
+                    .startAfter(children.last())
+                    .limit(limit)
+
+        } else {
+
+            routesQuery.limit(limit)
+        }
+
+        query.get()
+                .addOnSuccessListener(owner) {
+
+                    if (it.isEmpty) {
+
+                        onRequestMoreShortRouteDataListener?.onDataEnd()
+
+                    } else {
+                        it.documents.forEach {
+                            children.add(it.toFirebaseShortRouteData())
+                            onNewDocument(children.size - 1)
+                        }
+
+                        if (it.documents.size < limit) {
+
+                            onRequestMoreShortRouteDataListener?.onDataEnd()
+                        }
+                    }
+                }
+                .addOnFailureListener(owner) {
+                    onRequestMoreShortRouteDataListener?.onFail(it)
+                }
+
+    }
+
+    override fun refresh(onRequestMoreShortRouteDataListener: RoutesManager.OnRequestMoreShortRouteDataListener?, requestOwner: Any?) {
+        children.clear()
+        onRoutesChangedListeners.forEach { it.onDataSetChanged() }
+
+        requestMoreShortRouteData(onRequestMoreShortRouteDataListener, requestOwner)
     }
 
     override fun readShortRouteData(position: Int): ShortRouteData {
 
-        return queryManager.readDocument(position)
-                .toFirebaseShortRouteData()
-                .toShortRouteData()
+        return children[position]
     }
 
-    override fun shortRouteDataCount() = queryManager.size
+    override fun shortRouteDataCount() = children.size
 
     override fun getRouteReference(position: Int): RouteReference {
 
-        val shortRouteDataSnap = queryManager.readDocument(position)
-        val shortRouteData = shortRouteDataSnap.toFirebaseShortRouteData()
+        val shortRouteDataSnap = children[position]
 
-        return FirebaseRouteReference(shortRouteDataSnap.reference, shortRouteData.route, shortRouteData.points)
+        return FirebaseRouteReference(shortRouteDataSnap.reference, shortRouteDataSnap.route, shortRouteDataSnap.points, position)
     }
 
     override fun requestExtendedRoutesData(
@@ -193,6 +224,7 @@ class FirebaseRoutesManager(
         val newPointsRef = firebaseFirestore.collection(FIREB_POINTS).document()
         val newRouteRef = firebaseFirestore.collection(FIREB_ROUTES).document()
         val userRef = firebaseFirestore.collection(FIREB_USERS).document(authInteractor.userUid!!)
+        val newUserRefRoute = userRef.collection(FIREB_ROUTES).document()
 
         firebaseFirestore
                 .batch()
@@ -205,12 +237,21 @@ class FirebaseRoutesManager(
                     user = userRef
                 })
                 .update(newPointsRef, FIREB_ROUTE, newRouteRef)
-                .set(userRef.collection(FIREB_ROUTES).document(), FirebaseShortRouteData().apply {
+                .set(newUserRefRoute, FirebaseShortRouteData().apply {
                     fillWith(routeData)
                     route = newRouteRef
                     points = newPointsRef
                 })
                 .commit()
+                .continueWithTask {
+
+                    newUserRefRoute.get()
+
+                }.addOnSuccessListener {
+
+                    children.add(it.toFirebaseShortRouteData())
+                    onNewDocument(0)
+                }
     }
 
     override fun changeName(routeReference: RouteReference, routeNameFromEditText: String) {
@@ -223,6 +264,11 @@ class FirebaseRoutesManager(
                 .update(routeReference.userRouteReference!!, FIREB_NAME, routeNameFromEditText)
                 .update(routeReference.routeReference!!, FIREB_NAME, routeNameFromEditText)
                 .commit()
+                .addOnSuccessListener {
+
+                    children[routeReference.localIndex].name = routeNameFromEditText
+                    onDocumentModified(routeReference.localIndex)
+                }
     }
 
     override fun deleteRoute(routeReference: RouteReference) {
@@ -244,6 +290,10 @@ class FirebaseRoutesManager(
             }
 
             batch.commit()
+                    .addOnSuccessListener {
+                        children.removeAt(routeReference.localIndex)
+                        onDocumentDeleted(routeReference.localIndex)
+                    }
 
         } else {
 

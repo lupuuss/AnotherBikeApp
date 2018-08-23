@@ -14,6 +14,7 @@ class FirebaseRouteReferenceSerializer(private val gson: Gson,
         var userRoute: String? = null
         var route: String? = null
         var points: String? = null
+        var localIndex: Int = -1
     }
 
     override fun serialize(routeReference: RouteReference): String {
@@ -25,6 +26,7 @@ class FirebaseRouteReferenceSerializer(private val gson: Gson,
             userRoute = routeReference.userRouteReference?.path
             route = routeReference.routeReference?.path
             points = routeReference.pointsReference?.path
+            localIndex = routeReference.localIndex
         }
 
         return gson.toJson(serializableReference, SerializableReference::class.java)
@@ -46,7 +48,8 @@ class FirebaseRouteReferenceSerializer(private val gson: Gson,
         return FirebaseRouteReference(
                 userRoute,
                 route,
-                points
+                points,
+                serializableReference.localIndex
         )
     }
 }

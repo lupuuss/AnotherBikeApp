@@ -26,9 +26,8 @@ class UserModule {
                               routesKeeper: TempRouteKeeper,
                               firebaseFirestore: FirebaseFirestore,
                               locale: Locale,
-                              gson: Gson,
-                              schedulersPackage: SchedulersPackage): RoutesManager =
-            FirebaseRoutesManager(authInteractor, firebaseFirestore, routesKeeper, locale, gson, schedulersPackage)
+                              gson: Gson): RoutesManager =
+            FirebaseRoutesManager(authInteractor, firebaseFirestore, routesKeeper, locale, gson)
 
     @Provides
     @UserComponentScope

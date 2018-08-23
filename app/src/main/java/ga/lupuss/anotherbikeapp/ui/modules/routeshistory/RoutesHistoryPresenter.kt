@@ -4,7 +4,7 @@ import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import ga.lupuss.anotherbikeapp.models.firebase.OnDocumentChanged
+import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class RoutesHistoryPresenter @Inject constructor(
 ) : Presenter<RoutesHistoryView>(),
         PreferencesInteractor.OnUnitChangedListener,
         RoutesManager.OnRequestMoreShortRouteDataListener,
-        OnDocumentChanged {
+        OnDataSetChanged {
 
     init {
         view = routesHistoryView
@@ -34,19 +34,21 @@ class RoutesHistoryPresenter @Inject constructor(
         onLoadMoreRequest()
     }
 
+    private fun setLoading(isOn: Boolean) {
+        view.isRoutesHistoryProgressBarVisible = isOn
+        view.isRefreshProgressBarVisible = isOn
+        view.isRefreshButtonVisible = !isOn
+        view.isNoDataTextVisible = false
+    }
+
     private fun onLoadMoreRequest() {
 
         if (loadMoreAvailable) {
 
-            view.isRoutesHistoryProgressBarVisible = true
+            setLoading(true)
 
             routesManager.requestMoreShortRouteData(this, view)
         }
-    }
-
-    fun notifyRecyclerReachedBottom() {
-
-        onLoadMoreRequest()
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
@@ -56,6 +58,36 @@ class RoutesHistoryPresenter @Inject constructor(
         super.notifyOnDestroy(isFinishing)
     }
 
+    fun notifyRecyclerReachedBottom() {
+
+        onLoadMoreRequest()
+    }
+
+    override fun onDataEnd() {
+
+        setLoading(false)
+        loadMoreAvailable = false
+
+        if (routesManager.shortRouteDataCount() == 0)
+            view.isNoDataTextVisible = true
+
+    }
+
+    override fun onFail(exception: Exception) {
+
+        setLoading(false)
+        Timber.e(exception)
+    }
+
+    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
+
+    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.shortRouteDataCount()
+
+    fun onClickRefreshButton() {
+
+        setLoading(true)
+        routesManager.refresh(this, view)
+    }
 
     fun onClickShortRoute(position: Int) {
 
@@ -67,28 +99,10 @@ class RoutesHistoryPresenter @Inject constructor(
 
     }
 
-    override fun onDataEnd() {
-
-        view.isRoutesHistoryProgressBarVisible = false
-
-        loadMoreAvailable = false
-
-        if (routesManager.shortRouteDataCount() == 0)
-            view.isNoDataTextVisible = true
-
-    }
-
-    override fun onFail(exception: Exception) {
-
-        view.isRoutesHistoryProgressBarVisible = false
-        Timber.e(exception)
-    }
-
-    fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
-
-    fun onHistoryRecyclerItemCountRequest(): Int = routesManager.shortRouteDataCount()
-
     override fun onNewDocument(position: Int) {
+
+        view.isRefreshButtonVisible = true
+        view.isRefreshProgressBarVisible = false
 
         view.isNoDataTextVisible = false
         view.notifyRecyclerItemInserted(position, routesManager.shortRouteDataCount())
@@ -105,6 +119,10 @@ class RoutesHistoryPresenter @Inject constructor(
 
             view.isNoDataTextVisible = true
         }
+    }
+
+    override fun onDataSetChanged() {
+        view.refreshRecyclerAdapter()
     }
 
     override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {

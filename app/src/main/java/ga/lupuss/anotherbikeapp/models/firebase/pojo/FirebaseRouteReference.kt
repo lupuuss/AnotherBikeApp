@@ -6,5 +6,6 @@ import ga.lupuss.anotherbikeapp.models.base.RouteReference
 class FirebaseRouteReference(
         var userRouteReference: DocumentReference?,
         var routeReference: DocumentReference?,
-        var pointsReference: DocumentReference?
+        var pointsReference: DocumentReference?,
+        var localIndex: Int
 ) : RouteReference
