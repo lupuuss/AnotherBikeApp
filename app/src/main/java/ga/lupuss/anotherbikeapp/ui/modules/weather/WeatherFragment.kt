@@ -137,6 +137,16 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
                 resolveIcon(data.forecast[realPosition].icon)
         )
 
+        hoursContainer.removeAllViews()
+        for (x in 0..7) {
+            val view = layoutInflater.inflate(
+                    R.layout.fragment_weather_seekbar_hour_text, hoursContainer, false
+            ) as TextView
+
+            view.text = timeToHourMinutes(locale, data.forecast[x].time)
+            hoursContainer.addView(view)
+        }
+
         daysContainer.removeAllViews()
 
         data.daysInfo.forEachIndexed { index, it ->
@@ -195,6 +205,12 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
         )
 
         if (dayBefore != currentDay) {
+
+            for (child in 0..7) {
+
+                (hoursContainer.getChildAt(child) as TextView).text =
+                        timeToHourMinutes(locale, data.forecast[data.daysInfo[currentDay].startIndex + child].time)
+            }
 
             daysContainer.getChildAt(currentDay).setBackgroundResource(R.drawable.weather_day_back_current)
             daysContainer.getChildAt(dayBefore).setBackgroundResource(R.drawable.weather_day_back)

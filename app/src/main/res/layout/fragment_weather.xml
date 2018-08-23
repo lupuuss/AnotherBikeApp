@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.modules.weather.WeatherFragment"
     android:background="?android:colorPrimary"
-    android:padding="10dp"
     android:id="@+id/weatherFragmentLayout"
     android:animateLayoutChanges="true">
 
@@ -17,6 +16,8 @@
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/weatherImage">
@@ -50,6 +51,8 @@
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/weatherImage">
@@ -79,6 +82,7 @@
     </LinearLayout>
 
     <ImageView
+        android:layout_marginTop="10dp"
         android:id="@+id/weatherImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -111,14 +115,30 @@
 
     <SeekBar
         android:id="@+id/weatherSeekBar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:max="7"
         android:enabled="false"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/description"/>
+    <LinearLayout
+
+        android:id="@+id/hoursContainer"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weatherSeekBar">
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/weatherExpandButton"
@@ -127,7 +147,7 @@
         android:src="@drawable/ic_expand_more_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weatherSeekBar"
+        app:layout_constraintTop_toBottomOf="@id/hoursContainer"
         android:background="@android:color/transparent"
         tools:ignore="ContentDescription" />
 
@@ -139,7 +159,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weatherExpandButton"
-        android:visibility="gone">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:layout_marginBottom="2dp">
 
         <LinearLayout
             android:id="@+id/daysContainer"

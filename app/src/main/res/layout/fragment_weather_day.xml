@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/weather_day_back"
     android:padding="8dp"
+    android:layout_marginBottom="8dp"
     android:layout_marginStart="5dp"
     android:layout_marginEnd="5dp"
     android:id="@+id/weatherDayLayout">
