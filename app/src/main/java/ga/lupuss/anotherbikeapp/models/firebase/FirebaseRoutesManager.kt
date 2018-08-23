@@ -102,7 +102,7 @@ class FirebaseRoutesManager(
         val query = if (children.isNotEmpty()) {
 
             routesQuery
-                    .startAfter(children.last())
+                    .startAt(children.size - 1)
                     .limit(limit)
 
         } else {
