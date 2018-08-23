@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.NestedScrollView
 import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
@@ -25,6 +26,7 @@ import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.extensions.addOnAnimationEndListener
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
+import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryFragment
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_ui.*
@@ -112,6 +114,16 @@ class MainActivity
 
         drawerListView.adapter = DrawerListViewAdapter(drawerListViewChildren, layoutInflater)
         drawerListView.onItemClickListener = this
+
+        mainScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, _, _, _ ->
+
+            if (v.canScrollVertically(1)) {
+
+                (supportFragmentManager
+                        .findFragmentById(R.id.routesHistoryFragment) as RoutesHistoryFragment)
+                        .notifyParentScrollReachedBottom()
+            }
+        })
 
         mainPresenter.notifyOnViewReady()
     }

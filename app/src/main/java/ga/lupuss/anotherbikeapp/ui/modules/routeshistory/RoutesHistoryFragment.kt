@@ -3,15 +3,17 @@ package ga.lupuss.anotherbikeapp.ui.modules.routeshistory
 
 import android.content.Context
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.BaseFragment
+import ga.lupuss.anotherbikeapp.base.LabeledFragment
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
@@ -23,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_routes_history.*
 import javax.inject.Inject
 
 class RoutesHistoryFragment
-    : BaseFragment(),
+    : LabeledFragment(),
         RoutesHistoryView,
         RoutesHistoryRecyclerViewAdapter.OnItemClickListener  {
 
@@ -36,7 +38,7 @@ class RoutesHistoryFragment
     override var isRoutesHistoryVisible: Boolean = true
         set(value) { routesHistoryRecycler?.isVisible = value }
 
-    override var isProgressBarVisible: Boolean = true
+    override var isRoutesHistoryProgressBarVisible: Boolean = true
         set(value) { recyclerProgressBar?.isGone = !value }
 
     override fun onAttach(context: Context?) {
@@ -61,11 +63,18 @@ class RoutesHistoryFragment
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_routes_history, container, false)
+        val viewGroup = super.onCreateView(inflater, container, savedInstanceState) as ViewGroup
+        attachChildLayoutToParent(
+                inflater.inflate(R.layout.fragment_routes_history, viewGroup, false),
+                viewGroup as ConstraintLayout
+        )
+        return viewGroup
     }
 
     override fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedPostVerification(view, savedInstanceState)
+
+        setLabel(R.string.routesHistory)
 
         val recyclerViewAdapter = RoutesHistoryRecyclerViewAdapter(
                 routesHistoryPresenter::onHistoryRecyclerItemRequest,
@@ -89,18 +98,17 @@ class RoutesHistoryFragment
             )
         }
 
-        recyclerWrapper.setOnScrollChangeListener({ v: NestedScrollView?, _, _, _, _ ->
-
-            if (!v!!.canScrollVertically(1))
-                routesHistoryPresenter.notifyRecyclerReachedBottom()
-        })
-
         routesHistoryPresenter.notifyOnViewReady()
     }
 
     override fun onDestroyViewPostVerification() {
         super.onDestroyViewPostVerification()
         routesHistoryPresenter.notifyOnDestroy(true)
+    }
+
+    fun notifyParentScrollReachedBottom() {
+
+        routesHistoryPresenter.notifyRecyclerReachedBottom()
     }
 
     // Recycler View

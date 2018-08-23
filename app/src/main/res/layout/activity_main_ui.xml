@@ -1,78 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity"
-    android:orientation="vertical"
     android:background="?android:colorPrimary">
 
-    <Button
-        app:layout_goneMarginTop="20dp"
-        android:id="@+id/trackingButton"
-        android:elevation="2dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/common_button"
-        android:paddingBottom="3dp"
-        android:paddingEnd="15dp"
-        android:paddingStart="15dp"
-        android:paddingTop="3dp"
-        android:onClick="onClickTrackingButton"
-        android:text="@string/startTracking"
-        android:layout_marginTop="@dimen/mainUiMargin" />
-
-    <TextView
-        android:height="@dimen/mainLabelHeight"
-        android:id="@+id/weatherLabel"
-        android:elevation="@dimen/mainLabelElevation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:colorAccent"
-        android:padding="@dimen/mainLabelPadding"
-        android:text="@string/weather"
-        android:textAllCaps="true"
-        android:textAlignment="center"
-        android:layout_marginTop="@dimen/mainUiMargin"
-        android:textSize="@dimen/mainLabelTextSize" />
-    <FrameLayout
-        android:id="@+id/weatherFragmentWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <fragment
-            android:id="@+id/weatherFragment"
-            android:name="ga.lupuss.anotherbikeapp.ui.modules.weather.WeatherFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_weather" />
-    </FrameLayout>
-
-    <TextView
-        android:height="@dimen/mainLabelHeight"
-        android:id="@+id/routesHistoryLabel"
-        android:elevation="@dimen/mainLabelElevation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:colorAccent"
-        android:padding="@dimen/mainLabelPadding"
-        android:text="@string/routesHistory"
-        android:textAllCaps="true"
-        android:textAlignment="center"
-        android:textSize="@dimen/mainLabelTextSize" />
-
-    <FrameLayout
-        android:id="@+id/routesHistoryFragmentWrapper"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/mainScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <fragment
-            android:id="@+id/routesHistoryFragment"
-            android:name="ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryFragment"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_routes_history" />
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <Button
+                app:layout_goneMarginTop="20dp"
+                android:id="@+id/trackingButton"
+                android:elevation="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/common_button"
+                android:paddingBottom="3dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="3dp"
+                android:onClick="onClickTrackingButton"
+                android:text="@string/startTracking"
+                android:layout_marginTop="@dimen/mainUiMargin"
+                android:layout_marginBottom="20dp"/>
 
-</LinearLayout>
+            <FrameLayout
+                android:id="@+id/weatherFragmentWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <fragment
+                    android:id="@+id/weatherFragment"
+                    android:name="ga.lupuss.anotherbikeapp.ui.modules.weather.WeatherFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout="@layout/fragment_weather" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/routesHistoryFragmentWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <fragment
+                    android:id="@+id/routesHistoryFragment"
+                    android:name="ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout="@layout/fragment_routes_history" />
+            </FrameLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

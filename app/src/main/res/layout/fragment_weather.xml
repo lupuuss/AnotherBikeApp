@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.modules.weather.WeatherFragment"
     android:background="?android:colorPrimary"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:id="@+id/weatherFragmentLayout">
 
     <LinearLayout
         android:id="@+id/locationInfo"
@@ -75,30 +76,6 @@
             android:textAlignment="textEnd"
             tools:text="Now"/>
     </LinearLayout>
-
-    <ImageButton
-        android:layout_marginTop="5dp"
-        android:id="@+id/refreshButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_refresh_24dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/timeInfo"
-        app:layout_constraintBottom_toBottomOf="@id/description"
-        android:contentDescription="@string/refresh" />
-
-    <ProgressBar
-        android:id="@+id/refreshProgressBar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="@id/refreshButton"
-        app:layout_constraintTop_toTopOf="@id/refreshButton"
-        app:layout_constraintStart_toStartOf="@id/refreshButton"
-        app:layout_constraintBottom_toBottomOf="@id/refreshButton"
-        android:contentDescription="@string/refresh"
-        android:indeterminateTint="?android:textColor"
-        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/weatherImage"

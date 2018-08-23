@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
@@ -14,27 +15,15 @@ import android.widget.SeekBar
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.*
 
-import ga.lupuss.anotherbikeapp.base.BaseFragment
+import ga.lupuss.anotherbikeapp.base.LabeledFragment
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
-import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import kotlinx.android.synthetic.main.fragment_weather.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
-    override var isRefreshButtonVisible: Boolean = true
-        set(value) {
-
-            refreshButton?.isVisible = value
-        }
-
-    override var isRefreshProgressBarVisible: Boolean = false
-        set(value) {
-
-            refreshProgressBar?.isVisible = value
-        }
     @Inject
     lateinit var presenter: WeatherPresenter
 
@@ -59,13 +48,19 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener, SeekB
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_weather, container, false)
+        val viewGroup = super.onCreateView(inflater, container, savedInstanceState) as ViewGroup
+        attachChildLayoutToParent(
+                inflater.inflate(R.layout.fragment_weather, viewGroup, false),
+                viewGroup as ConstraintLayout
+        )
+
+        return viewGroup
     }
 
     override fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedPostVerification(view, savedInstanceState)
 
-        refreshButton.setOnClickListener(this)
+        setLabel(R.string.weather)
         locationInfo.setOnClickListener(this)
         weatherSeekBar.setOnSeekBarChangeListener(this)
         presenter.notifyOnViewReady()
@@ -83,11 +78,6 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener, SeekB
 
         when(p0!!.id) {
 
-            R.id.refreshButton -> {
-
-                presenter.onClickRefreshButton()
-            }
-
             R.id.locationInfo -> {
 
                 presenter.onClickLocationInfo()
@@ -98,6 +88,11 @@ class WeatherFragment : BaseFragment(), WeatherView, View.OnClickListener, SeekB
                 presenter.onClickWeatherDay(p0.tag as Int)
             }
         }
+    }
+
+    override fun onClickRefreshButton() {
+
+        presenter.onClickRefreshButton()
     }
 
     @SuppressLint("SetTextI18n")

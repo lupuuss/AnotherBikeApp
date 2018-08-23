@@ -38,7 +38,7 @@ class RoutesHistoryPresenter @Inject constructor(
 
         if (loadMoreAvailable) {
 
-            view.isProgressBarVisible = true
+            view.isRoutesHistoryProgressBarVisible = true
 
             routesManager.requestMoreShortRouteData(this, view)
         }
@@ -69,7 +69,7 @@ class RoutesHistoryPresenter @Inject constructor(
 
     override fun onDataEnd() {
 
-        view.isProgressBarVisible = false
+        view.isRoutesHistoryProgressBarVisible = false
 
         loadMoreAvailable = false
 
@@ -80,7 +80,7 @@ class RoutesHistoryPresenter @Inject constructor(
 
     override fun onFail(exception: Exception) {
 
-        view.isProgressBarVisible = false
+        view.isRoutesHistoryProgressBarVisible = false
         Timber.e(exception)
     }
 

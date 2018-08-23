@@ -1,12 +1,13 @@
 package ga.lupuss.anotherbikeapp.ui.modules.routeshistory
 
 import ga.lupuss.anotherbikeapp.base.BaseView
+import ga.lupuss.anotherbikeapp.base.LabeledView
 
-interface RoutesHistoryView: BaseView {
+interface RoutesHistoryView: BaseView, LabeledView {
 
     var isNoDataTextVisible: Boolean
     var isRoutesHistoryVisible: Boolean
-    var isProgressBarVisible: Boolean
+    var isRoutesHistoryProgressBarVisible: Boolean
 
     fun refreshRecyclerAdapter()
     fun notifyRecyclerItemChanged(position: Int)
