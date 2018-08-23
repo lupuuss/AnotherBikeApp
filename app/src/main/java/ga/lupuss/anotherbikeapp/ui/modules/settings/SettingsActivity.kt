@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
+import ga.lupuss.anotherbikeapp.base.ThemedActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 
-class SettingsActivity : ThemedBaseActivity() {
+class SettingsActivity : ThemedActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

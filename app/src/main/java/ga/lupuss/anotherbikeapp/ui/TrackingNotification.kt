@@ -9,7 +9,7 @@ import android.app.NotificationChannel
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
-import ga.lupuss.anotherbikeapp.base.ThemedBaseActivity
+import ga.lupuss.anotherbikeapp.base.ThemedActivity
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
@@ -39,7 +39,7 @@ class TrackingNotification {
         }
     }
 
-    fun generatePendingIntent(intent: Intent, parentActivity: ThemedBaseActivity): PendingIntent {
+    fun generatePendingIntent(intent: Intent, parentActivity: ThemedActivity): PendingIntent {
 
         intent.putExtra(MainActivity.REQUEST_CODE_KEY, MainPresenter.Request.TRACKING_NOTIFICATION_REQUEST)
 

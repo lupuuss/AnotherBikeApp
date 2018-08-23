@@ -7,7 +7,7 @@ import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import javax.inject.Inject
 
 
-abstract class ThemedBaseActivity : BaseActivity(), BaseView, PreferencesInteractor.OnThemeChangedListener {
+abstract class ThemedActivity : BaseActivity(), BaseView, PreferencesInteractor.OnThemeChangedListener {
 
 
     @Inject

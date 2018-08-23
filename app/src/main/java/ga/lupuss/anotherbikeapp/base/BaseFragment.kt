@@ -65,31 +65,31 @@ abstract class BaseFragment : Fragment(), BaseView {
     open fun onDestroyViewPostVerification() {}
 
     override fun postMessage(message: Message) {
-        (activity as? ThemedBaseActivity)?.postMessage(message)
+        (activity as? ThemedActivity)?.postMessage(message)
     }
 
     override fun makeToast(str: String) {
-        (activity as? ThemedBaseActivity)?.makeToast(str)
+        (activity as? ThemedActivity)?.makeToast(str)
     }
 
     override fun isOnline(): Boolean {
-        return (activity as? ThemedBaseActivity)?.isOnline() ?: false
+        return (activity as? ThemedActivity)?.isOnline() ?: false
     }
 
     override fun finishActivity() {
-        (activity as? ThemedBaseActivity)?.finishActivity()
+        (activity as? ThemedActivity)?.finishActivity()
     }
 
     override fun provideLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
-        (activity as? ThemedBaseActivity)?.provideLocationPermission(onLocationPermissionRequestResult)
+        (activity as? ThemedActivity)?.provideLocationPermission(onLocationPermissionRequestResult)
     }
 
     override fun provideLocationPermission(onLocationPermissionGranted: () -> Unit, onLocationPermissionRefused: () -> Unit) {
-        (activity as? ThemedBaseActivity)?.provideLocationPermission(onLocationPermissionGranted, onLocationPermissionRefused)
+        (activity as? ThemedActivity)?.provideLocationPermission(onLocationPermissionGranted, onLocationPermissionRefused)
     }
 
     override fun requestSingleLocationUpdate(onComplete: (Boolean, Location?) -> Unit) {
 
-        (activity as? ThemedBaseActivity)?.requestSingleLocationUpdate(onComplete)
+        (activity as? ThemedActivity)?.requestSingleLocationUpdate(onComplete)
     }
 }

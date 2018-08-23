@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.ThemedBaseMapActivity
+import ga.lupuss.anotherbikeapp.base.ThemedMapActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
@@ -25,7 +25,7 @@ import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
 
-class SummaryActivity : ThemedBaseMapActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
+class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
 
     @Inject
     lateinit var summaryPresenter: MainSummaryPresenter

@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 
-abstract class ThemedBaseMapActivity : ThemedBaseActivity(), OnMapReadyCallback, PreferencesInteractor.OnMapThemeEnableListener {
+abstract class ThemedMapActivity : ThemedActivity(), OnMapReadyCallback, PreferencesInteractor.OnMapThemeEnableListener {
 
     protected lateinit var map: GoogleMap
 
