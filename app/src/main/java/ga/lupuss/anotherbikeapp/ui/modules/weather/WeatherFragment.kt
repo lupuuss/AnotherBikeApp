@@ -17,6 +17,7 @@ import ga.lupuss.anotherbikeapp.*
 
 import ga.lupuss.anotherbikeapp.base.LabeledFragment
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
+import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import kotlinx.android.synthetic.main.fragment_weather.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -63,6 +64,7 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
         setLabel(R.string.weather)
         locationInfo.setOnClickListener(this)
         weatherSeekBar.setOnSeekBarChangeListener(this)
+        weatherExpandButton.setOnClickListener(this)
         presenter.notifyOnViewReady()
     }
 
@@ -86,6 +88,19 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
             R.id.weatherDayLayout -> {
 
                 presenter.onClickWeatherDay(p0.tag as Int)
+            }
+
+            R.id.weatherExpandButton -> {
+
+                val isHidden = weatherExpandButton.rotation == 0F
+
+                weatherExpandButton.rotation =  if (isHidden) {
+                    180F
+                } else {
+                    0F
+                }
+
+                horizontalScrollView.isGone = !isHidden
             }
         }
     }

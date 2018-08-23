@@ -7,7 +7,8 @@
     tools:context=".ui.modules.weather.WeatherFragment"
     android:background="?android:colorPrimary"
     android:padding="10dp"
-    android:id="@+id/weatherFragmentLayout">
+    android:id="@+id/weatherFragmentLayout"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:id="@+id/locationInfo"
@@ -119,13 +120,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
+    <ImageButton
+        android:id="@+id/weatherExpandButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_expand_more_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weatherSeekBar"
+        android:background="@android:color/transparent"
+        tools:ignore="ContentDescription" />
+
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherSeekBar">
+        app:layout_constraintTop_toBottomOf="@+id/weatherExpandButton"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/daysContainer"
