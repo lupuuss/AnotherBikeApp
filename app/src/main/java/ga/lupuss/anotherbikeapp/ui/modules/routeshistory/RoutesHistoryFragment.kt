@@ -21,6 +21,7 @@ import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import kotlinx.android.synthetic.main.fragment_routes_history.*
+import timber.log.Timber
 
 import javax.inject.Inject
 
@@ -33,13 +34,22 @@ class RoutesHistoryFragment
     lateinit var routesHistoryPresenter: RoutesHistoryPresenter
 
     override var isNoDataTextVisible: Boolean = false
-        set(value){ noDataText?.isVisible = value }
+        set(value){
+            noDataText?.isVisible = value
+            field = value
+        }
 
     override var isRoutesHistoryVisible: Boolean = true
-        set(value) { routesHistoryRecycler?.isVisible = value }
+        set(value) {
+            routesHistoryRecycler?.isVisible = value
+            field = value
+        }
 
     override var isRoutesHistoryProgressBarVisible: Boolean = true
-        set(value) { recyclerProgressBar?.isGone = !value }
+        set(value) {
+            recyclerProgressBar?.isGone = !value
+            field = value
+        }
 
     override fun onAttach(context: Context?) {
 

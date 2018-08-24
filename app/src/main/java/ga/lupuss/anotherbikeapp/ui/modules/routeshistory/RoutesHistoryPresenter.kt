@@ -39,7 +39,7 @@ class RoutesHistoryPresenter @Inject constructor(
         view.isRoutesHistoryProgressBarVisible = isOn
         view.isRefreshProgressBarVisible = isOn
         view.isRefreshButtonVisible = !isOn
-        view.isNoDataTextVisible = false
+        view.isNoDataTextVisible = routesManager.shortRouteDataCount() == 0 && !isOn
     }
 
     private fun onLoadMoreRequest() {
@@ -74,8 +74,10 @@ class RoutesHistoryPresenter @Inject constructor(
 
         loadMoreAvailable = false
 
-        if (routesManager.shortRouteDataCount() == 0)
+        if (routesManager.shortRouteDataCount() == 0) {
+
             view.isNoDataTextVisible = true
+        }
 
     }
 

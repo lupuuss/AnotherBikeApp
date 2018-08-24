@@ -5,40 +5,41 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.modules.routeshistory.RoutesHistoryFragment"
-    android:id="@+id/routesHistoryFragmentLayout">
+    android:id="@+id/routesHistoryFragmentLayout"
+    tools:background="?android:colorPrimary">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:background="@android:color/transparent"
+        android:id="@+id/routesHistoryRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginTop="5dp">
+        android:layout_marginTop="5dp"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/routesHistoryRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <ProgressBar
-            android:id="@+id/recyclerProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"/>
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/recyclerProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/routesHistoryRecycler"
+        android:padding="10dp"/>
 
     <TextView
+
         android:id="@+id/noDataText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:text="@string/noDataAvailable"
         android:layout_marginTop="20dp"
+        android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>
