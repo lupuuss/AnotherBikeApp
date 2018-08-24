@@ -7,6 +7,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 interface RoutesManager {
 
     interface OnRequestMoreShortRouteDataListener {
+        fun onRequestSuccess()
         fun onDataEnd()
         fun onFail(exception: Exception)
     }

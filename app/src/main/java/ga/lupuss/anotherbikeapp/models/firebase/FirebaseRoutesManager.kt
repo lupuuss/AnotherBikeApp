@@ -31,7 +31,7 @@ class FirebaseRoutesManager(
 
 ): RoutesManager, OnDataSetChanged{
 
-    private val children = mutableListOf<FirebaseShortRouteData>()
+    private val children = mutableListOf<DocumentSnapshot>()
 
     private val limit: Long = DEFAULT_LIMIT
 
@@ -55,7 +55,6 @@ class FirebaseRoutesManager(
             this.toObject(FirebasePoints::class.java)!!
 
     override val routeReferenceSerializer: RouteReferenceSerializer = FirebaseRouteReferenceSerializer(gson, firebaseFirestore)
-
 
     override fun onNewDocument(position: Int) {
 
@@ -102,7 +101,7 @@ class FirebaseRoutesManager(
         val query = if (children.isNotEmpty()) {
 
             routesQuery
-                    .startAt(children.size - 1)
+                    .startAfter(children.last())
                     .limit(limit)
 
         } else {
@@ -119,7 +118,7 @@ class FirebaseRoutesManager(
 
                     } else {
                         it.documents.forEach {
-                            children.add(it.toFirebaseShortRouteData())
+                            children.add(it)
                             onNewDocument(children.size - 1)
                         }
 
@@ -128,6 +127,8 @@ class FirebaseRoutesManager(
                             onRequestMoreShortRouteDataListener?.onDataEnd()
                         }
                     }
+
+                    onRequestMoreShortRouteDataListener?.onRequestSuccess()
                 }
                 .addOnFailureListener(owner) {
                     onRequestMoreShortRouteDataListener?.onFail(it)
@@ -144,7 +145,7 @@ class FirebaseRoutesManager(
 
     override fun readShortRouteData(position: Int): ShortRouteData {
 
-        return children[position]
+        return children[position].toFirebaseShortRouteData()
     }
 
     override fun shortRouteDataCount() = children.size
@@ -152,8 +153,9 @@ class FirebaseRoutesManager(
     override fun getRouteReference(position: Int): RouteReference {
 
         val shortRouteDataSnap = children[position]
+        val shortRouteData = children[position].toFirebaseShortRouteData()
 
-        return FirebaseRouteReference(shortRouteDataSnap.reference, shortRouteDataSnap.route, shortRouteDataSnap.points, position)
+        return FirebaseRouteReference(shortRouteDataSnap.reference, shortRouteData.route, shortRouteData.points, position)
     }
 
     override fun requestExtendedRoutesData(
@@ -249,7 +251,7 @@ class FirebaseRoutesManager(
 
                 }.addOnSuccessListener {
 
-                    children.add(it.toFirebaseShortRouteData())
+                    children.add(it)
                     onNewDocument(0)
                 }
     }
@@ -264,9 +266,11 @@ class FirebaseRoutesManager(
                 .update(routeReference.userRouteReference!!, FIREB_NAME, routeNameFromEditText)
                 .update(routeReference.routeReference!!, FIREB_NAME, routeNameFromEditText)
                 .commit()
-                .addOnSuccessListener {
+                .continueWithTask {
 
-                    children[routeReference.localIndex].name = routeNameFromEditText
+                    routeReference.userRouteReference!!.get()
+                }.addOnSuccessListener {
+                    children[routeReference.localIndex] = it
                     onDocumentModified(routeReference.localIndex)
                 }
     }

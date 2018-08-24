@@ -25,6 +25,7 @@ class RoutesHistoryPresenter @Inject constructor(
     var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
 
     private var loadMoreAvailable = true
+    private var requestInProgress = false
 
     override fun notifyOnViewReady() {
 
@@ -43,10 +44,10 @@ class RoutesHistoryPresenter @Inject constructor(
 
     private fun onLoadMoreRequest() {
 
-        if (loadMoreAvailable) {
+        if (loadMoreAvailable && !requestInProgress) {
 
             setLoading(true)
-
+            requestInProgress = true
             routesManager.requestMoreShortRouteData(this, view)
         }
     }
@@ -63,9 +64,14 @@ class RoutesHistoryPresenter @Inject constructor(
         onLoadMoreRequest()
     }
 
-    override fun onDataEnd() {
+    override fun onRequestSuccess() {
 
         setLoading(false)
+        requestInProgress = false
+    }
+
+    override fun onDataEnd() {
+
         loadMoreAvailable = false
 
         if (routesManager.shortRouteDataCount() == 0)
@@ -76,7 +82,7 @@ class RoutesHistoryPresenter @Inject constructor(
     override fun onFail(exception: Exception) {
 
         setLoading(false)
-        Timber.e(exception)
+        view.makeToast(exception.toString())
     }
 
     fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
@@ -86,6 +92,7 @@ class RoutesHistoryPresenter @Inject constructor(
     fun onClickRefreshButton() {
 
         setLoading(true)
+        loadMoreAvailable = true
         routesManager.refresh(this, view)
     }
 
