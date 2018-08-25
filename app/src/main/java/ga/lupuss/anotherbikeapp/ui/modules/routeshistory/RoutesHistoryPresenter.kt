@@ -35,6 +35,14 @@ class RoutesHistoryPresenter @Inject constructor(
         onLoadMoreRequest()
     }
 
+    fun notifyOnStart(isFirst: Boolean) {
+
+        if (requestInProgress && !isFirst) {
+
+            routesManager.refresh(this, view)
+        }
+    }
+
     private fun setLoading(isOn: Boolean) {
         view.isRoutesHistoryProgressBarVisible = isOn
         view.isRefreshProgressBarVisible = isOn
@@ -85,6 +93,8 @@ class RoutesHistoryPresenter @Inject constructor(
 
         setLoading(false)
         view.makeToast(exception.toString())
+
+        Timber.d(exception)
     }
 
     fun onHistoryRecyclerItemRequest(position: Int) = routesManager.readShortRouteData(position)
@@ -95,6 +105,7 @@ class RoutesHistoryPresenter @Inject constructor(
 
         setLoading(true)
         loadMoreAvailable = true
+        requestInProgress = true
         routesManager.refresh(this, view)
     }
 
@@ -141,4 +152,5 @@ class RoutesHistoryPresenter @Inject constructor(
 
         view.refreshRecyclerAdapter()
     }
+
 }

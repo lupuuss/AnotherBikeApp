@@ -4,9 +4,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.routeshistory
 import android.content.Context
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +19,6 @@ import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import kotlinx.android.synthetic.main.fragment_routes_history.*
-import timber.log.Timber
 
 import javax.inject.Inject
 
@@ -50,6 +47,8 @@ class RoutesHistoryFragment
             recyclerProgressBar?.isGone = !value
             field = value
         }
+
+    private var isFirstStart = true
 
     override fun onAttach(context: Context?) {
 
@@ -109,6 +108,17 @@ class RoutesHistoryFragment
         }
 
         routesHistoryPresenter.notifyOnViewReady()
+    }
+
+    override fun onStartPostVerification() {
+        super.onStartPostVerification()
+        routesHistoryPresenter.notifyOnStart(isFirstStart)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        isFirstStart = false
     }
 
     override fun onDestroyViewPostVerification() {

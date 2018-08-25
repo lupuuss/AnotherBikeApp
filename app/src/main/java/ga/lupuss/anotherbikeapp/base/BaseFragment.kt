@@ -53,6 +53,17 @@ abstract class BaseFragment : Fragment(), BaseView {
 
     open fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {}
 
+    override fun onStart() {
+        super.onStart()
+
+        if (verificationPassed || !requiresPassedVerification) {
+
+            onStartPostVerification()
+        }
+    }
+
+    open fun onStartPostVerification() {}
+
     override fun onDestroyView() {
         super.onDestroyView()
 
