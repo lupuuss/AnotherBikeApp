@@ -6,8 +6,10 @@ import android.support.v4.graphics.ColorUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 
 var View.isVisible
@@ -55,16 +57,19 @@ class ViewExtensions {
          *  @param tag Tag that was assigned to TextView by createStatsLineWithNameTag
          *
          */
-        fun updateTextViewStatByTag(layout: ViewGroup,
-                                    tag: Statistic.Name, statString: String) {
+        fun updateStatByTag(layout: ViewGroup,
+                                    tag: Statistic.Name,
+                                    statNameString: String,
+                                    statValueString: String) {
 
-            val statTextView = layout.findViewWithTag<TextView>(tag)
+            val statView = layout.findViewWithTag<LinearLayout>(tag)
 
-            statTextView.text = statString
+            statView.findViewById<TextView>(R.id.statText).text = statNameString
+            statView.findViewById<TextView>(R.id.statValue).text = statValueString
         }
 
         /**
-         * Create TextView, which contains statistic. TextView receives tag - name of statistic (Statistic.Name).
+         * Creates TextView, which contains statistic. TextView receives tag - name of statistic (Statistic.Name).
          * @param rootView ViewGroup that will contain statistic
          * @param statLayoutId Id of layout, which contains TextView that represents statistic
          * @param statName Name of statistic. It's a tag for a TextView
@@ -82,6 +87,24 @@ class ViewExtensions {
             (statTextView as TextView).text = statString
 
             return statTextView
+        }
+
+        fun createStatWithTag(layoutInflater: LayoutInflater,
+                              rootView: ViewGroup,
+                              statLayoutId: Int,
+                              statName: Statistic.Name,
+                              statNameString: String,
+                              statValueString: String): LinearLayout {
+
+            val statView = layoutInflater
+                    .inflate(statLayoutId, rootView, false) as LinearLayout
+
+            statView.tag = statName
+
+            statView.findViewById<TextView>(R.id.statText).text = statNameString
+            statView.findViewById<TextView>(R.id.statValue).text = statValueString
+
+            return statView
         }
 
         fun getDefaultMarkerIconForColor(color: Int) =

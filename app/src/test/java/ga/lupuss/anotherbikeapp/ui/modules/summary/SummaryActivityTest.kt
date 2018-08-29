@@ -9,7 +9,7 @@ import com.google.android.gms.maps.UiSettings
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
-import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
+import ga.lupuss.anotherbikeapp.ui.fragments.CurrentStatsFragment
 import junit.framework.Assert
 import org.junit.After
 import org.junit.Test
@@ -180,7 +180,7 @@ class SummaryActivityTest {
     fun showStatistics_shouldCallUpdateStatsOnStatsFragment() {
 
         val spiedActivity = spy(activity)
-        val mockedFragment = mock<StatsFragment> { }
+        val mockedFragment = mock<CurrentStatsFragment> { }
 
         `when`(spiedActivity.supportFragmentManager).then {
             mock<FragmentManager> {

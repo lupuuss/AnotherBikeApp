@@ -77,10 +77,10 @@
         app:layout_constraintBottom_toBottomOf="parent">
         <fragment
             android:id="@+id/statsFragment"
-            android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
+            android:name="ga.lupuss.anotherbikeapp.ui.fragments.CurrentStatsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_stats" />
+            tools:layout="@layout/fragment_current_stats" />
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

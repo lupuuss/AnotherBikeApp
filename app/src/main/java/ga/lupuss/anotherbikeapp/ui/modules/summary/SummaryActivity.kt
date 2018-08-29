@@ -21,7 +21,7 @@ import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
-import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
+import ga.lupuss.anotherbikeapp.ui.fragments.CurrentStatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
 
@@ -197,7 +197,7 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
 
     override fun showStatistics(statistics: Map<Statistic.Name, Statistic<*>>) {
 
-        (supportFragmentManager.findFragmentById(R.id.statsFragment) as? StatsFragment)?.updateStats(statistics)
+        (supportFragmentManager.findFragmentById(R.id.statsFragment) as? CurrentStatsFragment)?.updateStats(statistics)
     }
 
     override fun showRejectDialog(onYes: () -> Unit) {

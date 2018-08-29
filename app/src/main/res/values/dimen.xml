@@ -6,4 +6,8 @@
     <dimen name="mainLabelTextSize">15sp</dimen>
     <dimen name="mainUiMargin">20dp</dimen>
     <dimen name="loginLabelTextSize">38dp</dimen>
+    <dimen name="statDescriptionSize">13dp</dimen>
+    <dimen name="statValueSize">25dp</dimen>
+    <dimen name="statSideMargin">16dp</dimen>
+    <dimen name="statBetweenSpace">10dp</dimen>
 </resources>
