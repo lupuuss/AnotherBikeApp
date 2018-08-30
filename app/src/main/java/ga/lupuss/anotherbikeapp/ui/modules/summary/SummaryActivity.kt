@@ -24,11 +24,8 @@ import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
-import ga.lupuss.anotherbikeapp.R.id.scroll
 import android.view.MotionEvent
-import android.view.View.OnTouchListener
-import android.R.color.transparent
-import android.view.View
+import ga.lupuss.anotherbikeapp.dpToPixels
 
 
 class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
@@ -106,7 +103,7 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
         activateToolbar(toolbarSummary)
 
         // only for portrait mode
-        transparentMapCover?.setOnTouchListener { v, event ->
+        transparentMapCover?.setOnTouchListener { _, event ->
             val action = event.action
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -223,7 +220,7 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
                             .position(points.last())
             )
 
-            map.fitToPoints(points, 150, 18F, mapFrameSummary.width, mapFrameSummary.height)
+            map.fitToPoints(points, 150, 18F, resources.displayMetrics.widthPixels, dpToPixels(this, 350F))
         }
     }
 
