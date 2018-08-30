@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import ga.lupuss.anotherbikeapp.AppTheme
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 
 class AndroidPreferencesInteractor(context: Context) : PreferencesInteractor() {
 
@@ -59,13 +59,13 @@ class AndroidPreferencesInteractor(context: Context) : PreferencesInteractor() {
             putPref(themeKey, value.toString())
         }
 
-    override var speedUnit: Statistic.Unit.Speed
-        get() = Statistic.Unit.Speed.valueOf(getPref(speedUnitKey, Statistic.Unit.Speed.KM_H.toString()))
+    override var speedUnit: AppUnit.Speed
+        get() = AppUnit.Speed.valueOf(getPref(speedUnitKey, AppUnit.Speed.KM_H.toString()))
         set(value) {
             putPref(speedUnitKey, value.toString())
         }
-    override var distanceUnit: Statistic.Unit.Distance
-        get() = Statistic.Unit.Distance.valueOf(getPref(distanceUnitKey, Statistic.Unit.Distance.KM.toString()))
+    override var distanceUnit: AppUnit.Distance
+        get() = AppUnit.Distance.valueOf(getPref(distanceUnitKey, AppUnit.Distance.KM.toString()))
         set(value) {
             putPref(distanceUnitKey, value.toString())
         }

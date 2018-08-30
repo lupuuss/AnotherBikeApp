@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.android
 
 import android.content.Context
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.Text
@@ -47,23 +48,23 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
         Statistic.Name.MIN_ALTITUDE -> R.string.minAltitude
     })
 
-    override fun resolve(unit: Statistic.Unit): String {
+    override fun resolve(unit: AppUnit): String {
         return context.getString(
 
                 when (unit) {
 
-                    is Statistic.Unit.Speed -> when (unit) {
+                    is AppUnit.Speed -> when (unit) {
 
-                        Statistic.Unit.Speed.M_S ->  R.string.unitSpeedMs
-                        Statistic.Unit.Speed.KM_H ->  R.string.unitSpeedKmh
-                        Statistic.Unit.Speed.MPH -> R.string.unitSpeedMph
+                        AppUnit.Speed.M_S ->  R.string.unitSpeedMs
+                        AppUnit.Speed.KM_H ->  R.string.unitSpeedKmh
+                        AppUnit.Speed.MPH -> R.string.unitSpeedMph
                     }
 
-                    is Statistic.Unit.Distance -> when (unit) {
+                    is AppUnit.Distance -> when (unit) {
 
-                        Statistic.Unit.Distance.M -> R.string.unitDistanceM
-                        Statistic.Unit.Distance.KM -> R.string.unitDistanceKm
-                        Statistic.Unit.Distance.MI -> R.string.unitDistanceMi
+                        AppUnit.Distance.M -> R.string.unitDistanceM
+                        AppUnit.Distance.KM -> R.string.unitDistanceKm
+                        AppUnit.Distance.MI -> R.string.unitDistanceMi
                     }
 
                     else -> throw IllegalArgumentException("Unknown implementation of Statistic.Unit")
@@ -85,7 +86,7 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
     }
 
     override fun resolve(stat: UnitStatistic): String =
-            (Math.round(stat.value * stat.unit.convertParam * 100.0) / 100.0).toString() +
+            (Math.round(stat.unit.convertFunction.invoke(stat.value) * 100.0) / 100.0).toString() +
                     " " + resolve(stat.unit)
 
     override fun resolve(stat: StatusStatistic): String = context.getString(when (stat.value) {

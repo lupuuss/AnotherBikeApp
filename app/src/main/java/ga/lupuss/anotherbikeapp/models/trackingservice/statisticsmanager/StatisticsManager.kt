@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.timeToFormattedString
@@ -17,7 +18,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
                                             private val math: StatisticsMathProvider,
                                             preferencesInteractor: PreferencesInteractor) {
 
-    private val kmh5 = 5 / Statistic.Unit.Speed.KM_H.convertParam // 5 km/h in m/s
+    private val kmh5 = 5 / AppUnit.Speed.KM_H.convertFunction(1.0) // 5 km/h in m/s
 
     init {
 
@@ -182,10 +183,10 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
                 Statistic.Name.DISTANCE to UnitStatistic(routeData.distance, distanceUnit),
                 Statistic.Name.AVG_SPEED to UnitStatistic(routeData.avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(routeData.maxSpeed, speedUnit),
-                Statistic.Name.ALTITUDE to UnitStatistic(altitude, Statistic.Unit.Distance.M),
-                Statistic.Name.AVG_ALTITUDE to UnitStatistic(routeData.avgAltitude, Statistic.Unit.Distance.M),
-                Statistic.Name.MAX_ALTITUDE to UnitStatistic(routeData.maxAltitude, Statistic.Unit.Distance.M),
-                Statistic.Name.MIN_ALTITUDE to UnitStatistic(routeData.minAltitude, Statistic.Unit.Distance.M),
+                Statistic.Name.ALTITUDE to UnitStatistic(altitude, AppUnit.Distance.M),
+                Statistic.Name.AVG_ALTITUDE to UnitStatistic(routeData.avgAltitude, AppUnit.Distance.M),
+                Statistic.Name.MAX_ALTITUDE to UnitStatistic(routeData.maxAltitude, AppUnit.Distance.M),
+                Statistic.Name.MIN_ALTITUDE to UnitStatistic(routeData.minAltitude, AppUnit.Distance.M),
                 Statistic.Name.START_TIME to StringStatistic(routeData.startTimeStr)
         )
     }

@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.base
 
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -11,7 +12,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.UnitStatistic
 interface ResourceResolver {
     fun resolve(message: Message): String
     fun resolve(text: Text): String
-    fun resolve(unit: Statistic.Unit): String
+    fun resolve(unit: AppUnit): String
     fun resolve(stat: TimeStatistic): String
     fun resolve(stat: UnitStatistic): String
     fun resolve(stat: Statistic<*>): String

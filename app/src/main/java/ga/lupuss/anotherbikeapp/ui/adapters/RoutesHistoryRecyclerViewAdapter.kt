@@ -5,10 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.dataclass.TimeStatistic
 import ga.lupuss.anotherbikeapp.models.dataclass.UnitStatistic
 import ga.lupuss.anotherbikeapp.resolveTimeString
@@ -16,8 +16,8 @@ import ga.lupuss.anotherbikeapp.resolveTimeString
 class RoutesHistoryRecyclerViewAdapter(
         private val routesDataCallback: (Int) -> ShortRouteData,
         private val sizeCallback: () -> Int,
-        private val speedUnitCallback: () -> Statistic.Unit,
-        private val distanceUnitCallback: () -> Statistic.Unit,
+        private val speedUnitCallback: () -> AppUnit,
+        private val distanceUnitCallback: () -> AppUnit,
         private val resourceResolver: ResourceResolver
 
 ) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {

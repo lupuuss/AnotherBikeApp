@@ -42,3 +42,28 @@ enum class WeatherIcon(
 
     EMPTY(rank = 0F)
 }
+
+/**
+ * Represent units used in app.
+ *
+ * @property convertFunction is used to convert SI units to others
+ * e.g 3.6 km/h is 1 m/s so convertParam is 3.6
+ */
+interface AppUnit {
+
+    val convertFunction: (rawSiValue: Double) -> Double
+
+    enum class Distance(override val convertFunction: (rawSiValue: Double) -> Double): AppUnit {
+
+        M({ it * 1.0 }), // SI unit
+        KM({ it * 0.001 }),
+        MI({ it * 0.000621371192 })
+    }
+
+    enum class Speed(override val convertFunction:(rawSiValue: Double) -> Double): AppUnit {
+
+        M_S({ it * 1.0 }), // SI unit
+        KM_H({ it * 3.6 }),
+        MPH({ it * 2.23693629 })
+    }
+}

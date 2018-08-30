@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.dataclass
 
 import com.google.android.gms.maps.model.LatLng
+import ga.lupuss.anotherbikeapp.AppUnit
 
 interface RouteData : ShortRouteData {
 
@@ -23,7 +24,7 @@ interface RouteData : ShortRouteData {
             override val minAltitude: Double
     ) : RouteData
 
-    fun getStatisticsMap(speedUnit: Statistic.Unit, distanceUnit: Statistic.Unit)
+    fun getStatisticsMap(speedUnit: AppUnit, distanceUnit: AppUnit)
             : Map<Statistic.Name, Statistic<*>> {
 
         return linkedMapOf(
@@ -31,9 +32,9 @@ interface RouteData : ShortRouteData {
                 Statistic.Name.DISTANCE to UnitStatistic(distance, distanceUnit),
                 Statistic.Name.AVG_SPEED to UnitStatistic(avgSpeed, speedUnit),
                 Statistic.Name.MAX_SPEED to UnitStatistic(maxSpeed, speedUnit),
-                Statistic.Name.AVG_ALTITUDE to UnitStatistic(avgAltitude, Statistic.Unit.Distance.M),
-                Statistic.Name.MAX_ALTITUDE to UnitStatistic(maxAltitude, Statistic.Unit.Distance.M),
-                Statistic.Name.MIN_ALTITUDE to UnitStatistic(minAltitude, Statistic.Unit.Distance.M),
+                Statistic.Name.AVG_ALTITUDE to UnitStatistic(avgAltitude, AppUnit.Distance.M),
+                Statistic.Name.MAX_ALTITUDE to UnitStatistic(maxAltitude, AppUnit.Distance.M),
+                Statistic.Name.MIN_ALTITUDE to UnitStatistic(minAltitude, AppUnit.Distance.M),
                 Statistic.Name.START_TIME to StringStatistic(startTimeStr)
         )
     }

@@ -8,6 +8,7 @@ import android.location.Location
 import android.os.*
 import com.google.android.gms.location.*
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -135,7 +136,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
         }
     }
 
-    override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
+    override fun onUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance) {
 
         statsManager.speedUnit = speedUnit
         statsManager.distanceUnit = distanceUnit

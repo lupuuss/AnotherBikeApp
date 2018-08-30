@@ -1,9 +1,9 @@
 package ga.lupuss.anotherbikeapp.ui.modules.routeshistory
 
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,8 +21,8 @@ class RoutesHistoryPresenter @Inject constructor(
         view = routesHistoryView
     }
 
-    var speedUnit: Statistic.Unit = preferencesInteractor.speedUnit
-    var distanceUnit: Statistic.Unit = preferencesInteractor.distanceUnit
+    var speedUnit: AppUnit.Speed = preferencesInteractor.speedUnit
+    var distanceUnit: AppUnit.Distance = preferencesInteractor.distanceUnit
 
     private var loadMoreAvailable = true
     private var requestInProgress = false
@@ -145,7 +145,7 @@ class RoutesHistoryPresenter @Inject constructor(
         view.refreshRecyclerAdapter()
     }
 
-    override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
+    override fun onUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance) {
 
         this.speedUnit = speedUnit
         this.distanceUnit = distanceUnit
