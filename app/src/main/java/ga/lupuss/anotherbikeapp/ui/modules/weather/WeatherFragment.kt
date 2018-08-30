@@ -163,8 +163,11 @@ class WeatherFragment
                     resolveIcon(it.icon)
             )
 
-            dayView.findViewById<TextView>(R.id.minTemp).text = it.minTemp.roundToInt().toString() + " ℃"
-            dayView.findViewById<TextView>(R.id.maxTemp).text = it.maxTemp.roundToInt().toString() + " ℃"
+            val min = temperatureUnit.convertFunction.invoke(it.minTemp)
+            val max = temperatureUnit.convertFunction.invoke(it.maxTemp)
+
+            dayView.findViewById<TextView>(R.id.minTemp).text = "${min.roundToInt()} ${resourceResolver.resolve(temperatureUnit)}"
+            dayView.findViewById<TextView>(R.id.maxTemp).text = "${max.roundToInt()} ${resourceResolver.resolve(temperatureUnit)}"
             dayView.findViewById<TextView>(R.id.dayOfWeekText).text = SimpleDateFormat("E" ,locale)
                     .format(data.forecast[it.startIndex].time.time)
             dayView.tag = index
