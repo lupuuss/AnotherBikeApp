@@ -251,7 +251,7 @@ class FirebaseRoutesManager(
 
                 }.addOnSuccessListener {
 
-                    children.add(it)
+                    children.add(0, it)
                     onNewDocument(0)
                 }
     }
