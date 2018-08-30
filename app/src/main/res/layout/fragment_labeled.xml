@@ -14,13 +14,15 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:elevation="2dp"
-        tools:text="@string/weather"
         android:textAllCaps="true"
         android:textAlignment="center"
+        android:textSize="16dp"
         android:background="?android:colorAccent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/weather"
+        tools:ignore="SpUsage" />
 
     <ImageButton
         android:elevation="4dp"
