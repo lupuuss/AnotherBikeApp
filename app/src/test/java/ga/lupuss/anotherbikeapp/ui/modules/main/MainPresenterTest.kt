@@ -49,7 +49,7 @@ class MainPresenterTest {
 
         // registering listeners
         verify(preferencesInteractor, times(1))
-                .addOnUnitChangedListener(mainPresenter, mainPresenter)
+                .addOnTrackingUnitChangedListener(mainPresenter, mainPresenter)
         verify(trackingServiceGovernor, times(1))
                 .addOnServiceActivityChangesListener(any(), any())
         verify(routesManager, times(1))
@@ -103,7 +103,7 @@ class MainPresenterTest {
         mainPresenter.notifyOnDestroy(any())
 
         verify(trackingServiceGovernor, times(1)).removeOnServiceActivityChangesListener(mainPresenter)
-        verify(preferencesInteractor, times(1)).removeOnUnitChangedListener(mainPresenter)
+        verify(preferencesInteractor, times(1)).removeOnTrackingUnitChangedListener(mainPresenter)
         verify(routesManager, times(1)).removeOnRoutesDataChangedListener(mainPresenter)
     }
 

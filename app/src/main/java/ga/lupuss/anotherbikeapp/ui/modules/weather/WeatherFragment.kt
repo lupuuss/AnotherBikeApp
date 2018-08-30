@@ -16,6 +16,7 @@ import android.widget.TextView
 import ga.lupuss.anotherbikeapp.*
 
 import ga.lupuss.anotherbikeapp.base.LabeledFragment
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import kotlinx.android.synthetic.main.fragment_weather.*
@@ -24,10 +25,20 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+class WeatherFragment
+    : LabeledFragment(),
+        WeatherView,
+        View.OnClickListener,
+        SeekBar.OnSeekBarChangeListener {
 
     @Inject
     lateinit var presenter: WeatherPresenter
+
+    @Inject
+    lateinit var preferencesInteractor: PreferencesInteractor
+
+    lateinit var windSpeedUnit: AppUnit.Speed
+    lateinit var temperatureUnit: AppUnit.Temperature
 
     override fun onAttach(context: Context?) {
         requiresVerification()
@@ -43,6 +54,9 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
                 .get(this.activity!!.application)
                 .weatherComponent(this)
                 .inject(this)
+
+        windSpeedUnit = preferencesInteractor.weatherWindSpeedUnit
+        temperatureUnit = preferencesInteractor.weatherTemperatureUnit
 
         super.onAttachPostVerification(context)
     }
@@ -67,6 +81,12 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
         weatherSeekBar.setOnSeekBarChangeListener(this)
         weatherExpandButton.setOnClickListener(this)
         presenter.notifyOnViewReady()
+    }
+
+    override fun refreshUnits(windSpeedUnit: AppUnit.Speed, temperatureUnit: AppUnit.Temperature) {
+
+        this.windSpeedUnit = windSpeedUnit
+        this.temperatureUnit = temperatureUnit
     }
 
     override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -198,8 +218,10 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
                 .format(weatherUnit.time.time)
                 .capitalize()
 
+        val temp = Math.round(temperatureUnit.convertFunction.invoke(weatherUnit.temperature))
+
         description.text = weatherUnit.description.capitalize()
-        temperature.text = "${Math.round(weatherUnit.temperature)} ℃"
+        temperature.text = "$temp ${resourceResolver.resolve(temperatureUnit)}"
         locationText.text = data.location ?: requireContext().getString(R.string.nameNotAvailable)
         coordsText.text = "${data.lat}, ${data.lng}"
 
@@ -211,9 +233,11 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
         rainfallValue.text = "${weatherUnit.rainVolume} mm"
         humidityValue.text = "${weatherUnit.humidity}%"
 
+        val windSpeed = Math.round(windSpeedUnit.convertFunction.invoke(weatherUnit.windSpeed) * 100.0) / 100.0
+
         cloudsValue.text = "${weatherUnit.clouds}%"
-        windValue.text = "${weatherUnit.windSpeed} m/s"
-        pressureValue.text = "${weatherUnit.pressure} hPa"
+        windValue.text = "$windSpeed ${resourceResolver.resolve(windSpeedUnit)}"
+        pressureValue.text = "${weatherUnit.pressure.roundToInt()} hPa"
     }
 
     private fun resolveIcon(weatherIcon: WeatherIcon): Int {

@@ -9,8 +9,13 @@ abstract class PreferencesInteractor {
         fun onThemeChanged(theme: AppTheme)
     }
 
-    interface OnUnitChangedListener {
-        fun onUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance)
+    interface OnTrackingUnitChangedListener {
+        fun onTrackingUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance)
+    }
+
+    interface OnWeatherUnitChangedListener {
+
+        fun onWeatherUnitChanged(windSpeedUnit: AppUnit.Speed, temperatureUnit: AppUnit.Temperature)
     }
 
     interface OnMapThemeEnableListener {
@@ -18,12 +23,15 @@ abstract class PreferencesInteractor {
     }
 
     protected val themeListeners = mutableMapOf<Any, PreferencesInteractor.OnThemeChangedListener>()
-    protected val unitListeners = mutableMapOf<Any, PreferencesInteractor.OnUnitChangedListener>()
+    protected val trackingUnitListeners = mutableMapOf<Any, PreferencesInteractor.OnTrackingUnitChangedListener>()
     protected val mapThemeListeners = mutableMapOf<Any, PreferencesInteractor.OnMapThemeEnableListener>()
+    protected val weatherUnitListeners = mutableMapOf<Any, PreferencesInteractor.OnWeatherUnitChangedListener>()
 
     abstract var appTheme: AppTheme
-    abstract var speedUnit: AppUnit.Speed
-    abstract var distanceUnit: AppUnit.Distance
+    abstract var trackingSpeedUnit: AppUnit.Speed
+    abstract var trackingDistanceUnit: AppUnit.Distance
+    abstract var weatherWindSpeedUnit: AppUnit.Speed
+    abstract var weatherTemperatureUnit: AppUnit.Temperature
     abstract var isMapThemeEnable: Boolean
 
     fun addOnThemeChangedListener(owner: Any,
@@ -37,15 +45,15 @@ abstract class PreferencesInteractor {
         themeListeners.remove(owner)
     }
 
-    fun addOnUnitChangedListener(owner: Any,
-                                 onUnitChangedListener: PreferencesInteractor.OnUnitChangedListener) {
+    fun addOnTrackingUnitChangedListener(owner: Any,
+                                         onUnitChangedListener: PreferencesInteractor.OnTrackingUnitChangedListener) {
 
-        unitListeners[owner] = onUnitChangedListener
+        trackingUnitListeners[owner] = onUnitChangedListener
     }
 
-    fun removeOnUnitChangedListener(owner: Any) {
+    fun removeOnTrackingUnitChangedListener(owner: Any) {
 
-        unitListeners.remove(owner)
+        trackingUnitListeners.remove(owner)
     }
 
     fun addOnMapThemeEnableListener(owner: Any, onMapThemeEnableListener: OnMapThemeEnableListener) {
@@ -56,5 +64,15 @@ abstract class PreferencesInteractor {
     fun removeOnMapThemeEnableListener(owner: Any) {
 
         mapThemeListeners.remove(owner)
+    }
+
+    fun addOnWeatherUnitChangedListener(owner: Any, onWeatherUnitChangedListener: OnWeatherUnitChangedListener) {
+
+        weatherUnitListeners[owner] = onWeatherUnitChangedListener
+    }
+
+    fun removeOnWeatherUnitChangedListener(owner: Any) {
+
+        weatherUnitListeners.remove(owner)
     }
 }

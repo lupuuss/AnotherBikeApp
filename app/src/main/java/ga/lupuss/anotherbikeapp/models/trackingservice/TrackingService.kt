@@ -23,7 +23,7 @@ import javax.inject.Inject
  *  To receive location changes implement [TrackingServiceInteractor.LocationDataReceiver].
  *  To receive statistics updates implement [TrackingServiceInteractor.OnStatsUpdateListener]
  */
-class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
+class TrackingService : Service(), PreferencesInteractor.OnTrackingUnitChangedListener {
 
     @Inject
     lateinit var statsManager: StatisticsManager
@@ -136,7 +136,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
         }
     }
 
-    override fun onUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance) {
+    override fun onTrackingUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance) {
 
         statsManager.speedUnit = speedUnit
         statsManager.distanceUnit = distanceUnit
@@ -155,7 +155,7 @@ class TrackingService : Service(), PreferencesInteractor.OnUnitChangedListener {
         thread.start()
         backgroundThread = Handler(thread.looper)
 
-        preferencesInteractor.addOnUnitChangedListener(this, this)
+        preferencesInteractor.addOnTrackingUnitChangedListener(this, this)
 
         statsManager.onNewStats = { stats ->
 

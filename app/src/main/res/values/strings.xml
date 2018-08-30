@@ -7,6 +7,9 @@
     <string name="unitSpeedMs" translatable="false">m/s</string>
     <string name="unitSpeedKmh" translatable="false">km/h</string>
     <string name="unitSpeedMph" translatable="false">mph</string>
+    <string name="unitTemperatureKelvin" translatable="false">K</string>
+    <string name="unitTemperatureCelsius" translatable="false">°C</string>
+    <string name="unitTemperatureFahrenheit" translatable="false">°F</string>
     <string name="speed">Speed</string>
     <string name="avgSpeed">Avg speed</string>
     <string name="maxSpeed">Max speed</string>
@@ -72,15 +75,21 @@
     <string name="prefThemesKey" translatable="false">keyThemes</string>
     <string name="prefThemesTitle">Theme</string>
     <string name="prefThemesSummary">Change theme</string>
-    <string name="prefUnitSpeedKey" translatable="false">unitSpeedKey</string>
+    <string name="prefTrackingUnitSpeedKey" translatable="false">trackingUnitSpeedKey</string>
     <string name="prefUnitSpeedTitle">Speed unit</string>
     <string name="prefUnitSpeedSummary">Change speed unit</string>
-    <string name="prefUnitDistanceKey" translatable="false">unitDistanceKey</string>
+    <string name="prefTrackingUnitDistanceKey" translatable="false">trackingUnitDistanceKey</string>
     <string name="prefUnitDistanceTitle">Distance unit</string>
     <string name="prefUnitDistanceSummary">Change distance unit</string>
     <string name="prefIsMapThemeEnableKey" translatable="false">isMapThemeEnable</string>
     <string name="prefIsMapThemeEnableTitle">Custom map theme</string>
     <string name="prefIsMapThemeEnableSummary">Enable custom map theme</string>
+    <string name="prefWeatherUnitWindSpeedKey" translatable="false">weatherUnitWindSpeedKey</string>
+    <string name="prefWeatherUnitWindSpeedTitle">Wind speed unit</string>
+    <string name="prefWeatherUnitWindSpeedSummary">Change wind speed unit</string>
+    <string name="prefWeatherUnitTemperatureKey" translatable="false">weatherUnitTemperatureKey</string>
+    <string name="prefWeatherUnitTemperatureTitle">Temperature unit</string>
+    <string name="prefWeatherUnitTemperatureSummary">Change air temperature unit</string>
     <string name="themeDark">Dark</string>
     <string name="themeLight">Light</string>
     <string name="open">Open</string>
@@ -98,5 +107,6 @@
     <string name="nameNotAvailable">Location\'s name is unknown</string>
     <string name="unknownLocation">Unknown location</string>
     <string name="now">Now</string>
-    <string name="precipitation">Precipitation:</string>
+    <string name="theme">Theme</string>
+    <string name="tracking">Tracking</string>
 </resources>

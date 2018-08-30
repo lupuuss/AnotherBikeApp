@@ -66,4 +66,11 @@ interface AppUnit {
         KM_H({ it * 3.6 }),
         MPH({ it * 2.23693629 })
     }
+
+    enum class Temperature(override val convertFunction:(rawSiValue: Double) -> Double): AppUnit {
+
+        KELVIN({ it * 1.0 }), // SI unit
+        CELSIUS({ it - 273.15 }),
+        FAHRENHEIT({it * (9.0/5.0) - 459.67})
+    }
 }

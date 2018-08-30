@@ -28,8 +28,8 @@ class AndroidPreferencesInteractorTest {
 
     private val context: Context = mock {
         on { getString(R.string.prefThemesKey) }.then { themeKey }
-        on { getString(R.string.prefUnitSpeedKey) }.then { unitSpeedKey }
-        on { getString(R.string.prefUnitDistanceKey) }.then { distanceSpeedKey }
+        on { getString(R.string.prefTrackingUnitSpeedKey) }.then { unitSpeedKey }
+        on { getString(R.string.prefTrackingUnitDistanceKey) }.then { distanceSpeedKey }
     }
     private val preferencesInteractor = AndroidPreferencesInteractor(sharedPrefs, context)
 
@@ -48,9 +48,9 @@ class AndroidPreferencesInteractorTest {
 
                 }
         )
-        preferencesInteractor.addOnUnitChangedListener(
+        preferencesInteractor.addOnTrackingUnitChangedListener(
                 this,
-                object : PreferencesInteractor.OnUnitChangedListener {
+                object : PreferencesInteractor.OnTrackingUnitChangedListener {
                     override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
                         triggeredUnitChanges++
                     }
@@ -61,8 +61,8 @@ class AndroidPreferencesInteractorTest {
         // triggers sharedPreferences listeners
         sharedListeners.forEach {
             it.onSharedPreferenceChanged(any(), context.getString(R.string.prefThemesKey))
-            it.onSharedPreferenceChanged(any(), context.getString(R.string.prefUnitDistanceKey))
-            it.onSharedPreferenceChanged(any(), context.getString(R.string.prefUnitSpeedKey))
+            it.onSharedPreferenceChanged(any(), context.getString(R.string.prefTrackingUnitDistanceKey))
+            it.onSharedPreferenceChanged(any(), context.getString(R.string.prefTrackingUnitSpeedKey))
         }
 
         Assert.assertEquals(1, triggeredThemeChanges)

@@ -33,8 +33,8 @@ class AfterTrackingSummaryPresenterTest {
     }
 
     private val preferencesInteractor: PreferencesInteractor = mock {
-        on { speedUnit }.then { Statistic.Unit.Speed.KM_H }
-        on { distanceUnit }.then { Statistic.Unit.Distance.KM }
+        on { trackingSpeedUnit }.then { Statistic.Unit.Speed.KM_H }
+        on { trackingDistanceUnit }.then { Statistic.Unit.Distance.KM }
     }
 
     @Test

@@ -67,6 +67,13 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
                         AppUnit.Distance.MI -> R.string.unitDistanceMi
                     }
 
+                    is AppUnit.Temperature -> when (unit) {
+
+                        AppUnit.Temperature.KELVIN -> R.string.unitTemperatureKelvin
+                        AppUnit.Temperature.CELSIUS -> R.string.unitTemperatureCelsius
+                        AppUnit.Temperature.FAHRENHEIT -> R.string.unitTemperatureFahrenheit
+                    }
+
                     else -> throw IllegalArgumentException("Unknown implementation of Statistic.Unit")
                 }
         )

@@ -13,18 +13,22 @@ class AndroidPreferencesInteractor(context: Context) : PreferencesInteractor() {
     private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private val themeKey = context.getString(R.string.prefThemesKey)
-    private val speedUnitKey = context.getString(R.string.prefUnitSpeedKey)
-    private val distanceUnitKey = context.getString(R.string.prefUnitDistanceKey)
+    private val speedUnitKey = context.getString(R.string.prefTrackingUnitSpeedKey)
+    private val distanceUnitKey = context.getString(R.string.prefTrackingUnitDistanceKey)
     private val isMapThemeEnableKey = context.getString(R.string.prefIsMapThemeEnableKey)
+    private val weatherWindSpeedUnitKey = context.getString(R.string.prefWeatherUnitWindSpeedKey)
+    private val weatherTemperatureUnitKey = context.getString(R.string.prefWeatherUnitTemperatureKey)
 
     private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
 
         when (key) {
 
             themeKey -> themeListeners.forEach { it.value.onThemeChanged(appTheme) }
-            speedUnitKey -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
-            distanceUnitKey -> unitListeners.forEach { it.value.onUnitChanged(speedUnit, distanceUnit) }
+            speedUnitKey -> trackingUnitListeners.forEach { it.value.onTrackingUnitChanged(trackingSpeedUnit, trackingDistanceUnit) }
+            distanceUnitKey -> trackingUnitListeners.forEach { it.value.onTrackingUnitChanged(trackingSpeedUnit, trackingDistanceUnit) }
             isMapThemeEnableKey -> mapThemeListeners.forEach { it.value.onMapThemeEnable(isMapThemeEnable) }
+            weatherTemperatureUnitKey -> weatherUnitListeners.forEach { it.value.onWeatherUnitChanged(weatherWindSpeedUnit, weatherTemperatureUnit)}
+            weatherWindSpeedUnitKey -> weatherUnitListeners.forEach { it.value.onWeatherUnitChanged(weatherWindSpeedUnit, weatherTemperatureUnit)}
         }
 
     }
@@ -59,12 +63,12 @@ class AndroidPreferencesInteractor(context: Context) : PreferencesInteractor() {
             putPref(themeKey, value.toString())
         }
 
-    override var speedUnit: AppUnit.Speed
+    override var trackingSpeedUnit: AppUnit.Speed
         get() = AppUnit.Speed.valueOf(getPref(speedUnitKey, AppUnit.Speed.KM_H.toString()))
         set(value) {
             putPref(speedUnitKey, value.toString())
         }
-    override var distanceUnit: AppUnit.Distance
+    override var trackingDistanceUnit: AppUnit.Distance
         get() = AppUnit.Distance.valueOf(getPref(distanceUnitKey, AppUnit.Distance.KM.toString()))
         set(value) {
             putPref(distanceUnitKey, value.toString())
@@ -73,5 +77,17 @@ class AndroidPreferencesInteractor(context: Context) : PreferencesInteractor() {
         get() = getPref(isMapThemeEnableKey, true)
         set(value) {
             putPref(isMapThemeEnableKey, value)
+        }
+
+    override var weatherWindSpeedUnit: AppUnit.Speed
+        get() = AppUnit.Speed.valueOf(getPref(weatherWindSpeedUnitKey, AppUnit.Speed.KM_H.toString()))
+        set(value) {
+            putPref(weatherWindSpeedUnitKey, value.toString())
+        }
+
+    override var weatherTemperatureUnit: AppUnit.Temperature
+        get() = AppUnit.Temperature.valueOf(getPref(weatherTemperatureUnitKey, AppUnit.Temperature.CELSIUS.toString()))
+        set(value) {
+            putPref(weatherTemperatureUnitKey, value.toString())
         }
 }

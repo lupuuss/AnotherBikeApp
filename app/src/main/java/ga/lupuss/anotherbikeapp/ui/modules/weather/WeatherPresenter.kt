@@ -1,15 +1,21 @@
 package ga.lupuss.anotherbikeapp.ui.modules.weather
 
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.WeatherManager
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import javax.inject.Inject
 
 class WeatherPresenter @Inject constructor(
         private val weatherManager: WeatherManager,
-        weatherView: WeatherView
-) : Presenter<WeatherView>(), WeatherManager.OnNewWeatherListener, WeatherManager.OnWeatherRefreshFailureListener {
+        weatherView: WeatherView,
+        private val preferencesInteractor: PreferencesInteractor
+) : Presenter<WeatherView>(),
+        WeatherManager.OnNewWeatherListener,
+        WeatherManager.OnWeatherRefreshFailureListener,
+        PreferencesInteractor.OnWeatherUnitChangedListener {
 
     init {
         this.view = weatherView
@@ -22,6 +28,8 @@ class WeatherPresenter @Inject constructor(
         weatherManager.lastWeatherData?.let {
             view.setWeather(it)
         }
+
+        preferencesInteractor.addOnWeatherUnitChangedListener(this, this)
 
         weatherManager.addOnNewWeatherListener(this)
         refreshWeatherManager()
@@ -51,6 +59,15 @@ class WeatherPresenter @Inject constructor(
                     onWeatherRefreshFailure(null)
                     view.postMessage(Message.LOCATION_NOT_AVAILABLE)
                 })
+    }
+
+    override fun onWeatherUnitChanged(windSpeedUnit: AppUnit.Speed, temperatureUnit: AppUnit.Temperature) {
+
+        view.refreshUnits(windSpeedUnit, temperatureUnit)
+        weatherManager.lastWeatherData?.let {
+
+            view.setWeather(it)
+        }
     }
 
     override fun onNewWeatherData(weatherData: WeatherData) {
@@ -102,6 +119,7 @@ class WeatherPresenter @Inject constructor(
     override fun notifyOnDestroy(isFinishing: Boolean) {
         weatherManager.removeOnNewWeatherListener(this)
         weatherManager.removeOnWeatherRefreshFailureListener(this)
+        preferencesInteractor.removeOnWeatherUnitChangedListener(this)
         super.notifyOnDestroy(isFinishing)
     }
 }

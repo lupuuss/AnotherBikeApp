@@ -17,7 +17,7 @@
         <item>@string/unitSpeedMph</item>
     </string-array>
 
-    <!-- MUST fit Statistic.Unit enum -->
+    <!-- MUST fit AppUnit.Speed enum -->
     <string-array name="speedUnitKeys" translatable="false">
         <item>KM_H</item>
         <item>M_S</item>
@@ -30,10 +30,24 @@
         <item>@string/unitDistanceMi</item>
     </string-array>
 
-    <!-- MUST fit Statistic.Unit enum -->
+    <!-- MUST fit AppUnit.Distance enum -->
     <string-array name="distanceUnitKeys" translatable="false">
         <item>KM</item>
         <item>M</item>
         <item>MI</item>
+    </string-array>
+
+    <!-- MUST fit AppUnit.Temperature enum -->
+
+    <string-array name="temperatureUnitKeys">
+        <item>KELVIN</item>
+        <item>CELSIUS</item>
+        <item>FAHRENHEIT</item>
+    </string-array>
+
+    <string-array name="temperatureUnits">
+        <item>@string/unitTemperatureKelvin</item>
+        <item>@string/unitTemperatureCelsius</item>
+        <item>@string/unitTemperatureFahrenheit</item>
     </string-array>
 </resources>

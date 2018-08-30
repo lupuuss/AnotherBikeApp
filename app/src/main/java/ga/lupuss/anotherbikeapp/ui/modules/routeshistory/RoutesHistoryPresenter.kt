@@ -13,7 +13,7 @@ class RoutesHistoryPresenter @Inject constructor(
         private val preferencesInteractor: PreferencesInteractor,
         private val routesManager: RoutesManager
 ) : Presenter<RoutesHistoryView>(),
-        PreferencesInteractor.OnUnitChangedListener,
+        PreferencesInteractor.OnTrackingUnitChangedListener,
         RoutesManager.OnRequestMoreShortRouteDataListener,
         OnDataSetChanged {
 
@@ -21,8 +21,8 @@ class RoutesHistoryPresenter @Inject constructor(
         view = routesHistoryView
     }
 
-    var speedUnit: AppUnit.Speed = preferencesInteractor.speedUnit
-    var distanceUnit: AppUnit.Distance = preferencesInteractor.distanceUnit
+    var speedUnit: AppUnit.Speed = preferencesInteractor.trackingSpeedUnit
+    var distanceUnit: AppUnit.Distance = preferencesInteractor.trackingDistanceUnit
 
     private var loadMoreAvailable = true
     private var requestInProgress = false
@@ -30,7 +30,7 @@ class RoutesHistoryPresenter @Inject constructor(
     override fun notifyOnViewReady() {
 
         view.isNoDataTextVisible = false
-        preferencesInteractor.addOnUnitChangedListener(this, this)
+        preferencesInteractor.addOnTrackingUnitChangedListener(this, this)
         routesManager.addRoutesDataChangedListener(this)
         onLoadMoreRequest()
     }
@@ -63,7 +63,7 @@ class RoutesHistoryPresenter @Inject constructor(
     override fun notifyOnDestroy(isFinishing: Boolean) {
 
         routesManager.removeOnRoutesDataChangedListener(this)
-        preferencesInteractor.removeOnUnitChangedListener(this)
+        preferencesInteractor.removeOnTrackingUnitChangedListener(this)
         super.notifyOnDestroy(isFinishing)
     }
 
@@ -145,7 +145,7 @@ class RoutesHistoryPresenter @Inject constructor(
         view.refreshRecyclerAdapter()
     }
 
-    override fun onUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance) {
+    override fun onTrackingUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance) {
 
         this.speedUnit = speedUnit
         this.distanceUnit = distanceUnit

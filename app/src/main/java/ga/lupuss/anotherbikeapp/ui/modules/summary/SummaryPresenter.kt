@@ -25,8 +25,8 @@ abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryVi
         view.showRouteLine(routeData.points)
         view.showStatistics(
                 routeData.getStatisticsMap(
-                        preferencesInteractor.speedUnit,
-                        preferencesInteractor.distanceUnit
+                        preferencesInteractor.trackingSpeedUnit,
+                        preferencesInteractor.trackingDistanceUnit
                 )
         )
 

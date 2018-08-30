@@ -1,34 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:key="@string/prefThemesKey"
-        android:title="@string/prefThemesTitle"
-        android:summary="@string/prefThemesSummary"
-        android:entries="@array/themes"
-        android:entryValues="@array/themeKeys"
-        android:defaultValue="DARK"/>
+    <PreferenceCategory
+        android:title="@string/theme">
 
-    <!--suppress AndroidElementNotAllowed -->
-    <SwitchPreferenceCompat
-        android:key="@string/prefIsMapThemeEnableKey"
-        android:title="@string/prefIsMapThemeEnableTitle"
-        android:summary="@string/prefIsMapThemeEnableSummary"
-        android:defaultValue="true"/>
+        <ListPreference
+            android:key="@string/prefThemesKey"
+            android:title="@string/prefThemesTitle"
+            android:summary="@string/prefThemesSummary"
+            android:entries="@array/themes"
+            android:entryValues="@array/themeKeys"
+            android:defaultValue="DARK"/>
 
-    <ListPreference
-        android:key="@string/prefUnitSpeedKey"
-        android:title="@string/prefUnitSpeedTitle"
-        android:summary="@string/prefUnitSpeedSummary"
-        android:entries="@array/speedUnits"
-        android:entryValues="@array/speedUnitKeys"
-        android:defaultValue="KM_H"/>
+        <!--suppress AndroidElementNotAllowed -->
+        <SwitchPreferenceCompat
+            android:key="@string/prefIsMapThemeEnableKey"
+            android:title="@string/prefIsMapThemeEnableTitle"
+            android:summary="@string/prefIsMapThemeEnableSummary"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
 
-    <ListPreference
-        android:key="@string/prefUnitDistanceKey"
-        android:title="@string/prefUnitDistanceTitle"
-        android:summary="@string/prefUnitDistanceSummary"
-        android:entries="@array/distanceUnits"
-        android:entryValues="@array/distanceUnitKeys"
-        android:defaultValue="KM"/>
+    <PreferenceCategory
+        android:title="@string/tracking">
 
+        <ListPreference
+            android:key="@string/prefTrackingUnitSpeedKey"
+            android:title="@string/prefUnitSpeedTitle"
+            android:summary="@string/prefUnitSpeedSummary"
+            android:entries="@array/speedUnits"
+            android:entryValues="@array/speedUnitKeys"
+            android:defaultValue="KM_H"/>
+
+        <ListPreference
+            android:key="@string/prefTrackingUnitDistanceKey"
+            android:title="@string/prefUnitDistanceTitle"
+            android:summary="@string/prefUnitDistanceSummary"
+            android:entries="@array/distanceUnits"
+            android:entryValues="@array/distanceUnitKeys"
+            android:defaultValue="KM"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/weather">
+
+        <ListPreference
+            android:key="@string/prefWeatherUnitWindSpeedKey"
+            android:title="@string/prefWeatherUnitWindSpeedTitle"
+            android:summary="@string/prefWeatherUnitWindSpeedSummary"
+            android:entries="@array/speedUnits"
+            android:entryValues="@array/speedUnitKeys"
+            android:defaultValue="KM_H"/>
+
+        <ListPreference
+            android:key="@string/prefWeatherUnitTemperatureKey"
+            android:title="@string/prefWeatherUnitTemperatureTitle"
+            android:summary="@string/prefWeatherUnitTemperatureSummary"
+            android:entries="@array/temperatureUnits"
+            android:entryValues="@array/temperatureUnitKeys"
+            android:defaultValue="CELSIUS"/>
+    </PreferenceCategory>
 </PreferenceScreen>

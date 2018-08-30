@@ -87,4 +87,10 @@
     <string name="nameNotAvailable">Nazwa lokalizacji nie jest znana</string>
     <string name="unknownLocation">Nieznana lokalizacja</string>
     <string name="now">Teraz</string>
+    <string name="theme">Motyw</string>
+    <string name="tracking">Śledzenie</string>
+    <string name="prefWeatherUnitWindSpeedTitle">Jednostka prędkości wiatru</string>
+    <string name="prefWeatherUnitWindSpeedSummary">Zmień jednostkę prędkości wiatru</string>
+    <string name="prefWeatherUnitTemperatureTitle">Jednostka temperatury</string>
+    <string name="prefWeatherUnitTemperatureSummary">Zmień jednostkę temperatury powierza</string>
 </resources>

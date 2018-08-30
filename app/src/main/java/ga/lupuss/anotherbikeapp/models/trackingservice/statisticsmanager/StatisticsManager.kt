@@ -32,8 +32,8 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     /** Minimum speed to record statistics */
     private val minSpeedToCount = kmh5
 
-    var speedUnit = preferencesInteractor.speedUnit
-    var distanceUnit = preferencesInteractor.distanceUnit
+    var speedUnit = preferencesInteractor.trackingSpeedUnit
+    var distanceUnit = preferencesInteractor.trackingDistanceUnit
 
     var onNewStats: ((stats: Map<Statistic.Name, Statistic<*>>) -> Unit)? = null
 
