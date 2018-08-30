@@ -70,11 +70,10 @@
         android:id="@+id/summaryProgressBar"
         android:visibility="invisible"
         android:elevation="2dp"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:indeterminateTint="?android:colorAccent"
         android:layout_margin="90dp"
-        app:layout_constraintBottom_toBottomOf="@+id/statsFragmentScrollView"
         app:layout_constraintTop_toTopOf="@+id/statsFragmentScrollView"
         app:layout_constraintStart_toStartOf="@+id/statsFragmentScrollView"
         app:layout_constraintEnd_toEndOf="@+id/statsFragmentScrollView"/>
