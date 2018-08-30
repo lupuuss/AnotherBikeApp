@@ -88,11 +88,11 @@ class StatsFragment : Fragment() {
             if (i % 2 == 0 || isLandscape) {
 
                 linearLayout = leftContainer
-                textLayout = R.layout.left_stat
+                textLayout = R.layout.fragment_stats_stat_left
             } else {
 
                 linearLayout = rightContainer
-                textLayout = R.layout.right_stat
+                textLayout = R.layout.fragment_stats_stat_right
             }
 
             linearLayout.addView(
@@ -108,7 +108,7 @@ class StatsFragment : Fragment() {
         if (i % 2 == 1 && !isLandscape) {
 
             // fills empty place in right container
-            rightContainer.addView(layoutInflater.inflate(R.layout.right_stat, rightContainer, false))
+            rightContainer.addView(layoutInflater.inflate(R.layout.fragment_stats_stat_right, rightContainer, false))
         }
     }
 
