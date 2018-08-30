@@ -73,7 +73,7 @@
     <ImageView
         android:id="@+id/humidityImage"
         style="@style/WeatherImageView.Left"
-        android:src="@drawable/ic_rainfall_20dp"
+        android:src="@drawable/ic_humidity_20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rainfallImage"
         tools:ignore="ContentDescription" />
