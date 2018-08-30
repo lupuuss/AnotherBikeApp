@@ -31,8 +31,10 @@
                 android:paddingTop="3dp"
                 android:onClick="onClickTrackingButton"
                 android:text="@string/startTracking"
+                android:textSize="18dp"
                 android:layout_marginTop="@dimen/mainUiMargin"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                tools:ignore="SpUsage" />
 
             <FrameLayout
                 android:id="@+id/weatherFragmentWrapper"
