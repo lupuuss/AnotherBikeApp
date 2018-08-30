@@ -10,4 +10,5 @@
     <dimen name="statValueSize">25dp</dimen>
     <dimen name="statSideMargin">16dp</dimen>
     <dimen name="statBetweenSpace">10dp</dimen>
+    <dimen name="weatherMargin">10dp</dimen>
 </resources>

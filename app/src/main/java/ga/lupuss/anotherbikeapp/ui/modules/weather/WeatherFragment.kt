@@ -20,6 +20,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import kotlinx.android.synthetic.main.fragment_weather.*
 import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -120,22 +121,7 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
                 .anotherBikeAppComponent
                 .providesLocale()
 
-        hour.text = getString(R.string.now)
-
-        dayText.text = SimpleDateFormat("EEEE" ,locale)
-                .format(data.forecast[realPosition].time.time)
-                .capitalize()
-
-        description.text = data.forecast[realPosition].description.capitalize()
-        temperature.text = Math.round(data.forecast[realPosition].temperature).toString() + " ℃"
-
-        locationText.text = data.location ?: requireContext().getString(R.string.nameNotAvailable)
-
-        coordsText.text = "${data.lat}, ${data.lng}"
-
-        weatherImage.setImageResource(
-                resolveIcon(data.forecast[realPosition].icon)
-        )
+        weatherHelper(data, realPosition, locale)
 
         hoursContainer.removeAllViews()
         for (x in 0..7) {
@@ -173,7 +159,6 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
         }
     }
 
-    @SuppressLint("SetTextI18n")
     override fun updateWeather(data: WeatherData, position: Int, currentDay: Int, dayBefore: Int) {
         val realPosition = position + data.daysInfo[currentDay].startIndex
 
@@ -182,27 +167,7 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
                 .anotherBikeAppComponent
                 .providesLocale()
 
-        hour.text = if (position == 0 && currentDay == 0) getString(R.string.now)
-
-        else timeToHourMinutes(
-                locale,
-                data.forecast[realPosition].time
-        )
-
-        dayText.text = SimpleDateFormat("EEEE" ,locale)
-                .format(data.forecast[realPosition].time.time)
-                .capitalize()
-
-        description.text = data.forecast[realPosition].description.capitalize()
-        temperature.text = Math.round(data.forecast[realPosition].temperature).toString() + " ℃"
-
-        locationText.text = data.location ?: requireContext().getString(R.string.nameNotAvailable)
-
-        coordsText.text = "${data.lat}, ${data.lng}"
-
-        weatherImage.setImageResource(
-                resolveIcon(data.forecast[realPosition].icon)
-        )
+        weatherHelper(data, realPosition, locale)
 
         if (dayBefore != currentDay) {
 
@@ -216,7 +181,41 @@ class WeatherFragment : LabeledFragment(), WeatherView, View.OnClickListener, Se
             daysContainer.getChildAt(dayBefore).setBackgroundResource(R.drawable.weather_day_back)
         }
     }
-    
+
+    @SuppressLint("SetTextI18n")
+    private fun weatherHelper(data: WeatherData, realPosition: Int, locale: Locale) {
+
+        val weatherUnit =  data.forecast[realPosition]
+
+        hour.text = if (realPosition == 0) getString(R.string.now)
+
+        else timeToHourMinutes(
+                locale,
+                weatherUnit.time
+        )
+
+        dayText.text = SimpleDateFormat("EEEE" ,locale)
+                .format(weatherUnit.time.time)
+                .capitalize()
+
+        description.text = weatherUnit.description.capitalize()
+        temperature.text = "${Math.round(weatherUnit.temperature)} ℃"
+        locationText.text = data.location ?: requireContext().getString(R.string.nameNotAvailable)
+        coordsText.text = "${data.lat}, ${data.lng}"
+
+        weatherImage.setImageResource(
+                resolveIcon(weatherUnit.icon)
+        )
+
+        snowfallValue.text = "${weatherUnit.snowVolume} mm"
+        rainfallValue.text = "${weatherUnit.rainVolume} mm"
+        humidityValue.text = "${weatherUnit.humidity}%"
+
+        cloudsValue.text = "${weatherUnit.clouds}%"
+        windValue.text = "${weatherUnit.windSpeed} m/s"
+        pressureValue.text = "${weatherUnit.pressure} hPa"
+    }
+
     private fun resolveIcon(weatherIcon: WeatherIcon): Int {
         return when(weatherIcon) {
 

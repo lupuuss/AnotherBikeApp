@@ -28,7 +28,8 @@ data class RawForecastData(
             var sys: Sys,
             @SerializedName("dt_txt")
             var dtTxt: String,
-            var rain: Rain?
+            var rain: Rain?,
+            var snow: Snow?
     ) {
         data class Main(
                 var temp: Double,
@@ -52,6 +53,11 @@ data class RawForecastData(
         )
 
         data class Rain(
+                @SerializedName("3h")
+                var h: Double
+        )
+
+        data class Snow(
                 @SerializedName("3h")
                 var h: Double
         )

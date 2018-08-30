@@ -98,4 +98,5 @@
     <string name="nameNotAvailable">Location\'s name is unknown</string>
     <string name="unknownLocation">Unknown location</string>
     <string name="now">Now</string>
+    <string name="precipitation">Precipitation:</string>
 </resources>

@@ -47,6 +47,7 @@ class WeatherData(
                         windDeg = currentWeatherData.wind.deg,
                         clouds = currentWeatherData.clouds.all,
                         rainVolume = currentWeatherData.rain?.h ?: 0.0,
+                        snowVolume = currentWeatherData.snow?.h ?: 0.0,
                         icon = iconMapper.invoke(currentWeatherData.weather.first().icon),
                         description = currentWeatherData.weather.first().description
                 )
@@ -63,6 +64,7 @@ class WeatherData(
                             windDeg = it.wind.deg,
                             clouds = it.clouds.all,
                             rainVolume = it.rain?.h ?: 0.0,
+                            snowVolume = it.snow?.h ?: 0.0,
                             icon = iconMapper.invoke(it.weather.first().icon),
                             description = it.weather.first().description)
             )
@@ -144,6 +146,7 @@ class WeatherData(
             val windDeg: Double,
             val clouds: Int,
             val rainVolume: Double,
+            val snowVolume: Double,
             val icon: WeatherIcon,
             val description: String
     )

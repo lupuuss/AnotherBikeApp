@@ -9,6 +9,7 @@ data class RawCurrentWeatherData(
         var wind: Wind,
         var clouds: Clouds,
         var rain: Rain?,
+        var snow: Snow?,
         var dt: Long,
         var sys: Sys,
         var id: Int,
@@ -38,6 +39,11 @@ data class RawCurrentWeatherData(
     )
 
     data class Rain(
+            @SerializedName("3h")
+            var h: Double
+    )
+
+    data class Snow(
             @SerializedName("3h")
             var h: Double
     )
