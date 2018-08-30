@@ -40,6 +40,7 @@
         android:id="@+id/snowfallImage"
         style="@style/WeatherImageView.Left"
         android:src="@drawable/ic_snowflake_20dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/locationInfo"
         tools:ignore="ContentDescription" />
@@ -118,6 +119,7 @@
         android:id="@+id/cloudsImage"
         style="@style/WeatherImageView.Right"
         android:src="@drawable/ic_clouds_20dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeInfo"
         tools:ignore="ContentDescription" />
@@ -235,11 +237,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_expand_more_24dp"
+        android:elevation="4dp"
         android:layout_marginTop="8dp"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hoursContainer"
-        android:background="@android:color/transparent"
+        android:background="@drawable/circle_accent"
         tools:ignore="ContentDescription" />
 
     <HorizontalScrollView

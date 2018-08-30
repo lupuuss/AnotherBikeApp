@@ -108,10 +108,10 @@
     </style>
 
     <style name="WeatherImageView.Left" parent="WeatherImageView">
-        <item name="android:layout_marginStart">@dimen/weatherMargin</item>
+        <item name="android:layout_marginStart">20dp</item>
     </style>
     <style name="WeatherImageView.Right" parent="WeatherImageView">
-        <item name="android:layout_marginEnd">@dimen/weatherMargin</item>
+        <item name="android:layout_marginEnd">20dp</item>
     </style>
 
     <style name="WeatherSideText" parent="">
