@@ -1,13 +1,12 @@
 package ga.lupuss.anotherbikeapp.ui.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedActivity
@@ -16,54 +15,67 @@ import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Status
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
+import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
-import kotlinx.android.synthetic.main.fragment_current_stats.*
+import kotlinx.android.synthetic.main.fragment_stats.*
 
 
 /** Contains information about tracking. */
-class CurrentStatsFragment : Fragment() {
+class StatsFragment : Fragment() {
 
     private var layout: LinearLayout? = null
     private lateinit var resourceResolver: ResourceResolver
+    private var isLandscape = false
+
+    enum class Mode {
+        CURRENT_STATS, SUMMARY_STATS
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val mainView = inflater.inflate(R.layout.fragment_current_stats, container, false)
+        val mainView = inflater.inflate(R.layout.fragment_stats, container, false)
         layout = mainView.findViewById(R.id.statsContainer)
 
         resourceResolver = (this.activity as ThemedActivity).resourceResolver
 
+        isLandscape = requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
         return mainView
     }
 
-    fun updateStats(statsArg: Map<Statistic.Name, Statistic<*>>) {
-
-        if (statsArg.contains(Statistic.Name.STATUS)) {
-
-            statusIcon.setImageResource(resolveStatusIcon(statsArg[Statistic.Name.STATUS]!!.value as Status))
-        } else {
-
-            statusIcon.isVisible = false
-        }
-
-        durationText.text = resourceResolver.resolve(statsArg[Statistic.Name.DURATION]!!)
+    fun updateStats(statsArg: Map<Statistic.Name, Statistic<*>>, mode: Mode) {
 
         @Suppress("NAME_SHADOWING")
         val stats = statsArg.toMutableMap()
 
-        stats.remove(Statistic.Name.DURATION)
+        if (mode == Mode.CURRENT_STATS) {
+
+            statusIcon.setImageResource(resolveStatusIcon(statsArg[Statistic.Name.STATUS]!!.value as Status))
+
+            durationText.text = resourceResolver.resolve(statsArg[Statistic.Name.DURATION]!!)
+            stats.remove(Statistic.Name.DURATION)
+        } else {
+
+            durationText.isGone = true
+            statusIcon.isVisible = false
+        }
+
+
+
         stats.remove(Statistic.Name.STATUS)
         stats.remove(Statistic.Name.START_TIME)
 
-        if (leftContainer.childCount == 0 && rightContainer.childCount == 0) {
+        if (leftContainer.childCount == 0) {
 
             initStats(stats)
+
         } else {
             updateStatsHelper(stats)
         }
 
     }
 
+    @Suppress("PLUGIN_WARNING")
     private fun initStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
         var i = 0
@@ -73,10 +85,12 @@ class CurrentStatsFragment : Fragment() {
             val linearLayout: LinearLayout
             val textLayout: Int
 
-            if (i % 2 == 0) {
+            if (i % 2 == 0 || isLandscape) {
+
                 linearLayout = leftContainer
                 textLayout = R.layout.left_stat
             } else {
+
                 linearLayout = rightContainer
                 textLayout = R.layout.right_stat
             }
@@ -90,18 +104,26 @@ class CurrentStatsFragment : Fragment() {
 
             i++
         }
+
+        if (i % 2 == 1 && !isLandscape) {
+
+            // fills empty place in right container
+            rightContainer.addView(layoutInflater.inflate(R.layout.right_stat, rightContainer, false))
+        }
     }
 
+    @Suppress("PLUGIN_WARNING")
     private fun updateStatsHelper(stats: Map<Statistic.Name, Statistic<*>>) {
 
         var i = 0
 
         stats.forEach { name, statistic ->
 
-            val linearLayout: LinearLayout = if (i % 2 == 0) {
+            val linearLayout: LinearLayout = if (i % 2 == 0 || isLandscape) {
 
                 leftContainer
             } else {
+
                 rightContainer
             }
 

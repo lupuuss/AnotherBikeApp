@@ -21,9 +21,15 @@ import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
-import ga.lupuss.anotherbikeapp.ui.fragments.CurrentStatsFragment
+import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
+import ga.lupuss.anotherbikeapp.R.id.scroll
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import android.R.color.transparent
+import android.view.View
+
 
 class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
 
@@ -98,6 +104,32 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
 
         setContentView(R.layout.activity_summary)
         activateToolbar(toolbarSummary)
+
+        // only for portrait mode
+        transparentMapCover?.setOnTouchListener { v, event ->
+            val action = event.action
+            when (action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Disallow ScrollView to intercept touch events.
+                    summaryScrollView?.requestDisallowInterceptTouchEvent(true)
+                    // Disable touch on transparent view
+                    false
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    // Allow ScrollView to intercept touch events.
+                    summaryScrollView?.requestDisallowInterceptTouchEvent(false)
+                    true
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    summaryScrollView?.requestDisallowInterceptTouchEvent(true)
+                    false
+                }
+
+                else -> true
+            }
+        }
 
         mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))
 
@@ -197,7 +229,7 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
 
     override fun showStatistics(statistics: Map<Statistic.Name, Statistic<*>>) {
 
-        (supportFragmentManager.findFragmentById(R.id.statsFragment) as? CurrentStatsFragment)?.updateStats(statistics)
+        (supportFragmentManager.findFragmentById(R.id.statsFragment) as? StatsFragment)?.updateStats(statistics, StatsFragment.Mode.SUMMARY_STATS)
     }
 
     override fun showRejectDialog(onYes: () -> Unit) {

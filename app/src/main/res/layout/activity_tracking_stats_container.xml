@@ -1,4 +1,4 @@
-<FrameLayout
+<ScrollView
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:elevation="0dp"
@@ -9,9 +9,9 @@
 
     <fragment
         android:id="@+id/statsFragment"
-        android:name="ga.lupuss.anotherbikeapp.ui.fragments.CurrentStatsFragment"
+        android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_current_stats" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_stats" />
 
-</FrameLayout>
+</ScrollView>
