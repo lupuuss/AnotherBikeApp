@@ -5,11 +5,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import ga.lupuss.anotherbikeapp.CACHE_SIZE
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.WEATHER_API_URL
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseAuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherApi
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -29,6 +31,7 @@ class AnotherBikeAppModule {
 
         return OkHttpClient()
                 .newBuilder()
+                .cache(Cache(context.cacheDir, CACHE_SIZE))
                 .addInterceptor { chain ->
                     val originalRequest = chain.request()
 

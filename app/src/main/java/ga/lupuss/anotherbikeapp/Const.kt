@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp
 
 const val WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/"
+const val CACHE_SIZE: Long = 10 * 1024 * 102 // 10 MB
 
 enum class Message {
     ACCOUNT_CREATED,
