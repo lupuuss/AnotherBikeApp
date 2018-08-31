@@ -92,5 +92,5 @@
     <string name="prefWeatherUnitWindSpeedTitle">Jednostka prędkości wiatru</string>
     <string name="prefWeatherUnitWindSpeedSummary">Zmień jednostkę prędkości wiatru</string>
     <string name="prefWeatherUnitTemperatureTitle">Jednostka temperatury</string>
-    <string name="prefWeatherUnitTemperatureSummary">Zmień jednostkę temperatury powierza</string>
+    <string name="prefWeatherUnitTemperatureSummary">Zmień jednostkę temperatury powietrza</string>
 </resources>
