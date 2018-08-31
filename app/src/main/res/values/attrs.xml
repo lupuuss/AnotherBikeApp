@@ -6,4 +6,6 @@
     <attr name="trackLineColor" format="reference|color"/>
     <attr name="markersColor" format="reference|color"/>
     <attr name="googleMapStyleJson" format="string"/>
+    <attr name="firebaseLogo" format="reference|color"/>
+    <attr name="linkColor" format="reference|color"/>
 </resources>

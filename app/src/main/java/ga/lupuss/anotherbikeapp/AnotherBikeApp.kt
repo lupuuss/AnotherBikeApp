@@ -9,6 +9,10 @@ import timber.log.Timber
 import com.squareup.leakcanary.RefWatcher
 import ga.lupuss.anotherbikeapp.models.SignInVerifier
 import ga.lupuss.anotherbikeapp.models.base.*
+import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppComponent
+import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppModule
+import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppView
+import ga.lupuss.anotherbikeapp.ui.modules.about.DaggerAboutAppComponent
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountComponent
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountModule
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountView
@@ -160,6 +164,15 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .userComponent(userComponent!!)
                 .routesHistoryModule(RoutesHistoryModule(routesHistoryView))
+                .build()
+    }
+
+    open fun aboutAppComponent(aboutAppView: AboutAppView): AboutAppComponent {
+
+        return DaggerAboutAppComponent
+                .builder()
+                .userComponent(userComponent!!)
+                .aboutAppModule(AboutAppModule(aboutAppView))
                 .build()
     }
 }

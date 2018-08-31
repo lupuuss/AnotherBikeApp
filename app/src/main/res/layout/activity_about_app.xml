@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.modules.about.AboutAppActivity"
+    android:background="?android:colorPrimary"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/aboutAppToolbar"
+        android:background="?android:colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:title="@string/aboutApp"/>
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:gravity="center_horizontal">
+           <LinearLayout
+               android:layout_marginTop="10dp"
+               style="@style/AboutAppCard">
+
+               <TextView
+                   style="@style/AboutAppText"
+                   android:text="@string/serverSideSoftware" />
+
+               <ImageButton
+                   android:id="@+id/firebaseLogo"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/logo_built_black"
+                   android:background="@android:color/transparent"
+                   tools:ignore="ContentDescription" />
+           </LinearLayout>
+
+           <LinearLayout
+               style="@style/AboutAppCard"
+               android:orientation="vertical">
+
+               <TextView
+                   style="@style/AboutAppText"
+                   android:text="@string/weatherApi" />
+
+               <ImageButton
+                   android:id="@+id/openWeatherMapLogo"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/open_weather_map_logo"
+                   android:background="@android:color/transparent"
+                   tools:ignore="ContentDescription" />
+           </LinearLayout>
+
+
+
+           <LinearLayout
+               style="@style/AboutAppCard">
+               <TextView
+                   style="@style/AboutAppText"
+                   android:textSize="18dp"
+                   android:text="@string/weatherIconsCredit"
+                   tools:ignore="SpUsage" />
+
+               <ImageButton
+                   android:id="@+id/flatIconLogo"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_flaticon_logo"
+                   android:background="@android:color/transparent"
+                   tools:ignore="ContentDescription" />
+
+           </LinearLayout>
+       </LinearLayout>
+   </ScrollView>
+
+</LinearLayout>

@@ -109,4 +109,8 @@
     <string name="now">Now</string>
     <string name="theme">Theme</string>
     <string name="tracking">Tracking</string>
+    <string name="serverSideSoftware">Server-side software</string>
+    <string name="weatherApi">Weather API</string>
+    <string name="weatherIconsCredit">Weather icons were made by\n@freepik and @pixel-perfect from</string>
+    <string name="aboutApp">About app</string>
 </resources>

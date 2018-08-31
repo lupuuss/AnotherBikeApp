@@ -15,4 +15,5 @@ interface MainView : BaseView {
     fun startLoginActivity()
     fun showExitWarningDialog(onYesClick: () -> Unit)
     fun hideDrawer()
+    fun startAboutAppActivity()
 }

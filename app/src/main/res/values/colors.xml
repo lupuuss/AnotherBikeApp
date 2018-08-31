@@ -12,6 +12,7 @@
     <color name="darkThemeSecondaryAccentColor">#800000</color>
     <color name="darkThemeTextColor">#FFF</color>
     <color name="darkThemeTextColorHint">#aaffffff</color>
+    <color name="darkThemeLinkColor">#4285f4</color>
 
     <!-- Light theme -->
 
@@ -22,4 +23,5 @@
     <color name="lightThemeAccentColor">#89caff</color>
     <color name="lightThemeSecondaryAccentColor">#0d47a1</color>
     <color name="lightThemeTextColor">#000</color>
+    <color name="lightThemeLinkColor">#4285f4</color>
 </resources>

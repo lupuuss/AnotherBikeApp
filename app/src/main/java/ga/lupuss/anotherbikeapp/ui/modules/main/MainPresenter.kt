@@ -135,6 +135,10 @@ class MainPresenter(private val routesManager: RoutesManager,
         }
     }
 
+    fun onClickAboutApp() {
+        view.startAboutAppActivity()
+    }
+
     class Request {
         companion object {
             const val TRACKING_ACTIVITY_REQUEST = 0

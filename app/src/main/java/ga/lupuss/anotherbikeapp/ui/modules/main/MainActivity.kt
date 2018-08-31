@@ -25,6 +25,7 @@ import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.extensions.addOnAnimationEndListener
+import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppActivity
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryFragment
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
@@ -41,7 +42,7 @@ class MainActivity
         AdapterView.OnItemClickListener {
 
     enum class ItemName {
-        SIGN_OUT, SETTINGS
+        SIGN_OUT, SETTINGS, ABOUT_APP
     }
 
     class StrIconRes(
@@ -65,7 +66,8 @@ class MainActivity
 
     private val drawerListViewChildren = listOf(
             Pair(ItemName.SIGN_OUT, StrIconRes(R.string.signOut, R.drawable.ic_sign_out_24dp)),
-            Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp))
+            Pair(ItemName.SETTINGS, StrIconRes(R.string.settings, R.drawable.ic_settings_24dp)),
+            Pair(ItemName.ABOUT_APP, StrIconRes(R.string.aboutApp, R.drawable.ic_info_24dp))
     )
 
     override var isDrawerLayoutOpened = false
@@ -188,6 +190,7 @@ class MainActivity
 
                 ItemName.SIGN_OUT -> mainPresenter.onClickSignOut()
                 ItemName.SETTINGS -> mainPresenter.onClickSettings()
+                ItemName.ABOUT_APP -> mainPresenter.onClickAboutApp()
             }
         }
 
@@ -263,6 +266,10 @@ class MainActivity
     override fun startSummaryActivity() {
 
         startActivity(SummaryActivity.newIntent(this))
+    }
+
+    override fun startAboutAppActivity() {
+        startActivity(AboutAppActivity.newIntent(this))
     }
 
     companion object {

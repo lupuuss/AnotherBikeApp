@@ -93,4 +93,8 @@
     <string name="prefWeatherUnitWindSpeedSummary">Zmień jednostkę prędkości wiatru</string>
     <string name="prefWeatherUnitTemperatureTitle">Jednostka temperatury</string>
     <string name="prefWeatherUnitTemperatureSummary">Zmień jednostkę temperatury powietrza</string>
+    <string name="serverSideSoftware">Oprogramowanie po stronie serwera</string>
+    <string name="weatherApi">API dostarczające prognozę pogody</string>
+    <string name="weatherIconsCredit">Ikony pogody zostały stworzone przez\n@freepik i @pixel-perfect z</string>
+    <string name="aboutApp">O aplikacji</string>
 </resources>

@@ -21,6 +21,8 @@
         <item name="googleMapStyleJson">@string/mapStyleDarkTheme</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="firebaseLogo">@drawable/logo_built_black</item>
+        <item name="linkColor">@color/darkThemeLinkColor</item>
     </style>
 
     <style name="DarkDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -64,6 +66,8 @@
         <item name="googleMapStyleJson">@string/mapStyleDarkTheme</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="firebaseLogo">@drawable/logo_built_white</item>
+        <item name="linkColor">@color/lightThemeLinkColor</item>
     </style>
 
     <style name="LightDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -134,5 +138,24 @@
         <item name="android:textAlignment">textStart</item>
     </style>
 
+    <style name="AboutAppText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="AboutAppCard">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/credits_card_background</item>
+        <item name="android:elevation">2dp</item>
+    </style>
 
 </resources>
