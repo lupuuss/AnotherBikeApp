@@ -265,9 +265,7 @@
                 android:id="@+id/daysContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <include layout="@layout/fragment_weather_day"/>
-            </LinearLayout>
+                android:orientation="horizontal" />
         </HorizontalScrollView>
 
     </LinearLayout>
