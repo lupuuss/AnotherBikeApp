@@ -232,11 +232,11 @@ class WeatherFragment
                 resolveIcon(weatherUnit.icon)
         )
 
-        snowfallValue.text = "${weatherUnit.snowVolume} mm"
-        rainfallValue.text = "${weatherUnit.rainVolume} mm"
+        snowfallValue.text = "${weatherUnit.snowVolume.round(2)} mm"
+        rainfallValue.text = "${weatherUnit.rainVolume.round(2)} mm"
         humidityValue.text = "${weatherUnit.humidity}%"
 
-        val windSpeed = Math.round(windSpeedUnit.convertFunction.invoke(weatherUnit.windSpeed) * 100.0) / 100.0
+        val windSpeed = windSpeedUnit.convertFunction.invoke(weatherUnit.windSpeed).round(1)
 
         cloudsValue.text = "${weatherUnit.clouds}%"
         windValue.text = "$windSpeed ${resourceResolver.resolve(windSpeedUnit)}"

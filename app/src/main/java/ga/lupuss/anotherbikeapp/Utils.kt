@@ -74,3 +74,10 @@ fun timeToHourMinutes(locale: Locale, calendar: Calendar): String {
     val simpleDateFormat = SimpleDateFormat("HH:mm", locale)
     return simpleDateFormat.format(calendar.time)
 }
+
+fun Double.round(decimalPlaces: Int): Double {
+
+    val x = Math.pow(10.0, decimalPlaces.toDouble())
+
+    return Math.round(this * x) / x
+}
