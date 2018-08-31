@@ -67,10 +67,5 @@ class MainSummaryPresenter(
         super.notifyOnDestroy(isFinishing)
 
         subPresenter.notifyOnDestroy(isFinishing)
-
-        if (isFinishing) {
-
-            routesManager.clearTempRoute()
-        }
     }
 }

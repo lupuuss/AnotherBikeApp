@@ -305,16 +305,16 @@ class FirebaseRoutesManager(
         }
     }
 
-    override fun keepTempRoute(routeData: ExtendedRouteData) {
+    override fun keepTempRoute(slot: RoutesManager.Slot, routeData: ExtendedRouteData) {
 
-        routeKeeper.keep(routeData)
+        routeKeeper.keep(slot, routeData)
     }
 
-    override fun getTempRoute(): ExtendedRouteData? = routeKeeper.getRoute()
+    override fun getTempRoute(slot: RoutesManager.Slot): ExtendedRouteData? = routeKeeper.getRoute(slot)
 
-    override fun clearTempRoute() {
+    override fun clearTempRoute(slot: RoutesManager.Slot) {
 
-        routeKeeper.clear()
+        routeKeeper.clear(slot)
     }
 
     companion object {

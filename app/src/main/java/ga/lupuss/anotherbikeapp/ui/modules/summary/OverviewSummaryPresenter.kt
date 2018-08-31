@@ -33,12 +33,21 @@ class OverviewSummaryPresenter(
         view.isSaveActionVisible = false
         view.isRejectActionVisible = false
 
-        routesManager.requestExtendedRoutesData(
+        val routeData = routesManager.getTempRoute(RoutesManager.Slot.SUMMARY_BACKUP)
 
-                routeReference,
-                this,
-                view
-        )
+        if (routeData != null) {
+
+            onDataOk(routeData)
+
+        } else {
+
+            routesManager.requestExtendedRoutesData(
+
+                    routeReference,
+                    this,
+                    view
+            )
+        }
     }
 
     override fun onDataOk(routeData: ExtendedRouteData) {
@@ -93,6 +102,15 @@ class OverviewSummaryPresenter(
         if (::name.isInitialized) {
 
             view.isSaveActionVisible = text.toString() != name
+        }
+    }
+
+    override fun notifyOnDestroy(isFinishing: Boolean) {
+        super.notifyOnDestroy(isFinishing)
+
+        if (isFinishing) {
+
+            routesManager.clearTempRoute(RoutesManager.Slot.SUMMARY_BACKUP)
         }
     }
 }

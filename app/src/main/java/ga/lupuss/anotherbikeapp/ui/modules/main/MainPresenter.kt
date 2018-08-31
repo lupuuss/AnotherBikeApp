@@ -50,7 +50,7 @@ class MainPresenter(private val routesManager: RoutesManager,
 
                     routeData?.let {
 
-                        routesManager.keepTempRoute(it)
+                        routesManager.keepTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY, it)
                         view.startSummaryActivity()
                     }
                 }

@@ -21,14 +21,14 @@ class AfterTrackingSummaryPresenter(
 
     override fun notifyOnViewReady() {
 
-        if (routesManager.getTempRoute() == null) {
+        if (routesManager.getTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY) == null) {
 
             view.finishActivity()
-            Timber.w("no route to show")
+            Timber.e("=== Route passed to SummaryActivity is missing! ===")
 
         } else {
 
-            routeData = routesManager.getTempRoute()!!
+            routeData = routesManager.getTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY)!!
             showExtendedRouteData(routeData)
         }
     }
@@ -59,4 +59,13 @@ class AfterTrackingSummaryPresenter(
     }
 
     override fun onNameEditTextChanged(text: CharSequence?) {}
+
+    override fun notifyOnDestroy(isFinishing: Boolean) {
+        super.notifyOnDestroy(isFinishing)
+
+        if (isFinishing) {
+
+            routesManager.clearTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY)
+        }
+    }
 }

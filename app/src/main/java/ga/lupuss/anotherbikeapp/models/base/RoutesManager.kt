@@ -6,6 +6,10 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 
 interface RoutesManager {
 
+    enum class Slot {
+        MAIN_TO_SUMMARY, SUMMARY_BACKUP
+    }
+
     interface OnRequestMoreShortRouteDataListener {
         fun onRequestSuccess()
         fun onDataEnd()
@@ -33,9 +37,9 @@ interface RoutesManager {
                                   onRequestExtendedRouteDataListener: OnRequestExtendedRouteDataListener?,
                                   requestOwner: Any? = null)
     fun saveRoute(routeData: ExtendedRouteData)
-    fun keepTempRoute(routeData: ExtendedRouteData)
-    fun getTempRoute(): ExtendedRouteData?
-    fun clearTempRoute()
+    fun keepTempRoute(slot: Slot, routeData: ExtendedRouteData)
+    fun getTempRoute(slot: Slot): ExtendedRouteData?
+    fun clearTempRoute(slot: Slot)
     fun getRouteReference(position: Int): RouteReference
     fun deleteRoute(routeReference: RouteReference)
     fun changeName(routeReference: RouteReference, routeNameFromEditText: String)
