@@ -2,12 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.modules.weather.WeatherFragment"
     android:background="?android:colorPrimary"
-    android:id="@+id/weatherFragmentLayout"
-    android:animateLayoutChanges="true">
+    android:id="@+id/weatherFragmentLayout">
 
     <LinearLayout
         android:id="@+id/locationInfo"
@@ -232,37 +231,45 @@
         app:layout_constraintTop_toBottomOf="@id/weatherSeekBar">
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/weatherExpandButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_expand_more_24dp"
-        android:elevation="4dp"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
+        android:orientation="vertical"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hoursContainer"
-        android:background="@drawable/circle_accent"
-        tools:ignore="ContentDescription" />
+        android:background="?android:colorPrimaryDark">
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherExpandButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
-        android:layout_marginBottom="2dp">
-
-        <LinearLayout
-            android:id="@+id/daysContainer"
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/weatherExpandButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
-    </HorizontalScrollView>
+            android:src="@drawable/ic_expand_more_24dp"
+            android:padding="4dp"
+            android:elevation="2dp"
+            app:layout_goneMarginBottom="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hoursContainer"
+            android:background="@android:color/transparent"
+            tools:ignore="ContentDescription" />
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/daysContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <include layout="@layout/fragment_weather_day"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
