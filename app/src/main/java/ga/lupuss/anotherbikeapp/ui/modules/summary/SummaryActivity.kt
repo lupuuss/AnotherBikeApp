@@ -183,12 +183,14 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
     @Suppress("UNUSED_PARAMETER")
     fun onSaveClick(menuItem: MenuItem?) {
 
+        hideSoftKeyboard()
         summaryPresenter.onSaveClick()
     }
 
     @Suppress("UNUSED_PARAMETER")
     fun onRejectClick(menuItem: MenuItem?) {
 
+        hideSoftKeyboard()
         summaryPresenter.onRejectClick()
     }
 

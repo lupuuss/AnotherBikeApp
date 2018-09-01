@@ -24,6 +24,10 @@ import ga.lupuss.anotherbikeapp.models.SignInVerifier
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import javax.inject.Inject
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
 
@@ -212,5 +216,18 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun redirectToUrl(url: String) {
 
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    fun hideSoftKeyboard() {
+
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        var view = currentFocus
+
+        if (view == null) {
+            view = View(this)
+        }
+
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
