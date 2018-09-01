@@ -22,7 +22,7 @@
         <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="firebaseLogo">@drawable/logo_built_black</item>
-        <item name="linkColor">@color/darkThemeLinkColor</item>
+        <item name="android:textColorLink">@color/darkThemeLinkColor</item>
     </style>
 
     <style name="DarkDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -67,7 +67,7 @@
         <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="firebaseLogo">@drawable/logo_built_white</item>
-        <item name="linkColor">@color/lightThemeLinkColor</item>
+        <item name="android:textColorLink">@color/lightThemeLinkColor</item>
     </style>
 
     <style name="LightDialogTheme" parent="Theme.AppCompat.Dialog.Alert">

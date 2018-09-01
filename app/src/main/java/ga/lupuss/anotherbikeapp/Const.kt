@@ -1,6 +1,10 @@
 package ga.lupuss.anotherbikeapp
 
 const val WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/"
+const val FLAT_ICON_URL = "https://www.flaticon.com"
+const val FLAT_ICON_AUTHORS_URL = "$FLAT_ICON_URL/authors/"
+const val FIREBASE_URL = "https://firebase.google.com"
+const val OPEN_WEATHER_MAP_URL = "https://openweathermap.org"
 const val CACHE_SIZE: Long = 10 * 1024 * 102 // 10 MB
 
 enum class Message {

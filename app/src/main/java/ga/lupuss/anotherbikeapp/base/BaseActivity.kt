@@ -3,8 +3,10 @@ package ga.lupuss.anotherbikeapp.base
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.PermissionChecker
@@ -205,5 +207,10 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
             onComplete.invoke(it.isSuccessful, it.result)
         }
+    }
+
+    override fun redirectToUrl(url: String) {
+
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 }

@@ -76,31 +76,35 @@ abstract class BaseFragment : Fragment(), BaseView {
     open fun onDestroyViewPostVerification() {}
 
     override fun postMessage(message: Message) {
-        (activity as? ThemedActivity)?.postMessage(message)
+        (activity as? BaseActivity)?.postMessage(message)
     }
 
     override fun makeToast(str: String) {
-        (activity as? ThemedActivity)?.makeToast(str)
+        (activity as? BaseActivity)?.makeToast(str)
     }
 
     override fun isOnline(): Boolean {
-        return (activity as? ThemedActivity)?.isOnline() ?: false
+        return (activity as? BaseActivity)?.isOnline() ?: false
     }
 
     override fun finishActivity() {
-        (activity as? ThemedActivity)?.finishActivity()
+        (activity as? BaseActivity)?.finishActivity()
     }
 
     override fun provideLocationPermission(onLocationPermissionRequestResult: (Boolean) -> Unit) {
-        (activity as? ThemedActivity)?.provideLocationPermission(onLocationPermissionRequestResult)
+        (activity as? BaseActivity)?.provideLocationPermission(onLocationPermissionRequestResult)
     }
 
     override fun provideLocationPermission(onLocationPermissionGranted: () -> Unit, onLocationPermissionRefused: () -> Unit) {
-        (activity as? ThemedActivity)?.provideLocationPermission(onLocationPermissionGranted, onLocationPermissionRefused)
+        (activity as? BaseActivity)?.provideLocationPermission(onLocationPermissionGranted, onLocationPermissionRefused)
     }
 
     override fun requestSingleLocationUpdate(onComplete: (Boolean, Location?) -> Unit) {
 
-        (activity as? ThemedActivity)?.requestSingleLocationUpdate(onComplete)
+        (activity as? BaseActivity)?.requestSingleLocationUpdate(onComplete)
+    }
+
+    override fun redirectToUrl(url: String) {
+        (activity as? BaseActivity)?.redirectToUrl(url)
     }
 }

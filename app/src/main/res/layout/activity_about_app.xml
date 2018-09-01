@@ -11,7 +11,7 @@
         android:id="@+id/aboutAppToolbar"
         android:background="?android:colorPrimaryDark"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="?android:actionBarSize"
         app:title="@string/aboutApp"/>
 
    <ScrollView
@@ -22,8 +22,22 @@
            android:layout_height="wrap_content"
            android:orientation="vertical"
            android:gravity="center_horizontal">
+
            <LinearLayout
                android:layout_marginTop="10dp"
+               style="@style/AboutAppCard"
+               android:orientation="horizontal">
+               <TextView
+                   style="@style/AboutAppText"
+                   android:text="@string/appName"/>
+               <TextView
+                   android:id="@+id/versionText"
+                   android:layout_marginStart="8dp"
+                   style="@style/AboutAppText"
+                   tools:text="1.0"/>
+           </LinearLayout>
+
+           <LinearLayout
                style="@style/AboutAppCard">
 
                <TextView
@@ -34,6 +48,7 @@
                    android:id="@+id/firebaseLogo"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:onClick="onClickFirebase"
                    android:src="@drawable/logo_built_black"
                    android:background="@android:color/transparent"
                    tools:ignore="ContentDescription" />
@@ -53,14 +68,14 @@
                    android:layout_height="wrap_content"
                    android:src="@drawable/open_weather_map_logo"
                    android:background="@android:color/transparent"
+                   android:onClick="onClickOpenWeatherMap"
                    tools:ignore="ContentDescription" />
            </LinearLayout>
-
-
 
            <LinearLayout
                style="@style/AboutAppCard">
                <TextView
+                   android:id="@+id/weatherIconsCreditsText"
                    style="@style/AboutAppText"
                    android:textSize="18dp"
                    android:text="@string/weatherIconsCredit"
@@ -70,11 +85,13 @@
                    android:id="@+id/flatIconLogo"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:onClick="onClickFlatIcon"
                    android:src="@drawable/ic_flaticon_logo"
                    android:background="@android:color/transparent"
                    tools:ignore="ContentDescription" />
 
            </LinearLayout>
+
        </LinearLayout>
    </ScrollView>
 
