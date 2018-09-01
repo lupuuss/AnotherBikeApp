@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
+import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_create_account.*
@@ -85,6 +86,10 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
 
     fun onClickCreateNewAccount(@Suppress("UNUSED_PARAMETER") view: View) {
 
+        (emailEditInclude as EditText).error = null
+        (passwordEditInclude as EditText).error = null
+        displayNameEditText.error = null
+
         createAccountPresenter.onClickCreateNewAccount(
                 findViewById<EditText>(R.id.emailEditInclude).text.toString(),
                 findViewById<EditText>(R.id.passwordEditInclude).text.toString(),
@@ -95,6 +100,18 @@ class CreateAccountActivity : BaseActivity(), CreateAccountView {
     fun onClickSignIn(@Suppress("UNUSED_PARAMETER") view: View) {
 
         createAccountPresenter.onClickSignIn()
+    }
+
+    override fun emailFieldError(message: Message) {
+        (emailEditInclude as EditText).error = resourceResolver.resolve(message)
+    }
+
+    override fun passwordFieldError(message: Message) {
+        (passwordEditInclude as EditText).error = resourceResolver.resolve(message)
+    }
+
+    override fun displayNameFieldError(message: Message) {
+        displayNameEditText.error = resourceResolver.resolve(message)
     }
 
     companion object {

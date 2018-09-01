@@ -22,9 +22,24 @@ class CreateAccountPresenter @Inject constructor(private val authInteractor: Aut
 
     fun onClickCreateNewAccount(email: String, password: String, displayName: String) {
 
-        if (email.isBlank() || password.isBlank() || displayName.isBlank()) {
+        val isEmailBlank = email.isBlank()
+        val isPasswordBlank = password.isBlank()
+        val isDisplayNameBlank = displayName.isBlank()
 
-            view.postMessage(Message.FILL_ALL_FIELDS)
+        if (isEmailBlank || isPasswordBlank || isDisplayNameBlank) {
+
+            if (isEmailBlank) {
+                view.emailFieldError(Message.CANNOT_BE_BLANK)
+            }
+
+            if (isPasswordBlank) {
+                view.passwordFieldError(Message.CANNOT_BE_BLANK)
+            }
+
+
+            if (isDisplayNameBlank) {
+                view.displayNameFieldError(Message.CANNOT_BE_BLANK)
+            }
 
         } else if (!view.isOnline()) {
 
@@ -52,7 +67,7 @@ class CreateAccountPresenter @Inject constructor(private val authInteractor: Aut
 
     override fun onUserExist() {
         onAnyError()
-        view.postMessage(Message.USER_EXISTS)
+        view.emailFieldError(Message.USER_EXISTS)
     }
 
     override fun onUndefinedError() {
@@ -62,11 +77,11 @@ class CreateAccountPresenter @Inject constructor(private val authInteractor: Aut
 
     override fun onInvalidCredentialsError() {
         onAnyError()
-        view.postMessage(Message.INVALID_CREDENTIALS_CREATING)
+        view.emailFieldError(Message.INCORRECT_EMAIL_FORMAT)
     }
 
     override fun onTooWeakPassword() {
         onAnyError()
-        view.postMessage(Message.PASSWORD_IS_TOO_WEAK)
+        view.passwordFieldError(Message.PASSWORD_IS_TOO_WEAK)
     }
 }

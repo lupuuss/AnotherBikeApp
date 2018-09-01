@@ -26,7 +26,7 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
         Message.LOCATION_NOT_AVAILABLE -> R.string.locationNotAvailable
         Message.USER_NOT_EXISTS -> R.string.messageUserNotExists
         Message.PASSWORD_IS_TOO_WEAK -> R.string.passwordIsTooWeak
-        Message.INVALID_CREDENTIALS_CREATING -> R.string.invalidCredentialsCreating
+        Message.INCORRECT_EMAIL_FORMAT -> R.string.incorrectEmailFormat
     })
 
     override fun resolve(text: Text): String = context.getString(when (text) {

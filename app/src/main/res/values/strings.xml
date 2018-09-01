@@ -100,7 +100,7 @@
     <string name="notification_description">Displays basic information about current tracking.</string>
     <string name="messageUserNotExists">User with that email address not exists!</string>
     <string name="passwordIsTooWeak">The password must be at least 6 characters long!</string>
-    <string name="invalidCredentialsCreating">Incorrect email address format!</string>
+    <string name="incorrectEmailFormat">Incorrect email address format!</string>
     <string name="weather">Weather</string>
     <string name="refresh">Refresh</string>
     <string name="nameNotAvailable">Location\'s name is unknown</string>
