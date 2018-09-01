@@ -95,6 +95,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize" tools:ignore="SpUsage">13dp</item>
+        <item name="android:visibility">invisible</item>
     </style>
 
     <style name="WeatherStatTextView.Left" parent="WeatherStatTextView">
@@ -109,6 +110,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/weatherMargin</item>
+        <item name="android:visibility">invisible</item>
     </style>
 
     <style name="WeatherImageView.Left" parent="WeatherImageView">

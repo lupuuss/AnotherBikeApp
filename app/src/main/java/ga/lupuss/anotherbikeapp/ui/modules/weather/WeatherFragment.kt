@@ -19,6 +19,7 @@ import ga.lupuss.anotherbikeapp.base.LabeledFragment
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.WeatherData
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
+import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import kotlinx.android.synthetic.main.fragment_weather.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -155,6 +156,8 @@ class WeatherFragment
 
         daysContainer.removeAllViews()
 
+        setVisibleWeatherDetails(true)
+
         data.daysInfo.forEachIndexed { index, it ->
 
             val dayView = this.layoutInflater.inflate(R.layout.fragment_weather_day, daysContainer, false)
@@ -180,6 +183,23 @@ class WeatherFragment
 
             daysContainer.addView(dayView)
         }
+    }
+
+    private fun setVisibleWeatherDetails(isVisible: Boolean) {
+
+        snowfallImage.isVisible = isVisible
+        snowfallValue.isVisible = isVisible
+        rainfallImage.isVisible = isVisible
+        rainfallValue.isVisible = isVisible
+        humidityImage.isVisible = isVisible
+        humidityValue.isVisible = isVisible
+
+        cloudsImage.isVisible = isVisible
+        cloudsValue.isVisible = isVisible
+        windImage.isVisible = isVisible
+        windValue.isVisible = isVisible
+        pressureImage.isVisible = isVisible
+        pressureValue.isVisible = isVisible
     }
 
     override fun updateWeather(data: WeatherData, position: Int, currentDay: Int, dayBefore: Int) {

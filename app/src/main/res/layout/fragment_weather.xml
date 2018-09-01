@@ -42,7 +42,8 @@
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/locationInfo"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/snowfallValue"
@@ -51,7 +52,8 @@
         app:layout_constraintTop_toTopOf="@id/snowfallImage"
         app:layout_constraintBottom_toBottomOf="@id/snowfallImage"
         tools:text="20 mm"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage"
+        tools:visibility="visible"/>
 
     <ImageView
         android:id="@+id/rainfallImage"
@@ -59,7 +61,8 @@
         android:src="@drawable/ic_rainfall_20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/snowfallImage"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/rainfallValue"
@@ -68,7 +71,8 @@
         app:layout_constraintTop_toTopOf="@id/rainfallImage"
         app:layout_constraintBottom_toBottomOf="@id/rainfallImage"
         tools:text="20 mm"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage"
+        tools:visibility="visible"/>
 
     <ImageView
         android:id="@+id/humidityImage"
@@ -76,7 +80,8 @@
         android:src="@drawable/ic_humidity_20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rainfallImage"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/humidityValue"
@@ -85,7 +90,8 @@
         app:layout_constraintTop_toTopOf="@id/humidityImage"
         app:layout_constraintBottom_toBottomOf="@id/humidityImage"
         tools:text="0 %"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage"
+        tools:visibility="visible"/>
 
     <LinearLayout
         android:id="@+id/timeInfo"
@@ -121,7 +127,8 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeInfo"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/cloudsValue"
@@ -130,7 +137,8 @@
         app:layout_constraintTop_toTopOf="@id/cloudsImage"
         app:layout_constraintBottom_toBottomOf="@id/cloudsImage"
         tools:text="100%"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage"
+        tools:visibility="visible"/>
 
     <ImageView
         android:id="@+id/windImage"
@@ -138,7 +146,8 @@
         android:src="@drawable/ic_windy_20dp"
         app:layout_constraintTop_toBottomOf="@id/cloudsImage"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/windValue"
@@ -147,7 +156,8 @@
         app:layout_constraintTop_toTopOf="@id/windImage"
         app:layout_constraintBottom_toBottomOf="@id/windImage"
         tools:text="20 m/s"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage"
+        tools:visibility="visible"/>
 
     <ImageView
         android:id="@+id/pressureImage"
@@ -155,7 +165,8 @@
         android:src="@drawable/ic_barometer_20dp"
         app:layout_constraintTop_toBottomOf="@id/windImage"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/pressureValue"
@@ -164,7 +175,8 @@
         app:layout_constraintTop_toTopOf="@id/pressureImage"
         app:layout_constraintBottom_toBottomOf="@id/pressureImage"
         tools:text="1024 hPa"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage"
+        tools:visibility="visible"/>
 
     <ImageView
         android:layout_marginTop="10dp"
@@ -223,6 +235,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:minHeight="12dp"
         android:gravity="center_horizontal"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
