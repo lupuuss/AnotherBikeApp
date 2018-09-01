@@ -238,8 +238,7 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hoursContainer"
-        android:background="?android:colorPrimaryDark">
+        app:layout_constraintTop_toBottomOf="@id/hoursContainer">
 
         <ImageButton
             android:id="@+id/weatherExpandButton"
