@@ -55,8 +55,11 @@
         <activity
             android:name=".ui.modules.settings.SettingsActivity"
             android:label="@string/settings" />
-        <activity android:name=".ui.modules.about.AboutAppActivity"
-            android:label="@string/aboutApp"/>
+        <activity
+            android:name=".ui.modules.about.AboutAppActivity"
+            android:label="@string/aboutApp" />
+        <activity android:name=".ui.modules.forgotpassword.ForgotPasswordActivity"
+            android:label="@string/forgotPassword"/>
     </application>
 
 </manifest>

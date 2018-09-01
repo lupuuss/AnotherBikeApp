@@ -114,4 +114,8 @@
     <string name="aboutApp">About app</string>
     <string name="emailIsIncorrect">Email is incorrect!</string>
     <string name="passwordIsIncorrect">Password is incorrect!</string>
+    <string name="resetPassword">Reset password</string>
+    <string name="reset">Reset</string>
+    <string name="forgotPassword">Forgot password?</string>
+    <string name="passwordResetComplete">An email to change the password has been sent.</string>
 </resources>

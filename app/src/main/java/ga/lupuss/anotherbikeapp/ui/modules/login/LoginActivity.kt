@@ -12,6 +12,7 @@ import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
+import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.ForgotPasswordActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
@@ -70,6 +71,11 @@ class LoginActivity : BaseActivity(), LoginView {
         loginPresenter.onClickCreateAccount()
     }
 
+    fun onClickForgotPassword(view: View) {
+
+        loginPresenter.onClickForgotPassword()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // Dagger MUST be first
 
@@ -111,6 +117,11 @@ class LoginActivity : BaseActivity(), LoginView {
     override fun startCreateAccountActivity() {
 
         startActivity(CreateAccountActivity.newIntent(this))
+    }
+
+    override fun startForgotPasswordActivity() {
+
+        startActivity(ForgotPasswordActivity.newIntent(this))
     }
 
     override fun emailFieldError(message: Message) {

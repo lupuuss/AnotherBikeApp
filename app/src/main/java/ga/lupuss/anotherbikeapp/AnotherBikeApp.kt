@@ -17,6 +17,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountComponent
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountModule
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountView
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.DaggerCreateAccountComponent
+import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.DaggerForgotPasswordComponent
+import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.ForgotPasswordComponent
+import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.ForgotPasswordModule
+import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.ForgotPasswordView
 import ga.lupuss.anotherbikeapp.ui.modules.login.DaggerLoginComponent
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginComponent
 import ga.lupuss.anotherbikeapp.ui.modules.login.LoginModule
@@ -173,6 +177,15 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .userComponent(userComponent!!)
                 .aboutAppModule(AboutAppModule(aboutAppView))
+                .build()
+    }
+
+    open fun forgotPasswordComponent(forgotPasswordView: ForgotPasswordView): ForgotPasswordComponent {
+
+        return DaggerForgotPasswordComponent
+                .builder()
+                .anotherBikeAppComponent(anotherBikeAppComponent)
+                .forgotPasswordModule(ForgotPasswordModule(forgotPasswordView))
                 .build()
     }
 }

@@ -98,4 +98,8 @@
     <string name="aboutApp">O aplikacji</string>
     <string name="emailIsIncorrect">Adres email jest niepoprawny!</string>
     <string name="passwordIsIncorrect">Hasło jest niepoprawne!</string>
+    <string name="resetPassword">Zresetuj hasło</string>
+    <string name="reset">Zresetuj</string>
+    <string name="forgotPassword">Nie pamiętasz hasła?</string>
+    <string name="passwordResetComplete">Email do zmiany hasła został wysłany.</string>
 </resources>

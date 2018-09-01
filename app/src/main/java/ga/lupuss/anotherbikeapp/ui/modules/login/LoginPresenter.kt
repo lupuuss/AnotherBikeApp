@@ -47,6 +47,11 @@ class LoginPresenter @Inject constructor(private val loginInteractor: AuthIntera
         view.startCreateAccountActivity()
     }
 
+    fun onClickForgotPassword() {
+
+        view.startForgotPasswordActivity()
+    }
+
     private fun onAnyError() {
         view.isUiEnable = true
         view.isSignInProgressBarVisible = false

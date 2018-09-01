@@ -10,6 +10,8 @@ interface LoginView : BaseView {
     fun startCreateAccountActivity()
     fun emailFieldError(message: Message)
     fun passwordFieldError(message: Message)
+    fun startForgotPasswordActivity()
+
     var isUiEnable: Boolean
     var isSignInProgressBarVisible: Boolean
     var isSignInButtonTextVisible: Boolean

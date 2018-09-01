@@ -71,6 +71,28 @@ class FirebaseAuthInteractor(
                 }
     }
 
+    override fun resetPassword(email: String, onPasswordResetDone: AuthInteractor.OnPasswordResetDoneListener?, requestOwner: Any?) {
+        if (requestOwner !is Activity)
+            throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
+
+        firebaseAuth
+                .sendPasswordResetEmail(email)
+                .addOnSuccessListener(requestOwner) {
+
+                    onPasswordResetDone?.onSuccess()
+                }
+                .addOnFailureListener(requestOwner) {
+
+                    Timber.e(it)
+
+                    when (it) {
+                        is FirebaseAuthInvalidUserException -> onPasswordResetDone?.onUserNotExists()
+                        is FirebaseAuthInvalidCredentialsException -> onPasswordResetDone?.onEmailBadlyFormatted()
+                        else -> onPasswordResetDone?.onUndefinedError()
+                    }
+                }
+    }
+
     override fun setDisplayName(displayName: String,
                                 onDisplayNameSetDone: AuthInteractor.OnDisplayNameSetDoneListener?,
                                 requestOwner: Any?) {

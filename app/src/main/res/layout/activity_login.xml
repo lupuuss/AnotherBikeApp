@@ -82,5 +82,17 @@
             app:layout_constraintEnd_toEndOf="@id/passwordEditInclude"
             app:layout_constraintTop_toBottomOf="@id/signInButton"/>
 
+        <Button
+            android:id="@+id/forgotPasswordButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?android:colorAccent"
+            android:text="@string/forgotPassword"
+            android:layout_marginTop="15dp"
+            android:onClick="onClickForgotPassword"
+            app:layout_constraintStart_toStartOf="@id/passwordEditInclude"
+            app:layout_constraintEnd_toEndOf="@id/passwordEditInclude"
+            app:layout_constraintTop_toBottomOf="@id/createNewAccountButton"/>
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

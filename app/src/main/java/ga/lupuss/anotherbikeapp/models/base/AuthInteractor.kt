@@ -2,10 +2,19 @@ package ga.lupuss.anotherbikeapp.models.base
 
 interface AuthInteractor {
 
-    interface OnAuthTaskDoneListener {
+    interface OnCompleteListener {
         fun onSuccess()
         fun onUndefinedError()
+    }
+
+    interface OnAuthTaskDoneListener : OnCompleteListener {
         fun onInvalidCredentialsError()
+    }
+
+    interface OnPasswordResetDoneListener : OnCompleteListener {
+
+        fun onEmailBadlyFormatted()
+        fun onUserNotExists()
     }
 
     interface OnLoginDoneListener : OnAuthTaskDoneListener {
@@ -34,6 +43,10 @@ interface AuthInteractor {
                       displayName: String,
                       onCreateAccountDone: OnAccountCreateDoneListener?,
                       requestOwner: Any? = null)
+
+    fun resetPassword(email: String,
+                      onPasswordResetDone: OnPasswordResetDoneListener?,
+                      requestOwner: Any?)
 
     fun getEmail(): String?
 
