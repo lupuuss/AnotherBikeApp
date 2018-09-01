@@ -15,9 +15,19 @@ class LoginPresenter @Inject constructor(private val loginInteractor: AuthIntera
 
     fun onClickSignIn(email: String, password: String) {
 
-        if (email.isBlank() || password.isBlank()) {
+        val isEmailBlank = email.isBlank()
+        val isPasswordBlank = password.isBlank()
 
-            view.postMessage(Message.EMAIL_OR_PASSWORD_BLANK)
+        if (isEmailBlank || isPasswordBlank) {
+
+            if (isEmailBlank) {
+                view.emailFieldError(Message.CANNOT_BE_BLANK)
+            }
+
+            if (isPasswordBlank) {
+
+                view.passwordFieldError(Message.CANNOT_BE_BLANK)
+            }
 
         } else if (!view.isOnline()) {
 
@@ -51,12 +61,13 @@ class LoginPresenter @Inject constructor(private val loginInteractor: AuthIntera
     override fun onUserNotExists() {
 
         onAnyError()
-        view.postMessage(Message.USER_NOT_EXISTS)
+        view.emailFieldError(Message.USER_NOT_EXISTS)
     }
 
     override fun onInvalidCredentialsError() {
         onAnyError()
-        view.postMessage(Message.INVALID_CREDENTIALS_LOGIN)
+        view.emailFieldError(Message.EMAIL_IS_INCORRECT)
+        view.passwordFieldError(Message.PASSWORD_IS_INCORRECT)
     }
 
     override fun onUndefinedError() {

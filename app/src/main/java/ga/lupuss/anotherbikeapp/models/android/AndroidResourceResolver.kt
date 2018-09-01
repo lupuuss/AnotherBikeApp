@@ -19,8 +19,9 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
         Message.SOMETHING_GOES_WRONG -> R.string.somethingGoesWrong
         Message.FILL_ALL_FIELDS -> R.string.fillAllFields
         Message.NO_INTERNET_CONNECTION -> R.string.noInternetConnection
-        Message.EMAIL_OR_PASSWORD_BLANK -> R.string.passwordOrEmailBlank
-        Message.INVALID_CREDENTIALS_LOGIN -> R.string.wrongCredentials
+        Message.CANNOT_BE_BLANK-> R.string.cannotBeBlank
+        Message.EMAIL_IS_INCORRECT -> R.string.emailIsIncorrect
+        Message.PASSWORD_IS_INCORRECT -> R.string.passwordIsIncorrect
         Message.NO_PERMISSION -> R.string.noPermission
         Message.LOCATION_NOT_AVAILABLE -> R.string.locationNotAvailable
         Message.USER_NOT_EXISTS -> R.string.messageUserNotExists

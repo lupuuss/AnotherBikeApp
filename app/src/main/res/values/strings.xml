@@ -63,8 +63,7 @@
     <string name="name">Name</string>
     <string name="noInternetConnection">No internet connection!</string>
     <string name="somethingGoesWrong">Something goes wrong…</string>
-    <string name="passwordOrEmailBlank">You have to provide an email and password!</string>
-    <string name="wrongCredentials">Email or password is incorrect!</string>>
+    <string name="cannotBeBlank">This field can\'t be blank!</string>
     <string name="accountCreated">Account has been created. Sign in!</string>
     <string name="fillAllFields">Fill all fields!</string>
     <string name="userExists">User with that email already exists!</string>
@@ -99,7 +98,7 @@
     <string name="messageUnsavedState">Data has not been saved. Are you sure you want to exit?</string>
     <string name="lockMap">Lock map</string>
     <string name="notification_description">Displays basic information about current tracking.</string>
-    <string name="messageUserNotExists">User with that email not exists!</string>
+    <string name="messageUserNotExists">User with that email address not exists!</string>
     <string name="passwordIsTooWeak">The password must be at least 6 characters long!</string>
     <string name="invalidCredentialsCreating">Incorrect email address format!</string>
     <string name="weather">Weather</string>
@@ -113,4 +112,6 @@
     <string name="weatherApi">Weather API</string>
     <string name="weatherIconsCredit">Weather icons were made by\n@freepik and @pixel-perfect from</string>
     <string name="aboutApp">About app</string>
+    <string name="emailIsIncorrect">Email is incorrect!</string>
+    <string name="passwordIsIncorrect">Password is incorrect!</string>
 </resources>

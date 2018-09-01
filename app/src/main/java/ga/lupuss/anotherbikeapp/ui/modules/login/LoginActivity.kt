@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
+import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.email_edit_text.*
+import kotlinx.android.synthetic.main.password_edit_text.*
 import javax.inject.Inject
 
 @Suppress("UNUSED_PARAMETER")
@@ -55,6 +58,9 @@ class LoginActivity : BaseActivity(), LoginView {
         }
 
     fun onClickSignIn(view: View) {
+
+        (emailEditInclude as EditText).error = null
+        (passwordEditInclude as EditText).error = null
 
         loginPresenter.onClickSignIn(
                 findViewById<EditText>(R.id.emailEditInclude).text.toString(),
@@ -107,6 +113,15 @@ class LoginActivity : BaseActivity(), LoginView {
     override fun startCreateAccountActivity() {
 
         startActivity(CreateAccountActivity.newIntent(this))
+    }
+
+    override fun emailFieldError(message: Message) {
+
+        (emailEditInclude as EditText).error = resourceResolver.resolve(message)
+    }
+
+    override fun passwordFieldError(message: Message) {
+        (passwordEditInclude as EditText).error = resourceResolver.resolve(message)
     }
 
     override fun getAnotherBikeApp(): AnotherBikeApp = AnotherBikeApp.get(this.application)

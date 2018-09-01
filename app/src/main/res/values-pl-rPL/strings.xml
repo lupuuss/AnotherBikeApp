@@ -49,8 +49,7 @@
     <string name="settings">Ustawienia</string>
     <string name="noInternetConnection">Brak połączenia z internetem!</string>
     <string name="somethingGoesWrong">Coś poszło nie tak…</string>
-    <string name="passwordOrEmailBlank">Musisz podać email i hasło!</string>
-    <string name="wrongCredentials">Email lub hasło są niepoprawne!</string>
+    <string name="cannotBeBlank">To pole nie może być puste!</string>
     <string name="name">Nazwa</string>
     <string name="newAccount">Nowe konto</string>
     <string name="accountCreated">Konto zostało utworzone. Zaloguj się!</string>
@@ -79,7 +78,7 @@
     <string name="notification_description">Wyświetla podstawowe informacje o bieżącym śledzeniu.</string>
     <string name="invalidCredentialsCreating">Niepoprawny format adresu email!</string>
     <string name="passwordIsTooWeak">Hasło musi mieć co najmniej 6 znaków!</string>
-    <string name="messageUserNotExists">Użytkownik z tym emailem nie istnieje!</string>
+    <string name="messageUserNotExists">Użytkownik z tym adresem emailem nie istnieje!</string>
     <string name="prefIsMapThemeEnableTitle">Niestandardowy motyw mapy</string>
     <string name="prefIsMapThemeEnableSummary">Zezwalaj na niestandardowy motyw mapy</string>
     <string name="weather">Pogoda</string>
@@ -97,4 +96,6 @@
     <string name="weatherApi">API dostarczające prognozę pogody</string>
     <string name="weatherIconsCredit">Ikony pogody zostały stworzone przez\n@freepik i @pixel-perfect z</string>
     <string name="aboutApp">O aplikacji</string>
+    <string name="emailIsIncorrect">Adres email jest niepoprawny!</string>
+    <string name="passwordIsIncorrect">Hasło jest niepoprawne!</string>
 </resources>
