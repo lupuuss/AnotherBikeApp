@@ -44,7 +44,6 @@
             android:inputType="textPersonName"
             android:drawableStart="@drawable/ic_account_circle_orange_24dp"
             android:drawablePadding="10dp"
-            android:textColor="@color/darkThemePrimaryDarkColor"
             android:background="?android:colorPrimary"
             android:hint="@string/name"
             android:padding="10dp"
