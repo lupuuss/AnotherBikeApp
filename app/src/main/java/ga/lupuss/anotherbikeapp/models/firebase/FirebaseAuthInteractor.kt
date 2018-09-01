@@ -10,6 +10,11 @@ class FirebaseAuthInteractor(
         private val userProfileChangeBuilder :UserProfileChangeRequest.Builder = UserProfileChangeRequest.Builder()
 ) : AuthInteractor {
 
+    init {
+
+        firebaseAuth.useAppLanguage()
+    }
+
     override val userUid
         get() = firebaseAuth.currentUser?.uid
 
