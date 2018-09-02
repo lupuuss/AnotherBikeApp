@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -23,7 +24,9 @@ class AnotherBikeAppModule {
 
     @Provides
     @AnotherBikeAppScope
-    fun providesAuthInteractor(firebaseAuth: FirebaseAuth): AuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+    fun providesAuthInteractor(
+            firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore
+    ): AuthInteractor = FirebaseAuthInteractor(firebaseAuth, firebaseFirestore = firebaseFirestore)
 
     @Provides
     @AnotherBikeAppScope

@@ -1,13 +1,16 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
 import android.app.Activity
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.FirebaseFirestore
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import timber.log.Timber
 
 class FirebaseAuthInteractor(
         private val firebaseAuth: FirebaseAuth,
-        private val userProfileChangeBuilder :UserProfileChangeRequest.Builder = UserProfileChangeRequest.Builder()
+        private val userProfileChangeBuilder :UserProfileChangeRequest.Builder = UserProfileChangeRequest.Builder(),
+        private val firebaseFirestore: FirebaseFirestore
 ) : AuthInteractor {
 
     init {
@@ -104,11 +107,34 @@ class FirebaseAuthInteractor(
                 .setDisplayName(displayName)
                 .build()
 
-        firebaseAuth.currentUser!!.updateProfile(userProfileChangeRequest)
-                .addOnSuccessListener(requestOwner) {
+        firebaseAuth.currentUser!!
+                .updateProfile(userProfileChangeRequest)
+                .continueWithTask {
+
+                    it.exception?.let {
+                        Timber.e(it)
+                    }
+
+                    if (it.isSuccessful) {
+
+                        firebaseFirestore
+                                .collection(FirebaseRoutesManager.FIREB_USERS)
+                                .document(firebaseAuth.currentUser!!.uid)
+                                .set(mutableMapOf<String, Any>(
+                                        FIREB_USER_NAME to displayName
+                                ))
+                    } else {
+
+                        Tasks.forException(Exception("Display name could not be changed!"))
+                    }
+
+                }.addOnSuccessListener(requestOwner) {
+
+                    Timber.i("Display name has been changed!")
                     onDisplayNameSetDone?.onSuccessNameChange()
                 }
                 .addOnFailureListener(requestOwner) {
+
                     Timber.e(it)
                     onDisplayNameSetDone?.onSettingDisplayNameFail()
                 }
@@ -120,4 +146,9 @@ class FirebaseAuthInteractor(
     }
 
     override fun isUserLogged(): Boolean = firebaseAuth.currentUser != null
+
+    companion object {
+
+        const val FIREB_USER_NAME = "displayName"
+    }
 }
