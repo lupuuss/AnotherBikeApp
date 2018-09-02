@@ -44,9 +44,7 @@ class FirebaseRoutesManager(
 
 
     private fun DocumentSnapshot.toFirebaseShortRouteData(): FirebaseShortRouteData =
-            this.toObject(FirebaseShortRouteData::class.java)!!.apply {
-                reference = this@toFirebaseShortRouteData.reference
-            }
+            this.toObject(FirebaseShortRouteData::class.java)!!
 
     private fun DocumentSnapshot.toFirebaseRouteData(): FirebaseRouteData =
             this.toObject(FirebaseRouteData::class.java)!!
@@ -155,7 +153,25 @@ class FirebaseRoutesManager(
         val shortRouteDataSnap = children[position]
         val shortRouteData = children[position].toFirebaseShortRouteData()
 
-        return FirebaseRouteReference(shortRouteDataSnap.reference, shortRouteData.route, shortRouteData.points, position)
+
+        val routeReference: DocumentReference? = if (shortRouteData.routeId != null) {
+            firebaseFirestore.collection(FIREB_ROUTES).document(shortRouteData.routeId!!)
+        } else {
+            null
+        }
+
+        val pointsReference: DocumentReference? = if (shortRouteData.pointsId != null) {
+            firebaseFirestore.collection(FIREB_POINTS).document(shortRouteData.pointsId!!)
+        } else {
+            null
+        }
+
+        return FirebaseRouteReference(
+                shortRouteDataSnap.reference,
+                routeReference,
+                pointsReference,
+                position
+        )
     }
 
     override fun requestExtendedRoutesData(
@@ -226,7 +242,7 @@ class FirebaseRoutesManager(
         val newPointsRef = firebaseFirestore.collection(FIREB_POINTS).document()
         val newRouteRef = firebaseFirestore.collection(FIREB_ROUTES).document()
         val userRef = firebaseFirestore.collection(FIREB_USERS).document(authInteractor.userUid!!)
-        val newUserRefRoute = userRef.collection(FIREB_ROUTES).document()
+        val newUsersRouteRef = userRef.collection(FIREB_ROUTES).document()
 
         firebaseFirestore
                 .batch()
@@ -235,19 +251,20 @@ class FirebaseRoutesManager(
                 })
                 .set(newRouteRef, FirebaseRouteData().apply {
                     fillWith(routeData)
-                    points = newPointsRef
-                    user = userRef
+                    pointsId = newPointsRef.id
+                    userId = userRef.id
                 })
-                .update(newPointsRef, FIREB_ROUTE, newRouteRef)
-                .set(newUserRefRoute, FirebaseShortRouteData().apply {
+                .update(newPointsRef, FIREB_ROUTE_ID, newRouteRef.id)
+                .update(newPointsRef, FIREB_USER_ID, userRef.id)
+                .set(newUsersRouteRef, FirebaseShortRouteData().apply {
                     fillWith(routeData)
-                    route = newRouteRef
-                    points = newPointsRef
+                    routeId = newRouteRef.id
+                    pointsId = newPointsRef.id
                 })
                 .commit()
                 .continueWithTask {
 
-                    newUserRefRoute.get()
+                    newUsersRouteRef.get()
 
                 }.addOnSuccessListener {
 
@@ -326,6 +343,9 @@ class FirebaseRoutesManager(
         const val FIREB_ROUTE = "route"
         const val DEFAULT_LIMIT = 10L
         const val FIREB_POINTS = "points"
+        const val FIREB_POINTS_ID = "pointsId"
+        const val FIREB_ROUTE_ID = "routeId"
+        const val FIREB_USER_ID = "userId"
         const val FIREB_NAME = "name"
         const val WRONG_REFERENCE_MESSAGE =
                 "routeReference must be FirebaseRouteReference! Probably it doesn't come from FirebaseRouteManager."

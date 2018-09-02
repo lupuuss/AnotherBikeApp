@@ -6,9 +6,8 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 
 class FirebaseShortRouteData : MutableShortRouteData.Instance() {
 
-    var reference: DocumentReference? = null
-    var route: DocumentReference? = null
-    var points: DocumentReference? = null
+    var routeId: String? = null
+    var pointsId: String? = null
 
     fun toShortRouteData() = ShortRouteData.Instance(
             name = name,

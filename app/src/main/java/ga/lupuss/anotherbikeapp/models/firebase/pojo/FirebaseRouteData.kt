@@ -8,8 +8,8 @@ import java.util.*
 
 class FirebaseRouteData : MutableRouteData.Instance() {
 
-    var points: DocumentReference? = null
-    var user: DocumentReference? = null
+    var pointsId: String? = null
+    var userId: String? = null
 
     fun fillWith(routeData: RouteData) {
 

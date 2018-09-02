@@ -8,7 +8,8 @@ class FirebasePoints {
 
     var points: List<GeoPoint>? = null
     @Suppress("unused")
-    var route: DocumentReference? = null
+    var routeId: String? = null
+    var userId: String? = null
     fun pointsAsLatLngList(): MutableList<LatLng>? {
 
         if (points == null) return null

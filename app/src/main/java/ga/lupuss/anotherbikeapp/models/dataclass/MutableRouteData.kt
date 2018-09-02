@@ -1,5 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.dataclass
 
+import com.google.firebase.firestore.Exclude
+
 interface MutableRouteData : RouteData, MutableShortRouteData {
 
     override var name: String?
@@ -19,6 +21,7 @@ interface MutableRouteData : RouteData, MutableShortRouteData {
             override var avgSpeed: Double = 0.0,
             override var maxSpeed: Double = 0.0,
             override var duration: Long = 0L,
+            @get:Exclude @set:Exclude
             override var startTimeStr: String = "",
             override var startTime: Long = 0L,
             override var avgAltitude: Double = 0.0,
