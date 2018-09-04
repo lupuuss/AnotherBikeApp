@@ -79,10 +79,10 @@ class TrackingActivity
 
                 if (value) {
                     drawable = getDrawable(R.drawable.ic_lock_24dp)
-                    back = getDrawable(R.drawable.button_lock_back)
+                    back = getDrawable(R.drawable.circle_accent_secondary)
                 } else {
                     drawable = getDrawable(R.drawable.ic_unlock_24dp)
-                    back = getDrawable(R.drawable.button_unlock_back)
+                    back = getDrawable(R.drawable.cirlce_accent)
                 }
                 it.setImageDrawable(drawable)
                 it.background = back

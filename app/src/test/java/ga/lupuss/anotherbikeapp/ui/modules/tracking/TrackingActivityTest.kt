@@ -66,7 +66,7 @@ class TrackingActivityTest {
         val shadowBack = Shadows.shadowOf(view.background)
 
         Assert.assertEquals(R.drawable.ic_lock_24dp, shadow.createdFromResId)
-        Assert.assertEquals(R.drawable.button_lock_back, shadowBack.createdFromResId)
+        Assert.assertEquals(R.drawable.circle_accent_secondary, shadowBack.createdFromResId)
         Assert.assertEquals(true, trackingActivity.isMapButtonInLockState)
     }
 
@@ -79,7 +79,7 @@ class TrackingActivityTest {
         val shadowBack = Shadows.shadowOf(view.background)
 
         Assert.assertEquals(R.drawable.ic_unlock_24dp, shadow.createdFromResId)
-        Assert.assertEquals(R.drawable.button_unlock_back, shadowBack.createdFromResId)
+        Assert.assertEquals(R.drawable.cirlce_accent, shadowBack.createdFromResId)
         Assert.assertEquals(false, trackingActivity.isMapButtonInLockState)
     }
 
