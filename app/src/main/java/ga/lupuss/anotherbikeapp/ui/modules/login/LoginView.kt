@@ -6,11 +6,8 @@ import ga.lupuss.anotherbikeapp.base.BaseView
 
 interface LoginView : BaseView {
     fun getAnotherBikeApp(): AnotherBikeApp
-    fun startMainActivity()
-    fun startCreateAccountActivity()
     fun emailFieldError(message: Message)
     fun passwordFieldError(message: Message)
-    fun startForgotPasswordActivity()
 
     var isUiEnable: Boolean
     var isSignInProgressBarVisible: Boolean

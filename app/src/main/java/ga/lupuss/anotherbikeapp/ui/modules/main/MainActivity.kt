@@ -13,7 +13,6 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedActivity
-import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 
 import timber.log.Timber
@@ -25,10 +24,7 @@ import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
 import ga.lupuss.anotherbikeapp.ui.extensions.addOnAnimationEndListener
-import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppActivity
-import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryFragment
-import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_ui.*
 
@@ -251,25 +247,6 @@ class MainActivity
                         androidTrackingServiceGovernor.serviceBinder!!),
                 MainPresenter.Request.TRACKING_ACTIVITY_REQUEST
         )
-    }
-
-    override fun startLoginActivity() {
-
-        startActivity(LoginActivity.newIntent(this))
-    }
-
-    override fun startSettingsActivity() {
-
-        startActivity(SettingsActivity.newIntent(this))
-    }
-
-    override fun startSummaryActivity() {
-
-        startActivity(SummaryActivity.newIntent(this))
-    }
-
-    override fun startAboutAppActivity() {
-        startActivity(AboutAppActivity.newIntent(this))
     }
 
     companion object {

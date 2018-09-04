@@ -11,9 +11,6 @@ import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseActivity
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
-import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
-import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.ForgotPasswordActivity
-import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
@@ -106,22 +103,6 @@ class LoginActivity : BaseActivity(), LoginView {
     override fun onDestroy() {
         super.onDestroy()
         loginPresenter.notifyOnDestroy(isFinishing)
-    }
-
-    override fun startMainActivity() {
-
-        AnotherBikeApp.get(this.application).initUserComponent()
-        startActivity(MainActivity.newIntent(this))
-    }
-
-    override fun startCreateAccountActivity() {
-
-        startActivity(CreateAccountActivity.newIntent(this))
-    }
-
-    override fun startForgotPasswordActivity() {
-
-        startActivity(ForgotPasswordActivity.newIntent(this))
     }
 
     override fun emailFieldError(message: Message) {

@@ -13,4 +13,12 @@ interface BaseView {
     fun provideLocationPermission(onLocationPermissionGranted: () -> Unit, onLocationPermissionRefused: () -> Unit)
     fun requestSingleLocationUpdate(onComplete: (Boolean, Location?) -> Unit)
     fun redirectToUrl(url: String)
+    fun startMainActivity()
+    fun startCreateAccountActivity()
+    fun startSettingsActivity()
+    fun startLoginActivity()
+    fun startForgotPasswordActivity()
+    fun startAboutAppActivity()
+    fun startSummaryActivity()
+    fun startSummaryActivity(documentReference: String)
 }

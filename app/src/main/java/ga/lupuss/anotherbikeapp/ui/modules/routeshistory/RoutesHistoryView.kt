@@ -13,5 +13,4 @@ interface RoutesHistoryView: BaseView, LabeledView {
     fun notifyRecyclerItemChanged(position: Int)
     fun notifyRecyclerItemRemoved(position: Int, size: Int)
     fun notifyRecyclerItemInserted(position: Int, size: Int)
-    fun startSummaryActivity(docRef: String)
 }

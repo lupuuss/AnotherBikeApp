@@ -107,4 +107,36 @@ abstract class BaseFragment : Fragment(), BaseView {
     override fun redirectToUrl(url: String) {
         (activity as? BaseActivity)?.redirectToUrl(url)
     }
+
+    override fun startMainActivity() {
+        (activity as? BaseActivity)?.startMainActivity()
+    }
+
+    override fun startCreateAccountActivity() {
+        (activity as? BaseActivity)?.startCreateAccountActivity()
+    }
+
+    override fun startSettingsActivity() {
+        (activity as? BaseActivity)?.startSettingsActivity()
+    }
+
+    override fun startLoginActivity() {
+        (activity as? BaseActivity)?.startLoginActivity()
+    }
+
+    override fun startForgotPasswordActivity() {
+        (activity as? BaseActivity)?.startForgotPasswordActivity()
+    }
+
+    override fun startAboutAppActivity() {
+        (activity as? BaseActivity)?.startAboutAppActivity()
+    }
+
+    override fun startSummaryActivity() {
+        (activity as? BaseActivity)?.startSummaryActivity()
+    }
+
+    override fun startSummaryActivity(documentReference: String) {
+        (activity as? BaseActivity)?.startSummaryActivity(documentReference)
+    }
 }

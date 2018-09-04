@@ -27,6 +27,13 @@ import javax.inject.Inject
 import android.app.Activity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppActivity
+import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
+import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.ForgotPasswordActivity
+import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
+import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
+import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
+import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
@@ -229,5 +236,43 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         }
 
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun startMainActivity() {
+
+        AnotherBikeApp.get(this.application).initUserComponent()
+        startActivity(MainActivity.newIntent(this))
+    }
+
+    override fun startCreateAccountActivity() {
+
+        startActivity(CreateAccountActivity.newIntent(this))
+    }
+
+    override fun startForgotPasswordActivity() {
+
+        startActivity(ForgotPasswordActivity.newIntent(this))
+    }
+
+    override fun startSettingsActivity() {
+        startActivity(SettingsActivity.newIntent(this))
+    }
+
+    override fun startLoginActivity() {
+
+        startActivity(LoginActivity.newIntent(this))
+    }
+
+    override fun startAboutAppActivity() {
+        startActivity(AboutAppActivity.newIntent(this))
+    }
+
+    override fun startSummaryActivity() {
+
+        startActivity(SummaryActivity.newIntent(this))
+    }
+
+    override fun startSummaryActivity(documentReference: String) {
+        startActivity(SummaryActivity.newIntent(this, documentReference))
     }
 }
