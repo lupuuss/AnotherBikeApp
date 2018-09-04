@@ -8,4 +8,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:background="?android:colorPrimary"
     tools:text="13:00"
+    android:fontFamily="sans-serif-condensed"
     tools:ignore="SpUsage" />

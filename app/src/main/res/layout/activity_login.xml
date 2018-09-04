@@ -12,15 +12,11 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/signInTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/AuthorizationHeader"
+            android:text="@string/login"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/login"
-            android:textAlignment="center"
-            android:layout_marginTop="70dp"
-            android:textSize="@dimen/loginLabelTextSize"
             tools:ignore="SpUsage" />
 
         <include layout="@layout/email_edit_text"
@@ -60,9 +56,7 @@
 
         <Button
             android:id="@+id/signInButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:colorAccent"
+            style="@style/AuthorizationButton"
             android:text="@string/login"
             android:layout_marginTop="30dp"
             android:onClick="onClickSignIn"
@@ -72,11 +66,8 @@
 
         <Button
             android:id="@+id/createNewAccountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:colorAccent"
+            style="@style/AuthorizationButton"
             android:text="@string/createNewAccount"
-            android:layout_marginTop="15dp"
             android:onClick="onClickCreateAccount"
             app:layout_constraintStart_toStartOf="@id/passwordEditInclude"
             app:layout_constraintEnd_toEndOf="@id/passwordEditInclude"
@@ -84,11 +75,8 @@
 
         <Button
             android:id="@+id/forgotPasswordButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:colorAccent"
+            style="@style/AuthorizationButton"
             android:text="@string/forgotPassword"
-            android:layout_marginTop="15dp"
             android:onClick="onClickForgotPassword"
             app:layout_constraintStart_toStartOf="@id/passwordEditInclude"
             app:layout_constraintEnd_toEndOf="@id/passwordEditInclude"

@@ -31,7 +31,8 @@
                 android:paddingTop="3dp"
                 android:onClick="onClickTrackingButton"
                 android:text="@string/startTracking"
-                android:textSize="18dp"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="16dp"
                 android:layout_marginTop="@dimen/mainUiMargin"
                 android:layout_marginBottom="20dp"
                 tools:ignore="SpUsage" />

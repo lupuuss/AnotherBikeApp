@@ -23,6 +23,7 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="firebaseLogo">@drawable/logo_built_black</item>
         <item name="android:textColorLink">@color/darkThemeLinkColor</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DarkDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -68,6 +69,7 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="firebaseLogo">@drawable/logo_built_white</item>
         <item name="android:textColorLink">@color/lightThemeLinkColor</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="LightDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -130,6 +132,7 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
     <style name="WeatherSideText.Right">
         <item name="android:textAlignment">textEnd</item>
@@ -158,6 +161,24 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:background">@drawable/credits_card_background</item>
         <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="AuthorizationHeader">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize" tools:ignore="SpUsage">@dimen/loginLabelTextSize</item>
+        <item name="android:layout_marginTop">70dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+    </style>
+
+    <style name="AuthorizationButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:colorAccent</item>
+        <item name="android:textSize" tools:ignore="SpUsage">16dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
     </style>
 
 </resources>

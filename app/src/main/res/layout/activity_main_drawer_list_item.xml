@@ -8,6 +8,7 @@
     <!-- Sample -->
     <TextView
         android:id="@+id/itemText"
+        android:fontFamily="sans-serif"
         android:text="@string/signOut"
         android:padding="10dp"
         android:layout_width="match_parent"

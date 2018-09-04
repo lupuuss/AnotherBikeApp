@@ -13,16 +13,11 @@
 
         <TextView
             android:id="@+id/createAccountTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/AuthorizationHeader"
+            android:text="@string/newAccount"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/newAccount"
-            android:textAlignment="center"
-            android:layout_marginTop="70dp"
-            android:textSize="@dimen/loginLabelTextSize"
-            tools:ignore="SpUsage" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <include layout="@layout/email_edit_text"
             android:id="@+id/emailEditInclude"
@@ -78,9 +73,7 @@
 
         <Button
             android:id="@+id/createNewAccountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:colorAccent"
+            style="@style/AuthorizationButton"
             android:text="@string/createNewAccount"
             android:layout_marginTop="30dp"
             android:onClick="onClickCreateNewAccount"
@@ -90,11 +83,8 @@
 
         <Button
             android:id="@+id/signInButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:colorAccent"
+            style="@style/AuthorizationButton"
             android:text="@string/login"
-            android:layout_marginTop="15dp"
             android:onClick="onClickSignIn"
             app:layout_constraintStart_toStartOf="@id/passwordEditInclude"
             app:layout_constraintEnd_toEndOf="@id/passwordEditInclude"

@@ -16,6 +16,7 @@
         android:paddingBottom="3dp"
         android:maxLines="1"
         android:ellipsize="end"
+        android:fontFamily="sans-serif"
         tools:text="Mr. Example"
         tools:ignore="SpUsage" />
     <TextView
@@ -29,6 +30,7 @@
         android:paddingBottom="20dp"
         android:maxLines="1"
         android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
         tools:text="example@gmail.com"
         tools:ignore="SpUsage" />
 </LinearLayout>

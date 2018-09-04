@@ -23,6 +23,7 @@
 
         <TextView
             android:id="@+id/locationText"
+            android:fontFamily="sans-serif-condensed"
             style="@style/WeatherSideText.Left"
             tools:text="Warsaw, PL"
             tools:ignore="SpUsage" />
@@ -199,6 +200,7 @@
         app:layout_constraintBottom_toTopOf="@id/description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="sans-serif"
         tools:text="20 °C"
         tools:ignore="SpUsage" />
 

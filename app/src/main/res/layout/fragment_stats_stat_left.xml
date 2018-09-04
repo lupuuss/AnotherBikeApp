@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/statValueSize"
         android:textAlignment="textStart"
+        android:fontFamily="sans-serif"
         tools:text="24 km/h"
         tools:ignore="SpUsage" />
 

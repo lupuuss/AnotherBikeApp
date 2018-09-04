@@ -52,18 +52,21 @@
             android:id="@+id/nameLabel"
             android:text="@string/nameEditTextTitle"
             android:layout_marginStart="20dp"
-            android:textSize="15sp"
+            android:textSize="20dp"
+            android:fontFamily="sans-serif-condensed"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="SpUsage" />
         <EditText
             android:id="@+id/routeNameEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="20dp"
             android:inputType="text"
             android:hint="@string/enterName"
             android:textColorHint="?android:textColor"
-            android:layout_marginStart="30dp"/>
+            android:layout_marginStart="8dp"
+            tools:ignore="SpUsage" />
     </LinearLayout>
 
     <ProgressBar
