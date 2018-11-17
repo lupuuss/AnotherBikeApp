@@ -19,11 +19,11 @@
         <item name="trackLineColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="googleMapStyleJson">@string/mapStyleDarkTheme</item>
-        <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="firebaseLogo">@drawable/logo_built_black</item>
         <item name="android:textColorLink">@color/darkThemeLinkColor</item>
         <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:windowBackground">@color/darkThemePrimaryColor</item>
     </style>
 
     <style name="DarkDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
@@ -65,11 +65,11 @@
         <item name="trackLineColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="markersColor">@color/defaultGoogleCurrentLocationColor</item>
         <item name="googleMapStyleJson">@string/mapStyleDarkTheme</item>
-        <item name="android:windowDisablePreview">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="firebaseLogo">@drawable/logo_built_white</item>
         <item name="android:textColorLink">@color/lightThemeLinkColor</item>
         <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:windowBackground">@color/lightThemePrimaryColor</item>
     </style>
 
     <style name="LightDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
