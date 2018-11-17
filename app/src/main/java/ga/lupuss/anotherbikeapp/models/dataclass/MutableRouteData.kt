@@ -4,13 +4,8 @@ import com.google.firebase.firestore.Exclude
 
 interface MutableRouteData : RouteData, MutableShortRouteData {
 
-    override var name: String?
-    override var distance: Double
-    override var avgSpeed: Double
-    override var maxSpeed: Double
-    override var duration: Long
     override var startTimeStr: String
-    override var startTime: Long
+    override var maxSpeed: Double
     override var avgAltitude: Double
     override var maxAltitude: Double
     override var minAltitude: Double

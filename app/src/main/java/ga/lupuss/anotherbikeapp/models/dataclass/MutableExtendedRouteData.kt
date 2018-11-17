@@ -4,16 +4,6 @@ import com.google.android.gms.maps.model.LatLng
 
 interface MutableExtendedRouteData : ExtendedRouteData, MutableRouteData {
 
-    override var name: String?
-    override var distance: Double
-    override var avgSpeed: Double
-    override var maxSpeed: Double
-    override var duration: Long
-    override var startTimeStr: String
-    override var startTime: Long
-    override var avgAltitude: Double
-    override var maxAltitude: Double
-    override var minAltitude: Double
     override val points: MutableList<LatLng>
 
     class Instance (
