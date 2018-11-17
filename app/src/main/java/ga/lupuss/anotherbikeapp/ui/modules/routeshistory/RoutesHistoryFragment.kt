@@ -162,8 +162,8 @@ class RoutesHistoryFragment
         routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
     }
 
-    override fun startSummaryActivity(docRef: String) {
+    override fun startSummaryActivity(documentReference: String) {
 
-        requireActivity().startActivity(SummaryActivity.newIntent(this.requireContext(), docRef))
+        requireActivity().startActivity(SummaryActivity.newIntent(this.requireContext(), documentReference))
     }
 }
