@@ -1,7 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.main
 
-import android.animation.Animator
-import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -23,7 +21,6 @@ import android.widget.TextView
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
-import ga.lupuss.anotherbikeapp.ui.extensions.addOnAnimationEndListener
 import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_ui.*
@@ -157,21 +154,9 @@ class MainActivity
     // onClicks
 
     // delegates to onClickTrackingButtonHelper to avoid "incorrect method signature" in XML onClick
-    fun onClickTrackingButton(view: View) {
+    fun onClickTrackingButton(@Suppress("UNUSED_PARAMETER") view: View) {
 
-        onClickTrackingButtonHelper(view)
-    }
-
-    fun onClickTrackingButtonHelper(view: View): Animator {
-
-        val animator = AnimatorInflater.loadAnimator(this, R.animator.tracking_button)
-        animator.setTarget(view)
-        animator.addOnAnimationEndListener {
-            mainPresenter.onClickTrackingButton()
-        }
-
-        animator.start()
-        return animator
+        mainPresenter.onClickTrackingButton()
     }
 
     // Drawer Layout
@@ -232,9 +217,9 @@ class MainActivity
         AlertDialog.Builder(this)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.dataLostWarning)
-                .setPositiveButton(R.string.exit, { _, _ ->
+                .setPositiveButton(R.string.exit) { _, _ ->
                     onYesClick.invoke()
-                })
+                }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
 
