@@ -8,7 +8,7 @@ import javax.inject.Scope
 annotation class RoutePhotosScope
 
 @RoutePhotosScope
-@Component(modules = [RoutesPhotosModule::class], dependencies = [UserComponent::class])
+@Component(modules = [RoutePhotosModule::class], dependencies = [UserComponent::class])
 interface RoutePhotosComponent {
 
     fun inject(routePhotosScope: RoutePhotosFragment)

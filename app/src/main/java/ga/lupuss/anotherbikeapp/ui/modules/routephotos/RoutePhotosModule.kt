@@ -8,7 +8,7 @@ import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 
 @Module
-class RoutesPhotosModule(view: RoutePhotosView) {
+class RoutePhotosModule(view: RoutePhotosView) {
 
     val view: RoutePhotosView = view
         @Provides
