@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.base.LabeledFragment
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class RoutesHistoryFragment
     : LabeledFragment(),
         RoutesHistoryView,
-        RoutesHistoryRecyclerViewAdapter.OnItemClickListener  {
+        ItemsRecyclerViewAdapter.OnItemClickListener  {
 
     @Inject
     lateinit var routesHistoryPresenter: RoutesHistoryPresenter
