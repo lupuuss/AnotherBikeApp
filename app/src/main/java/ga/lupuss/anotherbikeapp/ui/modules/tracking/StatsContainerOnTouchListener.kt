@@ -9,9 +9,8 @@ import android.content.res.Configuration
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import android.widget.FrameLayout
+import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import com.google.android.gms.maps.GoogleMap
 import ga.lupuss.anotherbikeapp.R
 
@@ -20,9 +19,9 @@ import ga.lupuss.anotherbikeapp.R
  * Animates google map padding changes, statsContainer moves, button's icon rotation and shortStatsContainer appearing.
  */
 class StatsContainerOnTouchListener(context: Context,
-                                    private val statsContainer: FrameLayout,
-                                    private val statsContainerExpandButton: FrameLayout,
-                                    private val shortStatsContainer: LinearLayout,
+                                    private val statsContainer: ViewGroup,
+                                    private val statsContainerExpandButton: ViewGroup,
+                                    private val shortStatsContainer: ViewGroup,
                                     private val map: GoogleMap,
                                     isExpand: Boolean,
                                     private var onExpandStateChanged: ((Boolean) -> Unit)? = null
