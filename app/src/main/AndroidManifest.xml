@@ -7,6 +7,9 @@
 
     <uses-feature android:name="android.hardware.location.gps"
             android:required="true"/>
+    <uses-feature android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".AnotherBikeApp"
@@ -18,6 +21,17 @@
         android:supportsRtl="true"
         android:theme="@style/DarkTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="ga.lupuss.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+        </provider>
+
         <service android:name=".models.trackingservice.TrackingService" />
 
         <meta-data

@@ -139,4 +139,8 @@ abstract class BaseFragment : Fragment(), BaseView {
     override fun startSummaryActivity(documentReference: String) {
         (activity as? BaseActivity)?.startSummaryActivity(documentReference)
     }
+
+    override fun requestPhoto(photoRequest: BaseView.PhotoRequest) {
+        (activity as? BaseActivity)?.requestPhoto(photoRequest)
+    }
 }

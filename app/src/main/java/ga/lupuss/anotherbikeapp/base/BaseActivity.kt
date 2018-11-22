@@ -25,6 +25,8 @@ import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import javax.inject.Inject
 import android.app.Activity
+import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppActivity
@@ -48,6 +50,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     protected var requiresPassedVerification = false
     protected var verificationPassed = false
     private lateinit var signInVerifier: SignInVerifier
+    private var photoRequest: BaseView.PhotoRequest? = null
 
     private enum class HomeActionMode {
         DRAWER_TOGGLE, BACK
@@ -55,6 +58,18 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     private lateinit var mode: HomeActionMode
     private var toggle: ActionBarDrawerToggle? = null
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            PHOTO_REQUEST_CODE -> {
+
+                photoRequest?.onRequestDone(resultCode == Activity.RESULT_OK)
+                photoRequest = null
+            }
+        }
+    }
 
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -162,6 +177,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         }
     }
 
+
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -238,6 +255,30 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    override fun requestPhoto(photoRequest: BaseView.PhotoRequest) {
+
+        val photoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        if (photoIntent.resolveActivity(packageManager) != null) {
+
+
+            val uri = FileProvider.getUriForFile(
+                    this,
+                    "ga.lupuss.fileprovider",
+                    photoRequest.file
+            )
+
+            this.photoRequest = photoRequest
+
+            photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+            startActivityForResult(photoIntent, PHOTO_REQUEST_CODE)
+
+        } else {
+            // TODO No photo messsage
+        }
+
+    }
+
     override fun startMainActivity() {
 
         AnotherBikeApp.get(this.application).initUserComponent()
@@ -274,5 +315,10 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     override fun startSummaryActivity(documentReference: String) {
         startActivity(SummaryActivity.newIntent(this, documentReference))
+    }
+
+    companion object {
+
+        private const val PHOTO_REQUEST_CODE = 12
     }
 }
