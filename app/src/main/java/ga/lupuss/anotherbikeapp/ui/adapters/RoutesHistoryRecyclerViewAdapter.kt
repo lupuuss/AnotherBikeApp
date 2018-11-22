@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.R
+import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.TimeStatistic
@@ -20,7 +21,7 @@ class RoutesHistoryRecyclerViewAdapter(
         private val distanceUnitCallback: () -> AppUnit,
         private val resourceResolver: ResourceResolver
 
-) : RecyclerView.Adapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
+) : ItemsRecyclerViewAdapter<RoutesHistoryRecyclerViewAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val constraintLayout: ConstraintLayout)
         : RecyclerView.ViewHolder(constraintLayout) {
@@ -62,16 +63,6 @@ class RoutesHistoryRecyclerViewAdapter(
         }
     }
 
-    private val listeners = mutableListOf<OnItemClickListener>()
-
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
-    }
-
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
-        listeners.add(onItemClickListener)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val constraintLayout = LayoutInflater
@@ -86,7 +77,7 @@ class RoutesHistoryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnClickListener { _ ->
 
             listeners.forEach { it.onItemClick(position) }
         }
