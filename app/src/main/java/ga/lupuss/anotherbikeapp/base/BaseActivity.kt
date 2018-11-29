@@ -261,6 +261,10 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
         if (photoIntent.resolveActivity(packageManager) != null) {
 
+            photoIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            photoIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            photoRequest.file.parentFile.mkdirs()
+            photoRequest.file.createNewFile()
 
             val uri = FileProvider.getUriForFile(
                     this,

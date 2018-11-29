@@ -13,11 +13,11 @@ class AndroidPathsGenerator(private val context: Context,
 
     override fun createNewPhotoFile(): File {
 
-        val dir = Environment.getExternalStorageDirectory()
-        val appName = context.getString(R.string.appName).toLowerCase()
+        val dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
         val time = timeProvider()
         val userName = authInteractor.userUid
 
-        return File(dir, "$appName/photos/$userName/$time.png")
+        return File(dir, "$userName/$time.png")
     }
 }
