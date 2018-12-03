@@ -3,11 +3,14 @@ package ga.lupuss.anotherbikeapp.ui.modules.routephotos
 import ga.lupuss.anotherbikeapp.base.BaseView
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
+import ga.lupuss.anotherbikeapp.models.dataclass.Photo
+import timber.log.Timber
 import javax.inject.Inject
 
 class RoutePhotosPresenter @Inject constructor(
         view: RoutePhotosView,
-        private val pathsGenerator: PathsGenerator
+        private val pathsGenerator: PathsGenerator,
+        private val timeProvider: () -> Long
 ) : Presenter<RoutePhotosView>() {
 
     init {
@@ -15,15 +18,15 @@ class RoutePhotosPresenter @Inject constructor(
     }
 
     fun onClickTakePhotoButton() {
+
         view.requestPhoto(BaseView.PhotoRequest(pathsGenerator.createNewPhotoFile()) { file, ok ->
 
             if(ok) {
 
-                view.notifyPhotoTaken(file)
+                view.displayNewPhotoDialog(file) {
 
-            } else {
-
-
+                    view.notifyPhotoTaken(Photo(file.absolutePath, it, timeProvider.invoke()))
+                }
             }
         })
     }

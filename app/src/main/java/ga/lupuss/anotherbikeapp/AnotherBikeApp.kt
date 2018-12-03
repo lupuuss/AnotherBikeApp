@@ -29,6 +29,10 @@ import ga.lupuss.anotherbikeapp.ui.modules.main.DaggerMainComponent
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainComponent
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainModule
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainView
+import ga.lupuss.anotherbikeapp.ui.modules.routephotos.DaggerRoutePhotosComponent
+import ga.lupuss.anotherbikeapp.ui.modules.routephotos.RoutePhotosComponent
+import ga.lupuss.anotherbikeapp.ui.modules.routephotos.RoutePhotosModule
+import ga.lupuss.anotherbikeapp.ui.modules.routephotos.RoutePhotosView
 import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.DaggerRoutesHistoryComponent
 import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryComponent
 import ga.lupuss.anotherbikeapp.ui.modules.routeshistory.RoutesHistoryModule
@@ -186,6 +190,15 @@ open class AnotherBikeApp : Application() {
                 .builder()
                 .anotherBikeAppComponent(anotherBikeAppComponent)
                 .forgotPasswordModule(ForgotPasswordModule(forgotPasswordView))
+                .build()
+    }
+
+    open fun routePhotosComponent(routePhotosView: RoutePhotosView): RoutePhotosComponent {
+
+        return DaggerRoutePhotosComponent
+                .builder()
+                .userComponent(userComponent)
+                .routePhotosModule(RoutePhotosModule(routePhotosView))
                 .build()
     }
 }

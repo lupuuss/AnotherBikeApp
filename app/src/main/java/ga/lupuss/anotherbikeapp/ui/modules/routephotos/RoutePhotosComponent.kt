@@ -11,5 +11,5 @@ annotation class RoutePhotosScope
 @Component(modules = [RoutePhotosModule::class], dependencies = [UserComponent::class])
 interface RoutePhotosComponent {
 
-    fun inject(routePhotosScope: RoutePhotosFragment)
+    fun inject(routePhotosFragment: RoutePhotosFragment)
 }
