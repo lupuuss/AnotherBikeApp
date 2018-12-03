@@ -193,8 +193,6 @@ class TrackingActivity
             uiSettings.isMyLocationButtonEnabled = false
             isMyLocationEnabled = true
         }
-
-        trackingPresenter.notifyOnViewReady()
     }
 
     override fun onMapAndLayoutReady() {
@@ -202,6 +200,7 @@ class TrackingActivity
         infoContainerVisibility = View.VISIBLE
         adjustCameraToInfoContainer()
         setOnTouchInfoContainerExpandButton()
+        trackingPresenter.notifyOnViewReady()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
