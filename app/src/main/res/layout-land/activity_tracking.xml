@@ -50,7 +50,7 @@
         android:layout_height="0dp"
         android:contentDescription="@string/hide"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/statsContainer"
+        app:layout_constraintEnd_toStartOf="@+id/routeInfoContainer"
         app:layout_constraintTop_toBottomOf="@id/toolbarMain"
         android:focusable="true">
 
@@ -64,8 +64,8 @@
     </FrameLayout>
 
     <include
-        android:id="@+id/statsContainer"
-        layout="@layout/activity_tracking_stats_container"
+        android:id="@+id/routeInfoContainer"
+        layout="@layout/route_info_container"
         android:layout_width="260dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

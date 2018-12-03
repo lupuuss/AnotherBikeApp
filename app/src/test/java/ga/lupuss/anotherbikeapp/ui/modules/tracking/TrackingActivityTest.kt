@@ -28,7 +28,7 @@ class TrackingActivityTest {
         val controller = Robolectric.buildActivity(TrackingActivity::class.java, intent).create(null)
         val trackingActivity = controller.get()
 
-        val statsContainer = trackingActivity.findViewById<View>(R.id.statsContainer)
+        val statsContainer = trackingActivity.findViewById<View>(R.id.routeInfoContainer)
         val statsContainerExpandButton = trackingActivity.findViewById<View>(R.id.statsContainerExpandButton)
         val statsContainerExpandButtonIcon = trackingActivity.findViewById<View>(R.id.statsContainerExpandButtonIcon)
         val shortStatsContainer = trackingActivity.findViewById<View>(R.id.shortStatsContainer)

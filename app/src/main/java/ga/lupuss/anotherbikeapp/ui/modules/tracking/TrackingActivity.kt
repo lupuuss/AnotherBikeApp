@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.*
 import com.google.android.gms.maps.*
@@ -18,14 +19,20 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedMapActivity
+import ga.lupuss.anotherbikeapp.models.dataclass.Photo
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
+import ga.lupuss.anotherbikeapp.ui.adapters.RouteInfoPagerAdapter
+import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdpater
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
+import ga.lupuss.anotherbikeapp.ui.modules.routephotos.RoutePhotosFragment
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
+import kotlinx.android.synthetic.main.route_info_container.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,7 +41,8 @@ class TrackingActivity
     : ThemedMapActivity(),
         TrackingView,
         ViewTreeObserver.OnGlobalLayoutListener,
-        OnMapAndLayoutReady.Listener {
+        OnMapAndLayoutReady.Listener,
+        RoutePhotosFragment.Listener {
 
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
@@ -57,7 +65,7 @@ class TrackingActivity
     private var infoContainerVisibility: Int = View.INVISIBLE
         set(value) {
 
-            statsContainer.visibility = value
+            routeInfoContainer.visibility = value
             statsContainerExpandButton.visibility = value
             statsContainerExpandButtonIcon.visibility = value
             field = value
@@ -117,6 +125,17 @@ class TrackingActivity
         activateToolbar(toolbarMain)
         setResult(TrackingPresenter.Result.NOT_DONE)
 
+        infoViewPager.adapter = RouteInfoPagerAdapter(
+                this,
+                supportFragmentManager,
+                listOf(
+                        R.drawable.ic_insert_chart_12dp to StatsFragment(),
+                        R.drawable.ic_image_12dp to RoutePhotosFragment()
+                        )
+        )
+
+        infoTabLayout.setupWithViewPager(infoViewPager)
+
         unfreezeInstanceState(savedInstanceState)
         savedInstanceState?.let {
 
@@ -131,7 +150,7 @@ class TrackingActivity
 
         infoContainerVisibility = View.INVISIBLE
 
-        statsContainer.viewTreeObserver.addOnGlobalLayoutListener(this)
+        routeInfoContainer.viewTreeObserver.addOnGlobalLayoutListener(this)
     }
 
     override fun onGlobalLayout() {
@@ -139,7 +158,7 @@ class TrackingActivity
         setInfoContainerExpandState(isInfoContainerExpand, false)
         onMapAnLayoutReady.layoutReady()
 
-        statsContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
+        routeInfoContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 
     private fun getIBinderFromIntent(): TrackingService.ServiceBinder {
@@ -219,15 +238,23 @@ class TrackingActivity
         statsContainerExpandButton.setOnTouchListener( // handle show/hide animations
                 StatsContainerOnTouchListener(
                         this,
-                        (statsContainer as FrameLayout),
+                        routeInfoContainer as ViewGroup,
                         statsContainerExpandButton,
-                        (shortStatsContainer as LinearLayout),
+                        shortStatsContainer as ViewGroup,
                         map,
                         isInfoContainerExpand
                 ) {
                     isInfoContainerExpand = it
                 }
         )
+    }
+
+    override var photosAdapter: RecyclerView.Adapter<*> =
+            RoutePhotosRecyclerViewAdpater({ a -> RoutePhoto("", "", 219343243) }, {1})
+
+    override fun onNewPhotoTaken(photo: Photo) {
+
+        trackingPresenter.notifyOnNewPhoto(photo)
     }
 
     // TrackingView Impl
@@ -290,8 +317,9 @@ class TrackingActivity
 
     private fun updateInfoFragmentStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
-        (supportFragmentManager.findFragmentById(R.id.statsFragment) as StatsFragment?)
-                ?.updateStats(stats, StatsFragment.Mode.CURRENT_STATS)
+        ((infoViewPager.adapter as RouteInfoPagerAdapter)
+                .getItem(0) as StatsFragment)
+                .updateStats(stats, StatsFragment.Mode.CURRENT_STATS)
     }
 
     override fun isTrackLineReady() = trackLine != null
@@ -309,11 +337,11 @@ class TrackingActivity
 
             if (isPortrait) {
 
-                map.setPadding(0, 0, 0, statsContainer.height)
+                map.setPadding(0, 0, 0, routeInfoContainer.height)
 
             } else {
 
-                map.setPadding(0, 0, statsContainer.width, 0)
+                map.setPadding(0, 0, routeInfoContainer.width, 0)
             }
 
         } else {
@@ -332,13 +360,13 @@ class TrackingActivity
 
         if (isPortrait) {
 
-            statsContainer.translationY = if (expand) 0F else statsContainer.height.toFloat()
-            statsContainerExpandButton.translationY = if (expand) 0F else statsContainer.height.toFloat()
+            routeInfoContainer.translationY = if (expand) 0F else routeInfoContainer.height.toFloat()
+            statsContainerExpandButton.translationY = if (expand) 0F else routeInfoContainer.height.toFloat()
 
         } else {
 
-            statsContainer.translationX = if (expand) 0F else statsContainer.width.toFloat()
-            statsContainerExpandButton.translationX = if (expand) 0F else statsContainer.width.toFloat()
+            routeInfoContainer.translationX = if (expand) 0F else routeInfoContainer.width.toFloat()
+            statsContainerExpandButton.translationX = if (expand) 0F else routeInfoContainer.width.toFloat()
         }
 
         if (adjustCamera) {

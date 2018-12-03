@@ -34,7 +34,7 @@ class StatsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val mainView = inflater.inflate(R.layout.fragment_stats, container, false)
-        layout = mainView.findViewById(R.id.statsContainer)
+        layout = mainView.findViewById(R.id.routeInfoContainer)
 
         resourceResolver = (this.activity as ThemedActivity).resourceResolver
 

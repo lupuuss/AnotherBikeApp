@@ -52,7 +52,7 @@
         android:contentDescription="@string/hide"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/statsContainer"
+        app:layout_constraintBottom_toTopOf="@+id/routeInfoContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -66,8 +66,8 @@
     </FrameLayout>
 
     <include
-        android:id="@+id/statsContainer"
-        layout="@layout/activity_tracking_stats_container"
+        android:id="@+id/routeInfoContainer"
+        layout="@layout/route_info_container"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         app:layout_constraintBottom_toBottomOf="parent"

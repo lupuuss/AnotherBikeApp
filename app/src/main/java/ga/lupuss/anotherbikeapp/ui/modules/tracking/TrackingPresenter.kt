@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
+import ga.lupuss.anotherbikeapp.models.dataclass.Photo
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import javax.inject.Inject
 
@@ -123,6 +124,10 @@ class TrackingPresenter @Inject constructor(
 
         serviceInteractor.removeOnStatsUpdateListener(this)
         serviceInteractor.disconnectServiceDataReceiver(this)
+    }
+
+    fun notifyOnNewPhoto(photo: Photo) {
+        view.makeToast(photo.link)
     }
 
     /** Possible results codes */
