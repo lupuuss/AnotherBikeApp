@@ -6,13 +6,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import ga.lupuss.anotherbikeapp.timeToFormattedString
+import java.io.File
+import java.util.*
 
 class RoutePhotosRecyclerViewAdpater(
+        private val picasso: Picasso,
         private val routePhotosCallback: (Int) -> RoutePhoto,
-        private val sizeCallback: () -> Int
+        private val sizeCallback: () -> Int,
+        private val locale: Locale
 ) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdpater.ViewHolder>() {
 
     inner class ViewHolder(private val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
@@ -29,7 +35,11 @@ class RoutePhotosRecyclerViewAdpater(
         private fun fillView(photo: RoutePhoto) {
 
             photoNameText.text = photo.name
-            photoDateText.text = photo.time.toString()
+            photoDateText.text = timeToFormattedString(locale, photo.time)
+            picasso.load(File(photo.link))
+                    .fit()
+                    .centerCrop()
+                    .into(thumbnailView)
         }
     }
 

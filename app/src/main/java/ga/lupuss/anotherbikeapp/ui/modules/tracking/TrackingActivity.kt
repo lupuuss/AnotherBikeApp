@@ -6,12 +6,14 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v4.os.ConfigurationCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import com.squareup.picasso.Picasso
 import com.tinsuke.icekick.extension.freezeInstanceState
 import com.tinsuke.icekick.extension.serialState
 import com.tinsuke.icekick.extension.unfreezeInstanceState
@@ -45,6 +47,9 @@ class TrackingActivity
 
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
+
+    @Inject
+    lateinit var picasso: Picasso
 
     private val shortStatsListToDisplay = listOf(
             Statistic.Name.DURATION,
@@ -140,8 +145,10 @@ class TrackingActivity
         setResult(TrackingPresenter.Result.NOT_DONE)
 
         photosAdapter = RoutePhotosRecyclerViewAdpater(
+                picasso,
                 trackingPresenter::getLocalPhotoCallback.get(),
-                trackingPresenter::localPhotosSizeCallback.get()
+                trackingPresenter::localPhotosSizeCallback.get(),
+                ConfigurationCompat.getLocales(resources.configuration)[0]!!
         )
 
         infoViewPager.adapter = RouteInfoPagerAdapter(

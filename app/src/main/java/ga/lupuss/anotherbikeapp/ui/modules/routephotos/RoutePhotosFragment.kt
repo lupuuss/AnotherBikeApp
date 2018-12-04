@@ -111,6 +111,8 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         val view = layoutInflater.inflate(R.layout.new_photo_dialog, null, false)
 
         picasso.load(photoPath)
+                .fit()
+                .centerInside()
                 .into(view.findViewById<ImageView>(R.id.newPhotoView))
 
         AlertDialog.Builder(this.requireContext())
