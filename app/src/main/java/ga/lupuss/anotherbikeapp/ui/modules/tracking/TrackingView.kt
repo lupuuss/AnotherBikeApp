@@ -14,10 +14,8 @@ interface TrackingView : BaseView {
     var isMapButtonInLockState: Boolean
 
     fun isTrackLineReady(): Boolean
-
     fun moveMapCamera(latLng: LatLng)
-
     fun showFinishTrackingDialog(onYesAction: () -> Unit)
-
     fun finishActivityWithResult(result: Int)
+    fun notifyNewPhoto(position: Int, size: Int)
 }

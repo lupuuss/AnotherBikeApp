@@ -6,11 +6,9 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
+import ga.lupuss.anotherbikeapp.models.android.AndroidLocalPhotosManager
 import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.WeatherManager
+import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.firebase.TempRouteKeeper
 import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherApi
@@ -39,4 +37,8 @@ class UserModule {
     fun providesWeatherManager(
             weatherApi: OpenWeatherApi, timeProvider: () -> Long, locale: Locale, schedulersPackage: SchedulersPackage
     ): WeatherManager = OpenWeatherManager(weatherApi, timeProvider, locale, schedulersPackage)
+
+    @Provides
+    @UserComponentScope
+    fun providesLocalPhotosManager(): LocalPhotosManager = AndroidLocalPhotosManager()
 }

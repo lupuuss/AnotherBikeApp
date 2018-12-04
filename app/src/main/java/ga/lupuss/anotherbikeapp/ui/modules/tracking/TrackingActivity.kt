@@ -19,7 +19,6 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedMapActivity
-import ga.lupuss.anotherbikeapp.models.dataclass.Photo
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
@@ -101,6 +100,21 @@ class TrackingActivity
 
     private val onMapAnLayoutReady = OnMapAndLayoutReady(this)
 
+    override lateinit var photosAdapter: RecyclerView.Adapter<*>
+
+    override fun onNewPhotoTaken(photo: RoutePhoto) {
+
+        trackingPresenter.notifyOnNewPhoto(photo)
+    }
+
+    override fun notifyNewPhoto(position: Int, size: Int) {
+
+        ((infoViewPager.adapter as RouteInfoPagerAdapter)
+                .getItem(1) as RoutePhotosFragment)
+                .adapter.notifyDataSetChanged()
+
+    }
+
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -125,13 +139,18 @@ class TrackingActivity
         activateToolbar(toolbarMain)
         setResult(TrackingPresenter.Result.NOT_DONE)
 
+        photosAdapter = RoutePhotosRecyclerViewAdpater(
+                trackingPresenter::getLocalPhotoCallback.get(),
+                trackingPresenter::localPhotosSizeCallback.get()
+        )
+
         infoViewPager.adapter = RouteInfoPagerAdapter(
                 this,
                 supportFragmentManager,
                 listOf(
                         R.drawable.ic_insert_chart_12dp to StatsFragment(),
                         R.drawable.ic_image_12dp to RoutePhotosFragment()
-                        )
+                )
         )
 
         infoTabLayout.setupWithViewPager(infoViewPager)
@@ -246,14 +265,6 @@ class TrackingActivity
                     isInfoContainerExpand = it
                 }
         )
-    }
-
-    override var photosAdapter: RecyclerView.Adapter<*> =
-            RoutePhotosRecyclerViewAdpater({ a -> RoutePhoto("", "", 219343243) }, {1})
-
-    override fun onNewPhotoTaken(photo: Photo) {
-
-        trackingPresenter.notifyOnNewPhoto(photo)
     }
 
     // TrackingView Impl

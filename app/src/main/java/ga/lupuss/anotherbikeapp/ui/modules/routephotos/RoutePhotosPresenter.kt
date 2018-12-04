@@ -3,8 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.routephotos
 import ga.lupuss.anotherbikeapp.base.BaseView
 import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
-import ga.lupuss.anotherbikeapp.models.dataclass.Photo
-import timber.log.Timber
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import javax.inject.Inject
 
 class RoutePhotosPresenter @Inject constructor(
@@ -25,7 +24,7 @@ class RoutePhotosPresenter @Inject constructor(
 
                 view.displayNewPhotoDialog(file) {
 
-                    view.notifyPhotoTaken(Photo(file.absolutePath, it, timeProvider.invoke()))
+                    view.notifyPhotoTaken(RoutePhoto(file.absolutePath, it, timeProvider.invoke()))
                 }
             }
         })
