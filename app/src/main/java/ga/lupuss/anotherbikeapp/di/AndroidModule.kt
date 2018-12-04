@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
 import android.support.v4.os.ConfigurationCompat
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.android.AndroidResourceResolver
@@ -29,4 +30,8 @@ class AndroidModule(context: Context) {
     @Provides
     @AnotherBikeAppScope
     fun trackingNotification() = TrackingNotification()
+
+    @Provides
+    @AnotherBikeAppScope
+    fun providesPicasso(): Picasso = Picasso.get()
 }

@@ -44,6 +44,10 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
     @Inject
     lateinit var presenter: RoutePhotosPresenter
+
+    @Inject
+    lateinit var picasso: Picasso
+
     val adapter: RecyclerView.Adapter<*>
         get() = photosRecyclerView.adapter
 
@@ -106,8 +110,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         val view = layoutInflater.inflate(R.layout.new_photo_dialog, null, false)
 
-        Picasso.get()
-                .load(photoPath)
+        picasso.load(photoPath)
                 .into(view.findViewById<ImageView>(R.id.newPhotoView))
 
         AlertDialog.Builder(this.requireContext())
