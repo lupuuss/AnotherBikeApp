@@ -1,12 +1,15 @@
 package ga.lupuss.anotherbikeapp.ui.fragments
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.NestedScrollView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedActivity
@@ -23,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_stats.*
 /** Contains information about tracking. */
 class StatsFragment : Fragment() {
 
-    private var layout: LinearLayout? = null
+    var isScrollingEnabled: Boolean = true
     private lateinit var resourceResolver: ResourceResolver
     private var isLandscape = false
 
@@ -31,14 +34,18 @@ class StatsFragment : Fragment() {
         CURRENT_STATS, SUMMARY_STATS
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val mainView = inflater.inflate(R.layout.fragment_stats, container, false)
-        layout = mainView.findViewById(R.id.routeInfoContainer)
 
         resourceResolver = (this.activity as ThemedActivity).resourceResolver
 
         isLandscape = requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        (mainView as NestedScrollView).setOnTouchListener { _, _ ->
+            !isScrollingEnabled
+        }
 
         return mainView
     }
@@ -150,7 +157,6 @@ class StatsFragment : Fragment() {
     override fun onDestroy() {
 
         super.onDestroy()
-        layout = null
         val refWatcher = AnotherBikeApp.getRefWatcher(this.activity!!.applicationContext)
         refWatcher.watch(this)
     }

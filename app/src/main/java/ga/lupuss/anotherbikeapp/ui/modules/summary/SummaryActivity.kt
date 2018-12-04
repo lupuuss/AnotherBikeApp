@@ -102,6 +102,8 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
         setContentView(R.layout.activity_summary)
         activateToolbar(toolbarSummary)
 
+        getStatsFragment().isScrollingEnabled = false
+
         // only for portrait mode
         transparentMapCover?.setOnTouchListener { _, event ->
             val action = event.action
@@ -226,9 +228,13 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
         }
     }
 
+    private fun getStatsFragment(): StatsFragment {
+        return (supportFragmentManager.findFragmentById(R.id.statsFragment) as StatsFragment)
+    }
+
     override fun showStatistics(statistics: Map<Statistic.Name, Statistic<*>>) {
 
-        (supportFragmentManager.findFragmentById(R.id.statsFragment) as? StatsFragment)?.updateStats(statistics, StatsFragment.Mode.SUMMARY_STATS)
+        getStatsFragment().updateStats(statistics, StatsFragment.Mode.SUMMARY_STATS)
     }
 
     override fun showRejectDialog(onYes: () -> Unit) {

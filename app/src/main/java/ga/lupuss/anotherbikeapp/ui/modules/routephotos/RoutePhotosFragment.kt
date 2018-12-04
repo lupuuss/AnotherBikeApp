@@ -1,8 +1,10 @@
 package ga.lupuss.anotherbikeapp.ui.modules.routephotos
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -19,8 +21,6 @@ import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import kotlinx.android.synthetic.main.fragment_route_photos.*
-import kotlinx.android.synthetic.main.route_info_container.*
-import timber.log.Timber
 import java.io.File
 import java.lang.IllegalStateException
 import javax.inject.Inject
@@ -41,6 +41,8 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         }
 
     var photosListener: Listener? = null
+
+    var isScrollingEnabled = true
 
     @Inject
     lateinit var presenter: RoutePhotosPresenter
@@ -74,10 +76,13 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_route_photos, container, false)
+        val view = inflater.inflate(R.layout.fragment_route_photos, container, false)
+        (view as NestedScrollView).setOnTouchListener { _, _ -> !isScrollingEnabled }
+        return view
     }
 
     override fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {
@@ -106,6 +111,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         presenter.onClickTakePhotoButton()
     }
 
+    @SuppressLint("InflateParams")
     override fun displayNewPhotoDialog(photoPath: File, onYesAction: (String) -> Unit) {
 
         val view = layoutInflater.inflate(R.layout.new_photo_dialog, null, false)
