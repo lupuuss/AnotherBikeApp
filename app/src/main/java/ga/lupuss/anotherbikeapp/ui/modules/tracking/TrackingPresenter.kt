@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.base.LocalPhotosManager
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
@@ -14,8 +13,7 @@ import javax.inject.Inject
  * [TrackingActivity] must implement [TrackingView] */
 class TrackingPresenter @Inject constructor(
         trackingView: TrackingView,
-        private val serviceInteractor: TrackingServiceInteractor,
-        private val localPhotosManager: LocalPhotosManager
+        private val serviceInteractor: TrackingServiceInteractor
 ) : TrackingServiceInteractor.LocationDataReceiver, TrackingServiceInteractor.OnStatsUpdateListener, Presenter<TrackingView>() {
 
     init {
@@ -36,9 +34,9 @@ class TrackingPresenter @Inject constructor(
             field = value
         }
 
-    val localPhotosSizeCallback = { localPhotosManager.photosCount }
+    val localPhotosSizeCallback = { serviceInteractor.tempPhotos.size }
     val getLocalPhotoCallback = {
-        position: Int -> localPhotosManager.getLocalPhoto(position)
+        position: Int -> serviceInteractor.tempPhotos[serviceInteractor.tempPhotos.lastIndex - position]
     }
 
     override fun notifyOnViewReady() {
@@ -136,7 +134,7 @@ class TrackingPresenter @Inject constructor(
 
     fun notifyOnNewPhoto(photo: RoutePhoto) {
 
-        localPhotosManager.addLocalPhoto(photo)
+        serviceInteractor.tempPhotos.add(0, photo)
         view.notifyNewPhoto(0, localPhotosSizeCallback())
     }
 

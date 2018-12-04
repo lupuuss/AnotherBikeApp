@@ -27,6 +27,5 @@ interface UserComponent {
     fun providesRoutesManager(): RoutesManager
     fun providesPreferencesInteractor(): PreferencesInteractor
     fun providesWeatherManager(): WeatherManager
-    fun providesLocalPhotosManager(): LocalPhotosManager
     fun providesPicasso(): Picasso
 }

@@ -13,6 +13,7 @@ import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.StatisticsManager
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.ui.extensions.checkPermission
 import timber.log.Timber
 import javax.inject.Inject
@@ -44,6 +45,8 @@ class TrackingService : Service(), PreferencesInteractor.OnTrackingUnitChangedLi
         get() = statsManager.routeData
 
     var lastLocationAvailability = false
+
+    val tempPhotos: MutableList<RoutePhoto> = mutableListOf()
 
     private val locationDataReceivers = mutableListOf<TrackingServiceInteractor.LocationDataReceiver>()
     private val onStatsUpdateListeners = mutableListOf<TrackingServiceInteractor.OnStatsUpdateListener>()
@@ -115,6 +118,8 @@ class TrackingService : Service(), PreferencesInteractor.OnTrackingUnitChangedLi
         override val lastStats get() = this@TrackingService.lastStats
 
         override val routeData get() = this@TrackingService.routeData
+
+        override val tempPhotos: MutableList<RoutePhoto> get() = this@TrackingService.tempPhotos
 
         override fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
 

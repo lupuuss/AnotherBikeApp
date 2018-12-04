@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.models.base
 
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 
 interface TrackingServiceInteractor {
@@ -23,6 +24,8 @@ interface TrackingServiceInteractor {
     val lastStats: Map<Statistic.Name, Statistic<*>>?
 
     val routeData: ExtendedRouteData
+
+    val tempPhotos: MutableList<RoutePhoto>
 
     fun isServiceInProgress(): Boolean
 
