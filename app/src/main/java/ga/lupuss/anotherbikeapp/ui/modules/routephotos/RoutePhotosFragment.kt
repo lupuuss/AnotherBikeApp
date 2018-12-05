@@ -123,7 +123,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         AlertDialog.Builder(this.requireContext())
                 .setView(view)
-                .setPositiveButton(R.string.yes) { _, _->
+                .setPositiveButton(R.string.save) { _, _->
 
                     onYesAction.invoke(
                             view.findViewById<EditText>(R.id.photoNameEditText).text.toString()
