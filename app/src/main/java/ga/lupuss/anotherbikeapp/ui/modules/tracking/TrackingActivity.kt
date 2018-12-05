@@ -115,7 +115,7 @@ class TrackingActivity
     override fun notifyNewPhoto(position: Int, size: Int) {
 
         ((infoViewPager.adapter as RouteInfoPagerAdapter)
-                .getItem(1) as RoutePhotosFragment)
+                .getFragmentAt(1) as RoutePhotosFragment)
                 .adapter.notifyDataSetChanged()
 
     }
@@ -335,7 +335,7 @@ class TrackingActivity
     private fun updateInfoFragmentStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
         ((infoViewPager.adapter as RouteInfoPagerAdapter)
-                .getItem(0) as StatsFragment)
+                .getFragmentAt(0) as StatsFragment)
                 .updateStats(stats, StatsFragment.Mode.CURRENT_STATS)
     }
 

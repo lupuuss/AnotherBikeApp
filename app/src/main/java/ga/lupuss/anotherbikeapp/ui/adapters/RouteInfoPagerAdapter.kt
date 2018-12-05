@@ -43,6 +43,15 @@ class RouteInfoPagerAdapter(
         return fragmentsList.size
     }
 
+    fun getFragmentAt(position: Int): Fragment {
+
+        return if (registeredFragments[position] == null) {
+            fragmentsList[position]
+        } else {
+            registeredFragments[position]
+        }
+    }
+
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position) as Fragment
         registeredFragments.put(position, fragment)
