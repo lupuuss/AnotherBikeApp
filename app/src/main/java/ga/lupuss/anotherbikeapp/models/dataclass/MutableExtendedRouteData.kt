@@ -17,7 +17,7 @@ interface MutableExtendedRouteData : ExtendedRouteData, MutableRouteData {
             override var avgAltitude: Double = 0.0,
             override var maxAltitude: Double = 0.0,
             override var minAltitude: Double = 0.0,
-            override var photos: List<RoutePhoto>?,
+            override var photos: MutableList<RoutePhoto>?,
             override val points: MutableList<LatLng> = mutableListOf()
     ) : MutableExtendedRouteData
 }

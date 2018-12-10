@@ -33,7 +33,7 @@ interface ExtendedRouteData : RouteData {
             avgAltitude = avgAltitude,
             maxAltitude = maxAltitude,
             minAltitude = minAltitude,
-            photos = photos,
+            photos = photos?.toMutableList(),
             points = points.toMutableList()
     )
 }
