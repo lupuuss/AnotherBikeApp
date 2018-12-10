@@ -17,7 +17,7 @@ interface ExtendedRouteData : RouteData {
             override val avgAltitude: Double,
             override val maxAltitude: Double,
             override val minAltitude: Double,
-            override val photos: List<RoutePhoto>?,
+            override val photos: List<RoutePhoto>,
             override val points: List<LatLng>
     ) : ExtendedRouteData
 
@@ -33,7 +33,7 @@ interface ExtendedRouteData : RouteData {
             avgAltitude = avgAltitude,
             maxAltitude = maxAltitude,
             minAltitude = minAltitude,
-            photos = photos?.toMutableList(),
+            photos = photos.toMutableList(),
             points = points.toMutableList()
     )
 }

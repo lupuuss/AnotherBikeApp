@@ -9,7 +9,7 @@ interface MutableRouteData : RouteData, MutableShortRouteData {
     override var avgAltitude: Double
     override var maxAltitude: Double
     override var minAltitude: Double
-    override var photos: MutableList<RoutePhoto>?
+    override var photos: MutableList<RoutePhoto>
 
     open class Instance(
             override var name: String? = null,
@@ -23,6 +23,6 @@ interface MutableRouteData : RouteData, MutableShortRouteData {
             override var avgAltitude: Double = 0.0,
             override var maxAltitude: Double = 0.0,
             override var minAltitude: Double = 0.0,
-            override var photos: MutableList<RoutePhoto>? = null
+            override var photos: MutableList<RoutePhoto> = mutableListOf()
     ) : MutableRouteData
 }
