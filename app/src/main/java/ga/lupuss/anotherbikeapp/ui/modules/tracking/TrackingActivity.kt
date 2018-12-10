@@ -112,12 +112,31 @@ class TrackingActivity
         trackingPresenter.notifyOnNewPhoto(photo)
     }
 
+    private fun getRoutePhotosFragment(): RoutePhotosFragment =
+            ((infoViewPager.adapter as RouteInfoPagerAdapter)
+                    .getFragmentAt(1) as RoutePhotosFragment)
+
     override fun notifyNewPhoto(position: Int, size: Int) {
 
-        ((infoViewPager.adapter as RouteInfoPagerAdapter)
-                .getFragmentAt(1) as RoutePhotosFragment)
-                .adapter.notifyDataSetChanged()
+        getRoutePhotosFragment().adapter.apply {
 
+            notifyItemInserted(position)
+            notifyItemRangeChanged(0, size)
+        }
+
+    }
+
+    override fun notifyPhotoDeleted(position: Int, size: Int) {
+
+        getRoutePhotosFragment().adapter.apply {
+
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(0, size)
+        }
+    }
+
+    override fun onClickDeletePhoto(position: Int) {
+        trackingPresenter.onClickDeletePhoto(position)
     }
 
     @SuppressLint("ShowToast")
@@ -148,7 +167,8 @@ class TrackingActivity
                 picasso,
                 trackingPresenter::getLocalPhotoCallback.get(),
                 trackingPresenter::localPhotosSizeCallback.get(),
-                ConfigurationCompat.getLocales(resources.configuration)[0]!!
+                ConfigurationCompat.getLocales(resources.configuration)[0]!!,
+                this::onClickDeletePhoto
         )
 
         infoViewPager.adapter = RouteInfoPagerAdapter(

@@ -18,4 +18,5 @@ interface TrackingView : BaseView {
     fun showFinishTrackingDialog(onYesAction: () -> Unit)
     fun finishActivityWithResult(result: Int)
     fun notifyNewPhoto(position: Int, size: Int)
+    fun notifyPhotoDeleted(position: Int, size: Int)
 }

@@ -32,6 +32,8 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         var photosAdapter: RecyclerView.Adapter<*>
 
         fun onNewPhotoTaken(photo: RoutePhoto)
+
+        fun onClickDeletePhoto(position: Int)
     }
 
     var isTakingNewPhotoEnabled = true

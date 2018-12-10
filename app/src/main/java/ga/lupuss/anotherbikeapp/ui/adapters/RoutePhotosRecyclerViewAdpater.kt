@@ -4,6 +4,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
@@ -18,10 +19,11 @@ class RoutePhotosRecyclerViewAdpater(
         private val picasso: Picasso,
         private val routePhotosCallback: (Int) -> RoutePhoto,
         private val sizeCallback: () -> Int,
-        private val locale: Locale
+        private val locale: Locale,
+        private val onClickDeletePhoto: (Int) -> Unit
 ) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdpater.ViewHolder>() {
 
-    inner class ViewHolder(private val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
+    inner class ViewHolder(val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
         private val photoNameText: TextView = layout.findViewById(R.id.photoNameText)
         private val photoDateText: TextView = layout.findViewById(R.id.photoDateText)
         private val thumbnailView: ImageView = layout.findViewById(R.id.photoThumbnail)
@@ -60,8 +62,11 @@ class RoutePhotosRecyclerViewAdpater(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.itemView.setOnClickListener {
+        holder.itemView
+                .findViewById<ImageButton>(R.id.deletePhotoButton)
+                .setOnClickListener {
 
+            onClickDeletePhoto(position)
         }
 
         holder.bindView(position)
