@@ -55,7 +55,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
             avgAltitude = 0.0,
             maxAltitude = 0.0,
             minAltitude = 0.0,
-            pictures = null
+            photos = null
     )
 
     // temporary stats

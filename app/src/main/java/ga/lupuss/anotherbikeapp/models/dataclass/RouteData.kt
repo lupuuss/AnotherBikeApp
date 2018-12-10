@@ -10,7 +10,7 @@ interface RouteData : ShortRouteData {
     val avgAltitude: Double
     val maxAltitude: Double
     val minAltitude: Double
-    val pictures: List<String>?
+    val photos: List<RoutePhoto>?
 
     class Instance(
             override val name: String?,
@@ -23,7 +23,7 @@ interface RouteData : ShortRouteData {
             override val avgAltitude: Double,
             override val maxAltitude: Double,
             override val minAltitude: Double,
-            override val pictures: List<String>?
+            override val photos: List<RoutePhoto>?
     ) : RouteData
 
     fun getStatisticsMap(speedUnit: AppUnit, distanceUnit: AppUnit)
@@ -54,7 +54,7 @@ interface RouteData : ShortRouteData {
                 avgAltitude = avgAltitude,
                 maxAltitude = maxAltitude,
                 minAltitude = minAltitude,
-                pictures = pictures,
+                photos = photos,
                 points = points ?: emptyList()
         )
     }
