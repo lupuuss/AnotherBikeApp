@@ -7,7 +7,6 @@ import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import java.io.File
 import javax.inject.Inject
 
 /** Presenter associated with [TrackingActivity].
@@ -35,9 +34,9 @@ class TrackingPresenter @Inject constructor(
             field = value
         }
 
-    val localPhotosSizeCallback = { serviceInteractor.tempPhotos.size }
+    val localPhotosSizeCallback = { serviceInteractor.photosCount }
     val getLocalPhotoCallback = {
-        position: Int -> serviceInteractor.tempPhotos[position]
+        position: Int -> serviceInteractor.getPhoto(position)
     }
 
     override fun notifyOnViewReady() {
@@ -135,13 +134,12 @@ class TrackingPresenter @Inject constructor(
 
     fun notifyOnNewPhoto(photo: RoutePhoto) {
 
-        serviceInteractor.tempPhotos.add(0, photo)
+        serviceInteractor.addPhoto(photo)
         view.notifyNewPhoto(0, localPhotosSizeCallback())
     }
 
     fun onClickDeletePhoto(position: Int) {
-        File(serviceInteractor.tempPhotos[position].link).delete()
-        serviceInteractor.tempPhotos.removeAt(position)
+        serviceInteractor.removePhotoAt(position)
         view.notifyPhotoDeleted(position, localPhotosSizeCallback())
     }
 

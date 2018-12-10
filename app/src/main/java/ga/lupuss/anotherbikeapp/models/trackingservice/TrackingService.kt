@@ -46,8 +46,6 @@ class TrackingService : Service(), PreferencesInteractor.OnTrackingUnitChangedLi
 
     var lastLocationAvailability = false
 
-    val tempPhotos: MutableList<RoutePhoto> = mutableListOf()
-
     private val locationDataReceivers = mutableListOf<TrackingServiceInteractor.LocationDataReceiver>()
     private val onStatsUpdateListeners = mutableListOf<TrackingServiceInteractor.OnStatsUpdateListener>()
 
@@ -119,7 +117,23 @@ class TrackingService : Service(), PreferencesInteractor.OnTrackingUnitChangedLi
 
         override val routeData get() = this@TrackingService.routeData
 
-        override val tempPhotos: MutableList<RoutePhoto> get() = this@TrackingService.tempPhotos
+        override val photosCount: Int
+            get() = statsManager.photosCount
+
+        override fun getPhoto(position: Int): RoutePhoto {
+
+            return statsManager.getPhoto(position)
+        }
+
+        override fun addPhoto(photo: RoutePhoto) {
+
+            statsManager.addPhoto(photo)
+        }
+
+        override fun removePhotoAt(position: Int) {
+
+            statsManager.removePhotoAt(position)
+        }
 
         override fun isServiceInProgress(): Boolean = this@TrackingService.isInProgress()
 

@@ -25,7 +25,7 @@ interface TrackingServiceInteractor {
 
     val routeData: ExtendedRouteData
 
-    val tempPhotos: MutableList<RoutePhoto>
+    val photosCount: Int
 
     fun isServiceInProgress(): Boolean
 
@@ -36,4 +36,10 @@ interface TrackingServiceInteractor {
     fun addOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener)
 
     fun removeOnStatsUpdateListener(onStatsUpdateListener: OnStatsUpdateListener)
+
+    fun removePhotoAt(position: Int)
+
+    fun addPhoto(photo: RoutePhoto)
+
+    fun getPhoto(position: Int): RoutePhoto
 }

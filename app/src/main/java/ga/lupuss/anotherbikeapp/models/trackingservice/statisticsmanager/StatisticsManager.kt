@@ -7,6 +7,7 @@ import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.timeToFormattedString
 import timber.log.Timber
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -65,6 +66,25 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
     private var altitude = 0.0
     var status: Status = Status.LOCATION_WAIT
         private set
+
+    val photosCount: Int
+        get() = routeData.photos.size
+
+    fun getPhoto(position: Int): RoutePhoto {
+
+        return routeData.photos[position]
+    }
+
+    fun addPhoto(photo: RoutePhoto) {
+
+        routeData.photos.add(0, photo)
+    }
+
+    fun removePhotoAt(position: Int) {
+
+        File(routeData.photos[position].link).delete()
+        routeData.photos.removeAt(position)
+    }
 
     fun pushNewLocation(location: Location) {
 
