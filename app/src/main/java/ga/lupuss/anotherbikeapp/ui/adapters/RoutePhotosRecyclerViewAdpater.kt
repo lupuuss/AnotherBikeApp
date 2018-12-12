@@ -36,7 +36,7 @@ class RoutePhotosRecyclerViewAdpater(
 
         private fun fillView(photo: RoutePhoto) {
 
-            photoNameText.text = photo.name
+            photoNameText.text = photo.name ?: layout.context.getString(R.string.no_title)
             photoDateText.text = timeToFormattedString(locale, photo.time)
             picasso.load(File(photo.link))
                     .fit()
