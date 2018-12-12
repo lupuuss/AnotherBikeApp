@@ -20,6 +20,7 @@ import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
+import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import kotlinx.android.synthetic.main.fragment_route_photos.*
 import java.io.File
 import java.lang.IllegalStateException
@@ -68,13 +69,14 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         super.onAttachPostVerification(context)
 
-        if (context is Listener && isTakingNewPhotoEnabled) {
+        if (context is Listener) {
 
             photosListener = context
 
         } else {
 
-            throw IllegalStateException("Activity should implement RoutePhotosPresenter.Listener")
+            throw IllegalStateException("Activity should implement RoutePhotosPresenter.Listener." +
+                    " It's ${context!!.javaClass.canonicalName}")
         }
     }
 
