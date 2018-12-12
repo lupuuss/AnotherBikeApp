@@ -15,13 +15,13 @@ import ga.lupuss.anotherbikeapp.timeToFormattedString
 import java.io.File
 import java.util.*
 
-class RoutePhotosRecyclerViewAdpater(
+class RoutePhotosRecyclerViewAdapter(
         private val picasso: Picasso,
         private val routePhotosCallback: (Int) -> RoutePhoto,
         private val sizeCallback: () -> Int,
         private val locale: Locale,
         private val onClickDeletePhoto: (Int) -> Unit
-) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdpater.ViewHolder>() {
+) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdapter.ViewHolder>() {
 
     inner class ViewHolder(val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
         private val photoNameText: TextView = layout.findViewById(R.id.photoNameText)

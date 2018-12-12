@@ -24,7 +24,7 @@ import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdpater
+import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
@@ -157,7 +157,7 @@ class TrackingActivity
 
         initInfoViewPager()
 
-        photosAdapter = RoutePhotosRecyclerViewAdpater(
+        photosAdapter = RoutePhotosRecyclerViewAdapter(
                 picasso,
                 trackingPresenter::getLocalPhotoCallback.get(),
                 trackingPresenter::localPhotosSizeCallback.get(),

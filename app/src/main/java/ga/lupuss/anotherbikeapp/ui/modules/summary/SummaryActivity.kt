@@ -30,7 +30,7 @@ import javax.inject.Inject
 import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
-import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdpater
+import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
 
 class SummaryActivity
@@ -140,7 +140,7 @@ class SummaryActivity
         initInfoViewPager()
         routePhotosFragment.isTakingNewPhotoEnabled = false
 
-        photosAdapter = RoutePhotosRecyclerViewAdpater(
+        photosAdapter = RoutePhotosRecyclerViewAdapter(
                 picasso,
                 { routePhotoCallback(it) },
                 { routePhotosSizeCallback() },
