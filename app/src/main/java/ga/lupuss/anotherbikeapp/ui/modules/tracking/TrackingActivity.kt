@@ -20,30 +20,26 @@ import com.tinsuke.icekick.extension.unfreezeInstanceState
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.ThemedMapActivity
+import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
-import ga.lupuss.anotherbikeapp.ui.adapters.RouteInfoPagerAdapter
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdpater
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.getColorForAttr
 import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
-import ga.lupuss.anotherbikeapp.ui.modules.routephotos.RoutePhotosFragment
 import kotlinx.android.synthetic.main.activity_tracking.*
 import kotlinx.android.synthetic.main.activity_tracking_short_stats_container.*
-import kotlinx.android.synthetic.main.route_info_container.*
 import timber.log.Timber
 import javax.inject.Inject
 
 
 class TrackingActivity
-    : ThemedMapActivity(),
+    : StatsActivity(),
         TrackingView,
         ViewTreeObserver.OnGlobalLayoutListener,
-        OnMapAndLayoutReady.Listener,
-        RoutePhotosFragment.Listener {
+        OnMapAndLayoutReady.Listener {
 
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
@@ -112,13 +108,9 @@ class TrackingActivity
         trackingPresenter.notifyOnNewPhoto(photo)
     }
 
-    private fun getRoutePhotosFragment(): RoutePhotosFragment =
-            ((infoViewPager.adapter as RouteInfoPagerAdapter)
-                    .getFragmentAt(1) as RoutePhotosFragment)
-
     override fun notifyNewPhoto(position: Int, size: Int) {
 
-        getRoutePhotosFragment().adapter.apply {
+        routePhotosFragment.adapter.apply {
 
             notifyItemInserted(position)
             notifyItemRangeChanged(0, size)
@@ -128,7 +120,7 @@ class TrackingActivity
 
     override fun notifyPhotoDeleted(position: Int, size: Int) {
 
-        getRoutePhotosFragment().adapter.apply {
+        routePhotosFragment.adapter.apply {
 
             notifyItemRemoved(position)
             notifyItemRangeChanged(0, size)
@@ -163,6 +155,8 @@ class TrackingActivity
         activateToolbar(toolbarMain)
         setResult(TrackingPresenter.Result.NOT_DONE)
 
+        initInfoViewPager()
+
         photosAdapter = RoutePhotosRecyclerViewAdpater(
                 picasso,
                 trackingPresenter::getLocalPhotoCallback.get(),
@@ -170,17 +164,6 @@ class TrackingActivity
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
                 this::onClickDeletePhoto
         )
-
-        infoViewPager.adapter = RouteInfoPagerAdapter(
-                this,
-                supportFragmentManager,
-                listOf(
-                        R.drawable.ic_insert_chart_12dp to StatsFragment(),
-                        R.drawable.ic_image_12dp to RoutePhotosFragment()
-                )
-        )
-
-        infoTabLayout.setupWithViewPager(infoViewPager)
 
         unfreezeInstanceState(savedInstanceState)
         savedInstanceState?.let {
@@ -354,9 +337,7 @@ class TrackingActivity
 
     private fun updateInfoFragmentStats(stats: Map<Statistic.Name, Statistic<*>>) {
 
-        ((infoViewPager.adapter as RouteInfoPagerAdapter)
-                .getFragmentAt(0) as StatsFragment)
-                .updateStats(stats, StatsFragment.Mode.CURRENT_STATS)
+        statsFragment.updateStats(stats, StatsFragment.Mode.CURRENT_STATS)
     }
 
     override fun isTrackLineReady() = trackLine != null
