@@ -92,6 +92,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
     override fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {
         super.onViewCreatedPostVerification(view, savedInstanceState)
         takePhotoButton.setOnClickListener(this)
+        takePhotoButton.isGone = !isTakingNewPhotoEnabled
         photosRecyclerView.apply {
             setItemViewCacheSize(10)
             isNestedScrollingEnabled = false
