@@ -17,35 +17,20 @@
         android:background="?attr/colorSecondaryDark"
         app:title="@string/summary" />
 
-    <ScrollView
-        android:id="@+id/summaryScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <include
                 android:id="@+id/mapFrameSummary"
-                android:layout_height="350dp"
+                android:layout_height="0dp"
                 android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/divider"
                 layout="@layout/map_frame"/>
-
-            <ImageView
-                android:id="@+id/transparentMapCover"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="@id/mapFrameSummary"
-                app:layout_constraintEnd_toEndOf="@id/mapFrameSummary"
-                app:layout_constraintTop_toTopOf="@id/mapFrameSummary"
-                app:layout_constraintBottom_toBottomOf="@id/mapFrameSummary"
-                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:id="@+id/divider"
@@ -57,7 +42,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mapFrameSummary"
-                app:layout_constraintBottom_toTopOf="@id/statsFragmentWrapper">
+                app:layout_constraintBottom_toTopOf="@id/routeInfoContainer">
                 <TextView
                     android:id="@+id/nameLabel"
                     android:text="@string/nameEditTextTitle"
@@ -86,26 +71,20 @@
                 android:layout_height="wrap_content"
                 android:indeterminateTint="?android:colorAccent"
                 android:layout_margin="60dp"
-                app:layout_constraintTop_toTopOf="@id/statsFragmentWrapper"
-                app:layout_constraintStart_toStartOf="@id/statsFragmentWrapper"
-                app:layout_constraintEnd_toEndOf="@id/statsFragmentWrapper"/>
+                app:layout_constraintTop_toTopOf="@id/routeInfoContainer"
+                app:layout_constraintStart_toStartOf="@id/routeInfoContainer"
+                app:layout_constraintBottom_toBottomOf="@id/routeInfoContainer"
+                app:layout_constraintEnd_toEndOf="@id/routeInfoContainer"/>
 
-            <FrameLayout
-                android:id="@+id/statsFragmentWrapper"
+            <include
+                layout="@layout/route_info_container"
+                android:id="@+id/routeInfoContainer"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider"
-                app:layout_constraintBottom_toBottomOf="parent">
-                <fragment
-                    android:id="@+id/statsFragment"
-                    android:name="ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout="@layout/fragment_stats" />
-            </FrameLayout>
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </android.support.constraint.ConstraintLayout>
-    </ScrollView>
 </LinearLayout>

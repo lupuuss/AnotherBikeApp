@@ -3,19 +3,22 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.os.ConfigurationCompat
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.squareup.picasso.Picasso
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.base.ThemedMapActivity
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
 import ga.lupuss.anotherbikeapp.ui.extensions.fitToPoints
@@ -24,14 +27,23 @@ import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
 import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
-import android.view.MotionEvent
+import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.dpToPixels
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdpater
+import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
 
+class SummaryActivity
+    : StatsActivity(), SummaryView,
+        OnMapReadyCallback, TextWatcher,
+        OnMapAndLayoutReady.Listener, ViewTreeObserver.OnGlobalLayoutListener {
 
-class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, TextWatcher {
 
     @Inject
     lateinit var summaryPresenter: MainSummaryPresenter
+
+    @Inject
+    lateinit var picasso: Picasso
 
     private lateinit var mode: SummaryPresenter.Mode
     private lateinit var rejectItem: MenuItem
@@ -49,7 +61,7 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
     override var isStatsFragmentVisible: Boolean = true
         set(value) {
 
-            statsFragmentWrapper?.isVisible = value
+            routeInfoContainer?.isVisible = value
             field = value
         }
 
@@ -82,6 +94,29 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
             field = value
         }
 
+    override lateinit var photosAdapter: RecyclerView.Adapter<*>
+
+    private var routePhotoCallback: (Int) -> RoutePhoto = { RoutePhoto("", "", 0) }
+    private var routePhotosSizeCallback: () -> Int = { 0 }
+
+    private val onMapAndLayoutReady = OnMapAndLayoutReady(this)
+
+    override fun setPhotosAdaptersCallbacks(routePhotoCallback: (Int) -> RoutePhoto,
+                                            routePhotosSizeCallback: () -> Int) {
+
+        this.routePhotoCallback = routePhotoCallback
+        this.routePhotosSizeCallback = routePhotosSizeCallback
+        photosAdapter.notifyDataSetChanged()
+    }
+
+    override fun onNewPhotoTaken(photo: RoutePhoto) {
+        // ignore
+    }
+
+    override fun onClickDeletePhoto(position: Int) {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         requiresVerification()
@@ -102,33 +137,16 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
         setContentView(R.layout.activity_summary)
         activateToolbar(toolbarSummary)
 
-        getStatsFragment().isScrollingEnabled = false
+        initInfoViewPager()
+        routePhotosFragment.isTakingNewPhotoEnabled = false
 
-        // only for portrait mode
-        transparentMapCover?.setOnTouchListener { _, event ->
-            val action = event.action
-            when (action) {
-                MotionEvent.ACTION_DOWN -> {
-                    // Disallow ScrollView to intercept touch events.
-                    summaryScrollView?.requestDisallowInterceptTouchEvent(true)
-                    // Disable touch on transparent view
-                    false
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    // Allow ScrollView to intercept touch events.
-                    summaryScrollView?.requestDisallowInterceptTouchEvent(false)
-                    true
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    summaryScrollView?.requestDisallowInterceptTouchEvent(true)
-                    false
-                }
-
-                else -> true
-            }
-        }
+        photosAdapter = RoutePhotosRecyclerViewAdpater(
+                picasso,
+                { routePhotoCallback(it) },
+                { routePhotosSizeCallback() },
+                ConfigurationCompat.getLocales(resources.configuration)[0]!!,
+                this::onClickDeletePhoto
+        )
 
         mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))
 
@@ -143,10 +161,21 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
 
         routeNameEdit.addTextChangedListener(this)
         (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(this)
+        routeInfoContainer.viewTreeObserver.addOnGlobalLayoutListener(this)
+    }
+
+    override fun onGlobalLayout() {
+        onMapAndLayoutReady.layoutReady()
+        routeInfoContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 
     override fun onMapReadyPostVerification(googleMap: GoogleMap?) {
         super.onMapReadyPostVerification(googleMap)
+        onMapAndLayoutReady.mapReady()
+    }
+
+    override fun onMapAndLayoutReady() {
+
         summaryPresenter.notifyOnViewReady()
     }
 
@@ -172,6 +201,7 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
         super.onDestroyPostVerification()
         summaryPresenter.notifyOnDestroy(isFinishing)
     }
+
     override fun afterTextChanged(p0: Editable?) {}
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -228,13 +258,9 @@ class SummaryActivity : ThemedMapActivity(), SummaryView, OnMapReadyCallback, Te
         }
     }
 
-    private fun getStatsFragment(): StatsFragment {
-        return (supportFragmentManager.findFragmentById(R.id.statsFragment) as StatsFragment)
-    }
-
     override fun showStatistics(statistics: Map<Statistic.Name, Statistic<*>>) {
 
-        getStatsFragment().updateStats(statistics, StatsFragment.Mode.SUMMARY_STATS)
+        statsFragment.updateStats(statistics, StatsFragment.Mode.SUMMARY_STATS)
     }
 
     override fun showRejectDialog(onYes: () -> Unit) {

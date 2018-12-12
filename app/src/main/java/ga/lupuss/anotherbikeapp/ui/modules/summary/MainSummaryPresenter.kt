@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 
 class MainSummaryPresenter(
         summaryView: SummaryView,

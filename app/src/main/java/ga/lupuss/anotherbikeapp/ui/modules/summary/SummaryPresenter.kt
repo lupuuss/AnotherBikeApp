@@ -31,6 +31,10 @@ abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryVi
         )
 
         view.setNameLabelValue(routeData.name ?: "")
+        view.setPhotosAdaptersCallbacks(
+                { position -> routeData.photos[position] },
+                { routeData.photos.size }
+        )
     }
 
     abstract fun onSaveClick()
