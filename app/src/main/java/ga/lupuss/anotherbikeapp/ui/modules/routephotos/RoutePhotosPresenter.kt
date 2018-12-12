@@ -24,7 +24,10 @@ class RoutePhotosPresenter @Inject constructor(
 
                 view.displayNewPhotoDialog(file) {
 
-                    view.notifyPhotoTaken(RoutePhoto(file.absolutePath, it, timeProvider.invoke()))
+                     val name: String? = if (it.isEmpty()) null
+                                            else it
+
+                    view.notifyPhotoTaken(RoutePhoto(file.absolutePath, name, timeProvider.invoke()))
                 }
             }
         })
