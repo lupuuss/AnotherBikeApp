@@ -31,8 +31,7 @@ class FirebaseRouteData : MutableRouteData.Instance() {
                 startTime = startTime,
                 avgAltitude = avgAltitude,
                 maxAltitude = maxAltitude,
-                minAltitude = minAltitude,
-                photos = photos
+                minAltitude = minAltitude
         )
     }
 }

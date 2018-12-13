@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 interface MutableExtendedRouteData : ExtendedRouteData, MutableRouteData {
 
     override val points: MutableList<LatLng>
+    override val photos: MutableList<RoutePhoto>
 
     class Instance (
             override var name: String? = null,
@@ -17,7 +18,7 @@ interface MutableExtendedRouteData : ExtendedRouteData, MutableRouteData {
             override var avgAltitude: Double = 0.0,
             override var maxAltitude: Double = 0.0,
             override var minAltitude: Double = 0.0,
-            override var photos: MutableList<RoutePhoto>,
-            override val points: MutableList<LatLng> = mutableListOf()
+            override val points: MutableList<LatLng> = mutableListOf(),
+            override val photos: MutableList<RoutePhoto> = mutableListOf()
     ) : MutableExtendedRouteData
 }

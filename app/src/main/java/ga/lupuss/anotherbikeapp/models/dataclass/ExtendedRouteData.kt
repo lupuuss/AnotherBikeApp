@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 interface ExtendedRouteData : RouteData {
 
     val points: List<LatLng>
+    val photos: List<RoutePhoto>
 
     class Instance(
             override val name: String?,
@@ -17,8 +18,8 @@ interface ExtendedRouteData : RouteData {
             override val avgAltitude: Double,
             override val maxAltitude: Double,
             override val minAltitude: Double,
-            override val photos: List<RoutePhoto>,
-            override val points: List<LatLng>
+            override val points: List<LatLng>,
+            override val photos: List<RoutePhoto>
     ) : ExtendedRouteData
 
 
@@ -33,7 +34,7 @@ interface ExtendedRouteData : RouteData {
             avgAltitude = avgAltitude,
             maxAltitude = maxAltitude,
             minAltitude = minAltitude,
-            photos = photos.toMutableList(),
-            points = points.toMutableList()
+            points = points.toMutableList(),
+            photos = photos.toMutableList()
     )
 }
