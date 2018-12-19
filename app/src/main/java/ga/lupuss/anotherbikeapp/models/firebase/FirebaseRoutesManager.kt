@@ -4,6 +4,7 @@ package ga.lupuss.anotherbikeapp.models.firebase
 import android.app.Activity
 import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
@@ -16,9 +17,11 @@ import ga.lupuss.anotherbikeapp.models.dataclass.RouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RouteReferenceSerializer
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import timber.log.Timber
 import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.util.*
 
 
@@ -51,6 +54,9 @@ class FirebaseRoutesManager(
 
     private fun DocumentSnapshot.toFirebasePoints(): FirebasePoints =
             this.toObject(FirebasePoints::class.java)!!
+
+    private fun DocumentSnapshot.toRoutePhoto(): RoutePhoto =
+            this.toObject(RoutePhoto::class.java)!!
 
     override val routeReferenceSerializer: RouteReferenceSerializer = FirebaseRouteReferenceSerializer(gson, firebaseFirestore)
 
@@ -108,19 +114,19 @@ class FirebaseRoutesManager(
         }
 
         query.get()
-                .addOnSuccessListener(owner) {
+                .addOnSuccessListener(owner) { querySnapshot ->
 
-                    if (it.isEmpty) {
+                    if (querySnapshot.isEmpty) {
 
                         onRequestMoreShortRouteDataListener?.onDataEnd()
 
                     } else {
-                        it.documents.forEach {
+                        querySnapshot.documents.forEach {
                             children.add(it)
                             onNewDocument(children.size - 1)
                         }
 
-                        if (it.documents.size < limit) {
+                        if (querySnapshot.documents.size < limit) {
 
                             onRequestMoreShortRouteDataListener?.onDataEnd()
                         }
@@ -195,13 +201,15 @@ class FirebaseRoutesManager(
 
 
         var routeData: RouteData? = null
+        var points: MutableList<LatLng>? = null
+        var photos: MutableList<RoutePhoto>? = null
 
-        fun checkRouteDataAndPostResult(points: MutableList<LatLng>?) {
+        fun checkOut() {
 
             if (routeData != null) {
 
                 onRequestExtendedRouteDataListener?.onDataOk(
-                        routeData!!.toExtendedRouteData(points)
+                        routeData!!.toExtendedRouteData(points, photos)
                 )
 
             } else {
@@ -220,17 +228,34 @@ class FirebaseRoutesManager(
                     }
 
                     routeReference.pointsReference?.get()
-                }.addOnSuccessListener(requestOwner) {
+                }.continueWithTask {
 
-                    val points = if (it.exists()) it.toFirebasePoints().pointsAsLatLngList() else null
+                    points = if (it.result.exists()) {
 
-                    checkRouteDataAndPostResult(points)
+                        it.result.toFirebasePoints().pointsAsLatLngList()
+                    } else {
+
+                        null
+                    }
+
+                    firebaseFirestore.collection("${routeReference.routeReference!!.path}/photos").get()
+                }.addOnSuccessListener(requestOwner) { query ->
+
+                    photos = if (!query.isEmpty) {
+
+                        query.documents.map { it.toRoutePhoto() }.toMutableList()
+                    } else {
+
+                        null
+                    }
+
+                    checkOut()
 
                 }.addOnFailureListener(requestOwner) {
 
                     Timber.e(it)
 
-                    checkRouteDataAndPostResult(null)
+                    checkOut()
 
                 }
 
@@ -244,7 +269,7 @@ class FirebaseRoutesManager(
         val userRef = firebaseFirestore.collection(FIREB_USERS).document(authInteractor.userUid!!)
         val newUsersRouteRef = userRef.collection(FIREB_ROUTES).document()
 
-        firebaseFirestore
+        val batch = firebaseFirestore
                 .batch()
                 .set(newPointsRef, FirebasePoints().apply {
                     this.points = routeData.points.map { GeoPoint(it.latitude, it.longitude) }
@@ -261,15 +286,30 @@ class FirebaseRoutesManager(
                     routeId = newRouteRef.id
                     pointsId = newPointsRef.id
                 })
+
+
+        routeData.photos.forEach {
+
+            batch.set(newRouteRef.collection(FIREB_PHOTOS).document(), it)
+        }
+
+        batch
                 .commit()
                 .continueWithTask {
 
-                    newUsersRouteRef.get()
+                    if (it.isSuccessful) {
+                        newUsersRouteRef.get()
+                    } else {
+                        Tasks.forException(IllegalStateException("Batch failed!"))
+                    }
 
                 }.addOnSuccessListener {
 
                     children.add(0, it)
                     onNewDocument(0)
+                }.addOnFailureListener {
+
+                    Timber.e(it)
                 }
     }
 
@@ -341,6 +381,7 @@ class FirebaseRoutesManager(
         const val FIREB_ROUTES = "routes"
         const val FIREB_START_TIME = "startTime"
         const val FIREB_ROUTE = "route"
+        const val FIREB_PHOTOS = "photos"
         const val DEFAULT_LIMIT = 10L
         const val FIREB_POINTS = "points"
         const val FIREB_POINTS_ID = "pointsId"
