@@ -20,7 +20,6 @@ import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
-import ga.lupuss.anotherbikeapp.ui.extensions.isVisible
 import kotlinx.android.synthetic.main.fragment_route_photos.*
 import java.io.File
 import java.lang.IllegalStateException
@@ -90,6 +89,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
     }
 
     override fun onViewCreatedPostVerification(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreatedPostVerification(view, savedInstanceState)
         takePhotoButton.setOnClickListener(this)
         takePhotoButton.isGone = !isTakingNewPhotoEnabled
