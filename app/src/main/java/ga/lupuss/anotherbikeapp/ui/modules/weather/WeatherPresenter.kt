@@ -72,6 +72,7 @@ class WeatherPresenter @Inject constructor(
 
     override fun onNewWeatherData(weatherData: WeatherData) {
 
+        currentDay = 0
         view.resetSeekBar()
 
         view.setWeather(weatherData)
