@@ -9,6 +9,11 @@ import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 
+fun Boolean.toInt(): Int {
+
+    return if (this) 1 else 0
+}
+
 fun dpToPixels(context: Context, dp: Float): Int {
 
     return (context.resources.displayMetrics.density * dp + 0.5F).toInt()
