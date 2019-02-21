@@ -70,6 +70,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:${google_play_services_version}"
     implementation "com.google.firebase:firebase-core:${google_play_services_version}"
     implementation "com.google.firebase:firebase-firestore:${google_play_services_version}"
+    implementation "com.google.firebase:firebase-storage:${google_play_services_version}"
     implementation "com.google.code.gson:gson:2.8.2"
 
     // android

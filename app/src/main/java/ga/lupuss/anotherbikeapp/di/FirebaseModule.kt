@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 
@@ -17,4 +18,8 @@ class FirebaseModule {
     @Provides
     @AnotherBikeAppScope
     fun firebaseFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
+    @AnotherBikeAppScope
+    fun firebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
 }
