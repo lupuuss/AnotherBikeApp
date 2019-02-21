@@ -128,6 +128,7 @@ class TrackingPresenter @Inject constructor(
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
 
+        super.notifyOnDestroy(isFinishing)
         serviceInteractor.removeOnStatsUpdateListener(this)
         serviceInteractor.disconnectServiceDataReceiver(this)
     }

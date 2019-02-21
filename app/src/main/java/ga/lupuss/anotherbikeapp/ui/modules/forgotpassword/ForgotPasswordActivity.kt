@@ -37,6 +37,12 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordView {
         (emailEditInclude as EditText).error = resourceResolver.resolve(message)
     }
 
+    override fun onDestroy() {
+
+        super.onDestroy()
+        presenter.notifyOnDestroy(isFinishing)
+    }
+
     companion object {
 
         @JvmStatic

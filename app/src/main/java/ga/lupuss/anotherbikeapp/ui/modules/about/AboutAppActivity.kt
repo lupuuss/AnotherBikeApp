@@ -105,7 +105,7 @@ class AboutAppActivity : ThemedActivity(), AboutAppView {
     override fun onDestroyPostVerification() {
 
         super.onDestroyPostVerification()
-        presenter.notifyOnViewReady()
+        presenter.notifyOnDestroy(isFinishing)
     }
 
     companion object {

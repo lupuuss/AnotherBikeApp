@@ -106,9 +106,9 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        photosListener = null
+    override fun onDestroyViewPostVerification() {
+        super.onDestroyViewPostVerification()
+        presenter.notifyOnDestroy(true)
     }
 
     override fun onClick(v: View?) {
