@@ -4,6 +4,8 @@ import android.content.Context
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.temporal.ChronoUnit
+import java.io.File
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,4 +82,12 @@ fun Double.round(decimalPlaces: Int): Double {
     val x = Math.pow(10.0, decimalPlaces.toDouble())
 
     return Math.round(this * x) / x
+}
+
+fun sha256ofFile(file: File): String {
+
+    val bytes = file.readBytes()
+    val md = MessageDigest.getInstance("SHA-256")
+    val digest = md.digest(bytes)
+    return digest.fold("") { str, it -> str + "%02x".format(it) }
 }

@@ -11,13 +11,10 @@ class AndroidPathsGenerator(private val context: Context,
                             private val timeProvider: () -> Long,
                             private val authInteractor: AuthInteractor) : PathsGenerator {
 
-    override fun createNewPhotoFile(): File {
+    override fun createNewPhotoFile(link: String): File {
 
         val dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
-        val time = timeProvider()
-        val userName = authInteractor.userUid
-
-        return File(dir, "$userName/$time.png")
+        return File(dir, link)
     }
 }

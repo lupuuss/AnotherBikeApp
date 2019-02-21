@@ -5,9 +5,13 @@ import android.support.v4.os.ConfigurationCompat
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
+import ga.lupuss.anotherbikeapp.models.android.AndroidPathsGenerator
 import ga.lupuss.anotherbikeapp.models.android.AndroidResourceResolver
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
+import ga.lupuss.anotherbikeapp.ui.modules.routephotos.RoutePhotosScope
 
 @Module(includes = [BasicModule::class])
 class AndroidModule(context: Context) {
@@ -34,4 +38,12 @@ class AndroidModule(context: Context) {
     @Provides
     @AnotherBikeAppScope
     fun providesPicasso(): Picasso = Picasso.get()
+
+    @Provides
+    @AnotherBikeAppScope
+    fun providesPathsGenerator(
+            authInteractor: AuthInteractor,
+            timeProvider: () -> Long,
+            context: Context
+    ): PathsGenerator = AndroidPathsGenerator(context, timeProvider, authInteractor)
 }

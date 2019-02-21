@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.AppUnit
+import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.timeToFormattedString
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class StatisticsManager @Inject constructor(private val locale: Locale,
                                             val timer: Timer,
                                             private val math: StatisticsMathProvider,
-                                            preferencesInteractor: PreferencesInteractor) {
+                                            preferencesInteractor: PreferencesInteractor,
+                                            private val pathsGenerator: PathsGenerator) {
 
     private val kmh5 = 5 / AppUnit.Speed.KM_H.convertFunction(1.0) // 5 km/h in m/s
 
@@ -82,7 +84,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
     fun removePhotoAt(position: Int) {
 
-        File(routeData.photos[position].link).delete()
+        pathsGenerator.createNewPhotoFile(routeData.photos[position].link).delete()
         routeData.photos.removeAt(position)
     }
 

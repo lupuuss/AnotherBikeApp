@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
 import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.dpToPixels
+import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
@@ -44,6 +45,9 @@ class SummaryActivity
 
     @Inject
     lateinit var picasso: Picasso
+
+    @Inject
+    lateinit var pathsGenerator: PathsGenerator
 
     private lateinit var mode: SummaryPresenter.Mode
     private lateinit var rejectItem: MenuItem
@@ -145,7 +149,8 @@ class SummaryActivity
                 { routePhotoCallback(it) },
                 { routePhotosSizeCallback() },
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
-                this::onClickDeletePhoto
+                this::onClickDeletePhoto,
+                pathsGenerator
         )
 
         mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))

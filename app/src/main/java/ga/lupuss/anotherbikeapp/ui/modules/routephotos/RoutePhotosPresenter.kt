@@ -2,14 +2,18 @@ package ga.lupuss.anotherbikeapp.ui.modules.routephotos
 
 import ga.lupuss.anotherbikeapp.base.BaseView
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import ga.lupuss.anotherbikeapp.sha256ofFile
+import timber.log.Timber
 import javax.inject.Inject
 
 class RoutePhotosPresenter @Inject constructor(
         view: RoutePhotosView,
         private val pathsGenerator: PathsGenerator,
-        private val timeProvider: () -> Long
+        private val timeProvider: () -> Long,
+        private val authInteractor: AuthInteractor
 ) : Presenter<RoutePhotosView>() {
 
     init {
@@ -18,16 +22,30 @@ class RoutePhotosPresenter @Inject constructor(
 
     fun onClickTakePhotoButton() {
 
-        view.requestPhoto(BaseView.PhotoRequest(pathsGenerator.createNewPhotoFile()) { file, ok ->
+        val userUid = authInteractor.userUid
+        val time = timeProvider()
+        val tempLink = "$userUid/$time.png"
+
+        view.requestPhoto(BaseView.PhotoRequest(pathsGenerator.createNewPhotoFile(tempLink)) { file, ok ->
 
             if(ok) {
 
-                view.displayNewPhotoDialog(file) {
+                val sha256 = sha256ofFile(file)
+                val link = "$userUid/$sha256.png"
+
+                Timber.d("SHA 1 $sha256")
+
+                val fileAfterRename = pathsGenerator.createNewPhotoFile(link)
+                file.renameTo(fileAfterRename)
+
+                Timber.d(sha256ofFile(fileAfterRename))
+
+                view.displayNewPhotoDialog(fileAfterRename) {
 
                      val name: String? = if (it.isEmpty()) null
                                             else it
 
-                    view.notifyPhotoTaken(RoutePhoto(file.absolutePath, name, timeProvider.invoke()))
+                    view.notifyPhotoTaken(RoutePhoto(link, name, timeProvider.invoke()))
                 }
             }
         })

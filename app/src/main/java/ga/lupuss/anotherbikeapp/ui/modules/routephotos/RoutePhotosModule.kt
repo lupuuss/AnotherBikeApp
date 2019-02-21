@@ -14,12 +14,4 @@ class RoutePhotosModule(view: RoutePhotosView) {
         @Provides
         @RoutePhotosScope
         get
-
-    @Provides
-    @RoutePhotosScope
-    fun providesPathsGenerator(
-            authInteractor: AuthInteractor,
-            timeProvider: () -> Long,
-            context: Context
-    ): PathsGenerator = AndroidPathsGenerator(context, timeProvider, authInteractor)
 }

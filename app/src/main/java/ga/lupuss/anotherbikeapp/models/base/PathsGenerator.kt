@@ -4,5 +4,5 @@ import java.io.File
 
 interface PathsGenerator {
 
-    fun createNewPhotoFile(): File
+    fun createNewPhotoFile(link: String): File
 }

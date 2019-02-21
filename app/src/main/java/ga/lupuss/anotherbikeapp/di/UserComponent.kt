@@ -28,4 +28,5 @@ interface UserComponent {
     fun providesPreferencesInteractor(): PreferencesInteractor
     fun providesWeatherManager(): WeatherManager
     fun providesPicasso(): Picasso
+    fun providesPathsGenerator(): PathsGenerator
 }
