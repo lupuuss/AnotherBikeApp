@@ -18,12 +18,14 @@ abstract class LabeledFragment : BaseFragment(), LabeledView {
         set(value) {
 
             refreshButton?.isVisible = value
+            field = value
         }
 
     override var isRefreshProgressBarVisible: Boolean = false
         set(value) {
 
             refreshProgressBar?.isVisible = value
+            field = value
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
