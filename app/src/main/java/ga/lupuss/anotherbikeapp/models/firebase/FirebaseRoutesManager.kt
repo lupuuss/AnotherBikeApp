@@ -5,9 +5,7 @@ import android.app.Activity
 import android.net.Uri
 import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.*
-import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
@@ -20,7 +18,6 @@ import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import timber.log.Timber
 import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import java.util.*
 
 
@@ -280,15 +277,14 @@ class FirebaseRoutesManager(
                 routeReference.routeReference!!
                         .collection(FIREB_PHOTOS)
                         .document(routePhoto.id!!)
-                        .delete()
-                        .addOnSuccessListener {
-                            // this file should not exist, but try to delete it just in case
-                            photosSynchronizer.removePhotoFile(routePhoto)
-                        }
-                        .addOnFailureListener {
+                        .delete().addOnFailureListener {
 
                             Timber.e(it)
                         }
+
+
+                // this file should not exist, but try to delete it just in case
+                photosSynchronizer.removePhotoFile(routePhoto)
             }
         }
     }
@@ -337,17 +333,19 @@ class FirebaseRoutesManager(
                     pointsId = newPointsRef.id
                 })
 
-        batch
-                .commit()
-                .continueWithTask {
+        routeData.photos.forEach {
 
-                    if (it.isSuccessful) {
-                        newUsersRouteRef.get()
-                    } else {
-                        Tasks.forException(IllegalStateException("Batch failed! Caused by exception: ${it.exception.toString()}"))
-                    }
+            batch.set(newRouteRef.collection(FIREB_PHOTOS).document(), it)
+        }
 
-                }.addOnSuccessListener {
+        batch.commit()
+                .addOnFailureListener {
+                    Timber.e(it)
+                }
+
+        newUsersRouteRef
+                .get()
+                .addOnSuccessListener {
 
                     children.add(0, it)
                     onNewDocument(0)
@@ -369,10 +367,10 @@ class FirebaseRoutesManager(
                 .update(routeReference.userRouteReference!!, FIREB_NAME, routeNameFromEditText)
                 .update(routeReference.routeReference!!, FIREB_NAME, routeNameFromEditText)
                 .commit()
-                .continueWithTask {
 
-                    routeReference.userRouteReference!!.get()
-                }.addOnSuccessListener {
+        routeReference.userRouteReference!!
+                .get()
+                .addOnSuccessListener {
                     children[routeReference.localIndex] = it
                     onDocumentModified(routeReference.localIndex)
                 }
@@ -397,10 +395,12 @@ class FirebaseRoutesManager(
             }
 
             batch.commit()
-                    .addOnSuccessListener {
-                        children.removeAt(routeReference.localIndex)
-                        onDocumentDeleted(routeReference.localIndex)
+                    .addOnFailureListener {
+                        Timber.e(it)
                     }
+
+            children.removeAt(routeReference.localIndex)
+            onDocumentDeleted(routeReference.localIndex)
 
         } else {
 
