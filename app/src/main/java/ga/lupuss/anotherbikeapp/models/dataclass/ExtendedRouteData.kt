@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.dataclass
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.Exclude
 
 interface ExtendedRouteData : RouteData {
 
@@ -13,6 +14,7 @@ interface ExtendedRouteData : RouteData {
             override val avgSpeed: Double,
             override val maxSpeed: Double,
             override val duration: Long,
+            @get:Exclude
             override val startTimeStr: String,
             override val startTime: Long,
             override val avgAltitude: Double,
