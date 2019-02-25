@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_summary.*
 import javax.inject.Inject
 import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.dpToPixels
-import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
@@ -47,7 +47,7 @@ class SummaryActivity
     lateinit var picasso: Picasso
 
     @Inject
-    lateinit var pathsGenerator: PathsGenerator
+    lateinit var routesManager: RoutesManager
 
     private lateinit var mode: SummaryPresenter.Mode
     private lateinit var rejectItem: MenuItem
@@ -119,6 +119,16 @@ class SummaryActivity
 
     override fun onClickDeletePhoto(position: Int) {
 
+        summaryPresenter.onClickDeletePhoto(position)
+    }
+
+    override fun notifyPhotoDeleted(position: Int, size: Int) {
+
+        routePhotosFragment.adapter.apply {
+
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(0, size)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,16 +154,18 @@ class SummaryActivity
         initInfoViewPager()
         routePhotosFragment.isTakingNewPhotoEnabled = false
 
+
+        mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))
+
         photosAdapter = RoutePhotosRecyclerViewAdapter(
                 picasso,
                 { routePhotoCallback(it) },
                 { routePhotosSizeCallback() },
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
                 this::onClickDeletePhoto,
-                pathsGenerator
+                routesManager,
+                mode == SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY
         )
-
-        mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))
 
         var docReference: String? = null
 

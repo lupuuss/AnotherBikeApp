@@ -2,12 +2,14 @@ package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.*
+import ga.lupuss.anotherbikeapp.models.firebase.FirebasePhotosSynchronizer
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.firebase.TempRouteKeeper
 import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherApi
@@ -23,8 +25,10 @@ class UserModule {
                               routesKeeper: TempRouteKeeper,
                               firebaseFirestore: FirebaseFirestore,
                               locale: Locale,
+                              photosSynchronizer: PhotosSynchronizer,
+                              pathsGenerator: PathsGenerator,
                               gson: Gson): RoutesManager =
-            FirebaseRoutesManager(authInteractor, firebaseFirestore, routesKeeper, locale, gson)
+            FirebaseRoutesManager(authInteractor, firebaseFirestore, routesKeeper, locale, photosSynchronizer, pathsGenerator, gson)
 
     @Provides
     @UserComponentScope
@@ -36,4 +40,11 @@ class UserModule {
     fun providesWeatherManager(
             weatherApi: OpenWeatherApi, timeProvider: () -> Long, locale: Locale, schedulersPackage: SchedulersPackage
     ): WeatherManager = OpenWeatherManager(weatherApi, timeProvider, locale, schedulersPackage)
+
+    @Provides
+    @UserComponentScope
+    fun providesPhotosSynchronizer(storage: FirebaseStorage,
+                                   pathsGenerator: PathsGenerator,
+                                   gson: Gson): PhotosSynchronizer =
+            FirebasePhotosSynchronizer(storage, pathsGenerator, gson)
 }

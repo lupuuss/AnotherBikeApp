@@ -2,21 +2,20 @@ package ga.lupuss.anotherbikeapp.models.firebase
 
 
 import android.app.Activity
+import android.net.Uri
 import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.*
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
-import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.RouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
-import ga.lupuss.anotherbikeapp.models.base.RouteReference
-import ga.lupuss.anotherbikeapp.models.base.RouteReferenceSerializer
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import timber.log.Timber
@@ -30,6 +29,8 @@ class FirebaseRoutesManager(
         private val firebaseFirestore: FirebaseFirestore,
         private val routeKeeper: TempRouteKeeper,
         private val locale: Locale,
+        private val photosSynchronizer: PhotosSynchronizer,
+        private val pathsGenerator: PathsGenerator,
         gson: Gson
 
 ): RoutesManager, OnDataSetChanged{
@@ -55,8 +56,11 @@ class FirebaseRoutesManager(
     private fun DocumentSnapshot.toFirebasePoints(): FirebasePoints =
             this.toObject(FirebasePoints::class.java)!!
 
-    private fun DocumentSnapshot.toRoutePhoto(): RoutePhoto =
-            this.toObject(RoutePhoto::class.java)!!
+    private fun DocumentSnapshot.toRoutePhoto(): RoutePhoto {
+        val photo = this.toObject(RoutePhoto::class.java)!!
+        photo.id = this.id
+        return photo
+    }
 
     override val routeReferenceSerializer: RouteReferenceSerializer = FirebaseRouteReferenceSerializer(gson, firebaseFirestore)
 
@@ -261,6 +265,52 @@ class FirebaseRoutesManager(
 
     }
 
+    override fun removePhoto(routePhoto: RoutePhoto, routeReference: RouteReference?) {
+
+        when {
+
+            routeReference == null ->
+                photosSynchronizer.removePhotoFile(routePhoto)
+
+            routeReference !is FirebaseRouteReference ->
+                throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
+
+            routePhoto.id != null -> {
+
+                routeReference.routeReference!!
+                        .collection(FIREB_PHOTOS)
+                        .document(routePhoto.id!!)
+                        .delete()
+                        .addOnSuccessListener {
+                            // this file should not exist, but try to delete it just in case
+                            photosSynchronizer.removePhotoFile(routePhoto)
+                        }
+                        .addOnFailureListener {
+
+                            Timber.e(it)
+                        }
+            }
+        }
+    }
+
+    override fun cancelAllPhotosUpload() {
+        photosSynchronizer.cancelAll()
+    }
+
+    override fun getRoutePhoto(link: String, forceLocal: Boolean, onComplete: (String) -> Unit) {
+
+        if (forceLocal) {
+
+            onComplete(Uri.fromFile(pathsGenerator.getPathForPhoto(link)).toString())
+        } else {
+
+            photosSynchronizer.getDownloadUrl(link, onComplete) {
+
+                onComplete(Uri.fromFile(pathsGenerator.getPathForPhoto(link)).toString())
+            }
+        }
+    }
+
     override fun saveRoute(routeData: ExtendedRouteData) {
 
 
@@ -287,12 +337,6 @@ class FirebaseRoutesManager(
                     pointsId = newPointsRef.id
                 })
 
-
-        routeData.photos.forEach {
-
-            batch.set(newRouteRef.collection(FIREB_PHOTOS).document(), it)
-        }
-
         batch
                 .commit()
                 .continueWithTask {
@@ -300,13 +344,15 @@ class FirebaseRoutesManager(
                     if (it.isSuccessful) {
                         newUsersRouteRef.get()
                     } else {
-                        Tasks.forException(IllegalStateException("Batch failed!"))
+                        Tasks.forException(IllegalStateException("Batch failed! Caused by exception: ${it.exception.toString()}"))
                     }
 
                 }.addOnSuccessListener {
 
                     children.add(0, it)
                     onNewDocument(0)
+                    photosSynchronizer.uploadAll(routeData.photos)
+
                 }.addOnFailureListener {
 
                     Timber.e(it)

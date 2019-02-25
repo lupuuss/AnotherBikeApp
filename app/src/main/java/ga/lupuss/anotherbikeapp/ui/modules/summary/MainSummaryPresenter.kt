@@ -1,9 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
-import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import ga.lupuss.anotherbikeapp.models.base.*
+import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 
 class MainSummaryPresenter(
         summaryView: SummaryView,
@@ -17,6 +15,15 @@ class MainSummaryPresenter(
     // Tests checks this field by reflection.
     // If you renames this field, you should rename it in tests as well.
     private lateinit var subPresenter: SummaryPresenter
+
+    override var routeData: ExtendedRouteData
+        get() {
+            return subPresenter.routeData
+        }
+        set(value) {
+
+            subPresenter.routeData = value
+        }
 
     fun initMode(mode: Mode, routeReference: String?) {
 
@@ -68,5 +75,10 @@ class MainSummaryPresenter(
         super.notifyOnDestroy(isFinishing)
 
         subPresenter.notifyOnDestroy(isFinishing)
+    }
+
+    override fun onClickDeletePhoto(position: Int) {
+
+        subPresenter.onClickDeletePhoto(position)
     }
 }

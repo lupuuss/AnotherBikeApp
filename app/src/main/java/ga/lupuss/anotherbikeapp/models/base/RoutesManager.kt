@@ -1,7 +1,9 @@
 package ga.lupuss.anotherbikeapp.models.base
 
+import android.net.Uri
 import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 
 interface RoutesManager {
@@ -30,6 +32,7 @@ interface RoutesManager {
             onRequestMoreShortRouteDataListener: OnRequestMoreShortRouteDataListener?,
             requestOwner: Any? = null
     )
+
     fun readShortRouteData(position: Int): ShortRouteData
 
     fun shortRouteDataCount(): Int
@@ -43,4 +46,7 @@ interface RoutesManager {
     fun getRouteReference(position: Int): RouteReference
     fun deleteRoute(routeReference: RouteReference)
     fun changeName(routeReference: RouteReference, routeNameFromEditText: String)
+    fun removePhoto(routePhoto: RoutePhoto, routeReference: RouteReference?)
+    fun cancelAllPhotosUpload()
+    fun getRoutePhoto(link: String, forceLocal: Boolean, onComplete: (String) -> Unit)
 }

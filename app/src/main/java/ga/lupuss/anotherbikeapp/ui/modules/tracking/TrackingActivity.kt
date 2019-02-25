@@ -21,7 +21,7 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.StatsActivity
-import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
@@ -49,7 +49,7 @@ class TrackingActivity
     lateinit var picasso: Picasso
 
     @Inject
-    lateinit var pathsGenerator: PathsGenerator
+    lateinit var routesManager: RoutesManager
 
     private val shortStatsListToDisplay = listOf(
             Statistic.Name.DURATION,
@@ -167,7 +167,8 @@ class TrackingActivity
                 trackingPresenter::localPhotosSizeCallback.get(),
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
                 this::onClickDeletePhoto,
-                pathsGenerator
+                routesManager,
+                true
         )
 
         unfreezeInstanceState(savedInstanceState)

@@ -74,6 +74,11 @@ class MainPresenter(private val routesManager: RoutesManager,
 
         super.notifyOnDestroy(isFinishing)
         trackingServiceGovernor.removeOnServiceActivityChangesListener(this)
+
+        if (isFinishing) {
+
+            routesManager.cancelAllPhotosUpload()
+        }
     }
 
     fun onClickTrackingButton() {

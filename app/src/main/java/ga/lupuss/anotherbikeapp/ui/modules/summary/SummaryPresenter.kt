@@ -1,10 +1,8 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 
 abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryView>() {
 
@@ -15,12 +13,13 @@ abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryVi
     abstract val routesManager: RoutesManager
     abstract val resourceResolver: ResourceResolver
     abstract val preferencesInteractor: PreferencesInteractor
+    abstract var routeData: ExtendedRouteData
 
     enum class Mode {
         OVERVIEW, AFTER_TRACKING_SUMMARY
     }
 
-    protected fun showExtendedRouteData(routeData: ExtendedRouteData) {
+    protected fun showExtendedRouteData() {
 
         view.showRouteLine(routeData.points)
         view.showStatistics(
@@ -32,8 +31,8 @@ abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryVi
 
         view.setNameLabelValue(routeData.name ?: "")
         view.setPhotosAdaptersCallbacks(
-                { position -> routeData.photos[position] },
-                { routeData.photos.size }
+                { position -> this.routeData.photos[position] },
+                { this.routeData.photos.size }
         )
     }
 
@@ -44,5 +43,7 @@ abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryVi
     abstract fun onRejectClick()
 
     abstract fun onNameEditTextChanged(text: CharSequence?)
+
+    abstract fun onClickDeletePhoto(position: Int)
 
 }

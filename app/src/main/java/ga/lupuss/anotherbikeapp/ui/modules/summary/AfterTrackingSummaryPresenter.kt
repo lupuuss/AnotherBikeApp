@@ -1,10 +1,8 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import ga.lupuss.anotherbikeapp.Text
+import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import timber.log.Timber
 
 class AfterTrackingSummaryPresenter(
@@ -17,7 +15,7 @@ class AfterTrackingSummaryPresenter(
 
     // Tests checks this field by reflection.
     // If you renames this field, you should rename it in tests as well.
-    private lateinit var routeData: ExtendedRouteData
+    override lateinit var routeData: ExtendedRouteData
 
     override fun notifyOnViewReady() {
 
@@ -29,7 +27,7 @@ class AfterTrackingSummaryPresenter(
         } else {
 
             routeData = routesManager.getTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY)!!
-            showExtendedRouteData(routeData)
+            showExtendedRouteData()
         }
     }
 
@@ -54,11 +52,31 @@ class AfterTrackingSummaryPresenter(
 
         view.showRejectDialog {
 
+            routeData.photos.forEach {
+
+                routesManager.removePhoto(it, null)
+            }
+
             view.finishActivity()
         }
     }
 
     override fun onNameEditTextChanged(text: CharSequence?) {}
+
+    override fun onClickDeletePhoto(position: Int) {
+
+        val mutable = routeData.toMutable()
+
+        val route = mutable.photos[position]
+
+        mutable.photos.removeAt(position)
+
+        routesManager.removePhoto(route, null)
+
+        routeData = mutable
+
+        view.notifyPhotoDeleted(position, routeData.photos.size)
+    }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {
         super.notifyOnDestroy(isFinishing)

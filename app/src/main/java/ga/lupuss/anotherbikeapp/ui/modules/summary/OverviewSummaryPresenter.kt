@@ -1,10 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import ga.lupuss.anotherbikeapp.Text
-import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.base.RouteReference
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
-import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
+import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 
 class OverviewSummaryPresenter(
@@ -12,13 +9,13 @@ class OverviewSummaryPresenter(
         override val routesManager: RoutesManager,
         override val resourceResolver: ResourceResolver,
         override val preferencesInteractor: PreferencesInteractor
-
 ) : SummaryPresenter(summaryView), RoutesManager.OnRequestExtendedRouteDataListener  {
 
     // Tests checks this field by reflection.
     // If you renames this field, you should rename it in tests as well.
     private lateinit var routeReference: RouteReference
     private lateinit var name: String
+    override lateinit var routeData: ExtendedRouteData
 
     fun passRouteReference(routeReference: RouteReference) {
 
@@ -51,13 +48,14 @@ class OverviewSummaryPresenter(
     }
 
     override fun onDataOk(routeData: ExtendedRouteData) {
-            view.isRouteEditLineVisible = true
-            view.isProgressBarVisible = false
-            view.isStatsFragmentVisible = true
-            view.isRejectActionVisible = true
-            name = routeData.name ?: resourceResolver.resolve(Text.DEFAULT_ROUTE_NAME)
-            showExtendedRouteData(routeData)
-        }
+        view.isRouteEditLineVisible = true
+        view.isProgressBarVisible = false
+        view.isStatsFragmentVisible = true
+        view.isRejectActionVisible = true
+        name = routeData.name ?: resourceResolver.resolve(Text.DEFAULT_ROUTE_NAME)
+        this.routeData = routeData
+        showExtendedRouteData()
+    }
 
     override fun onMissingData() {
 
@@ -103,6 +101,20 @@ class OverviewSummaryPresenter(
 
             view.isSaveActionVisible = text.toString() != name
         }
+    }
+
+    override fun onClickDeletePhoto(position: Int) {
+
+        val mutable = routeData.toMutable()
+
+        val routePhoto = routeData.photos[position]
+
+        mutable.photos.removeAt(position)
+        routeData = mutable
+
+        routesManager.removePhoto(routePhoto, routeReference)
+
+        view.notifyPhotoDeleted(position, routeData.photos.size)
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {

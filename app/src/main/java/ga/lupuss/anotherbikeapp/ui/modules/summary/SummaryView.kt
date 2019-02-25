@@ -21,4 +21,5 @@ interface SummaryView : BaseView {
     fun getRouteNameFromEditText(): String
     fun setNameLabelValue(value: String)
     fun setPhotosAdaptersCallbacks(routePhotoCallback: (Int) -> RoutePhoto, routePhotosSizeCallback: () -> Int)
+    fun notifyPhotoDeleted(position: Int, size: Int)
 }

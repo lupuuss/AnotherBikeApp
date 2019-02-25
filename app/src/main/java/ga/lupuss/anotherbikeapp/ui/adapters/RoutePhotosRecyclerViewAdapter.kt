@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.ui.adapters
 
+import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,11 +11,10 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
-import ga.lupuss.anotherbikeapp.models.android.AndroidPathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.timeToFormattedString
-import java.io.File
 import java.util.*
 
 class RoutePhotosRecyclerViewAdapter(
@@ -23,7 +23,8 @@ class RoutePhotosRecyclerViewAdapter(
         private val sizeCallback: () -> Int,
         private val locale: Locale,
         private val onClickDeletePhoto: (Int) -> Unit,
-        private val pathsGenerator: PathsGenerator
+        private val routesManager: RoutesManager,
+        private val forceLocalPictures: Boolean
 ) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdapter.ViewHolder>() {
 
     inner class ViewHolder(val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
@@ -41,10 +42,14 @@ class RoutePhotosRecyclerViewAdapter(
 
             photoNameText.text = photo.name ?: layout.context.getString(R.string.no_title)
             photoDateText.text = timeToFormattedString(locale, photo.time)
-            picasso.load(pathsGenerator.createNewPhotoFile(photo.link))
-                    .fit()
-                    .centerCrop()
-                    .into(thumbnailView)
+
+            routesManager.getRoutePhoto(photo.link, forceLocalPictures) {
+
+                picasso.load(Uri.parse(it))
+                        .fit()
+                        .centerCrop()
+                        .into(thumbnailView)
+            }
         }
     }
 

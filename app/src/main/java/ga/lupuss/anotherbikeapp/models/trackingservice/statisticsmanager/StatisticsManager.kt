@@ -8,7 +8,6 @@ import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.timeToFormattedString
 import timber.log.Timber
-import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -84,7 +83,13 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
     fun removePhotoAt(position: Int) {
 
-        pathsGenerator.createNewPhotoFile(routeData.photos[position].link).delete()
+        val file = pathsGenerator.getPathForPhoto(routeData.photos[position].link)
+
+        if (file.exists()) {
+
+            file.delete()
+        }
+
         routeData.photos.removeAt(position)
     }
 

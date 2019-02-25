@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import dagger.Component
@@ -34,4 +35,5 @@ interface AnotherBikeAppComponent {
     fun providesSchedulers(): SchedulersPackage
     fun providesPicasso(): Picasso
     fun providesPathsGenerator(): PathsGenerator
+    fun providesFirebaseStorage(): FirebaseStorage
 }
