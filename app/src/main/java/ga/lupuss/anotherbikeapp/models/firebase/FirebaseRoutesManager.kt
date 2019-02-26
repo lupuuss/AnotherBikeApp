@@ -347,8 +347,12 @@ class FirebaseRoutesManager(
                 .get()
                 .addOnSuccessListener {
 
-                    children.add(0, it)
-                    onNewDocument(0)
+                    if (!children.contains(it)) {
+
+                        children.add(0, it)
+                        onNewDocument(0)
+                    }
+
                     photosSynchronizer.uploadAll(routeData.photos)
 
                 }.addOnFailureListener {
