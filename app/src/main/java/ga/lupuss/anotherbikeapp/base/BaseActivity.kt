@@ -225,7 +225,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
-        return netInfo != null && netInfo.isConnectedOrConnecting
+        return netInfo != null && netInfo.isConnected
     }
 
     @SuppressLint("MissingPermission")

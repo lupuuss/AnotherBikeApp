@@ -26,19 +26,15 @@ class RoutePhotosPresenter @Inject constructor(
         val time = timeProvider()
         val tempLink = "$userUid/$time.png"
 
-        view.requestPhoto(BaseView.PhotoRequest(pathsGenerator.getPathForPhoto(tempLink)) { file, ok ->
+        view.requestPhoto(BaseView.PhotoRequest(pathsGenerator.getPathForPhotoLink(tempLink)) { file, ok ->
 
             if(ok) {
 
                 val sha256 = sha256ofFile(file)
                 val link = "$userUid/$sha256.png"
 
-                Timber.d("SHA 1 $sha256")
-
-                val fileAfterRename = pathsGenerator.getPathForPhoto(link)
+                val fileAfterRename = pathsGenerator.getPathForPhotoLink(link)
                 file.renameTo(fileAfterRename)
-
-                Timber.d(sha256ofFile(fileAfterRename))
 
                 view.displayNewPhotoDialog(fileAfterRename) {
 

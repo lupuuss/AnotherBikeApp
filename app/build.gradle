@@ -6,13 +6,12 @@ apply plugin: 'io.fabric'
 
 android {
 
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "ga.lupuss.anotherbikeapp"
         minSdkVersion 22
-        //noinspection OldTargetApi
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -40,8 +39,7 @@ android {
 dependencies {
 
     ext {
-        support_library_version = '27.1.0'
-        google_play_services_version = '15.0.0'
+        support_library_version = '28.0.0'
         retrofit_version = '2.4.0'
     }
 
@@ -65,12 +63,14 @@ dependencies {
 
     // google services
 
-    implementation "com.google.android.gms:play-services-location:${google_play_services_version}"
-    implementation "com.google.android.gms:play-services-maps:${google_play_services_version}"
-    implementation "com.google.firebase:firebase-auth:${google_play_services_version}"
-    implementation "com.google.firebase:firebase-core:${google_play_services_version}"
-    implementation "com.google.firebase:firebase-firestore:${google_play_services_version}"
-    implementation "com.google.firebase:firebase-storage:${google_play_services_version}"
+    implementation "com.google.android.gms:play-services-location:16.0.0"
+    implementation "com.google.android.gms:play-services-maps:16.1.0"
+    implementation "com.google.firebase:firebase-auth:16.1.0"
+    //noinspection GradleDependency
+    implementation "com.google.firebase:firebase-core:16.0.6"
+    implementation "com.google.firebase:firebase-firestore:18.0.1"
+    implementation "com.google.firebase:firebase-storage:16.0.5"
+    implementation 'com.firebaseui:firebase-ui-storage:4.3.1'
     implementation "com.google.code.gson:gson:2.8.2"
 
     // android
@@ -100,7 +100,9 @@ dependencies {
     implementation 'com.github.tinsukE:icekick:0.4'
     implementation 'com.jakewharton.timber:timber:4.7.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    kapt 'com.github.bumptech.glide:compiler:4.8.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

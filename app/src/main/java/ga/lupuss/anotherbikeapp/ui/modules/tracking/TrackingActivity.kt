@@ -13,7 +13,6 @@ import android.view.*
 import android.widget.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
-import com.squareup.picasso.Picasso
 import com.tinsuke.icekick.extension.freezeInstanceState
 import com.tinsuke.icekick.extension.serialState
 import com.tinsuke.icekick.extension.unfreezeInstanceState
@@ -24,6 +23,7 @@ import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.extensions.ViewExtensions
@@ -44,9 +44,6 @@ class TrackingActivity
 
     @Inject
     lateinit var trackingPresenter: TrackingPresenter
-
-    @Inject
-    lateinit var picasso: Picasso
 
     @Inject
     lateinit var routesManager: RoutesManager
@@ -90,11 +87,11 @@ class TrackingActivity
                 val back: Drawable
 
                 if (value) {
-                    drawable = getDrawable(R.drawable.ic_lock_24dp)
-                    back = getDrawable(R.drawable.circle_accent_secondary)
+                    drawable = getDrawable(R.drawable.ic_lock_24dp)!!
+                    back = getDrawable(R.drawable.circle_accent_secondary)!!
                 } else {
-                    drawable = getDrawable(R.drawable.ic_unlock_24dp)
-                    back = getDrawable(R.drawable.cirlce_accent)
+                    drawable = getDrawable(R.drawable.ic_unlock_24dp)!!
+                    back = getDrawable(R.drawable.cirlce_accent)!!
                 }
                 it.setImageDrawable(drawable)
                 it.background = back
@@ -162,12 +159,11 @@ class TrackingActivity
         initInfoViewPager()
 
         photosAdapter = RoutePhotosRecyclerViewAdapter(
-                picasso,
                 trackingPresenter::getLocalPhotoCallback.get(),
                 trackingPresenter::localPhotosSizeCallback.get(),
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
                 this::onClickDeletePhoto,
-                routesManager,
+                routesManager as FirebaseRoutesManager,
                 true
         )
 

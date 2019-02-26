@@ -26,9 +26,8 @@ class UserModule {
                               firebaseFirestore: FirebaseFirestore,
                               locale: Locale,
                               @Suppress("SpellCheckingInspection") photosSynchronizer: PhotosSynchronizer,
-                              pathsGenerator: PathsGenerator,
                               gson: Gson): RoutesManager =
-            FirebaseRoutesManager(authInteractor, firebaseFirestore, routesKeeper, locale, photosSynchronizer, pathsGenerator, gson)
+            FirebaseRoutesManager(authInteractor, firebaseFirestore, routesKeeper, locale, photosSynchronizer, gson)
 
     @Provides
     @UserComponentScope

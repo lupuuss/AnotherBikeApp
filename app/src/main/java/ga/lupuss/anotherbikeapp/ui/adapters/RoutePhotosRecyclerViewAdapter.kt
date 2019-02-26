@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.adapters
 
-import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,21 +7,20 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
+import ga.lupuss.anotherbikeapp.GlideApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.timeToFormattedString
 import java.util.*
 
 class RoutePhotosRecyclerViewAdapter(
-        private val picasso: Picasso,
         private val routePhotosCallback: (Int) -> RoutePhoto,
         private val sizeCallback: () -> Int,
         private val locale: Locale,
         private val onClickDeletePhoto: (Int) -> Unit,
-        private val routesManager: RoutesManager,
+        private val routesManager: FirebaseRoutesManager,
         private val forceLocalPictures: Boolean
 ) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdapter.ViewHolder>() {
 
@@ -42,13 +40,23 @@ class RoutePhotosRecyclerViewAdapter(
             photoNameText.text = photo.name ?: layout.context.getString(R.string.no_title)
             photoDateText.text = timeToFormattedString(locale, photo.time)
 
-            routesManager.getRoutePhoto(photo.link, forceLocalPictures) {
+            val file = routesManager.getPathForRoutePhoto(photo)
 
-                picasso.load(Uri.parse(it))
-                        .fit()
-                        .centerCrop()
-                        .into(thumbnailView)
+            val glideRequest = if (forceLocalPictures || file.exists()) {
+
+                GlideApp.with(this.layout.context)
+                        .load(file)
+
+            } else {
+
+                GlideApp.with(this.layout.context)
+                        .load(routesManager.getStoragePhotoReference(photo.link))
             }
+
+            glideRequest
+                    .fitCenter()
+                    .centerCrop()
+                    .into(thumbnailView)
         }
     }
 

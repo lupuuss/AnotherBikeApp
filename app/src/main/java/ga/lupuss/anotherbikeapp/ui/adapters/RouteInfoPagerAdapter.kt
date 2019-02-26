@@ -53,7 +53,8 @@ class RouteInfoPagerAdapter(
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        val image = context.getDrawable(icons[position])
+
+        val image = context.getDrawable(icons[position])!!
         image.setBounds(0, 0, image.intrinsicWidth, image.intrinsicHeight)
         val sb = SpannableString(" ")
         val imageSpan = ImageSpan(image, ImageSpan.ALIGN_BOTTOM)

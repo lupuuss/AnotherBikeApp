@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.base
 
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import java.io.File
 
 interface PhotosSynchronizer {
 
@@ -8,5 +9,5 @@ interface PhotosSynchronizer {
     fun cancelAll()
     fun removeAll(photos: List<RoutePhoto>)
     fun removePhotoFile(photo: RoutePhoto)
-    fun getDownloadUrl(link: String, onSuccess: (String) -> Unit, onFail: () -> Unit)
+    fun getPathForPhotoLink(link: String): File
 }

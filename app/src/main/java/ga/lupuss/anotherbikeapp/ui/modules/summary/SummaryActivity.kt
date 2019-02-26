@@ -16,7 +16,6 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-import com.squareup.picasso.Picasso
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -31,6 +30,7 @@ import ga.lupuss.anotherbikeapp.base.StatsActivity
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
 
@@ -42,9 +42,6 @@ class SummaryActivity
 
     @Inject
     lateinit var summaryPresenter: MainSummaryPresenter
-
-    @Inject
-    lateinit var picasso: Picasso
 
     @Inject
     lateinit var routesManager: RoutesManager
@@ -155,15 +152,14 @@ class SummaryActivity
         routePhotosFragment.isTakingNewPhotoEnabled = false
 
 
-        mode = SummaryPresenter.Mode.valueOf(intent.extras.getString(MODE_KEY))
+        mode = SummaryPresenter.Mode.valueOf(intent.extras!!.getString(MODE_KEY)!!)
 
         photosAdapter = RoutePhotosRecyclerViewAdapter(
-                picasso,
                 { routePhotoCallback(it) },
                 { routePhotosSizeCallback() },
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
                 this::onClickDeletePhoto,
-                routesManager,
+                routesManager as FirebaseRoutesManager,
                 mode == SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY
         )
 
@@ -171,7 +167,7 @@ class SummaryActivity
 
         if (mode == SummaryPresenter.Mode.OVERVIEW) {
 
-            docReference = intent.extras.getString(DOC_REFERENCE_KEY)
+            docReference = intent.extras!!.getString(DOC_REFERENCE_KEY)
         }
 
         summaryPresenter.initMode(mode, docReference)

@@ -2,7 +2,6 @@ package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
 import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 import dagger.Component
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
@@ -27,6 +26,5 @@ interface UserComponent {
     fun providesRoutesManager(): RoutesManager
     fun providesPreferencesInteractor(): PreferencesInteractor
     fun providesWeatherManager(): WeatherManager
-    fun providesPicasso(): Picasso
     fun providesPathsGenerator(): PathsGenerator
 }

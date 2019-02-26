@@ -4,6 +4,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
+import java.io.File
 
 interface RoutesManager {
 
@@ -47,5 +48,5 @@ interface RoutesManager {
     fun changeName(routeReference: RouteReference, routeNameFromEditText: String)
     fun removePhoto(routePhoto: RoutePhoto, routeReference: RouteReference?)
     fun cancelAllPhotosUpload()
-    fun getRoutePhoto(link: String, forceLocal: Boolean, onComplete: (String) -> Unit)
+    fun getPathForRoutePhoto(photo: RoutePhoto): File
 }

@@ -145,22 +145,22 @@ class RoutesHistoryFragment
     }
 
     override fun refreshRecyclerAdapter() {
-        routesHistoryRecycler.adapter.notifyDataSetChanged()
+        routesHistoryRecycler.adapter!!.notifyDataSetChanged()
     }
 
     override fun notifyRecyclerItemChanged(position: Int) {
 
-        routesHistoryRecycler.adapter.notifyItemChanged(position)
+        routesHistoryRecycler.adapter!!.notifyItemChanged(position)
     }
 
     override fun notifyRecyclerItemRemoved(position: Int, size: Int) {
-        routesHistoryRecycler.adapter.notifyItemRemoved(position)
-        routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
+        routesHistoryRecycler.adapter!!.notifyItemRemoved(position)
+        routesHistoryRecycler.adapter!!.notifyItemRangeChanged(0, size)
     }
 
     override fun notifyRecyclerItemInserted(position: Int, size: Int) {
-        routesHistoryRecycler.adapter.notifyItemInserted(position)
-        routesHistoryRecycler.adapter.notifyItemRangeChanged(0, size)
+        routesHistoryRecycler.adapter!!.notifyItemInserted(position)
+        routesHistoryRecycler.adapter!!.notifyItemRangeChanged(0, size)
     }
 
     override fun startSummaryActivity(documentReference: String) {

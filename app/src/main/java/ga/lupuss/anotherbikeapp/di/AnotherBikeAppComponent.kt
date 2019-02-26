@@ -4,7 +4,6 @@ import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 import dagger.Component
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
@@ -33,7 +32,6 @@ interface AnotherBikeAppComponent {
     fun providesAuthInteractor(): AuthInteractor
     fun providesWeatherApi(): OpenWeatherApi
     fun providesSchedulers(): SchedulersPackage
-    fun providesPicasso(): Picasso
     fun providesPathsGenerator(): PathsGenerator
     fun providesFirebaseStorage(): FirebaseStorage
 }

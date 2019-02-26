@@ -2,10 +2,10 @@ package ga.lupuss.anotherbikeapp.models.firebase
 
 
 import android.app.Activity
-import android.net.Uri
 import android.support.v4.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.*
+import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
@@ -17,6 +17,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import timber.log.Timber
+import java.io.File
 import java.lang.IllegalArgumentException
 import java.util.*
 
@@ -26,12 +27,12 @@ class FirebaseRoutesManager(
         private val firebaseFirestore: FirebaseFirestore,
         private val routeKeeper: TempRouteKeeper,
         private val locale: Locale,
-        private val photosSynchronizer: PhotosSynchronizer,
-        private val pathsGenerator: PathsGenerator,
+        photosSynchronizer: PhotosSynchronizer,
         gson: Gson
 
 ): RoutesManager, OnDataSetChanged{
 
+    private val photosSynchronizer: FirebasePhotosSynchronizer = photosSynchronizer as FirebasePhotosSynchronizer
     private val children = mutableListOf<DocumentSnapshot>()
 
     private val limit: Long = DEFAULT_LIMIT
@@ -222,18 +223,18 @@ class FirebaseRoutesManager(
         routeReference.routeReference!!.get()
                 .continueWithTask {
 
-                    if (it.result.exists()) {
+                    if (it.result!!.exists()) {
 
-                        routeData = it.result.toFirebaseRouteData().toRouteData(locale)
+                        routeData = it.result!!.toFirebaseRouteData().toRouteData(locale)
 
                     }
 
                     routeReference.pointsReference?.get()
                 }.continueWithTask {
 
-                    points = if (it.result.exists()) {
+                    points = if (it.result!!.exists()) {
 
-                        it.result.toFirebasePoints().pointsAsLatLngList()
+                        it.result!!.toFirebasePoints().pointsAsLatLngList()
                     } else {
 
                         null
@@ -291,20 +292,6 @@ class FirebaseRoutesManager(
 
     override fun cancelAllPhotosUpload() {
         photosSynchronizer.cancelAll()
-    }
-
-    override fun getRoutePhoto(link: String, forceLocal: Boolean, onComplete: (String) -> Unit) {
-
-        if (forceLocal) {
-
-            onComplete(Uri.fromFile(pathsGenerator.getPathForPhoto(link)).toString())
-        } else {
-
-            photosSynchronizer.getDownloadUrl(link, onComplete) {
-
-                onComplete(Uri.fromFile(pathsGenerator.getPathForPhoto(link)).toString())
-            }
-        }
     }
 
     override fun saveRoute(routeData: ExtendedRouteData) {
@@ -422,6 +409,14 @@ class FirebaseRoutesManager(
     override fun clearTempRoute(slot: RoutesManager.Slot) {
 
         routeKeeper.clear(slot)
+    }
+
+    fun getStoragePhotoReference(link: String): StorageReference =
+            photosSynchronizer.getStorageReference(link)
+
+    override fun getPathForRoutePhoto(photo: RoutePhoto): File {
+
+        return photosSynchronizer.getPathForPhotoLink(photo.link)
     }
 
     companion object {

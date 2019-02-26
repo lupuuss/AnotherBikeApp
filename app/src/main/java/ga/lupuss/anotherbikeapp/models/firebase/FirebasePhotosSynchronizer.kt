@@ -9,6 +9,7 @@ import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.PhotosSynchronizer
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import timber.log.Timber
+import java.io.File
 import java.lang.Exception
 import java.util.*
 import kotlin.concurrent.schedule
@@ -32,7 +33,7 @@ class FirebasePhotosSynchronizer(
             OnProgressListener<UploadTask.TaskSnapshot>,
             OnSuccessListener<UploadTask.TaskSnapshot> {
 
-        private val reference = storage.getReference("images/${routePhoto.link}")
+        private val reference = getStorageReference(routePhoto.link)
         private var uploadTask: StorageTask<UploadTask.TaskSnapshot>? = null
         private val isInProgress: Boolean
             get() {
@@ -46,13 +47,13 @@ class FirebasePhotosSynchronizer(
             uploadTask = if (sessionUri != null) {
 
                 reference.putFile(
-                        Uri.fromFile(pathsGenerator.getPathForPhoto(routePhoto.link)),
+                        Uri.fromFile(pathsGenerator.getPathForPhotoLink(routePhoto.link)),
                         StorageMetadata.Builder().build(),
                         sessionUri
                 )
             } else {
 
-                reference.putFile(Uri.fromFile(pathsGenerator.getPathForPhoto(routePhoto.link)))
+                reference.putFile(Uri.fromFile(pathsGenerator.getPathForPhotoLink(routePhoto.link)))
             }
 
             uploadTask!!
@@ -89,7 +90,7 @@ class FirebasePhotosSynchronizer(
         }
 
         override fun onSuccess(p0: UploadTask.TaskSnapshot) {
-            Timber.d("Photo uploaded: ${p0.downloadUrl}")
+            Timber.d("Photo uploaded: ${p0.uploadSessionUri.toString()}")
             cleanListeners()
             list.remove(this)
             removePhotoFile(routePhoto)
@@ -170,7 +171,7 @@ class FirebasePhotosSynchronizer(
 
         refreshBackup()
 
-        val file = pathsGenerator.getPathForPhoto(photo.link)
+        val file = pathsGenerator.getPathForPhotoLink(photo.link)
 
         if (file.exists()) {
 
@@ -180,7 +181,7 @@ class FirebasePhotosSynchronizer(
 
     override fun removePhotoFile(photo: RoutePhoto) {
 
-        val file = pathsGenerator.getPathForPhoto(photo.link)
+        val file = pathsGenerator.getPathForPhotoLink(photo.link)
 
         if (file.exists()) {
 
@@ -220,16 +221,14 @@ class FirebasePhotosSynchronizer(
         }
     }
 
-    override fun getDownloadUrl(link: String, onSuccess: (String) -> Unit, onFail: () -> Unit) {
-        storage.getReference("images/$link")
-                .downloadUrl
-                .addOnSuccessListener {
-                    onSuccess(it.toString())
-                }
-                .addOnFailureListener {
-                    Timber.e(it)
-                    onFail()
-                }
+    fun getStorageReference(link: String): StorageReference {
+
+        return storage.getReference("images/$link")
+    }
+
+    override fun getPathForPhotoLink(link: String): File {
+
+        return pathsGenerator.getPathForPhotoLink(link)
     }
 }
 

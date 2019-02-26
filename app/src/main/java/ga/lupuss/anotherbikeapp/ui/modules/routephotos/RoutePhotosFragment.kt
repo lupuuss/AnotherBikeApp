@@ -11,9 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ImageView
-import com.squareup.picasso.Picasso
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
+import ga.lupuss.anotherbikeapp.GlideApp
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.dpToPixels
@@ -49,11 +48,8 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
     @Inject
     lateinit var presenter: RoutePhotosPresenter
 
-    @Inject
-    lateinit var picasso: Picasso
-
     val adapter: RecyclerView.Adapter<*>
-        get() = photosRecyclerView.adapter
+        get() = photosRecyclerView.adapter!!
 
     override fun onAttach(context: Context?) {
         requiresVerification()
@@ -121,10 +117,12 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         val view = layoutInflater.inflate(R.layout.new_photo_dialog, null, false)
 
-        picasso.load(photoPath)
-                .fit()
+        GlideApp.with(this)
+                .load(photoPath)
+                .fitCenter()
                 .centerInside()
-                .into(view.findViewById<ImageView>(R.id.newPhotoView))
+                .into(view.findViewById(R.id.newPhotoView))
+
 
         AlertDialog.Builder(this.requireContext())
                 .setView(view)

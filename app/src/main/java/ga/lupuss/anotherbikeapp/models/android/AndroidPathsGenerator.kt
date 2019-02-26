@@ -7,7 +7,7 @@ import java.io.File
 
 class AndroidPathsGenerator(private val context: Context) : PathsGenerator {
 
-    override fun getPathForPhoto(link: String): File {
+    override fun getPathForPhotoLink(link: String): File {
 
         val dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
