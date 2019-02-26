@@ -77,7 +77,7 @@ class RoutesHistoryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.itemView.setOnClickListener { _ ->
+        holder.itemView.setOnClickListener {
 
             listeners.forEach { it.onItemClick(position) }
         }

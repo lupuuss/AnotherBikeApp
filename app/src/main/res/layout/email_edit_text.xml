@@ -9,4 +9,5 @@
     android:hint="@string/email"
     android:background="?android:colorPrimary"
     android:padding="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:importantForAutofill="no" />

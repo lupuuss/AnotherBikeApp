@@ -1,10 +1,9 @@
 package ga.lupuss.anotherbikeapp.models.base
 
-import android.net.Uri
-import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
+import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 
 interface RoutesManager {
 

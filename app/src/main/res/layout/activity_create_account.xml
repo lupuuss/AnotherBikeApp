@@ -45,7 +45,8 @@
             app:layout_constraintTop_toBottomOf="@id/emailEditInclude"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/displayNameEditText" />
+            android:id="@+id/displayNameEditText"
+            android:importantForAutofill="no" />
 
         <include layout="@layout/password_edit_text"
             android:layout_width="0dp"

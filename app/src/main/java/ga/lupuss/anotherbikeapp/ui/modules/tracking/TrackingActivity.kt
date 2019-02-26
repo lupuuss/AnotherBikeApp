@@ -326,7 +326,7 @@ class TrackingActivity
                     (shortStatsContainer as ViewGroup),
                     R.layout.activity_tracking_short_stat,
                     statName,
-                    resourceResolver.resolve(statName, stats[statName]!!)
+                    resourceResolver.resolve(statName, stats.getValue(statName))
             ))
         }
 
@@ -337,7 +337,7 @@ class TrackingActivity
         for (statName in shortStatsListToDisplay) {
 
             shortStatsContainer.findViewWithTag<TextView>(statName).text =
-                    resourceResolver.resolve(statName, stats[statName]!!)
+                    resourceResolver.resolve(statName, stats.getValue(statName))
         }
     }
 
@@ -405,9 +405,9 @@ class TrackingActivity
         AlertDialog.Builder(this)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.messageFinishTracking)
-                .setPositiveButton(R.string.yes, { _, _ ->
+                .setPositiveButton(R.string.yes) { _, _ ->
                     onYesAction.invoke()
-                })
+                }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }

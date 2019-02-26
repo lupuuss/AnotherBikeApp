@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ScrollView
 
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedActivity
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_stats.*
 /** Contains information about tracking. */
 class StatsFragment : Fragment() {
 
-    var isScrollingEnabled: Boolean = true
+    private var isScrollingEnabled: Boolean = true
     private lateinit var resourceResolver: ResourceResolver
     private var isLandscape = false
 
@@ -57,9 +56,9 @@ class StatsFragment : Fragment() {
 
         if (mode == Mode.CURRENT_STATS) {
 
-            statusIcon.setImageResource(resolveStatusIcon(statsArg[Statistic.Name.STATUS]!!.value as Status))
+            statusIcon.setImageResource(resolveStatusIcon(statsArg.getValue(Statistic.Name.STATUS).value as Status))
 
-            durationText.text = resourceResolver.resolve(statsArg[Statistic.Name.DURATION]!!)
+            durationText.text = resourceResolver.resolve(statsArg.getValue(Statistic.Name.DURATION))
             stats.remove(Statistic.Name.DURATION)
         } else {
 
@@ -87,7 +86,7 @@ class StatsFragment : Fragment() {
 
         var i = 0
 
-        stats.forEach { name, statistic ->
+        stats.entries.forEach { (name, statistic) ->
 
             val linearLayout: LinearLayout
             val textLayout: Int
@@ -124,7 +123,7 @@ class StatsFragment : Fragment() {
 
         var i = 0
 
-        stats.forEach { name, statistic ->
+        stats.entries.forEach { (name, stat) ->
 
             val linearLayout: LinearLayout = if (i % 2 == 0 || isLandscape) {
 
@@ -138,7 +137,7 @@ class StatsFragment : Fragment() {
                     linearLayout,
                     name,
                     resourceResolver.resolve(name),
-                    resourceResolver.resolve(statistic)
+                    resourceResolver.resolve(stat)
             )
 
             i++

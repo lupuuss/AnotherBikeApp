@@ -6,7 +6,6 @@
     <string name="avgSpeed">Śr. prędkość</string>
     <string name="maxSpeed">Maks. prędkość</string>
     <string name="distance">Dystans</string>
-    <string name="messageEmptyStatistics">Tu będą wyświetlane statystyki.</string>
     <string name="locationNotAvailable">Nie udało się uzyskać lokalizacji. Spróbuj ponownie później.</string>
     <string name="waitingForLocation">Oczekiwanie na lokalizacje…</string>
     <string name="hide">Ukryj</string>

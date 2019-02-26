@@ -38,8 +38,8 @@ class WeatherFragment
     @Inject
     lateinit var preferencesInteractor: PreferencesInteractor
 
-    lateinit var windSpeedUnit: AppUnit.Speed
-    lateinit var temperatureUnit: AppUnit.Temperature
+    private lateinit var windSpeedUnit: AppUnit.Speed
+    private lateinit var temperatureUnit: AppUnit.Temperature
 
     override fun onAttach(context: Context?) {
         requiresVerification()

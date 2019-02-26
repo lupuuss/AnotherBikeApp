@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
-import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.timeToFormattedString

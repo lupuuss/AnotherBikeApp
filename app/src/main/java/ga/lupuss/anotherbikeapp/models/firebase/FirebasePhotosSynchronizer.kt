@@ -32,9 +32,9 @@ class FirebasePhotosSynchronizer(
             OnProgressListener<UploadTask.TaskSnapshot>,
             OnSuccessListener<UploadTask.TaskSnapshot> {
 
-        val reference = storage.getReference("images/${routePhoto.link}")
-        var uploadTask: StorageTask<UploadTask.TaskSnapshot>? = null
-        val isInProgress: Boolean
+        private val reference = storage.getReference("images/${routePhoto.link}")
+        private var uploadTask: StorageTask<UploadTask.TaskSnapshot>? = null
+        private val isInProgress: Boolean
             get() {
                 return uploadTask?.isInProgress ?: false
             }

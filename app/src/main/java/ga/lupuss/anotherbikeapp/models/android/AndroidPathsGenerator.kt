@@ -2,14 +2,10 @@ package ga.lupuss.anotherbikeapp.models.android
 
 import android.content.Context
 import android.os.Environment
-import ga.lupuss.anotherbikeapp.R
-import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import java.io.File
 
-class AndroidPathsGenerator(private val context: Context,
-                            private val timeProvider: () -> Long,
-                            private val authInteractor: AuthInteractor) : PathsGenerator {
+class AndroidPathsGenerator(private val context: Context) : PathsGenerator {
 
     override fun getPathForPhoto(link: String): File {
 

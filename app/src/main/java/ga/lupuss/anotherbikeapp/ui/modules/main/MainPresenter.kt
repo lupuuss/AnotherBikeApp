@@ -113,7 +113,7 @@ class MainPresenter(private val routesManager: RoutesManager,
 
             signOut()
         } else {
-            view.showExitWarningDialog({ signOut() })
+            view.showExitWarningDialog { signOut() }
         }
     }
 
@@ -136,7 +136,7 @@ class MainPresenter(private val routesManager: RoutesManager,
 
         } else {
 
-            view.showExitWarningDialog({ view.finishActivity() })
+            view.showExitWarningDialog { view.finishActivity() }
         }
     }
 

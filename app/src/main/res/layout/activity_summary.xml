@@ -60,7 +60,8 @@
                     android:inputType="text"
                     android:hint="@string/enterName"
                     android:layout_marginStart="8dp"
-                    tools:ignore="SpUsage" />
+                    tools:ignore="SpUsage"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <ProgressBar

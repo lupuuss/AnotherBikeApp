@@ -426,11 +426,9 @@ class FirebaseRoutesManager(
         const val FIREB_USERS = "users"
         const val FIREB_ROUTES = "routes"
         const val FIREB_START_TIME = "startTime"
-        const val FIREB_ROUTE = "route"
         const val FIREB_PHOTOS = "photos"
         const val DEFAULT_LIMIT = 10L
         const val FIREB_POINTS = "points"
-        const val FIREB_POINTS_ID = "pointsId"
         const val FIREB_ROUTE_ID = "routeId"
         const val FIREB_USER_ID = "userId"
         const val FIREB_NAME = "name"

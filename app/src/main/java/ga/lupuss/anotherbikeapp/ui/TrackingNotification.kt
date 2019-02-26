@@ -58,14 +58,14 @@ class TrackingNotification {
 
         val content =
                 if (statistic != null)
-                    "${resourceResolver.resolve(statistic[Statistic.Name.DURATION]!!)}  |  " +
-                            "${resourceResolver.resolve(statistic[Statistic.Name.DISTANCE]!!)}  |  " +
-                            " ${resourceResolver.resolve(statistic[Statistic.Name.AVG_SPEED]!!)}"
+                    "${resourceResolver.resolve(statistic.getValue(Statistic.Name.DURATION))}  |  " +
+                            "${resourceResolver.resolve(statistic.getValue(Statistic.Name.DISTANCE))}  |  " +
+                            " ${resourceResolver.resolve(statistic.getValue(Statistic.Name.AVG_SPEED))}"
                 else ""
 
         val title =
                 if (statistic != null)
-                    resourceResolver.resolve(statistic[Statistic.Name.STATUS]!!)
+                    resourceResolver.resolve(statistic.getValue(Statistic.Name.STATUS))
                 else
                     context.getString(R.string.trackingInProgress)
 

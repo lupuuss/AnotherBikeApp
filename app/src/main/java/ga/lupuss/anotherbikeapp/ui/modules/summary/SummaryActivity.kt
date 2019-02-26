@@ -286,7 +286,7 @@ class SummaryActivity
                 .setIcon(R.drawable.ic_delete_24dp)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.messageRejectWarning)
-                .setPositiveButton(R.string.reject, { _, _ -> onYes.invoke() })
+                .setPositiveButton(R.string.reject) { _, _ -> onYes.invoke() }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }
@@ -296,7 +296,7 @@ class SummaryActivity
                 .setIcon(R.drawable.ic_delete_24dp)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.messageDeleteRouteWarning)
-                .setPositiveButton(R.string.delete, { _, _ -> onYes.invoke() })
+                .setPositiveButton(R.string.delete) { _, _ -> onYes.invoke() }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }
@@ -307,7 +307,7 @@ class SummaryActivity
                 .setIcon(R.drawable.ic_delete_24dp)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.messageUnsavedState)
-                .setPositiveButton(R.string.exit, { _, _ -> onYes.invoke() })
+                .setPositiveButton(R.string.exit) { _, _ -> onYes.invoke() }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }

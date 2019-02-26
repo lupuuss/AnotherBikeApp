@@ -111,8 +111,8 @@ class FirebaseAuthInteractor(
                 .updateProfile(userProfileChangeRequest)
                 .continueWithTask {
 
-                    it.exception?.let {
-                        Timber.e(it)
+                    it.exception?.let { exception ->
+                        Timber.e(exception)
                     }
 
                     if (it.isSuccessful) {

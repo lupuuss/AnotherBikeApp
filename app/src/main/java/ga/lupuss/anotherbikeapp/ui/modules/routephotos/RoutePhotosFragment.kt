@@ -42,9 +42,9 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
             takePhotoButton?.isGone = !value
         }
 
-    var photosListener: Listener? = null
+    private var photosListener: Listener? = null
 
-    var isScrollingEnabled = true
+    private var isScrollingEnabled = true
 
     @Inject
     lateinit var presenter: RoutePhotosPresenter

@@ -18,7 +18,7 @@ class StatisticsMathProvider(val timeProvider: () -> Long) {
 
     fun measureAverage(name: AVG, currentValue: Double): Double {
 
-        val entity = averages[name]!!
+        val entity = averages.getValue(name)
 
         entity.avgCount++
 

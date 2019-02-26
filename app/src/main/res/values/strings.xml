@@ -25,7 +25,6 @@
     <string name="trackingInProgress">Tracking in progress…</string>
     <string name="waitingForLocation">Waiting for location…</string>
     <string name="noPermission">Route tracking is not possible without access to the device\'s location.</string>
-    <string name="messageEmptyStatistics">Statistics will be displayed here.</string>
     <string name="locationNotAvailable">Location could not be obtained. Try again later.</string>
     <string name="messageFinishTracking">Are you sure you want to finish tracking?</string>
     <string name="finishTracking">Finish tracking</string>

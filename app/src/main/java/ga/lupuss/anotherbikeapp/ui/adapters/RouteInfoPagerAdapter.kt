@@ -29,12 +29,6 @@ class RouteInfoPagerAdapter(
         }
     }
 
-    fun addFragment(fragmentIcon: Pair<Int, Fragment>) {
-
-        icons.add(fragmentIcon.first)
-        fragmentsList.add(fragmentIcon.second)
-    }
-
     override fun getItem(position: Int): Fragment {
         return fragmentsList[position]
     }
