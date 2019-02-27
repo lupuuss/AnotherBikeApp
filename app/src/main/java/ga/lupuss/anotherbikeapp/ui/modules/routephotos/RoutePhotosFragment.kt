@@ -117,15 +117,24 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         }
         isNoPhotosTextViewGone = adapter.itemCount != 0
 
+    }
+
+    override fun onStartPostVerification() {
+        super.onStartPostVerification()
+
         listener = { isNoPhotosTextViewGone = adapter.itemCount != 0 }
 
         (adapter as? RoutePhotosRecyclerViewAdapter)?.addOnClickDeletePhotoListener(listener)
     }
 
+    override fun onStopPostVerification() {
+        super.onStopPostVerification()
+        (adapter as? RoutePhotosRecyclerViewAdapter)?.removeOnClickDeletePhotoListener(listener)
+    }
+
     override fun onDestroyViewPostVerification() {
 
         super.onDestroyViewPostVerification()
-        (adapter as? RoutePhotosRecyclerViewAdapter)?.removeOnClickDeletePhotoListener(listener)
         presenter.notifyOnDestroy(true)
     }
 

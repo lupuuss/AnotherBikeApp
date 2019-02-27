@@ -33,11 +33,8 @@ class RoutePhotosRecyclerViewAdapter(
 
     fun removeOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int) -> Unit) {
 
-        Timber.w("================%s", deletePhotoListeners.size.toString())
 
         deletePhotoListeners.remove(onClickDeletePhotoListener)
-
-        Timber.w(deletePhotoListeners.size.toString())
     }
 
     inner class ViewHolder(val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
