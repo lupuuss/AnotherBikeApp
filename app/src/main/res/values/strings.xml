@@ -118,4 +118,5 @@
     <string name="forgotPassword">Forgot password?</string>
     <string name="passwordResetComplete">An email to change the password has been sent.</string>
     <string name="no_title">No title</string>
+    <string name="noPictures">No photos for this route.</string>
 </resources>

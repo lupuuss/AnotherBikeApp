@@ -17,6 +17,7 @@ import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.BaseFragment
 import ga.lupuss.anotherbikeapp.dpToPixels
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
+import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.decorations.BottomSpaceItemDecoration
 import ga.lupuss.anotherbikeapp.ui.extensions.isGone
 import kotlinx.android.synthetic.main.fragment_route_photos.*
@@ -51,6 +52,19 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
     val adapter: RecyclerView.Adapter<*>
         get() = photosRecyclerView.adapter!!
 
+    override var isNoPhotosTextViewGone = true
+        set(value) {
+
+            noPhotosTextView?.isGone = value
+            field = value
+        }
+        get() {
+
+            return noPhotosTextView?.isGone ?: field
+        }
+
+    private lateinit var listener: ((Int) -> Unit)
+
     override fun onAttach(context: Context?) {
         requiresVerification()
         super.onAttach(context)
@@ -70,7 +84,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         } else {
 
-            throw IllegalStateException("Activity should implement RoutePhotosPresenter.Listener." +
+            throw IllegalStateException("Activity should implement RoutePhotosFragment.Listener." +
                     " It's ${context!!.javaClass.canonicalName}")
         }
     }
@@ -101,10 +115,17 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
                     )
             )
         }
+        isNoPhotosTextViewGone = adapter.itemCount != 0
+
+        listener = { isNoPhotosTextViewGone = adapter.itemCount != 0 }
+
+        (adapter as? RoutePhotosRecyclerViewAdapter)?.addOnClickDeletePhotoListener(listener)
     }
 
     override fun onDestroyViewPostVerification() {
+
         super.onDestroyViewPostVerification()
+        (adapter as? RoutePhotosRecyclerViewAdapter)?.removeOnClickDeletePhotoListener(listener)
         presenter.notifyOnDestroy(true)
     }
 
@@ -138,6 +159,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
     override fun notifyPhotoTaken(photo: RoutePhoto) {
 
+        isNoPhotosTextViewGone = true
         photosListener?.onNewPhotoTaken(photo)
     }
 }

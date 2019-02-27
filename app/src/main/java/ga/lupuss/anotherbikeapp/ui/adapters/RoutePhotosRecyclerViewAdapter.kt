@@ -13,16 +13,32 @@ import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.timeToFormattedString
+import timber.log.Timber
 import java.util.*
 
 class RoutePhotosRecyclerViewAdapter(
         private val routePhotosCallback: (Int) -> RoutePhoto,
         private val sizeCallback: () -> Int,
         private val locale: Locale,
-        private val onClickDeletePhoto: (Int) -> Unit,
         private val routesManager: FirebaseRoutesManager,
         private val forceLocalPictures: Boolean
 ) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdapter.ViewHolder>() {
+
+    private val deletePhotoListeners: MutableList<(Int) -> Unit> = mutableListOf()
+
+    fun addOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int) -> Unit) {
+
+        deletePhotoListeners.add(onClickDeletePhotoListener)
+    }
+
+    fun removeOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int) -> Unit) {
+
+        Timber.w("================%s", deletePhotoListeners.size.toString())
+
+        deletePhotoListeners.remove(onClickDeletePhotoListener)
+
+        Timber.w(deletePhotoListeners.size.toString())
+    }
 
     inner class ViewHolder(val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
         private val photoNameText: TextView = layout.findViewById(R.id.photoNameText)
@@ -81,7 +97,9 @@ class RoutePhotosRecyclerViewAdapter(
                 .findViewById<ImageButton>(R.id.deletePhotoButton)
                 .setOnClickListener {
 
-            onClickDeletePhoto(position)
+            deletePhotoListeners.forEach {
+                it(position)
+            }
         }
 
         holder.bindView(position)

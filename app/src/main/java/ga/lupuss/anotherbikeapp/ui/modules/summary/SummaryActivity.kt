@@ -33,6 +33,7 @@ import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
+import timber.log.Timber
 
 class SummaryActivity
     : StatsActivity(), SummaryView,
@@ -158,10 +159,11 @@ class SummaryActivity
                 { routePhotoCallback(it) },
                 { routePhotosSizeCallback() },
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
-                this::onClickDeletePhoto,
                 routesManager as FirebaseRoutesManager,
                 mode == SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY
-        )
+        ).apply {
+            addOnClickDeletePhotoListener(this@SummaryActivity::onClickDeletePhoto)
+        }
 
         var docReference: String? = null
 
@@ -212,6 +214,8 @@ class SummaryActivity
 
     override fun onDestroyPostVerification() {
         super.onDestroyPostVerification()
+        Timber.d("XDDD")
+        (photosAdapter as RoutePhotosRecyclerViewAdapter).removeOnClickDeletePhotoListener(this::onClickDeletePhoto)
         summaryPresenter.notifyOnDestroy(isFinishing)
     }
 

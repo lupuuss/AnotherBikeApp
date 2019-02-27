@@ -26,6 +26,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/noPhotosTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/takePhotoButton"
+            android:layout_marginTop="30dp"
+            android:text="@string/noPictures"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/photosRecyclerView"
             app:layout_constraintTop_toBottomOf="@id/takePhotoButton"

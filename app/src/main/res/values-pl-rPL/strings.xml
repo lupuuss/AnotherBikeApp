@@ -102,4 +102,5 @@
     <string name="forgotPassword">Nie pamiętasz hasła?</string>
     <string name="passwordResetComplete">Email do zmiany hasła został wysłany.</string>
     <string name="no_title">Bez tytułu</string>
+    <string name="noPictures">Brak zdjęć dla tej trasy.</string>
 </resources>

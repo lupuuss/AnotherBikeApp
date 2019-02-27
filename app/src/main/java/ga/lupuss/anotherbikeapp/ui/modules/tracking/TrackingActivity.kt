@@ -162,10 +162,11 @@ class TrackingActivity
                 trackingPresenter::getLocalPhotoCallback.get(),
                 trackingPresenter::localPhotosSizeCallback.get(),
                 ConfigurationCompat.getLocales(resources.configuration)[0]!!,
-                this::onClickDeletePhoto,
                 routesManager as FirebaseRoutesManager,
                 true
-        )
+        ).apply {
+            addOnClickDeletePhotoListener(this@TrackingActivity::onClickDeletePhoto)
+        }
 
         unfreezeInstanceState(savedInstanceState)
         savedInstanceState?.let {
@@ -247,6 +248,7 @@ class TrackingActivity
 
     override fun onDestroyPostVerification() {
         super.onDestroyPostVerification()
+        (photosAdapter as RoutePhotosRecyclerViewAdapter).removeOnClickDeletePhotoListener(this::onClickDeletePhoto)
         trackingPresenter.notifyOnDestroy(isFinishing)
     }
 
