@@ -90,6 +90,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         takePhotoButton.setOnClickListener(this)
         takePhotoButton.isGone = !isTakingNewPhotoEnabled
         photosRecyclerView.apply {
+
             setItemViewCacheSize(10)
             isNestedScrollingEnabled = false
             this.adapter = this@RoutePhotosFragment.photosListener!!.photosAdapter
@@ -113,7 +114,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
     }
 
     @SuppressLint("InflateParams")
-    override fun displayNewPhotoDialog(photoPath: File, onYesAction: (String) -> Unit) {
+    override fun displayNewPhotoDialog(photoPath: File, onYesAction: (String) -> Unit, onNoAction: () -> Unit) {
 
         val view = layoutInflater.inflate(R.layout.new_photo_dialog, null, false)
 
@@ -128,11 +129,10 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
                 .setView(view)
                 .setPositiveButton(R.string.save) { _, _->
 
-                    onYesAction.invoke(
-                            view.findViewById<EditText>(R.id.photoNameEditText).text.toString()
-                    )
+                    onYesAction(view.findViewById<EditText>(R.id.photoNameEditText).text.toString())
                 }
-                .setNegativeButton(R.string.cancel) { _, _ ->}
+                .setNegativeButton(R.string.cancel) { _, _ -> onNoAction() }
+                .setOnCancelListener { onNoAction() }
                 .show()
     }
 

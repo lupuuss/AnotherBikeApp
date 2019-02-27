@@ -4,6 +4,10 @@ import java.io.File
 
 interface PathsGenerator {
 
-    val photosSyncFile: File
-    fun getPathForPhotoLink(link: String): File
+    fun getFileForPhotoLink(link: String): File
+    fun getPhotoFileForTemp(file: File): File
+    fun getTempPhotoFile(): File
+    fun getLinkForFile(file: File): String
+    fun getPhotosDir(): File
+    fun getPhotosSyncFile(): File
 }

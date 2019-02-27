@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.*
 import com.google.gson.Gson
+import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.PhotosSynchronizer
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
@@ -28,7 +29,8 @@ class FirebasePhotosSynchronizer(
 
     inner class RoutePhotoUploadTask(
             val routePhoto: RoutePhoto,
-            var sessionUri: Uri? = null
+            var sessionUri: Uri? = null,
+            val photoFile: File = pathsGenerator.getFileForPhotoLink(routePhoto.link)
     ): OnFailureListener,
             OnProgressListener<UploadTask.TaskSnapshot>,
             OnSuccessListener<UploadTask.TaskSnapshot> {
@@ -47,13 +49,13 @@ class FirebasePhotosSynchronizer(
             uploadTask = if (sessionUri != null) {
 
                 reference.putFile(
-                        Uri.fromFile(pathsGenerator.getPathForPhotoLink(routePhoto.link)),
+                        Uri.fromFile(photoFile),
                         StorageMetadata.Builder().build(),
                         sessionUri
                 )
             } else {
 
-                reference.putFile(Uri.fromFile(pathsGenerator.getPathForPhotoLink(routePhoto.link)))
+                reference.putFile(Uri.fromFile(photoFile))
             }
 
             uploadTask!!
@@ -71,6 +73,7 @@ class FirebasePhotosSynchronizer(
                 Timer().schedule(10__000) {
 
                     sessionUri = null
+                    uriSaved = false
                     cleanListeners()
                     upload()
                 }
@@ -115,41 +118,69 @@ class FirebasePhotosSynchronizer(
 
     private fun restore() {
 
-        val file = pathsGenerator.photosSyncFile
+        val file = pathsGenerator.getPhotosSyncFile()
 
         if (file.exists()) {
 
-            Timber.d("Restoring photos synchronization process...")
-
             file.readLines().forEach {
 
-                val data = gson.fromJson(it, RoutePhotoSerializableData::class.java)
+                try {
 
-                list.add(
-                        RoutePhotoUploadTask(data.routePhoto, if (data.stringUri != null) Uri.parse(data.stringUri) else null)
-                )
+                    val data = gson.fromJson(it, RoutePhotoSerializableData::class.java)
+
+                    list.add(
+                            RoutePhotoUploadTask(data.routePhoto, if (data.stringUri != null) Uri.parse(data.stringUri) else null)
+                    )
+
+                } catch (e: Exception) {
+
+                    e.printStackTrace()
+                }
             }
 
+            deleteUnusedFiles()
+
+            Timber.d("Restored uploads: ")
+
             list.forEach {
+
                 Timber.d("${it.routePhoto} ${it.sessionUri}")
                 it.upload()
             }
+        } else {
+
+            deleteUnusedFiles()
         }
 
     }
 
+    private fun deleteUnusedFiles() {
+
+        val dir = pathsGenerator.getPhotosDir()
+
+        if (dir.isDirectory && dir.exists()) {
+
+            dir.listFiles().forEach { file ->
+
+                if (file.isFile && list.find { it.photoFile == file } == null) {
+
+                    file.delete()
+                }
+            }
+        }
+    }
+
     private fun refreshBackup() {
 
-        val file = pathsGenerator.photosSyncFile
+        val file = pathsGenerator.getPhotosSyncFile()
 
-        file.outputStream().use { outputStream ->
+        file.outputStream().bufferedWriter().use { outputStream ->
 
 
             list.forEach {
-                outputStream.write(
-                        gson.toJson(RoutePhotoSerializableData(it.routePhoto, it.sessionUri))
-                                .toByteArray()
-                )
+
+                outputStream.append(gson.toJson(RoutePhotoSerializableData(it.routePhoto, it.sessionUri)))
+                outputStream.appendln()
             }
         }
 
@@ -171,7 +202,7 @@ class FirebasePhotosSynchronizer(
 
         refreshBackup()
 
-        val file = pathsGenerator.getPathForPhotoLink(photo.link)
+        val file = pathsGenerator.getFileForPhotoLink(photo.link)
 
         if (file.exists()) {
 
@@ -181,7 +212,7 @@ class FirebasePhotosSynchronizer(
 
     override fun removePhotoFile(photo: RoutePhoto) {
 
-        val file = pathsGenerator.getPathForPhotoLink(photo.link)
+        val file = pathsGenerator.getFileForPhotoLink(photo.link)
 
         if (file.exists()) {
 
@@ -228,7 +259,7 @@ class FirebasePhotosSynchronizer(
 
     override fun getPathForPhotoLink(link: String): File {
 
-        return pathsGenerator.getPathForPhotoLink(link)
+        return pathsGenerator.getFileForPhotoLink(link)
     }
 }
 

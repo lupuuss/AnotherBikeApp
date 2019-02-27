@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
+import ga.lupuss.anotherbikeapp.models.android.AndroidPathsGenerator
 import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.firebase.FirebasePhotosSynchronizer
@@ -40,10 +41,18 @@ class UserModule {
             weatherApi: OpenWeatherApi, timeProvider: () -> Long, locale: Locale, schedulersPackage: SchedulersPackage
     ): WeatherManager = OpenWeatherManager(weatherApi, timeProvider, locale, schedulersPackage)
 
+
     @Provides
     @UserComponentScope
     fun providesPhotosSynchronizer(storage: FirebaseStorage,
                                    pathsGenerator: PathsGenerator,
                                    gson: Gson): PhotosSynchronizer =
             FirebasePhotosSynchronizer(storage, pathsGenerator, gson)
+
+    @Provides
+    @UserComponentScope
+    fun providesPathsGenerator(context: Context,
+                               authInteractor: AuthInteractor,
+                               timeProvider: () -> Long): PathsGenerator =
+            AndroidPathsGenerator(context, authInteractor, timeProvider)
 }

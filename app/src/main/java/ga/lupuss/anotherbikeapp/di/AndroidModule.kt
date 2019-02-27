@@ -31,10 +31,4 @@ class AndroidModule(context: Context) {
     @Provides
     @AnotherBikeAppScope
     fun trackingNotification() = TrackingNotification()
-
-    @Provides
-    @AnotherBikeAppScope
-    fun providesPathsGenerator(
-            context: Context
-    ): PathsGenerator = AndroidPathsGenerator(context)
 }

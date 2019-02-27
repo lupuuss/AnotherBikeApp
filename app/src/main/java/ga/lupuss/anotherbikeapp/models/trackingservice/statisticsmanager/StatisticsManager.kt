@@ -83,7 +83,7 @@ class StatisticsManager @Inject constructor(private val locale: Locale,
 
     fun removePhotoAt(position: Int) {
 
-        val file = pathsGenerator.getPathForPhotoLink(routeData.photos[position].link)
+        val file = pathsGenerator.getFileForPhotoLink(routeData.photos[position].link)
 
         if (file.exists()) {
 

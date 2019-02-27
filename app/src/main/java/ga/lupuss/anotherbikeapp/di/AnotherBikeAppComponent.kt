@@ -32,6 +32,5 @@ interface AnotherBikeAppComponent {
     fun providesAuthInteractor(): AuthInteractor
     fun providesWeatherApi(): OpenWeatherApi
     fun providesSchedulers(): SchedulersPackage
-    fun providesPathsGenerator(): PathsGenerator
     fun providesFirebaseStorage(): FirebaseStorage
 }

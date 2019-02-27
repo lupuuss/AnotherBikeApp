@@ -5,15 +5,12 @@ import ga.lupuss.anotherbikeapp.base.Presenter
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
-import ga.lupuss.anotherbikeapp.sha256ofFile
-import timber.log.Timber
 import javax.inject.Inject
 
 class RoutePhotosPresenter @Inject constructor(
         view: RoutePhotosView,
         private val pathsGenerator: PathsGenerator,
-        private val timeProvider: () -> Long,
-        private val authInteractor: AuthInteractor
+        private val timeProvider: () -> Long
 ) : Presenter<RoutePhotosView>() {
 
     init {
@@ -22,28 +19,51 @@ class RoutePhotosPresenter @Inject constructor(
 
     fun onClickTakePhotoButton() {
 
-        val userUid = authInteractor.userUid
-        val time = timeProvider()
-        val tempLink = "$userUid/$time.png"
+        val tempFile = pathsGenerator.getTempPhotoFile()
 
-        view.requestPhoto(BaseView.PhotoRequest(pathsGenerator.getPathForPhotoLink(tempLink)) { file, ok ->
+        view.requestPhoto(BaseView.PhotoRequest(tempFile) { file, ok ->
 
-            if(ok) {
+            if(!ok && file.exists()) {
 
-                val sha256 = sha256ofFile(file)
-                val link = "$userUid/$sha256.png"
+                file.delete()
+                return@PhotoRequest Unit
 
-                val fileAfterRename = pathsGenerator.getPathForPhotoLink(link)
-                file.renameTo(fileAfterRename)
+            } else if (!ok){
 
-                view.displayNewPhotoDialog(fileAfterRename) {
-
-                     val name: String? = if (it.isEmpty()) null
-                                            else it
-
-                    view.notifyPhotoTaken(RoutePhoto(link, name, timeProvider.invoke()))
-                }
+                return@PhotoRequest Unit
             }
+
+
+
+            val fileAfterRename = pathsGenerator.getPhotoFileForTemp(tempFile)
+            file.renameTo(fileAfterRename)
+
+            view.displayNewPhotoDialog(fileAfterRename,
+
+                    onYesAction = {
+
+                        val name: String? = if (it.isEmpty()) null
+                        else it
+
+                        view.notifyPhotoTaken(
+                                RoutePhoto(
+                                        pathsGenerator.getLinkForFile(fileAfterRename),
+                                        name,
+                                        timeProvider()
+                                )
+                        )
+
+                    },
+                    onNoAction = {
+
+                        listOf(tempFile, fileAfterRename).forEach {
+
+                            if (it.exists()) {
+                                it.delete()
+                            }
+                        }
+
+                    })
         })
     }
 

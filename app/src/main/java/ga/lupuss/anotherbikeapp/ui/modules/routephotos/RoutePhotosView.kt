@@ -6,6 +6,6 @@ import java.io.File
 
 interface RoutePhotosView : BaseView {
 
-    fun displayNewPhotoDialog(photoPath: File, onYesAction: (String) -> Unit)
+    fun displayNewPhotoDialog(photoPath: File, onYesAction: (String) -> Unit, onNoAction: () -> Unit)
     fun notifyPhotoTaken(photo: RoutePhoto)
 }
