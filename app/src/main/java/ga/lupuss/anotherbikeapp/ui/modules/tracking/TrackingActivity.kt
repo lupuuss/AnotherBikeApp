@@ -128,7 +128,7 @@ class TrackingActivity
         }
     }
 
-    override fun onClickDeletePhoto(position: Int, view: View) {
+    private fun onClickDeletePhoto(position: Int, view: View) {
         trackingPresenter.onClickDeletePhoto(position)
     }
 

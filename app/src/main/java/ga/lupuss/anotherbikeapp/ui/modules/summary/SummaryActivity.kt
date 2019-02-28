@@ -119,7 +119,7 @@ class SummaryActivity
         // ignore
     }
 
-    override fun onClickDeletePhoto(position: Int, view: View) {
+    private fun onClickDeletePhoto(position: Int, view: View) {
 
         summaryPresenter.onClickDeletePhoto(position)
     }

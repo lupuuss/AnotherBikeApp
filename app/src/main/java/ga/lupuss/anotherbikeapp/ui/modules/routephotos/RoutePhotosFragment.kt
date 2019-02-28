@@ -32,8 +32,6 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
         var photosAdapter: RecyclerView.Adapter<*>
 
         fun onNewPhotoTaken(photo: RoutePhoto)
-
-        fun onClickDeletePhoto(position: Int, view: View)
     }
 
     var isTakingNewPhotoEnabled = true
@@ -148,7 +146,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         val view = layoutInflater.inflate(R.layout.new_photo_dialog, null, false)
 
-        GlideApp.with(this)
+        GlideApp.with(this.context)
                 .load(photoPath)
                 .fitCenter()
                 .centerInside()
