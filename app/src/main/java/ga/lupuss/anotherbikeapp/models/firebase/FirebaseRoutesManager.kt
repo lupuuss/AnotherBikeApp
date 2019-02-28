@@ -8,13 +8,10 @@ import com.google.firebase.firestore.*
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.models.base.*
+import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebasePoints
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseShortRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.RouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import timber.log.Timber
 import java.io.File
@@ -413,6 +410,20 @@ class FirebaseRoutesManager(
 
     fun getStoragePhotoReference(link: String): StorageReference =
             photosSynchronizer.getStorageReference(link)
+
+    override fun getImageReference(routePhoto: RoutePhoto): ImageReference {
+
+        val file = getPathForRoutePhoto(routePhoto)
+
+        return if (file.exists()) {
+
+            ImageReference.Local(file)
+
+        } else {
+
+            ImageReference.Firebase(getStoragePhotoReference(routePhoto.link))
+        }
+    }
 
     override fun getPathForRoutePhoto(photo: RoutePhoto): File {
 

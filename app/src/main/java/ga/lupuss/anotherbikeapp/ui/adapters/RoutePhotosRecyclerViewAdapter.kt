@@ -14,7 +14,7 @@ import ga.lupuss.anotherbikeapp.base.ItemsRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.timeToFormattedString
-import timber.log.Timber
+import kotlinx.android.synthetic.main.fragment_route_photos_item.view.*
 import java.util.*
 
 class RoutePhotosRecyclerViewAdapter(
@@ -26,7 +26,7 @@ class RoutePhotosRecyclerViewAdapter(
 ) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdapter.ViewHolder>() {
 
     private val deletePhotoListeners: MutableList<(Int, View) -> Unit> = mutableListOf()
-    private val photoListeners: MutableList<(Int, View) -> Unit> = mutableListOf()
+    private val photoThumbnailListeners: MutableList<(Int, View) -> Unit> = mutableListOf()
 
     fun addOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int, View) -> Unit) {
 
@@ -39,14 +39,14 @@ class RoutePhotosRecyclerViewAdapter(
         deletePhotoListeners.remove(onClickDeletePhotoListener)
     }
 
-    fun addOnClickPhotoListener(onClickPhotoListener: (Int, View) -> Unit) {
+    fun addOnClickPhotoThumbnailListener(onClickPhotoListener: (Int, View) -> Unit) {
 
-        photoListeners.add(onClickPhotoListener)
+        photoThumbnailListeners.add(onClickPhotoListener)
     }
 
-    fun removeOnClickPhotoListener(onClickPhotoListener: (Int, View) -> Unit) {
+    fun removeOnClickPhotoThumbnailListener(onClickPhotoListener: (Int, View) -> Unit) {
 
-        photoListeners.remove(onClickPhotoListener)
+        photoThumbnailListeners.remove(onClickPhotoListener)
     }
 
     inner class ViewHolder(val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
@@ -102,9 +102,9 @@ class RoutePhotosRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.itemView.setOnClickListener { view ->
+        holder.itemView.photoThumbnail.setOnClickListener { view ->
 
-            photoListeners.forEach {
+            photoThumbnailListeners.forEach {
                 it(position, view)
             }
         }

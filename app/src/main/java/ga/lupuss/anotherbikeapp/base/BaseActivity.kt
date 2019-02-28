@@ -29,6 +29,9 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.stfalcon.imageviewer.StfalconImageViewer
+import ga.lupuss.anotherbikeapp.GlideApp
+import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
 import ga.lupuss.anotherbikeapp.ui.modules.about.AboutAppActivity
 import ga.lupuss.anotherbikeapp.ui.modules.createaccount.CreateAccountActivity
 import ga.lupuss.anotherbikeapp.ui.modules.forgotpassword.ForgotPasswordActivity
@@ -36,6 +39,7 @@ import ga.lupuss.anotherbikeapp.ui.modules.login.LoginActivity
 import ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
+import timber.log.Timber
 
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
@@ -280,6 +284,22 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         } else {
             // TODO No photo messsage
         }
+
+    }
+
+    override fun displayImage(images: List<ImageReference>, image: ImageReference)  {
+
+        StfalconImageViewer.Builder<ImageReference>(this, images) { imageView, img ->
+
+            val request = when (img) {
+                is ImageReference.Firebase -> GlideApp.with(this).load(img.storageReference)
+                is ImageReference.Local ->  GlideApp.with(this).load(img.file)
+            }
+
+            request.fitCenter()
+                    .into(imageView)
+        }.withStartPosition(images.indexOf(image))
+                .show(true)
 
     }
 

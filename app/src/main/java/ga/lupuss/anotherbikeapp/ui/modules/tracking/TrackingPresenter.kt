@@ -3,7 +3,9 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 import com.google.android.gms.maps.model.LatLng
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.base.Presenter
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
+import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
 
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -13,8 +15,11 @@ import javax.inject.Inject
  * [TrackingActivity] must implement [TrackingView] */
 class TrackingPresenter @Inject constructor(
         trackingView: TrackingView,
-        private val serviceInteractor: TrackingServiceInteractor
-) : TrackingServiceInteractor.LocationDataReceiver, TrackingServiceInteractor.OnStatsUpdateListener, Presenter<TrackingView>() {
+        private val serviceInteractor: TrackingServiceInteractor,
+        private val routesManager: RoutesManager
+) : TrackingServiceInteractor.LocationDataReceiver,
+        TrackingServiceInteractor.OnStatsUpdateListener,
+        Presenter<TrackingView>() {
 
     init {
         view = trackingView
@@ -142,6 +147,15 @@ class TrackingPresenter @Inject constructor(
     fun onClickDeletePhoto(position: Int) {
         serviceInteractor.removePhotoAt(position)
         view.notifyPhotoDeleted(position, localPhotosSizeCallback())
+    }
+
+    fun onClickPhotoThumbnail(position: Int) {
+        val list = serviceInteractor.routeData.photos.map {
+
+            routesManager.getImageReference(it)
+        }
+
+        view.displayImage(list, list[position])
     }
 
     /** Possible results codes */

@@ -2,7 +2,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.routephotos
 
 import ga.lupuss.anotherbikeapp.base.BaseView
 import ga.lupuss.anotherbikeapp.base.Presenter
-import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import javax.inject.Inject
@@ -32,8 +31,6 @@ class RoutePhotosPresenter @Inject constructor(
 
                 return@PhotoRequest Unit
             }
-
-
 
             val fileAfterRename = pathsGenerator.getPhotoFileForTemp(tempFile)
             file.renameTo(fileAfterRename)

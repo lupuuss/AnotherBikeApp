@@ -9,6 +9,7 @@ import ga.lupuss.anotherbikeapp.AnotherBikeApp
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.models.SignInVerifier
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
+import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
 import javax.inject.Inject
 
 abstract class BaseFragment : Fragment(), BaseView {
@@ -153,5 +154,10 @@ abstract class BaseFragment : Fragment(), BaseView {
 
     override fun requestPhoto(photoRequest: BaseView.PhotoRequest) {
         (activity as? BaseActivity)?.requestPhoto(photoRequest)
+    }
+
+    override fun displayImage(images: List<ImageReference>, image: ImageReference) {
+
+        (activity as? BaseActivity)?.displayImage(images, image)
     }
 }

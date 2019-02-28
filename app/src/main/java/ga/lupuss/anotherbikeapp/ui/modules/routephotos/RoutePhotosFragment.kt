@@ -146,7 +146,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         val view = layoutInflater.inflate(R.layout.new_photo_dialog, null, false)
 
-        GlideApp.with(this.context)
+        GlideApp.with(this.requireContext())
                 .load(photoPath)
                 .fitCenter()
                 .centerInside()

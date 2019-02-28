@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.base
 
 import android.location.Location
 import ga.lupuss.anotherbikeapp.Message
+import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
 import java.io.File
 
 interface BaseView {
@@ -30,4 +31,5 @@ interface BaseView {
     fun startSummaryActivity()
     fun startSummaryActivity(documentReference: String)
     fun requestPhoto(photoRequest: PhotoRequest)
+    fun displayImage(images: List<ImageReference>, image: ImageReference)
 }

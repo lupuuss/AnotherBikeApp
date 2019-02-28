@@ -3,13 +3,15 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
 
 class OverviewSummaryPresenter(
         summaryView: SummaryView,
         override val routesManager: RoutesManager,
         override val resourceResolver: ResourceResolver,
         override val preferencesInteractor: PreferencesInteractor
-) : SummaryPresenter(summaryView), RoutesManager.OnRequestExtendedRouteDataListener  {
+) : SummaryPresenter(summaryView),
+        RoutesManager.OnRequestExtendedRouteDataListener  {
 
     // Tests checks this field by reflection.
     // If you renames this field, you should rename it in tests as well.
@@ -115,6 +117,16 @@ class OverviewSummaryPresenter(
         routesManager.removePhoto(routePhoto, routeReference)
 
         view.notifyPhotoDeleted(position, routeData.photos.size)
+    }
+
+    override fun onClickPhotoThumbnail(position: Int) {
+
+        val list = routeData.photos.map {
+
+            routesManager.getImageReference(it)
+        }
+
+        view.displayImage(list, list[position])
     }
 
     override fun notifyOnDestroy(isFinishing: Boolean) {

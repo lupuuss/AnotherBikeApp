@@ -34,7 +34,6 @@ import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.firebase.FirebaseRoutesManager
 import ga.lupuss.anotherbikeapp.ui.adapters.RoutePhotosRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
-import timber.log.Timber
 
 class SummaryActivity
     : StatsActivity(),
@@ -119,7 +118,11 @@ class SummaryActivity
         // ignore
     }
 
-    private fun onClickDeletePhoto(position: Int, view: View) {
+    private fun onClickPhotoThumbnail(position: Int, @Suppress("UNUSED_PARAMETER") view: View) {
+        summaryPresenter.onClickPhotoThumbnail(position)
+    }
+
+    private fun onClickDeletePhoto(position: Int, @Suppress("UNUSED_PARAMETER") view: View) {
 
         summaryPresenter.onClickDeletePhoto(position)
     }
@@ -167,6 +170,7 @@ class SummaryActivity
                 mode == SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY
         ).apply {
             addOnClickDeletePhotoListener(this@SummaryActivity::onClickDeletePhoto)
+            addOnClickPhotoThumbnailListener(this@SummaryActivity::onClickPhotoThumbnail)
         }
 
         var docReference: String? = null
@@ -218,8 +222,9 @@ class SummaryActivity
 
     override fun onDestroyPostVerification() {
         super.onDestroyPostVerification()
-        Timber.d("XDDD")
+
         (photosAdapter as RoutePhotosRecyclerViewAdapter).removeOnClickDeletePhotoListener(this::onClickDeletePhoto)
+        (photosAdapter as RoutePhotosRecyclerViewAdapter).removeOnClickPhotoThumbnailListener(this::onClickPhotoThumbnail)
         summaryPresenter.notifyOnDestroy(isFinishing)
     }
 

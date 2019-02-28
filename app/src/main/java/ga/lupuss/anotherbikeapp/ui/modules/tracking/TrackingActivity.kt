@@ -128,8 +128,13 @@ class TrackingActivity
         }
     }
 
-    private fun onClickDeletePhoto(position: Int, view: View) {
+    private fun onClickDeletePhoto(position: Int, @Suppress("UNUSED_PARAMETER") view: View) {
         trackingPresenter.onClickDeletePhoto(position)
+    }
+
+    private fun onClickPhotoThumbnail(position: Int, @Suppress("UNUSED_PARAMETER") view: View) {
+
+        trackingPresenter.onClickPhotoThumbnail(position)
     }
 
     @SuppressLint("ShowToast")
@@ -166,6 +171,7 @@ class TrackingActivity
                 true
         ).apply {
             addOnClickDeletePhotoListener(this@TrackingActivity::onClickDeletePhoto)
+            addOnClickPhotoThumbnailListener(this@TrackingActivity::onClickPhotoThumbnail)
         }
 
         unfreezeInstanceState(savedInstanceState)
@@ -249,6 +255,7 @@ class TrackingActivity
     override fun onDestroyPostVerification() {
         super.onDestroyPostVerification()
         (photosAdapter as RoutePhotosRecyclerViewAdapter).removeOnClickDeletePhotoListener(this::onClickDeletePhoto)
+        (photosAdapter as RoutePhotosRecyclerViewAdapter).removeOnClickPhotoThumbnailListener(this::onClickPhotoThumbnail)
         trackingPresenter.notifyOnDestroy(isFinishing)
     }
 

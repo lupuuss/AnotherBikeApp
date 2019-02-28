@@ -46,4 +46,6 @@ abstract class SummaryPresenter(summaryView: SummaryView)  : Presenter<SummaryVi
 
     abstract fun onClickDeletePhoto(position: Int)
 
+    abstract fun onClickPhotoThumbnail(position: Int)
+
 }

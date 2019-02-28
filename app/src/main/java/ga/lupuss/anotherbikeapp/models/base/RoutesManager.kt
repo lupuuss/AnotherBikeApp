@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.base
 
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
 import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
@@ -49,4 +50,5 @@ interface RoutesManager {
     fun removePhoto(routePhoto: RoutePhoto, routeReference: RouteReference?)
     fun cancelAllPhotosUpload()
     fun getPathForRoutePhoto(photo: RoutePhoto): File
+    fun getImageReference(routePhoto: RoutePhoto): ImageReference
 }

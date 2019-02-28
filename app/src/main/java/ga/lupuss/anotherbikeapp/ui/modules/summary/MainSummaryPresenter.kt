@@ -81,4 +81,9 @@ class MainSummaryPresenter(
 
         subPresenter.onClickDeletePhoto(position)
     }
+
+    override fun onClickPhotoThumbnail(position: Int) {
+
+        subPresenter.onClickPhotoThumbnail(position)
+    }
 }
