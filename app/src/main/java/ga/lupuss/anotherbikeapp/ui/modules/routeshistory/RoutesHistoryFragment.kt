@@ -3,8 +3,8 @@ package ga.lupuss.anotherbikeapp.ui.modules.routeshistory
 
 import android.content.Context
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.LinearLayoutManager
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

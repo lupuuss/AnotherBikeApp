@@ -7,7 +7,7 @@
     tools:context="ga.lupuss.anotherbikeapp.ui.modules.main.MainActivity"
     android:background="?android:colorPrimary">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/mainScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -62,6 +62,6 @@
             </FrameLayout>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

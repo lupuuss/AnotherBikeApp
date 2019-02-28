@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.NestedScrollView
+import androidx.core.view.GravityCompat
+import androidx.core.widget.NestedScrollView
 import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
 
@@ -15,7 +15,7 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 
 import timber.log.Timber
 import javax.inject.Inject
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.widget.AdapterView
 import android.widget.TextView
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor

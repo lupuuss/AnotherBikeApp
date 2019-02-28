@@ -6,9 +6,9 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v4.os.ConfigurationCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
+import androidx.core.os.ConfigurationCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import android.view.*
 import android.widget.*
 import com.google.android.gms.maps.*

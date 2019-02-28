@@ -1,7 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.decorations
 
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 class BottomSpaceItemDecoration(private val mSpaceHeight: Int) : RecyclerView.ItemDecoration() {

@@ -7,7 +7,7 @@
     tools:context=".ui.modules.about.AboutAppActivity"
     android:background="?android:colorPrimary"
     android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/aboutAppToolbar"
         android:background="?android:colorPrimaryDark"
         android:layout_width="match_parent"

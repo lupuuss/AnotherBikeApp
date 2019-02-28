@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:background="?android:colorPrimary">
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/infoTabLayout"
         android:background="?android:colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:theme="@style/MyCustomTabLayout"/>
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/infoViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

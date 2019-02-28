@@ -3,9 +3,9 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.os.ConfigurationCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
+import androidx.core.os.ConfigurationCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu

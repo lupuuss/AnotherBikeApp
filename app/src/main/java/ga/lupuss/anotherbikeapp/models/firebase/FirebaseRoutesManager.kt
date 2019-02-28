@@ -2,7 +2,7 @@ package ga.lupuss.anotherbikeapp.models.firebase
 
 
 import android.app.Activity
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.StorageReference

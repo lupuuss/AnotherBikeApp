@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:background="?android:colorPrimaryDark"
     tools:context=".ui.modules.createaccount.CreateAccountActivity">
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -91,5 +91,5 @@
             app:layout_constraintEnd_toEndOf="@id/passwordEditInclude"
             app:layout_constraintTop_toBottomOf="@id/createNewAccountButton"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

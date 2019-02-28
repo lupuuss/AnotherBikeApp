@@ -1,7 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.modules.settings
 
 import android.os.Bundle
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceFragmentCompat
 import ga.lupuss.anotherbikeapp.R
 
 class SettingsFragment : PreferenceFragmentCompat() {

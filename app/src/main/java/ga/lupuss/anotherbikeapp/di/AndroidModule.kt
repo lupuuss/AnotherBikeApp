@@ -1,7 +1,7 @@
 package ga.lupuss.anotherbikeapp.di
 
 import android.content.Context
-import android.support.v4.os.ConfigurationCompat
+import androidx.core.os.ConfigurationCompat
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.models.android.AndroidPathsGenerator

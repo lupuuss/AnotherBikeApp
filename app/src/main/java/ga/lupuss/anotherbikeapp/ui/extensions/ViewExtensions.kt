@@ -1,7 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.extensions
 
 import android.annotation.SuppressLint
-import android.support.v4.graphics.ColorUtils
+import androidx.core.graphics.ColorUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
