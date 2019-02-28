@@ -33,7 +33,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
 
         fun onNewPhotoTaken(photo: RoutePhoto)
 
-        fun onClickDeletePhoto(position: Int)
+        fun onClickDeletePhoto(position: Int, view: View)
     }
 
     var isTakingNewPhotoEnabled = true
@@ -63,7 +63,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
             return noPhotosTextView?.isGone ?: field
         }
 
-    private lateinit var listener: ((Int) -> Unit)
+    private lateinit var listener: ((Int, View) -> Unit)
 
     override fun onAttach(context: Context?) {
         requiresVerification()
@@ -122,7 +122,7 @@ class RoutePhotosFragment : BaseFragment(), View.OnClickListener, RoutePhotosVie
     override fun onStartPostVerification() {
         super.onStartPostVerification()
 
-        listener = { isNoPhotosTextViewGone = adapter.itemCount != 0 }
+        listener = { _, _ -> isNoPhotosTextViewGone = adapter.itemCount != 0 }
 
         (adapter as? RoutePhotosRecyclerViewAdapter)?.addOnClickDeletePhotoListener(listener)
     }

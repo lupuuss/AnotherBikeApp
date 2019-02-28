@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import com.google.android.gms.maps.*
@@ -36,9 +37,12 @@ import ga.lupuss.anotherbikeapp.ui.modules.tracking.OnMapAndLayoutReady
 import timber.log.Timber
 
 class SummaryActivity
-    : StatsActivity(), SummaryView,
-        OnMapReadyCallback, TextWatcher,
-        OnMapAndLayoutReady.Listener, ViewTreeObserver.OnGlobalLayoutListener {
+    : StatsActivity(),
+        SummaryView,
+        OnMapReadyCallback,
+        TextWatcher,
+        OnMapAndLayoutReady.Listener,
+        ViewTreeObserver.OnGlobalLayoutListener {
 
 
     @Inject
@@ -115,7 +119,7 @@ class SummaryActivity
         // ignore
     }
 
-    override fun onClickDeletePhoto(position: Int) {
+    override fun onClickDeletePhoto(position: Int, view: View) {
 
         summaryPresenter.onClickDeletePhoto(position)
     }

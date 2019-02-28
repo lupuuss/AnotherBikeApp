@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.adapters
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -24,17 +25,28 @@ class RoutePhotosRecyclerViewAdapter(
         private val forceLocalPictures: Boolean
 ) : ItemsRecyclerViewAdapter<RoutePhotosRecyclerViewAdapter.ViewHolder>() {
 
-    private val deletePhotoListeners: MutableList<(Int) -> Unit> = mutableListOf()
+    private val deletePhotoListeners: MutableList<(Int, View) -> Unit> = mutableListOf()
+    private val photoListeners: MutableList<(Int, View) -> Unit> = mutableListOf()
 
-    fun addOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int) -> Unit) {
+    fun addOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int, View) -> Unit) {
 
         deletePhotoListeners.add(onClickDeletePhotoListener)
     }
 
-    fun removeOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int) -> Unit) {
+    fun removeOnClickDeletePhotoListener(onClickDeletePhotoListener: (Int, View) -> Unit) {
 
 
         deletePhotoListeners.remove(onClickDeletePhotoListener)
+    }
+
+    fun addOnClickPhotoListener(onClickPhotoListener: (Int, View) -> Unit) {
+
+        photoListeners.add(onClickPhotoListener)
+    }
+
+    fun removeOnClickPhotoListener(onClickPhotoListener: (Int, View) -> Unit) {
+
+        photoListeners.remove(onClickPhotoListener)
     }
 
     inner class ViewHolder(val layout: ConstraintLayout) : RecyclerView.ViewHolder(layout) {
@@ -90,12 +102,19 @@ class RoutePhotosRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        holder.itemView.setOnClickListener { view ->
+
+            photoListeners.forEach {
+                it(position, view)
+            }
+        }
+
         holder.itemView
                 .findViewById<ImageButton>(R.id.deletePhotoButton)
-                .setOnClickListener {
+                .setOnClickListener { view ->
 
             deletePhotoListeners.forEach {
-                it(position)
+                it(position, view)
             }
         }
 
