@@ -282,7 +282,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
             startActivityForResult(photoIntent, PHOTO_REQUEST_CODE)
 
         } else {
-            // TODO No photo messsage
+            photoRequest.onRequestDone(false)
         }
 
     }
