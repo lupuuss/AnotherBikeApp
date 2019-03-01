@@ -40,4 +40,7 @@ abstract class TrackingServiceGovernor {
 
         serviceActivityListeners.remove(owner)
     }
+
+    abstract fun provideServiceInteractor(onProvide: (TrackingServiceInteractor) -> Unit)
+    abstract fun removeServiceInteractorListener(onProvide: (TrackingServiceInteractor) -> Unit)
 }

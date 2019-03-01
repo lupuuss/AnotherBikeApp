@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.main
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,12 +7,9 @@ import androidx.core.view.GravityCompat
 import androidx.core.widget.NestedScrollView
 import android.view.View
 import ga.lupuss.anotherbikeapp.AnotherBikeApp
-
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.base.ThemedActivity
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
-
-import timber.log.Timber
 import javax.inject.Inject
 import androidx.appcompat.app.AlertDialog
 import android.widget.AdapterView
@@ -83,7 +79,6 @@ class MainActivity
         }
     }
 
-    @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         requiresVerification()
@@ -138,11 +133,6 @@ class MainActivity
 
         finishFromChild(this.parent)
         finishAndRemoveTask()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.v("MainActivity destroyed!")
     }
 
     override fun onDestroyPostVerification() {

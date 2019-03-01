@@ -40,6 +40,8 @@ class AndroidTrackingServiceGovernor(
 
     private var onServiceConnected: OnTrackingRequestDone? = null
 
+    private val listeners: MutableList<(TrackingServiceInteractor) -> Unit> = mutableListOf()
+
     fun init(parentActivity: ThemedActivity, savedInstanceState: Bundle?) {
 
         serviceParentActivity = parentActivity
@@ -59,7 +61,7 @@ class AndroidTrackingServiceGovernor(
 
     override fun destroy(isFinishing: Boolean) {
 
-        serviceBinder?.removeOnStatsUpdateListener(this) ?: Timber.w("")
+        serviceBinder?.removeOnStatsUpdateListener(this)
 
         if (isFinishing && isServiceActive) {
 
@@ -76,6 +78,7 @@ class AndroidTrackingServiceGovernor(
             Timber.v("No service. Clean destroy.")
         }
 
+        listeners.clear()
         trackingNotification.clearReferences()
         resettableManager.reset()
     }
@@ -158,6 +161,11 @@ class AndroidTrackingServiceGovernor(
         onServiceConnected?.onTrackingRequestDone()
         isServiceActive = true
         onServiceConnected = null
+
+        listeners.forEach {
+            it(serviceInteractor!!)
+        }
+        listeners.clear()
     }
 
     override fun onStatsUpdate(stats: Map<Statistic.Name, Statistic<*>>) {
@@ -203,6 +211,24 @@ class AndroidTrackingServiceGovernor(
 
         Timber.v("Unbinding service...")
         serviceParentActivity.unbindService(this)
+    }
+
+    override fun provideServiceInteractor(onProvide: (TrackingServiceInteractor) -> Unit) {
+
+        if (serviceInteractor == null) {
+
+            listeners.add(onProvide)
+
+        } else {
+
+            onProvide(serviceInteractor!!)
+        }
+
+    }
+
+    override fun removeServiceInteractorListener(onProvide: (TrackingServiceInteractor) -> Unit) {
+
+        listeners.remove(onProvide)
     }
 
     companion object {

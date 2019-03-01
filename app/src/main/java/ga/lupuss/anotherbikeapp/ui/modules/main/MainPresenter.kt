@@ -21,6 +21,8 @@ class MainPresenter(private val routesManager: RoutesManager,
         this.view = mainView
     }
 
+    private var serviceInteractorListener: ((TrackingServiceInteractor) -> Unit)? = null
+
     override fun notifyOnViewReady() {
         super.notifyOnViewReady()
 
@@ -44,15 +46,15 @@ class MainPresenter(private val routesManager: RoutesManager,
 
                     Timber.v("Service done. Data may be saved")
 
-                    val routeData = trackingServiceGovernor.serviceInteractor?.routeData
+                    serviceInteractorListener = {
 
-                    trackingServiceGovernor.stopTracking()
-
-                    routeData?.let {
-
-                        routesManager.keepTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY, it)
+                        routesManager.keepTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY, it.routeData)
+                        trackingServiceGovernor.stopTracking()
                         view.startSummaryActivity()
+
                     }
+                    trackingServiceGovernor.provideServiceInteractor(serviceInteractorListener!!)
+
                 }
 
                 TrackingPresenter.Result.NO_DATA_DONE -> {
@@ -74,6 +76,10 @@ class MainPresenter(private val routesManager: RoutesManager,
 
         super.notifyOnDestroy(isFinishing)
         trackingServiceGovernor.removeOnServiceActivityChangesListener(this)
+
+        if (serviceInteractorListener != null) {
+            trackingServiceGovernor.removeServiceInteractorListener(serviceInteractorListener!!)
+        }
 
         if (isFinishing) {
 
