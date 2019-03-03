@@ -68,8 +68,8 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:16.1.0"
     //noinspection GradleDependency
     implementation "com.google.firebase:firebase-core:16.0.6"
-    implementation "com.google.firebase:firebase-firestore:18.0.1"
-    implementation "com.google.firebase:firebase-storage:16.0.5"
+    implementation "com.google.firebase:firebase-firestore:18.1.0"
+    implementation "com.google.firebase:firebase-storage:16.1.0"
     implementation 'com.firebaseui:firebase-ui-storage:4.3.1'
     implementation "com.google.code.gson:gson:2.8.2"
 
