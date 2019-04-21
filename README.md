@@ -3,7 +3,7 @@
 Android cycling app built with Firebase. Gives a possiblity to track your route, record useful statistcs and attach photos.
 All your data is stored in cloud thanks to Cloud Firestore and Cloud Storage. 
 Application is still in development.
-For now is not available in Google Play. You can download apk [here](release/app-release.apk).
+For now is not available in Google Play. You can download apk [here](https://github.com/lupuuss/AnotherBikeApp/raw/master/app/release/app-release.apk).
 
 # Screenshots
 ![alt](screenshots/1.png) ![alt](screenshots/5.png) 
