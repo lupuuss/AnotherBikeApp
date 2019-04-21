@@ -14,13 +14,13 @@ import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(application = TestAnotherBikeApp::class)
+@Config(application = TestAnotherBikeApp::class, sdk = [27])
 class TrackingActivityTest {
 
 
     private val intent = TrackingActivity.newIntent(mock {  }, mock {  })
     private val trackingActivity = Robolectric.buildActivity(TrackingActivity::class.java, intent)
-            .create().start().resume().visible().get()
+            .setup().get()
 
     @Test
     fun onCreate_whenFirstStart_shouldDoProperInitStuff() {

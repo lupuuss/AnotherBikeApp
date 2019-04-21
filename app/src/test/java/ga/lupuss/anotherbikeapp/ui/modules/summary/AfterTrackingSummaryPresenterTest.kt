@@ -1,12 +1,12 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
 import com.nhaarman.mockito_kotlin.*
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import org.junit.Assert
 import org.junit.Test
 
@@ -25,6 +25,7 @@ class AfterTrackingSummaryPresenterTest {
             0.0,
             0.0,
             0.0,
+            emptyList(),
             emptyList()
     )
 
@@ -33,8 +34,8 @@ class AfterTrackingSummaryPresenterTest {
     }
 
     private val preferencesInteractor: PreferencesInteractor = mock {
-        on { trackingSpeedUnit }.then { Statistic.Unit.Speed.KM_H }
-        on { trackingDistanceUnit }.then { Statistic.Unit.Distance.KM }
+        on { trackingSpeedUnit }.then { AppUnit.Speed.KM_H }
+        on { trackingDistanceUnit }.then { AppUnit.Distance.KM }
     }
 
     @Test
@@ -42,7 +43,7 @@ class AfterTrackingSummaryPresenterTest {
 
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
-                mock { on { getTempRoute() }.then { routeData } },
+                mock { on { getTempRoute(any()) }.then { routeData } },
                 resourceResolver,
                 preferencesInteractor
         )
@@ -51,7 +52,7 @@ class AfterTrackingSummaryPresenterTest {
 
         verify(summaryView, times(1)).showRouteLine(routeData.points)
         verify(summaryView, times(1)).showStatistics(
-                routeData.toMutable().getStatisticsMap(Statistic.Unit.Speed.KM_H, Statistic.Unit.Distance.KM)
+                routeData.toMutable().getStatisticsMap(AppUnit.Speed.KM_H, AppUnit.Distance.KM)
         )
         verify(summaryView, times(1)).setNameLabelValue(routeData.name ?: "")
 
@@ -62,7 +63,7 @@ class AfterTrackingSummaryPresenterTest {
 
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
-                mock { on { getTempRoute() }.then { null } },
+                mock { on { getTempRoute(any()) }.then { null } },
                 resourceResolver,
                 preferencesInteractor
         )
@@ -76,7 +77,7 @@ class AfterTrackingSummaryPresenterTest {
     fun onSaveClick_shouldSaveRouteAndFinishActivity() {
 
         val routesManager: RoutesManager = mock {
-            on { getTempRoute() }.then { routeData }
+            on { getTempRoute(any()) }.then { routeData }
         }
 
         val summaryView = mock<SummaryView> { on { getRouteNameFromEditText() }.then { "" } }
@@ -109,11 +110,12 @@ class AfterTrackingSummaryPresenterTest {
                 0.0,
                 0.0,
                 0.0,
+                listOf(),
                 listOf()
         )
 
         val routesManager: RoutesManager = mock {
-            on { getTempRoute() }.then { extendedRouteData }
+            on { getTempRoute(any()) }.then { extendedRouteData }
             on { saveRoute(any())}.then {
                 Assert.assertEquals(resourceResolver.resolve(Text.DEFAULT_ROUTE_NAME), it.getArgument<ExtendedRouteData>(0).name)
             }
@@ -149,12 +151,13 @@ class AfterTrackingSummaryPresenterTest {
                 0.0,
                 0.0,
                 0.0,
+                listOf(),
                 listOf()
         )
 
         val expectedName = "Just name"
         val routesManager: RoutesManager = mock {
-            on { getTempRoute() }.then { extendedRouteData }
+            on { getTempRoute(any()) }.then { extendedRouteData }
             on { saveRoute(any()) }.then { Assert.assertEquals(expectedName, it.getArgument<ExtendedRouteData>(0).name) }
         }
 
@@ -183,11 +186,15 @@ class AfterTrackingSummaryPresenterTest {
 
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
-                mock {  },
-                mock {  },
-                mock {  }
+                mock { on { getTempRoute(any()) }.then { routeData }},
+                mock { },
+                mock {
+                    on { trackingSpeedUnit }.then { AppUnit.Speed.KM_H }
+                    on { trackingDistanceUnit }.then { AppUnit.Distance.KM }
+                   }
         )
 
+        summaryPresenter.notifyOnViewReady()
         summaryPresenter.onExitRequest()
 
         verify(summaryView, times(1)).showRejectDialog(any())
@@ -203,11 +210,15 @@ class AfterTrackingSummaryPresenterTest {
 
         val summaryPresenter = AfterTrackingSummaryPresenter(
                 summaryView,
-                mock {  },
-                mock {  },
-                mock {  }
+                mock { on { getTempRoute(any()) }.then { routeData }},
+                mock { },
+                mock {
+                    on { trackingSpeedUnit }.then { AppUnit.Speed.KM_H }
+                    on { trackingDistanceUnit }.then { AppUnit.Distance.KM }
+                }
         )
 
+        summaryPresenter.notifyOnViewReady()
         summaryPresenter.onRejectClick()
 
         verify(summaryView, times(1)).showRejectDialog(any())

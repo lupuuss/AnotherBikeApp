@@ -5,6 +5,7 @@ import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
+import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingPresenter
 import org.junit.Test
 import java.lang.Exception
@@ -21,7 +22,6 @@ class MainPresenterTest {
     }
     private val routesManager: RoutesManager = mock { }
     private val authInteractor: AuthInteractor = mock { }
-    private val preferencesInteractor: PreferencesInteractor = mock { }
     private val trackingServiceGovernor: TrackingServiceGovernor = mock {
         on { serviceInteractor }.then {
             mock<TrackingServiceInteractor> {
@@ -29,39 +29,29 @@ class MainPresenterTest {
                 on { it.isServiceInProgress() }.then { false }
             }
         }
+
+        on { provideServiceInteractor(any()) }.then {
+
+            (it.getArgument(0) as ((TrackingServiceInteractor) -> Unit)?)?.invoke(
+                mock {
+                    on { it.routeData }.then { routeData }
+                    on { it.isServiceInProgress() }.then { false }
+                }
+            )
+        }
     }
     private val mainPresenter: MainPresenter = MainPresenter(
             routesManager,
             authInteractor,
-            preferencesInteractor,
             trackingServiceGovernor,
             mainView
     )
 
-    @Test
-    fun notifyOnViewReady_shouldPrepareViewRegisterListenersAndInitDocumentsLoading() {
-        mainPresenter.notifyOnViewReady()
-
-        // preparing view
-        verify(mainView, times(1)).setTrackingButtonState(any())
-        verify(mainView, times(1)).isNoDataTextVisible = false
-        verify(mainView, times(1)).setDrawerHeaderInfo(null, null)
-
-        // registering listeners
-        verify(preferencesInteractor, times(1))
-                .addOnTrackingUnitChangedListener(mainPresenter, mainPresenter)
-        verify(trackingServiceGovernor, times(1))
-                .addOnServiceActivityChangesListener(any(), any())
-        verify(routesManager, times(1))
-                .addRoutesDataChangedListener(any())
-
-        // loading
-        verify(mainView, times(1)).isProgressBarVisible = true
-        verify(routesManager, times(1)).requestMoreShortRouteData(any(), any())
-    }
 
     @Test
     fun notifyOnResult_shouldStopTracking_whenResultCodeEqualsDone() {
+
+        mainPresenter.onClickTrackingButton()
 
         mainPresenter.notifyOnResult(
                 MainPresenter.Request.TRACKING_ACTIVITY_REQUEST,
@@ -69,7 +59,7 @@ class MainPresenterTest {
         )
 
         verify(trackingServiceGovernor, times(1)).stopTracking()
-        verify(routesManager, times(1)).keepTempRoute(routeData)
+        verify(routesManager, times(1)).keepTempRoute(RoutesManager.Slot.MAIN_TO_SUMMARY, routeData)
         verify(mainView, times(1)).startSummaryActivity()
 
     }
@@ -100,104 +90,11 @@ class MainPresenterTest {
     @Test
     fun notifyOnDestroy_shouldUnregisterListeners() {
 
+        mainPresenter.notifyOnResult(MainPresenter.Request.TRACKING_ACTIVITY_REQUEST, TrackingPresenter.Result.DONE)
         mainPresenter.notifyOnDestroy(any())
 
         verify(trackingServiceGovernor, times(1)).removeOnServiceActivityChangesListener(mainPresenter)
-        verify(preferencesInteractor, times(1)).removeOnTrackingUnitChangedListener(mainPresenter)
-        verify(routesManager, times(1)).removeOnRoutesDataChangedListener(mainPresenter)
-    }
-
-    @Test
-    fun notifyRecyclerReachedBottom_whenItIsAvailable_shouldLoadMoreShortRouteData() {
-
-        setLoadMoreAvailable(mainPresenter, true)
-
-        mainPresenter.notifyRecyclerReachedBottom()
-
-        verify(mainView, times(1)).isProgressBarVisible = true
-        verify(routesManager, times(1)).requestMoreShortRouteData(mainPresenter, mainView)
-
-        reset(mainView)
-        reset(routesManager)
-
-        setLoadMoreAvailable(mainPresenter, false)
-
-        mainPresenter.notifyRecyclerReachedBottom()
-
-        verify(routesManager, never()).requestMoreShortRouteData(any(), any())
-        verify(mainView, never()).isProgressBarVisible = true
-    }
-
-    private fun setLoadMoreAvailable(mainPresenter: MainPresenter, available: Boolean) {
-
-        (mainPresenter::class.memberProperties
-                .find { it.name == "loadMoreAvailable" }
-                ?.apply { isAccessible = true }
-                as KMutableProperty<*>)
-                .setter
-                .call(mainPresenter, available)
-    }
-
-    private fun getLoadMoreAvailable(mainPresenter: MainPresenter): Boolean {
-
-        return mainPresenter::class.memberProperties
-                .find { it.name == "loadMoreAvailable" }
-                ?.apply { isAccessible = true }
-                ?.getter
-                ?.call(mainPresenter)
-                as Boolean
-    }
-
-    @Test
-    fun onDataEnd_shouldDisableProgressBarAndAvoidLoadingMoreData() {
-
-        mainPresenter.onDataEnd()
-
-        verify(mainView, times(1)).isProgressBarVisible = false
-        assert(!getLoadMoreAvailable(mainPresenter))
-    }
-
-    @Test
-    fun onDataEnd_whenThereIsNoData_shouldShowNoDataText() {
-
-        val mainPresenter = MainPresenter(
-                mock { on { shortRouteDataCount() }.then { 0 } },
-                authInteractor,
-                preferencesInteractor,
-                trackingServiceGovernor,
-                mainView
-        )
-
-        mainPresenter.onDataEnd()
-
-        verify(mainView, times(1)).isNoDataTextVisible = true
-    }
-
-    @Test
-    fun onFail_shouldDisableProgressBar() {
-
-        mainPresenter.onFail(Exception())
-
-        verify(mainView, times(1)).isProgressBarVisible = false
-    }
-
-    @Test
-    fun onClickShortRoute_shouldStartSummaryActivity() {
-        val mainPresenter = MainPresenter(
-                mock {
-                    on { routeReferenceSerializer }.then { mock<RouteReferenceSerializer> {
-                        on { serialize(any()) }.then { "" }
-                    } }
-
-                    on { getRouteReference(0) }.then { mock<RouteReference>{ } }
-                },
-                authInteractor,
-                preferencesInteractor,
-                trackingServiceGovernor,
-                mainView
-        )
-        mainPresenter.onClickShortRoute(0)
-        verify(mainView, times(1)).startSummaryActivity(eq(""))
+        verify(trackingServiceGovernor, times(1)).removeServiceInteractorListener(any())
     }
 
     @Test
@@ -248,7 +145,6 @@ class MainPresenterTest {
         val mainPresenter = MainPresenter(
                 routesManager,
                 authInteractor,
-                preferencesInteractor,
                 mock {
                     on { serviceInteractor }.then {
                         mock<TrackingServiceInteractor> {
@@ -268,18 +164,6 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onHistoryRecyclerItemRequest_shouldDelegateToRoutesManager() {
-        mainPresenter.onHistoryRecyclerItemRequest(any())
-        verify(routesManager, times(1)).readShortRouteData(any())
-    }
-
-    @Test
-    fun onHistoryRecyclerItemCountRequest_shouldDelegateToRoutesManager() {
-        mainPresenter.onHistoryRecyclerItemCountRequest()
-        verify(routesManager, times(1)).shortRouteDataCount()
-    }
-
-    @Test
     fun onExitRequest_whenDrawerOpened_shouldHideDrawer() {
         val mainView = mock<MainView> {
             on { isDrawerLayoutOpened }.then { true }
@@ -287,7 +171,6 @@ class MainPresenterTest {
         val mainPresenter = MainPresenter(
                 routesManager,
                 authInteractor,
-                preferencesInteractor,
                 trackingServiceGovernor,
                 mainView
         )
@@ -312,7 +195,6 @@ class MainPresenterTest {
         val mainPresenter = MainPresenter(
                 routesManager,
                 authInteractor,
-                preferencesInteractor,
                 mock {
                     on { serviceInteractor }.then {
                         mock<TrackingServiceInteractor> {
@@ -329,46 +211,6 @@ class MainPresenterTest {
     }
 
     @Test
-    fun onNewDocument_shouldHideNoDataTextAndNotifyRecycler() {
-
-        mainPresenter.onNewDocument(1)
-
-        verify(mainView, times(1)).isNoDataTextVisible = false
-        verify(mainView, times(1)).notifyRecyclerItemInserted(eq(1), any())
-    }
-
-    @Test
-    fun onDocumentModified_shouldNotifyRecycler() {
-
-        mainPresenter.onDocumentModified(1)
-
-        verify(mainView, times(1)).notifyRecyclerItemChanged(eq(1))
-    }
-
-    @Test
-    fun onDocumentDeleted_shouldNotifyRecycler() {
-
-        mainPresenter.onDocumentDeleted(1)
-
-        verify(mainView, times(1)).notifyRecyclerItemRemoved(eq(1), any())
-    }
-
-    @Test
-    fun onDocumentDeleted_whenThereIsNoData_shouldShowNoDataText() {
-        val mainPresenter = MainPresenter(
-                mock { on { shortRouteDataCount() }.then { 0 } },
-                authInteractor,
-                preferencesInteractor,
-                trackingServiceGovernor,
-                mainView
-        )
-
-        mainPresenter.onDocumentDeleted(1)
-
-        verify(mainView, times(1)).isNoDataTextVisible = true
-    }
-
-    @Test
     fun onServiceActivityChanged_shouldChangeTrackingButtonState() {
 
         mainPresenter.onServiceActivityChanged(true)
@@ -378,16 +220,6 @@ class MainPresenterTest {
 
         mainPresenter.onServiceActivityChanged(false)
         verify(mainView, times(1)).setTrackingButtonState(false)
-    }
-
-    @Test
-    fun onUnitChanged_changeUnitsAndRefreshRecycler() {
-
-        mainPresenter.onUnitChanged(Statistic.Unit.Speed.KM_H, Statistic.Unit.Distance.KM)
-
-        assert(mainPresenter.speedUnit == Statistic.Unit.Speed.KM_H)
-        assert(mainPresenter.distanceUnit == Statistic.Unit.Distance.KM)
-        verify(mainView, times(1)).refreshRecyclerAdapter()
     }
 
 }

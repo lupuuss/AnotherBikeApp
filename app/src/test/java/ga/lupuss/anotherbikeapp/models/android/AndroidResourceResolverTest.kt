@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.models.android
 import android.content.Context
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.Message
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
@@ -51,12 +52,12 @@ class AndroidResourceResolverTest {
             assert(stringsResolver.resolve(unitName) != "")
         }
 
-        for (unit in Statistic.Unit.Speed.values()) {
+        for (unit in AppUnit.Speed.values()) {
 
             assert(stringsResolver.resolve(unit) != "")
         }
 
-        for (unit in Statistic.Unit.Distance.values()) {
+        for (unit in AppUnit.Distance.values()) {
 
             assert(stringsResolver.resolve(unit) != "")
         }
@@ -95,7 +96,7 @@ class AndroidResourceResolverTest {
         assert(
                 stringsResolver.resolve(
                     Statistic.Name.SPEED,
-                    UnitStatistic(3.0, Statistic.Unit.Speed.KM_H)
+                    UnitStatistic(3.0, AppUnit.Speed.KM_H)
                 ).matches(Regex(".+: .+"))
         )
     }
@@ -104,7 +105,7 @@ class AndroidResourceResolverTest {
     fun resolveForUnitStat_shouldAlwaysReturnProperlyFormattedString() {
 
         assert(
-                stringsResolver.resolve(UnitStatistic(3.0, Statistic.Unit.Speed.KM_H))
+                stringsResolver.resolve(UnitStatistic(3.0, AppUnit.Speed.KM_H))
                         .matches(Regex("(\\d*\\.)?\\d+ .+"))
         )
     }

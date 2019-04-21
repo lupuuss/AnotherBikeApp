@@ -14,8 +14,6 @@ class AfterTrackingSummaryPresenter(
 
 ) : SummaryPresenter(summaryView) {
 
-    // Tests checks this field by reflection.
-    // If you renames this field, you should rename it in tests as well.
     override lateinit var routeData: ExtendedRouteData
 
     override fun notifyOnViewReady() {

@@ -1,6 +1,5 @@
 package ga.lupuss.anotherbikeapp.ui.modules.summary
 
-import androidx.fragment.app.FragmentManager
 import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.EditText
@@ -9,19 +8,17 @@ import com.google.android.gms.maps.UiSettings
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
-import ga.lupuss.anotherbikeapp.ui.fragments.StatsFragment
-import junit.framework.Assert
 import org.junit.After
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowDialog
 
 @RunWith(RobolectricTestRunner::class)
-@Config(application = TestAnotherBikeApp::class)
+@Config(application = TestAnotherBikeApp::class, sdk = [27])
 class SummaryActivityTest {
 
     private fun getController(docRef: String?) =
@@ -33,7 +30,7 @@ class SummaryActivityTest {
                         SummaryActivity.newIntent(mock { })
             )
 
-    private val activity = getController(null).create().visible().get()
+    private val activity = getController(null).setup().get()
 
     @After
     fun validate() {
@@ -72,7 +69,7 @@ class SummaryActivityTest {
         activity.isStatsFragmentVisible = false
         activity.isStatsFragmentVisible = true
 
-        val statsFragmentWrapper = activity.findViewById<View>(R.id.statsFragmentWrapper)
+        val statsFragmentWrapper = activity.findViewById<View>(R.id.routeInfoContainer)
 
         Assert.assertEquals(View.VISIBLE, statsFragmentWrapper.visibility)
     }
@@ -83,7 +80,7 @@ class SummaryActivityTest {
         activity.isStatsFragmentVisible = true
         activity.isStatsFragmentVisible = false
 
-        val statsFragmentWrapper = activity.findViewById<View>(R.id.statsFragmentWrapper)
+        val statsFragmentWrapper = activity.findViewById<View>(R.id.routeInfoContainer)
 
         Assert.assertEquals(View.INVISIBLE, statsFragmentWrapper.visibility)
     }
@@ -174,23 +171,6 @@ class SummaryActivityTest {
         val view = activity.findViewById<EditText>(R.id.routeNameEdit)
 
         Assert.assertEquals("Label", view.text.toString())
-    }
-
-    @Test
-    fun showStatistics_shouldCallUpdateStatsOnStatsFragment() {
-
-        val spiedActivity = spy(activity)
-        val mockedFragment = mock<StatsFragment> { }
-
-        `when`(spiedActivity.supportFragmentManager).then {
-            mock<FragmentManager> {
-                on { findFragmentById(R.id.statsFragment) }.then { mockedFragment }
-            }
-        }
-
-        spiedActivity.showStatistics(mapOf())
-
-        verify(mockedFragment, times(1)).updateStats(any())
     }
 
     @Test
