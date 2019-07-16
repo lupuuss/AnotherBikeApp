@@ -25,7 +25,7 @@ For now is not available in Google Play. You can download apk [here](https://git
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 * [Gson](https://github.com/google/gson)
 * [Glide](https://github.com/bumptech/glide)
-* [Timber](https://github.com/tinsukE/icekick)
+* [Timber](https://github.com/JakeWharton/timber)
 * [IceKick](https://github.com/tinsukE/icekick)
 * [ThreeTenABP](https://github.com/JakeWharton/ThreeTenABP)
 * [Stfalcon Image Viewer](https://github.com/stfalcon-studio/StfalconImageViewer)
