@@ -54,7 +54,7 @@ enum class WeatherIcon(
  * Represent units used in app.
  *
  * @property convertFunction is used to convert SI units to others
- * e.g 3.6 km/h is 1 m/s so convertParam is 3.6
+ * e.g 3.6 km/h is 1 m/s so convertFunction is { it * 3.6 }
  */
 interface AppUnit {
 
