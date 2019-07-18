@@ -9,7 +9,8 @@ import timber.log.Timber
 
 class FirebaseAuthInteractor(
         private val firebaseAuth: FirebaseAuth,
-        private val userProfileChangeBuilder :UserProfileChangeRequest.Builder = UserProfileChangeRequest.Builder(),
+        private val userProfileChangeBuilder :UserProfileChangeRequest.Builder =
+                UserProfileChangeRequest.Builder(),
         private val firebaseFirestore: FirebaseFirestore
 ) : AuthInteractor {
 
@@ -21,7 +22,10 @@ class FirebaseAuthInteractor(
     override val userUid
         get() = firebaseAuth.currentUser?.uid
 
-    override fun login(email: String, password: String, onLoginDone: AuthInteractor.OnLoginDoneListener?, requestOwner: Any?) {
+    override fun login(email: String,
+                       password: String,
+                       onLoginDone: AuthInteractor.OnLoginDoneListener?,
+                       requestOwner: Any?) {
 
         if (requestOwner !is Activity)
             throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
@@ -35,8 +39,12 @@ class FirebaseAuthInteractor(
                     Timber.e(it)
 
                     when (it) {
-                        is FirebaseAuthInvalidCredentialsException -> onLoginDone?.onInvalidCredentialsError()
-                        is FirebaseAuthInvalidUserException -> onLoginDone?.onUserNotExists()
+                        is FirebaseAuthInvalidCredentialsException ->
+                            onLoginDone?.onInvalidCredentialsError()
+
+                        is FirebaseAuthInvalidUserException ->
+                            onLoginDone?.onUserNotExists()
+
                         else -> onLoginDone?.onUndefinedError()
                     }
                 }
@@ -52,6 +60,7 @@ class FirebaseAuthInteractor(
                                displayName: String,
                                onCreateAccountDone: AuthInteractor.OnAccountCreateDoneListener?,
                                requestOwner: Any?) {
+
         if (requestOwner !is Activity)
             throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
 
@@ -66,15 +75,24 @@ class FirebaseAuthInteractor(
                     Timber.e(it)
 
                     when (it) {
-                        is FirebaseAuthWeakPasswordException -> onCreateAccountDone?.onTooWeakPassword()
-                        is FirebaseAuthInvalidCredentialsException -> onCreateAccountDone?.onInvalidCredentialsError()
-                        is FirebaseAuthUserCollisionException -> onCreateAccountDone?.onUserExist()
+
+                        is FirebaseAuthWeakPasswordException ->
+                            onCreateAccountDone?.onTooWeakPassword()
+
+                        is FirebaseAuthInvalidCredentialsException ->
+                            onCreateAccountDone?.onInvalidCredentialsError()
+
+                        is FirebaseAuthUserCollisionException ->
+                            onCreateAccountDone?.onUserExist()
+
                         else -> onCreateAccountDone?.onUndefinedError()
                     }
                 }
     }
 
-    override fun resetPassword(email: String, onPasswordResetDone: AuthInteractor.OnPasswordResetDoneListener?, requestOwner: Any?) {
+    override fun resetPassword(email: String,
+                               onPasswordResetDone: AuthInteractor.OnPasswordResetDoneListener?,
+                               requestOwner: Any?) {
         if (requestOwner !is Activity)
             throw IllegalArgumentException(FirebaseRoutesManager.WRONG_OWNER)
 
@@ -89,8 +107,13 @@ class FirebaseAuthInteractor(
                     Timber.e(it)
 
                     when (it) {
-                        is FirebaseAuthInvalidUserException -> onPasswordResetDone?.onUserNotExists()
-                        is FirebaseAuthInvalidCredentialsException -> onPasswordResetDone?.onEmailBadlyFormatted()
+
+                        is FirebaseAuthInvalidUserException ->
+                            onPasswordResetDone?.onUserNotExists()
+
+                        is FirebaseAuthInvalidCredentialsException ->
+                            onPasswordResetDone?.onEmailBadlyFormatted()
+
                         else -> onPasswordResetDone?.onUndefinedError()
                     }
                 }
