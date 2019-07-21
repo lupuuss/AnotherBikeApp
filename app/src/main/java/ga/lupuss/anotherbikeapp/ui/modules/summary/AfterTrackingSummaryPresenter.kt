@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
 import timber.log.Timber
 
 class AfterTrackingSummaryPresenter(
@@ -55,7 +54,7 @@ class AfterTrackingSummaryPresenter(
 
             routeData.photos.forEach {
 
-                routesManager.removePhoto(it, null)
+                routesManager.removePhotoFile(it)
             }
 
             view.finishActivity()
@@ -72,7 +71,7 @@ class AfterTrackingSummaryPresenter(
 
         mutable.photos.removeAt(position)
 
-        routesManager.removePhoto(route, null)
+        routesManager.removePhotoFile(route)
 
         routeData = mutable
 

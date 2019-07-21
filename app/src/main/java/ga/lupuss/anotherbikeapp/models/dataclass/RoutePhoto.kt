@@ -1,15 +1,21 @@
 package ga.lupuss.anotherbikeapp.models.dataclass
 
-import com.google.firebase.firestore.Exclude
-
-data class RoutePhoto(
+open class RoutePhoto(
         val link: String,
         val name: String?,
         val time: Long
 ) {
 
-    @get:Exclude @set:Exclude
-    var id: String? = null
-    // Firebase uses no-argument constructor
-    constructor(): this("", "", 0)
+    // non argument contstructor for Firebase
+    constructor() : this("", "", 0)
+
+    fun mark(id: String, routeId: String) = MarkedRoutePhoto(link, name, time, routeId, id)
 }
+
+class MarkedRoutePhoto(
+        link: String,
+        name: String?,
+        time: Long,
+        val routeId: String,
+        val id: String
+) : RoutePhoto(link, name, time)

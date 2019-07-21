@@ -51,10 +51,9 @@ class FirebaseRoutesManager(
     private fun DocumentSnapshot.toFirebasePoints(): FirebasePoints =
             this.toObject(FirebasePoints::class.java)!!
 
-    private fun DocumentSnapshot.toRoutePhoto(): RoutePhoto {
+    private fun DocumentSnapshot.toRoutePhoto(routeId: String): MarkedRoutePhoto {
         val photo = this.toObject(RoutePhoto::class.java)!!
-        photo.id = this.id
-        return photo
+        return photo.mark(id, routeId)
     }
 
     override val routeReferenceSerializer: RouteReferenceSerializer = FirebaseRouteReferenceSerializer(gson, firebaseFirestore)
@@ -242,7 +241,8 @@ class FirebaseRoutesManager(
 
                     photos = if (!query.isEmpty) {
 
-                        query.documents.map { it.toRoutePhoto() }.toMutableList()
+                        query.documents.map { it.toRoutePhoto(routeReference.routeReference!!.id) }
+                                .toMutableList()
                     } else {
 
                         null
@@ -260,35 +260,32 @@ class FirebaseRoutesManager(
 
     }
 
-    override fun removePhoto(routePhoto: RoutePhoto, routeReference: RouteReference?) {
+    override fun removePhoto(routePhoto: MarkedRoutePhoto, routeReference: RouteReference) {
 
-        when {
+        if (routeReference !is FirebaseRouteReference)
+            throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
+        else {
 
-            routeReference == null ->
-                photosSynchronizer.removePhotoFile(routePhoto)
+            photosSynchronizer.rejectUpload(routePhoto)
 
-            routeReference !is FirebaseRouteReference ->
-                throw IllegalArgumentException(WRONG_REFERENCE_MESSAGE)
+            routeReference.routeReference!!
+                    .collection(FIREB_PHOTOS)
+                    .document(routePhoto.id)
+                    .delete().addOnFailureListener {
 
-            routePhoto.id != null -> {
-
-                routeReference.routeReference!!
-                        .collection(FIREB_PHOTOS)
-                        .document(routePhoto.id!!)
-                        .delete().addOnFailureListener {
-
-                            Timber.e(it)
-                        }
-
-
-                // this file should not exist, but try to delete it just in case
-                photosSynchronizer.removePhotoFile(routePhoto)
-            }
+                        Timber.e(it)
+                    }
         }
+
+
+    }
+
+    override fun removePhotoFile(routePhoto: RoutePhoto) {
+        photosSynchronizer.removeFile(routePhoto)
     }
 
     override fun cancelAllPhotosUpload() {
-        photosSynchronizer.cancelAll()
+        photosSynchronizer.cancelAllUploads()
     }
 
     override fun saveRoute(routeData: ExtendedRouteData) {
@@ -298,6 +295,8 @@ class FirebaseRoutesManager(
         val newRouteRef = firebaseFirestore.collection(FIREB_ROUTES).document()
         val userRef = firebaseFirestore.collection(FIREB_USERS).document(authInteractor.userUid!!)
         val newUsersRouteRef = userRef.collection(FIREB_ROUTES).document()
+
+        val markedPhotos = mutableListOf<MarkedRoutePhoto>()
 
         val batch = firebaseFirestore
                 .batch()
@@ -319,7 +318,9 @@ class FirebaseRoutesManager(
 
         routeData.photos.forEach {
 
-            batch.set(newRouteRef.collection(FIREB_PHOTOS).document(), it)
+            val doc = newRouteRef.collection(FIREB_PHOTOS).document()
+            markedPhotos.add(it.mark(doc.id, newRouteRef.id))
+            batch.set(doc, it)
         }
 
         batch.commit()
@@ -337,7 +338,7 @@ class FirebaseRoutesManager(
                         onNewDocument(0)
                     }
 
-                    photosSynchronizer.uploadAll(routeData.photos)
+                    photosSynchronizer.uploadAll(markedPhotos)
 
                 }.addOnFailureListener {
 
@@ -368,18 +369,21 @@ class FirebaseRoutesManager(
 
         if (routeReference is FirebaseRouteReference) {
 
+
             var batch = firebaseFirestore.batch()
 
-            if (routeReference.userRouteReference != null) {
-                batch = batch.delete(routeReference.userRouteReference!!)
+
+            routeReference.routeReference?.let {
+                photosSynchronizer.rejectAllUploadsForRoute(it.id)
+                batch = batch.delete(it)
             }
 
-            if (routeReference.routeReference != null) {
-                batch = batch.delete(routeReference.routeReference!!)
+            routeReference.userRouteReference?.let {
+                batch = batch.delete(it)
             }
 
-            if (routeReference.pointsReference != null) {
-                batch = batch.delete(routeReference.pointsReference!!)
+            routeReference.pointsReference?.let {
+                batch = batch.delete(it)
             }
 
             batch.commit()

@@ -7,6 +7,7 @@ import com.google.firebase.storage.*
 import com.google.gson.Gson
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.PhotosSynchronizer
+import ga.lupuss.anotherbikeapp.models.dataclass.MarkedRoutePhoto
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
 import timber.log.Timber
 import java.io.File
@@ -27,7 +28,7 @@ class FirebasePhotosSynchronizer(
     }
 
     inner class RoutePhotoUploadTask(
-            val routePhoto: RoutePhoto,
+            val routePhoto: MarkedRoutePhoto,
             var sessionUri: Uri? = null,
             val photoFile: File = pathsGenerator.getFileForPhotoLink(routePhoto.link)
     ): OnFailureListener,
@@ -95,7 +96,7 @@ class FirebasePhotosSynchronizer(
             Timber.d("Photo uploaded: ${p0.uploadSessionUri.toString()}")
             cleanListeners()
             uploadTasks.remove(this)
-            removePhotoFile(routePhoto)
+            removeFile(routePhoto)
             refreshBackup()
         }
 
@@ -187,7 +188,7 @@ class FirebasePhotosSynchronizer(
         Timber.d(file.readLines().toString())
     }
 
-    private fun remove(photo: RoutePhoto) {
+    override fun rejectUpload(photo: MarkedRoutePhoto) {
 
         val task = uploadTasks.find {
             it.routePhoto.link == photo.link
@@ -209,7 +210,28 @@ class FirebasePhotosSynchronizer(
         }
     }
 
-    override fun removePhotoFile(photo: RoutePhoto) {
+    override fun rejectAllUploadsForRoute(routeId: String) {
+
+        val tasksList = mutableListOf<RoutePhotoUploadTask>()
+
+        uploadTasks.forEach {
+
+            if (it.routePhoto.routeId == routeId) {
+
+                tasksList.add(it)
+            }
+        }
+
+        tasksList.forEach {
+            it.cancel()
+            it.cleanListeners()
+            uploadTasks.remove(it)
+        }
+
+        refreshBackup()
+    }
+
+    override fun removeFile(photo: RoutePhoto) {
 
         val file = pathsGenerator.getFileForPhotoLink(photo.link)
 
@@ -219,14 +241,7 @@ class FirebasePhotosSynchronizer(
         }
     }
 
-    override fun removeAll(photos: List<RoutePhoto>) {
-
-        photos.forEach {
-            remove(it)
-        }
-    }
-
-    override fun uploadAll(photos: List<RoutePhoto>) {
+    override fun uploadAll(photos: List<MarkedRoutePhoto>) {
 
         photos.forEach {
 
@@ -240,7 +255,7 @@ class FirebasePhotosSynchronizer(
         }
     }
 
-    override fun cancelAll() {
+    override fun cancelAllUploads() {
 
         uploadTasks.forEach {
             it.cancel()
@@ -264,7 +279,7 @@ class FirebasePhotosSynchronizer(
 
 
 private class RoutePhotoSerializableData (
-        val routePhoto: RoutePhoto,
+        val routePhoto: MarkedRoutePhoto,
         sessionUri: Uri?
 ) {
     val stringUri: String? = sessionUri?.toString()

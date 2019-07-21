@@ -3,7 +3,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
+import ga.lupuss.anotherbikeapp.models.dataclass.MarkedRoutePhoto
 
 class OverviewSummaryPresenter(
         summaryView: SummaryView,
@@ -114,7 +114,9 @@ class OverviewSummaryPresenter(
         mutable.photos.removeAt(position)
         routeData = mutable
 
-        routesManager.removePhoto(routePhoto, routeReference)
+        // Route photos were received from requestExtendedRouteData
+        // so we can cast them to MarkedRoutePhotos
+        routesManager.removePhoto(routePhoto as MarkedRoutePhoto, routeReference)
 
         view.notifyPhotoDeleted(position, routeData.photos.size)
     }

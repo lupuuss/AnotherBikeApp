@@ -1,9 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.base
 
-import ga.lupuss.anotherbikeapp.models.dataclass.ExtendedRouteData
-import ga.lupuss.anotherbikeapp.models.dataclass.ImageReference
-import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
-import ga.lupuss.anotherbikeapp.models.dataclass.ShortRouteData
+import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.models.firebase.OnDataSetChanged
 import java.io.File
 
@@ -26,7 +23,7 @@ interface RoutesManager {
 
     val routeReferenceSerializer: RouteReferenceSerializer
 
-    fun refresh(onRequestMoreShortRouteDataListener: RoutesManager.OnRequestMoreShortRouteDataListener?, requestOwner: Any?)
+    fun refresh(onRequestMoreShortRouteDataListener: OnRequestMoreShortRouteDataListener?, requestOwner: Any?)
     fun addRoutesDataChangedListener(onRoutesChangedListener: OnDataSetChanged)
     fun removeOnRoutesDataChangedListener(onRoutesChangedListener: OnDataSetChanged)
     fun requestMoreShortRouteData(
@@ -47,7 +44,8 @@ interface RoutesManager {
     fun getRouteReference(position: Int): RouteReference
     fun deleteRoute(routeReference: RouteReference)
     fun changeName(routeReference: RouteReference, routeNameFromEditText: String)
-    fun removePhoto(routePhoto: RoutePhoto, routeReference: RouteReference?)
+    fun removePhoto(routePhoto: MarkedRoutePhoto, routeReference: RouteReference)
+    fun removePhotoFile(routePhoto: RoutePhoto)
     fun cancelAllPhotosUpload()
     fun getPathForRoutePhoto(photo: RoutePhoto): File
     fun getImageReference(routePhoto: RoutePhoto): ImageReference
