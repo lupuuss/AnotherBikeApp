@@ -5,7 +5,6 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.*
 import com.google.gson.Gson
-import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.PhotosSynchronizer
 import ga.lupuss.anotherbikeapp.models.dataclass.RoutePhoto
@@ -21,7 +20,7 @@ class FirebasePhotosSynchronizer(
         private val gson: Gson
         ) : PhotosSynchronizer {
 
-    private val list: MutableList<RoutePhotoUploadTask> = mutableListOf()
+    private val uploadTasks: MutableList<RoutePhotoUploadTask> = mutableListOf()
 
     init {
         restore()
@@ -95,7 +94,7 @@ class FirebasePhotosSynchronizer(
         override fun onSuccess(p0: UploadTask.TaskSnapshot) {
             Timber.d("Photo uploaded: ${p0.uploadSessionUri.toString()}")
             cleanListeners()
-            list.remove(this)
+            uploadTasks.remove(this)
             removePhotoFile(routePhoto)
             refreshBackup()
         }
@@ -128,7 +127,7 @@ class FirebasePhotosSynchronizer(
 
                     val data = gson.fromJson(it, RoutePhotoSerializableData::class.java)
 
-                    list.add(
+                    uploadTasks.add(
                             RoutePhotoUploadTask(data.routePhoto, if (data.stringUri != null) Uri.parse(data.stringUri) else null)
                     )
 
@@ -142,7 +141,7 @@ class FirebasePhotosSynchronizer(
 
             Timber.d("Restored uploads: ")
 
-            list.forEach {
+            uploadTasks.forEach {
 
                 Timber.d("${it.routePhoto} ${it.sessionUri}")
                 it.upload()
@@ -162,7 +161,7 @@ class FirebasePhotosSynchronizer(
 
             dir.listFiles().forEach { file ->
 
-                if (file.isFile && list.find { it.photoFile == file } == null) {
+                if (file.isFile && uploadTasks.find { it.photoFile == file } == null) {
 
                     file.delete()
                 }
@@ -177,7 +176,7 @@ class FirebasePhotosSynchronizer(
         file.outputStream().bufferedWriter().use { outputStream ->
 
 
-            list.forEach {
+            uploadTasks.forEach {
 
                 outputStream.append(gson.toJson(RoutePhotoSerializableData(it.routePhoto, it.sessionUri)))
                 outputStream.appendln()
@@ -190,14 +189,14 @@ class FirebasePhotosSynchronizer(
 
     private fun remove(photo: RoutePhoto) {
 
-        val task = list.find {
+        val task = uploadTasks.find {
             it.routePhoto.link == photo.link
         }
 
         task?.let {
             it.cancel()
             it.cleanListeners()
-            list.remove(it)
+            uploadTasks.remove(it)
         }
 
         refreshBackup()
@@ -231,23 +230,23 @@ class FirebasePhotosSynchronizer(
 
         photos.forEach {
 
-            list.add(RoutePhotoUploadTask(it))
+            uploadTasks.add(RoutePhotoUploadTask(it))
         }
 
         refreshBackup()
 
-        list.forEach {
+        uploadTasks.forEach {
             it.upload()
         }
     }
 
     override fun cancelAll() {
 
-        list.forEach {
+        uploadTasks.forEach {
             it.cancel()
         }
 
-        list.forEach {
+        uploadTasks.forEach {
             it.cleanListeners()
         }
     }
