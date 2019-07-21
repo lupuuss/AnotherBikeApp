@@ -3,13 +3,14 @@ package ga.lupuss.anotherbikeapp.models.android
 import android.content.Context
 import android.os.Environment
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.FilesWrapper
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
-import ga.lupuss.anotherbikeapp.sha256ofFile
 import java.io.File
 
 class AndroidPathsGenerator(private val context: Context,
                             private val authInteractor: AuthInteractor,
-                            private val timeProvider: () -> Long) : PathsGenerator {
+                            private val timeProvider: () -> Long,
+                            private val filesWrapper: FilesWrapper) : PathsGenerator {
 
     private val picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
@@ -26,7 +27,7 @@ class AndroidPathsGenerator(private val context: Context,
     override fun getLinkForFile(file: File): String {
 
         val userUid = authInteractor.userUid
-        val sha256 = sha256ofFile(file)
+        val sha256 = filesWrapper.sha256(file)
 
         return "$userUid/$sha256.png"
     }
@@ -40,7 +41,7 @@ class AndroidPathsGenerator(private val context: Context,
         return getFileForPhotoLink(link)
     }
 
-    override fun getPhotosDir(): File = File(picturesDir, authInteractor.userUid)
+    override fun getPhotosDir(): File = File(picturesDir, authInteractor.userUid!!)
 
     override fun getPhotoFileForTemp(file: File): File = getFileForPhotoLink(getLinkForFile(file))
 

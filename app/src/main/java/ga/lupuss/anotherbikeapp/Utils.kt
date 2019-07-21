@@ -83,11 +83,3 @@ fun Double.round(decimalPlaces: Int): Double {
 
     return Math.round(this * x) / x
 }
-
-fun sha256ofFile(file: File): String {
-
-    val bytes = file.readBytes()
-    val md = MessageDigest.getInstance("SHA-256")
-    val digest = md.digest(bytes)
-    return digest.fold("") { str, it -> str + "%02x".format(it) }
-}

@@ -27,4 +27,5 @@ interface UserComponent {
     fun providesPreferencesInteractor(): PreferencesInteractor
     fun providesWeatherManager(): WeatherManager
     fun providesPathsGenerator(): PathsGenerator
+    fun providesFilesWrapper(): FilesWrapper
 }

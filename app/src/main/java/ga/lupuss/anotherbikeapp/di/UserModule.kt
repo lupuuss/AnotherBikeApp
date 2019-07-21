@@ -53,6 +53,7 @@ class UserModule {
     @UserComponentScope
     fun providesPathsGenerator(context: Context,
                                authInteractor: AuthInteractor,
-                               timeProvider: () -> Long): PathsGenerator =
-            AndroidPathsGenerator(context, authInteractor, timeProvider)
+                               timeProvider: () -> Long,
+                               filesWrapper: FilesWrapper): PathsGenerator =
+            AndroidPathsGenerator(context, authInteractor, timeProvider, filesWrapper)
 }

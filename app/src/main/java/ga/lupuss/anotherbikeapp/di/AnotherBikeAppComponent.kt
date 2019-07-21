@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import dagger.Component
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
+import ga.lupuss.anotherbikeapp.models.base.FilesWrapper
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.weather.OpenWeatherApi
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
@@ -32,4 +33,5 @@ interface AnotherBikeAppComponent {
     fun providesWeatherApi(): OpenWeatherApi
     fun providesSchedulers(): SchedulersPackage
     fun providesFirebaseStorage(): FirebaseStorage
+    fun providesFilesWrapper(): FilesWrapper
 }
