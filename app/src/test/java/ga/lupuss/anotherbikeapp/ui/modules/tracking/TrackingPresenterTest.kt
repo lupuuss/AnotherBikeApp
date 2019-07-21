@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp.ui.modules.tracking
 import com.google.android.gms.maps.model.LatLng
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.Message
+import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceInteractor
 import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
 import org.junit.Test
@@ -15,6 +16,8 @@ class TrackingPresenterTest {
         on { it.showFinishTrackingDialog(any()) }.then { (it.getArgument(0) as () -> Unit).invoke() }
     }
 
+    private val routesManager: RoutesManager = mock { }
+
     @Test
     fun notifyOnViewReady_shouldPrepareViewBasesOnServiceInteractorState_emptyInteractorData() {
 
@@ -23,7 +26,7 @@ class TrackingPresenterTest {
             on { lastStats }.then { null }
         }
 
-        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
+        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor, routesManager)
 
         trackingPresenter.notifyOnViewReady()
 
@@ -41,7 +44,7 @@ class TrackingPresenterTest {
             on { lastStats }.then { map }
         }
 
-        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
+        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor, routesManager)
 
         trackingPresenter.notifyOnViewReady()
 
@@ -67,7 +70,7 @@ class TrackingPresenterTest {
     @Test
     fun onClickLockMap_whenRouteEnable_shouldChangeTrackingView() {
 
-        val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { list } })
+        val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { list } }, routesManager)
 
         trackingPresenter.onClickLockMap()
         verify(trackingView, times(1)).isMapButtonInLockState = false
@@ -81,7 +84,7 @@ class TrackingPresenterTest {
     @Test
     fun onClickLockMap_whenRouteNotEnable_shouldChangeTrackingView() {
 
-        val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { emptyList<LatLng>() } })
+        val trackingPresenter = TrackingPresenter(trackingView, mock { on { savedRoute }.then { emptyList<LatLng>() } }, routesManager)
 
         trackingPresenter.onClickLockMap()
         verify(trackingView, times(1)).isMapButtonInLockState = false
@@ -95,7 +98,7 @@ class TrackingPresenterTest {
     fun onClickFinishTracking_whenServiceIsNotInProgress_shouldFinishActivity() {
 
         val serviceInteractor: TrackingServiceInteractor = mock { on { isServiceInProgress() }.then { false }}
-        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
+        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor, routesManager)
 
         trackingPresenter.onClickFinishTracking()
 
@@ -107,7 +110,7 @@ class TrackingPresenterTest {
     fun onClickFinishTracking_whenServiceInProgress_shouldShowWarningDialogAndFinishActivity() {
 
         val serviceInteractor: TrackingServiceInteractor = mock { on { isServiceInProgress() }.then { true }}
-        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
+        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor, routesManager)
 
         trackingPresenter.onClickFinishTracking()
 
@@ -121,7 +124,7 @@ class TrackingPresenterTest {
 
         // Track line is not ready
         val trackView: TrackingView = mock { on { isTrackLineReady() }.then { true } }
-        val trackingPresenter = TrackingPresenter(trackView, mock{ })
+        val trackingPresenter = TrackingPresenter(trackView, mock{ }, routesManager)
 
         trackingPresenter.onNewLocation(list)
 
@@ -133,7 +136,7 @@ class TrackingPresenterTest {
     fun onNewLocation_whenTrackLineIsReadyAndMapIsLocked_shouldMoveTrackingViewCameraOnly() {
 
         val trackView: TrackingView = mock { on { isTrackLineReady() }.then { true } }
-        val trackingPresenter = TrackingPresenter(trackView, mock { })
+        val trackingPresenter = TrackingPresenter(trackView, mock { }, routesManager)
         // Map is locked by default
 
         trackingPresenter.onNewLocation(list)
@@ -153,7 +156,7 @@ class TrackingPresenterTest {
     fun onLocationAvailability_whenLocationIsNotAvailable_shouldShowInfo() {
 
         val trackingPresenter =
-                TrackingPresenter(trackingView, mock { on { isServiceInProgress() }.then { true } })
+                TrackingPresenter(trackingView, mock { on { isServiceInProgress() }.then { true } }, routesManager)
 
         trackingPresenter.onLocationAvailability(false)
 
@@ -175,7 +178,7 @@ class TrackingPresenterTest {
     fun onLocationAvailability_whenLocationIsNotAvailableAndServiceIsNotInProgress_shouldShowMessageAndInfo() {
 
         val serviceInteractor: TrackingServiceInteractor = mock {  on { isServiceInProgress() }.then { false } }
-        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
+        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor, routesManager)
 
         trackingPresenter.onLocationAvailability(false)
 
@@ -185,7 +188,7 @@ class TrackingPresenterTest {
     @Test
     fun onStatsUpdate_shouldUpdateStatsOnTrackingView() {
 
-        TrackingPresenter(trackingView, mock {  }).onStatsUpdate(map)
+        TrackingPresenter(trackingView, mock {  }, routesManager).onStatsUpdate(map)
         verify(trackingView, times(1)).updateStats(map)
     }
 
@@ -193,7 +196,7 @@ class TrackingPresenterTest {
     fun notifyOnDestroy_shouldUnregisterListeners() {
 
         val serviceInteractor: TrackingServiceInteractor = mock {  }
-        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor)
+        val trackingPresenter = TrackingPresenter(trackingView, serviceInteractor, routesManager)
 
         trackingPresenter.notifyOnDestroy(any())
 

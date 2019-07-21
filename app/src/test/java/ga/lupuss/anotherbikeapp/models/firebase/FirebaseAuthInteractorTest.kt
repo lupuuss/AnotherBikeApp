@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
 import android.app.Activity
+import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
@@ -10,9 +11,6 @@ import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import org.junit.Test
 
 class FirebaseAuthInteractorTest {
-
-
-    // That whole mocking stuff for firebase just triggers proper callbacks
 
     private fun taskOnFailTriggers(exception: Exception): Task<AuthResult> {
 
@@ -43,7 +41,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnLoginDoneListener> { }
 
@@ -74,7 +72,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnLoginDoneListener> { }
 
@@ -105,7 +103,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnLoginDoneListener> { }
 
@@ -136,7 +134,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnLoginDoneListener> { }
 
@@ -158,7 +156,12 @@ class FirebaseAuthInteractorTest {
         val userMock = mock<FirebaseUser> {
             on { updateProfile(anyOrNull()) }.then {
                 mock<Task<Void>> {
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { mock<Task<Void>>{ } }
+
+                    on { continueWithTask(any<Continuation<Void, Task<Void>>>()) }.then {
+                        mock <Task<Void>> {
+                            on { addOnSuccessListener(any<Activity>(), any()) }.then { mock<Task<Void>>{ } }
+                        }
+                    }
                 }
             }
         }
@@ -185,7 +188,8 @@ class FirebaseAuthInteractorTest {
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(
                 firebaseAuth,
-                mockBuilder
+                mockBuilder,
+                mock { }
         )
 
         val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
@@ -221,7 +225,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
 
@@ -254,7 +258,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
 
@@ -287,7 +291,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
 
@@ -320,7 +324,7 @@ class FirebaseAuthInteractorTest {
             }
         }
 
-        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth)
+        val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
         val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
 
@@ -345,9 +349,13 @@ class FirebaseAuthInteractorTest {
             on { updateProfile(anyOrNull()) }.then {
                 mock<Task<Void>> {
 
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then {
-                        (it.getArgument(1) as OnSuccessListener<Void>).onSuccess(mock {})
-                        mock<Task<Void>>{ }
+                    on { continueWithTask(any<Continuation<Void, Task<Void>>>()) }.then {
+                        mock <Task<Void>> {
+                            on { addOnSuccessListener(any<Activity>(), any()) }.then {
+                                (it.getArgument(1) as OnSuccessListener<Void>).onSuccess(mock {})
+                                mock<Task<Void>>{ }
+                            }
+                        }
                     }
                 }
             }
@@ -363,7 +371,7 @@ class FirebaseAuthInteractorTest {
 
         val mockListener = mock<AuthInteractor.OnDisplayNameSetDoneListener> {}
 
-        FirebaseAuthInteractor(firebaseAuth, mockBuilder).setDisplayName(
+        FirebaseAuthInteractor(firebaseAuth, mockBuilder, mock { }).setDisplayName(
                 "name",
                 mockListener,
                 mock<Activity> {}
@@ -388,8 +396,13 @@ class FirebaseAuthInteractorTest {
         val userMock = mock<FirebaseUser> {
             on { updateProfile(anyOrNull()) }.then {
                 mock<Task<Void>> {
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then {
-                        taskMock
+
+                    on { continueWithTask(any<Continuation<Void, Task<Void>>>()) }.then {
+                        mock <Task<Void>> {
+                            on { addOnSuccessListener(any<Activity>(), any()) }.then {
+                                taskMock
+                            }
+                        }
                     }
                 }
             }
@@ -405,7 +418,7 @@ class FirebaseAuthInteractorTest {
 
         val mockListener = mock<AuthInteractor.OnDisplayNameSetDoneListener> {}
 
-        FirebaseAuthInteractor(firebaseAuth, mockBuilder).setDisplayName(
+        FirebaseAuthInteractor(firebaseAuth, mockBuilder, mock { }).setDisplayName(
                 "name",
                 mockListener,
                 mock<Activity> {}
@@ -423,7 +436,7 @@ class FirebaseAuthInteractorTest {
 
         val firebaseAuth = mock<FirebaseAuth> {  }
 
-        FirebaseAuthInteractor(firebaseAuth).signOut()
+        FirebaseAuthInteractor(firebaseAuth, mock { }, mock { }).signOut()
 
         verify(firebaseAuth, times(1)).signOut()
     }

@@ -9,7 +9,7 @@ import ga.lupuss.anotherbikeapp.base.ThemedActivity
 import ga.lupuss.anotherbikeapp.models.base.TrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.models.trackingservice.TrackingService
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 
 class AndroidTrackingServiceGovernorTest {
@@ -18,17 +18,17 @@ class AndroidTrackingServiceGovernorTest {
     private val trackingServiceGovernor = AndroidTrackingServiceGovernor(mock { }, mock { })
     private val parentActivity: ThemedActivity = mock {
 
-        on { checkLocationPermission() }.then { true }
+        on { provideLocationPermission(any()) }.then { (it.getArgument(0) as ((Boolean) -> Unit)?)?.invoke(true) }
         on { getSystemService(Service.NOTIFICATION_SERVICE) }.then{ notificationManager }
     }
 
     private val bundleIsServiceActiveTrue = mock<Bundle> {
-        on { getBoolean(ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor.IS_SERVICE_ACTIVE_KEY) }
+        on { getBoolean(AndroidTrackingServiceGovernor.IS_SERVICE_ACTIVE_KEY) }
                 .then { true }
     }
 
     private val bundleIsServiceActiveFalse = mock<Bundle> {
-        on { getBoolean(ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor.IS_SERVICE_ACTIVE_KEY) }
+        on { getBoolean(AndroidTrackingServiceGovernor.IS_SERVICE_ACTIVE_KEY) }
                 .then { false }
     }
 
@@ -133,24 +133,7 @@ class AndroidTrackingServiceGovernorTest {
         trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
         trackingServiceGovernor.startTracking(mock {  })
 
-        verify(parentActivity, never()).requestLocationPermission(any())
-        verify(parentActivity, times(1)).startService(any())
-        verify(parentActivity, times(1))
-                .bindService(any(), eq(trackingServiceGovernor), eq(Context.BIND_AUTO_CREATE))
-    }
-
-    @Test
-    fun startTracking_shouldInitTracking_whenUserAcceptedPermission() {
-
-        val parentActivity = mock<ThemedActivity> {
-            on { checkLocationPermission() }.then { false }
-            on { requestLocationPermission(any()) }
-                    .then { (it.getArgument(0) as ((Boolean) -> Unit)?)?.invoke(true) } // imitates user's consent
-        }
-        trackingServiceGovernor.init(parentActivity, bundleIsServiceActiveFalse)
-        trackingServiceGovernor.startTracking(mock {  })
-
-        verify(parentActivity, times(1)).requestLocationPermission(any())
+        verify(parentActivity, times(1)).provideLocationPermission(any())
         verify(parentActivity, times(1)).startService(any())
         verify(parentActivity, times(1))
                 .bindService(any(), eq(trackingServiceGovernor), eq(Context.BIND_AUTO_CREATE))
@@ -160,9 +143,7 @@ class AndroidTrackingServiceGovernorTest {
     fun startTracking_shouldTriggerCallback_whenUserRejectPermission() {
 
         val parentActivity = mock<ThemedActivity> {
-            on { checkLocationPermission() }.then { false }
-            on { requestLocationPermission(any()) }
-                    .then { (it.getArgument(0) as ((Boolean) -> Unit)?)?.invoke(false) } // imitates user's rejection
+            on { provideLocationPermission(any()) }.then { (it.getArgument(0) as ((Boolean) -> Unit)?)?.invoke(false) }
         }
 
         var callbackTriggered = 0
@@ -178,7 +159,7 @@ class AndroidTrackingServiceGovernorTest {
         })
 
         Assert.assertEquals(1, callbackTriggered)
-        verify(parentActivity, times(1)).requestLocationPermission(any())
+        verify(parentActivity, times(1)).provideLocationPermission(any())
         verify(parentActivity, never()).startService(any())
         verify(parentActivity, never()).bindService(any(),any(),any())
     }

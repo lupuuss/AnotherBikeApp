@@ -170,10 +170,14 @@ class FirebaseRoutesManager(
             null
         }
 
+        val photosReference: CollectionReference =
+                firebaseFirestore.collection("${routeReference!!.path}/photos")
+
         return FirebaseRouteReference(
                 shortRouteDataSnap.reference,
                 routeReference,
                 pointsReference,
+                photosReference,
                 position
         )
     }
@@ -236,7 +240,7 @@ class FirebaseRoutesManager(
                         null
                     }
 
-                    firebaseFirestore.collection("${routeReference.routeReference!!.path}/photos").get()
+                    routeReference.photosReference?.get()
                 }.addOnSuccessListener(requestOwner) { query ->
 
                     photos = if (!query.isEmpty) {

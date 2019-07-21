@@ -1,6 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager
 
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 
 class StatisticsMathProviderTest {
@@ -10,7 +10,7 @@ class StatisticsMathProviderTest {
 
         val speeds = listOf(1.0, 3.0, 5.0, 8.0)
 
-        val math = StatisticsMathProvider({ 1 })
+        val math = StatisticsMathProvider { 1 }
 
         var currentAvg = 0.0
 
@@ -18,6 +18,6 @@ class StatisticsMathProviderTest {
             currentAvg = math.measureAverage(StatisticsMathProvider.AVG.SPEED, it)
         }
 
-        Assert.assertEquals(speeds.average(), currentAvg)
+        Assert.assertEquals(speeds.average(), currentAvg, 0.0)
     }
 }

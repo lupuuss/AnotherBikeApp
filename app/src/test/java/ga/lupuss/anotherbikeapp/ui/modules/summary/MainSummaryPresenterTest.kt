@@ -3,7 +3,6 @@ package ga.lupuss.anotherbikeapp.ui.modules.summary
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.models.base.RouteReference
 import ga.lupuss.anotherbikeapp.models.base.RouteReferenceSerializer
-import ga.lupuss.anotherbikeapp.models.base.RoutesManager
 import ga.lupuss.anotherbikeapp.models.firebase.pojo.FirebaseRouteReference
 import org.junit.Test
 import kotlin.reflect.KMutableProperty
@@ -39,7 +38,7 @@ class MainSummaryPresenterTest {
         summaryPresenter = MainSummaryPresenter(
                 mock {  },
                 mock { on { routeReferenceSerializer }.then {
-                    mock<RouteReferenceSerializer> { on { deserialize(any()) }.then { FirebaseRouteReference(mock {}, mock {}, mock {}) } }
+                    mock<RouteReferenceSerializer> { on { deserialize(any()) }.then { FirebaseRouteReference(mock {}, mock {}, mock {}, mock {},0) } }
                 } },
                 mock {  },
                 mock {  })
@@ -87,27 +86,6 @@ class MainSummaryPresenterTest {
                 ?.apply { isAccessible = true }
                 ?.getter
                 ?.call(obj) as? RouteReference) == routeReference)
-    }
-
-    @Test
-    fun notifyOnDestroy_whenFinishing_shouldClearTempRoute() {
-
-        val routesManager: RoutesManager = mock {  }
-        val summaryPresenter = MainSummaryPresenter(mock { }, routesManager, mock {  }, mock {  })
-
-        (summaryPresenter::class.memberProperties
-                .find { it.name == "subPresenter" }
-                ?.apply { this.isAccessible = true }
-                as KMutableProperty<*>)
-                .setter
-                .call(summaryPresenter, mock<SummaryPresenter>{ })
-
-        summaryPresenter.notifyOnDestroy(false)
-        verify(routesManager, never()).clearTempRoute()
-
-        summaryPresenter.notifyOnDestroy(true)
-        verify(routesManager, times(1)).clearTempRoute()
-
     }
 
     @Test

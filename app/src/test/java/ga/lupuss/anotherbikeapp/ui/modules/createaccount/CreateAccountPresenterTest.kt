@@ -25,7 +25,9 @@ class CreateAccountPresenterTest {
 
         createAccountPresenter.onClickCreateNewAccount("", "", "")
 
-        verify(createAccountView, times(1)).postMessage(Message.FILL_ALL_FIELDS)
+        verify(createAccountView, times(1)).emailFieldError(Message.CANNOT_BE_BLANK)
+        verify(createAccountView, times(1)).displayNameFieldError(Message.CANNOT_BE_BLANK)
+        verify(createAccountView, times(1)).passwordFieldError(Message.CANNOT_BE_BLANK)
     }
 
     @Test
@@ -77,7 +79,7 @@ class CreateAccountPresenterTest {
         verify(createAccountView, times(1)).isUiEnable = true
         verify(createAccountView, times(1)).isCreateAccountProgressBarVisible = false
         verify(createAccountView, times(1)).isCreateAccountButtonTextVisible = true
-        verify(createAccountView, times(1)).postMessage(Message.USER_EXISTS)
+        verify(createAccountView, times(1)).emailFieldError(Message.USER_EXISTS)
     }
 
     @Test

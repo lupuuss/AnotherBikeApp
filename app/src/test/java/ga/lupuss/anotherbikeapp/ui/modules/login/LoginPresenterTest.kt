@@ -1,6 +1,7 @@
 package ga.lupuss.anotherbikeapp.ui.modules.login
 
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import ga.lupuss.anotherbikeapp.Message
@@ -20,7 +21,13 @@ class LoginPresenterTest {
 
         loginPresenter.onClickSignIn("", "notBlank")
 
-        verify(loginView, times(1)).postMessage(Message.EMAIL_OR_PASSWORD_BLANK)
+        verify(loginView, times(1)).emailFieldError(Message.CANNOT_BE_BLANK)
+        verify(loginView, never()).passwordFieldError(Message.CANNOT_BE_BLANK)
+
+        loginPresenter.onClickSignIn("notBlank", "")
+
+        verify(loginView, times(1)).passwordFieldError(Message.CANNOT_BE_BLANK)
+        verify(loginView, times(1)).emailFieldError(Message.CANNOT_BE_BLANK)
     }
 
     @Test
@@ -72,7 +79,7 @@ class LoginPresenterTest {
         verify(loginView, times(1)).isUiEnable = true
         verify(loginView, times(1)).isSignInProgressBarVisible = false
         verify(loginView, times(1)).isSignInButtonTextVisible = true
-        verify(loginView, times(1)).postMessage(Message.USER_NOT_EXISTS)
+        verify(loginView, times(1)).emailFieldError(Message.USER_NOT_EXISTS)
     }
 
     @Test
@@ -82,7 +89,8 @@ class LoginPresenterTest {
         verify(loginView, times(1)).isUiEnable = true
         verify(loginView, times(1)).isSignInProgressBarVisible = false
         verify(loginView, times(1)).isSignInButtonTextVisible = true
-        verify(loginView, times(1)).postMessage(Message.INVALID_CREDENTIALS_LOGIN)
+        verify(loginView, times(1)).emailFieldError(Message.EMAIL_IS_INCORRECT)
+        verify(loginView, times(1)).passwordFieldError(Message.PASSWORD_IS_INCORRECT)
     }
 
     @Test

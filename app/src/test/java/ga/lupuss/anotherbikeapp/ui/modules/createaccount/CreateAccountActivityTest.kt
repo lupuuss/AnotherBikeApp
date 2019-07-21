@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import com.google.firebase.FirebaseApp
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -22,7 +23,7 @@ import org.robolectric.annotation.Config
 @Config(application = TestAnotherBikeApp::class)
 class CreateAccountActivityTest {
 
-    private val activity = Robolectric.setupActivity(CreateAccountActivity::class.java)
+    private val activity = Robolectric.buildActivity(CreateAccountActivity::class.java).setup().get()
     private val mockedPresenter = mock<CreateAccountPresenter> { }
 
     private fun createBundle(isUiEnable: Boolean,

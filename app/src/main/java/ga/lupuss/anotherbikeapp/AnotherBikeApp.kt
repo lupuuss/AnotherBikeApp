@@ -2,6 +2,7 @@ package ga.lupuss.anotherbikeapp
 
 import android.app.Application
 import android.content.Context
+import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import ga.lupuss.anotherbikeapp.di.*
@@ -91,6 +92,9 @@ open class AnotherBikeApp : Application() {
             }
 
             refWatcher = LeakCanary.install(this)
+        } else {
+
+            FirebaseApp.initializeApp(this)
         }
 
         anotherBikeAppComponent = DaggerAnotherBikeAppComponent

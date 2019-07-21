@@ -5,9 +5,7 @@ import android.content.Intent
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
@@ -17,14 +15,13 @@ import ga.lupuss.anotherbikeapp.TestAnotherBikeApp
 import ga.lupuss.anotherbikeapp.models.android.AndroidTrackingServiceGovernor
 import ga.lupuss.anotherbikeapp.replaceComponentInActivityController
 import ga.lupuss.anotherbikeapp.ui.adapters.DrawerListViewAdapter
-import ga.lupuss.anotherbikeapp.ui.adapters.RoutesHistoryRecyclerViewAdapter
 import ga.lupuss.anotherbikeapp.ui.modules.settings.SettingsActivity
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryActivity
 import ga.lupuss.anotherbikeapp.ui.modules.summary.SummaryPresenter
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingActivity
 import ga.lupuss.anotherbikeapp.ui.modules.tracking.TrackingPresenter
-import junit.framework.Assert
 import junit.framework.TestCase.*
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -37,61 +34,7 @@ import org.robolectric.shadows.ShadowDialog
 @Config(application = TestAnotherBikeApp::class)
 class MainActivityTest {
 
-    private val activity = Robolectric.setupActivity(MainActivity::class.java)
-
-    @Test
-    fun isNoDataTextVisible_whenTrue_shouldShowNoDataText() {
-
-        val view = activity.findViewById<TextView>(R.id.noDataText)
-        activity.isNoDataTextVisible = true
-
-        Assert.assertEquals(View.VISIBLE, view.visibility)
-    }
-
-    @Test
-    fun isNoDataTextVisible_whenFalse_shouldHideNoDataText() {
-
-        val view = activity.findViewById<TextView>(R.id.noDataText)
-        activity.isNoDataTextVisible = false
-
-        Assert.assertEquals(View.INVISIBLE, view.visibility)
-    }
-
-    @Test
-    fun isRoutesHistoryVisible_whenTrue_shouldShowRoutesHistoryRecycler() {
-
-        val view = activity.findViewById<View>(R.id.routesHistoryRecycler)
-        activity.isRoutesHistoryVisible = true
-
-        Assert.assertEquals(View.VISIBLE, view.visibility)
-    }
-
-    @Test
-    fun isRoutesHistoryVisible_whenFalse_shouldHideRoutesHistoryRecycler() {
-
-        val view = activity.findViewById<View>(R.id.routesHistoryRecycler)
-        activity.isRoutesHistoryVisible = false
-
-        Assert.assertEquals(View.INVISIBLE, view.visibility)
-    }
-
-    @Test
-    fun isProgressBarVisible_whenTrue_shouldShowProgressBar() {
-
-        val view = activity.findViewById<View>(R.id.recyclerProgressBar)
-        activity.isProgressBarVisible = true
-
-        Assert.assertEquals(View.VISIBLE, view.visibility)
-    }
-
-    @Test
-    fun isProgressBarVisible_whenFalse_shouldHideProgressBar() {
-
-        val view = activity.findViewById<View>(R.id.recyclerProgressBar)
-        activity.isProgressBarVisible = false
-
-        Assert.assertEquals(View.GONE, view.visibility)
-    }
+    private val activity = Robolectric.buildActivity(MainActivity::class.java).setup().get()
 
     @Test
     fun isDrawerLayoutOpened_shouldReturnProperDrawerState() {
@@ -129,8 +72,6 @@ class MainActivityTest {
         val recyclerView = activity.findViewById<RecyclerView>(R.id.routesHistoryRecycler)
 
         Assert.assertEquals(false, recyclerView.isNestedScrollingEnabled)
-        Assert.assertEquals(RoutesHistoryRecyclerViewAdapter::class.java, recyclerView.adapter::class.java)
-        Assert.assertEquals(LinearLayoutManager::class.java, recyclerView.layoutManager::class.java)
     }
 
     @Test
@@ -225,23 +166,7 @@ class MainActivityTest {
 
         activity.onClickTrackingButton(mock { })
 
-        verify(activity, times(1)).onClickTrackingButtonHelper(any())
-
-        activity.onClickTrackingButtonHelper(mock {  }).end()
-
         verify(activity.mainPresenter, times(1)).onClickTrackingButton()
-    }
-
-    @Test
-    fun onRecyclerItemClick_shouldNotifyPresenter() {
-
-        activity.findViewById<RecyclerView>(R.id.routesHistoryRecycler).apply {
-            measure(0,0)
-            layout(0, 0, 100, 10000)
-            findViewHolderForAdapterPosition(0).itemView.performClick()
-        }
-
-        verify(activity.mainPresenter, times(1)).onClickShortRoute(0)
     }
 
     @Test
@@ -310,51 +235,6 @@ class MainActivityTest {
         assertEquals(activity.getString(R.string.startTracking), activity.findViewById<Button>(R.id.trackingButton).text)
     }
 
-    @Test
-    fun refreshRecyclerAdapter_shouldNotifyDataSetChanged() {
-
-        val mockedAdapter = mock<RoutesHistoryRecyclerViewAdapter> {}
-        activity.findViewById<RecyclerView>(R.id.routesHistoryRecycler).adapter = mockedAdapter
-
-        activity.refreshRecyclerAdapter()
-
-        verify(mockedAdapter, times(1)).notifyDataSetChanged()
-    }
-
-    @Test
-    fun notifyRecyclerItemChanged_shouldNotifyRecycler() {
-
-        val mockedAdapter = mock<RoutesHistoryRecyclerViewAdapter> {}
-        activity.findViewById<RecyclerView>(R.id.routesHistoryRecycler).adapter = mockedAdapter
-
-        activity.notifyRecyclerItemChanged(0)
-
-        verify(mockedAdapter, times(1)).notifyItemChanged(0)
-    }
-
-    @Test
-    fun notifyRecyclerItemRemoved_shouldNotifyRecycler() {
-
-        val mockedAdapter = mock<RoutesHistoryRecyclerViewAdapter> {}
-        activity.findViewById<RecyclerView>(R.id.routesHistoryRecycler).adapter = mockedAdapter
-
-        activity.notifyRecyclerItemRemoved(0, 1)
-
-        verify(mockedAdapter, times(1)).notifyItemRemoved(0)
-        verify(mockedAdapter, times(1)).notifyItemRangeChanged(0, 1)
-    }
-
-    @Test
-    fun notifyRecyclerItemInserted_shouldNotifyRecycler() {
-
-        val mockedAdapter = mock<RoutesHistoryRecyclerViewAdapter> {}
-        activity.findViewById<RecyclerView>(R.id.routesHistoryRecycler).adapter = mockedAdapter
-
-        activity.notifyRecyclerItemInserted(0, 1)
-
-        verify(mockedAdapter, times(1)).notifyItemInserted(0)
-        verify(mockedAdapter, times(1)).notifyItemRangeChanged(0, 1)
-    }
 
     @Test
     fun setDrawerHeaderInfo_whenDisplayNameNotNullAndNotBlank_shouldSetHeaderProperly() {
@@ -448,8 +328,8 @@ class MainActivityTest {
         assertEquals(ComponentName(activity, SummaryActivity::class.java), nextActivity.component)
 
         val bundle = nextActivity.extras
-        assertNull(bundle.getString(SummaryActivity.DOC_REFERENCE_KEY))
-        assertEquals(SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY.toString(), bundle.getString(SummaryActivity.MODE_KEY))
+        assertNull(bundle?.getString(SummaryActivity.DOC_REFERENCE_KEY))
+        assertEquals(SummaryPresenter.Mode.AFTER_TRACKING_SUMMARY.toString(), bundle?.getString(SummaryActivity.MODE_KEY))
     }
 
     @Test
@@ -460,8 +340,8 @@ class MainActivityTest {
 
         val nextActivity = shadow.peekNextStartedActivity()
         val bundle = nextActivity.extras
-        assertNotNull(bundle.getString(SummaryActivity.DOC_REFERENCE_KEY))
-        assertEquals(SummaryPresenter.Mode.OVERVIEW.toString(), bundle.getString(SummaryActivity.MODE_KEY))
+        assertNotNull(bundle?.getString(SummaryActivity.DOC_REFERENCE_KEY))
+        assertEquals(SummaryPresenter.Mode.OVERVIEW.toString(), bundle?.getString(SummaryActivity.MODE_KEY))
         assertEquals(ComponentName(activity, SummaryActivity::class.java), nextActivity.component)
     }
 }

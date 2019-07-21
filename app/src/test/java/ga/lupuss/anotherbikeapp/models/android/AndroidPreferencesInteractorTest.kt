@@ -5,10 +5,10 @@ import android.content.SharedPreferences
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import ga.lupuss.anotherbikeapp.AppTheme
+import ga.lupuss.anotherbikeapp.AppUnit
 import ga.lupuss.anotherbikeapp.R
 import ga.lupuss.anotherbikeapp.models.base.PreferencesInteractor
-import ga.lupuss.anotherbikeapp.models.dataclass.Statistic
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 
 class AndroidPreferencesInteractorTest {
@@ -31,7 +31,7 @@ class AndroidPreferencesInteractorTest {
         on { getString(R.string.prefTrackingUnitSpeedKey) }.then { unitSpeedKey }
         on { getString(R.string.prefTrackingUnitDistanceKey) }.then { distanceSpeedKey }
     }
-    private val preferencesInteractor = AndroidPreferencesInteractor(sharedPrefs, context)
+    private val preferencesInteractor = AndroidPreferencesInteractor(context, sharedPrefs)
 
     @Test
     fun androidPreferencesInteractor_shouldNotifyAboutSharedPreferencesChanges() {
@@ -51,7 +51,8 @@ class AndroidPreferencesInteractorTest {
         preferencesInteractor.addOnTrackingUnitChangedListener(
                 this,
                 object : PreferencesInteractor.OnTrackingUnitChangedListener {
-                    override fun onUnitChanged(speedUnit: Statistic.Unit.Speed, distanceUnit: Statistic.Unit.Distance) {
+
+                    override fun onTrackingUnitChanged(speedUnit: AppUnit.Speed, distanceUnit: AppUnit.Distance) {
                         triggeredUnitChanges++
                     }
 

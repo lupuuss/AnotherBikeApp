@@ -1,5 +1,6 @@
 package ga.lupuss.anotherbikeapp.models.firebase
 
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
@@ -14,6 +15,7 @@ class FirebaseRouteReferenceSerializer(private val gson: Gson,
         var userRoute: String? = null
         var route: String? = null
         var points: String? = null
+        var photos: String? = null
         var localIndex: Int = -1
     }
 
@@ -26,6 +28,7 @@ class FirebaseRouteReferenceSerializer(private val gson: Gson,
             userRoute = routeReference.userRouteReference?.path
             route = routeReference.routeReference?.path
             points = routeReference.pointsReference?.path
+            photos = routeReference.photosReference?.path
             localIndex = routeReference.localIndex
         }
 
@@ -45,10 +48,14 @@ class FirebaseRouteReferenceSerializer(private val gson: Gson,
         val points: DocumentReference? = if (serializableReference.userRoute != null)
             firestore.document(serializableReference.points!!) else null
 
+        val photos: CollectionReference? = if (serializableReference.photos != null)
+            firestore.collection(serializableReference.photos!!) else null
+
         return FirebaseRouteReference(
                 userRoute,
                 route,
                 points,
+                photos,
                 serializableReference.localIndex
         )
     }
