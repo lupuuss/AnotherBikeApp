@@ -8,12 +8,12 @@ import ga.lupuss.anotherbikeapp.Text
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.models.dataclass.*
 import ga.lupuss.anotherbikeapp.models.trackingservice.statisticsmanager.Status
+import kotlin.math.roundToInt
 
 @Suppress("REDUNDANT_ELSE_IN_WHEN")
 class AndroidResourceResolver(private val context: Context) : ResourceResolver {
 
     override fun resolve(message: Message): String = context.getString(when (message) {
-
         Message.ACCOUNT_CREATED -> R.string.accountCreated
         Message.USER_EXISTS -> R.string.userExists
         Message.SOMETHING_GOES_WRONG -> R.string.somethingGoesWrong
@@ -36,7 +36,6 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
 
 
     override fun resolve(statName: Statistic.Name): String = context.getString(when (statName) {
-
         Statistic.Name.SPEED -> R.string.speed
         Statistic.Name.AVG_SPEED -> R.string.avgSpeed
         Statistic.Name.MAX_SPEED -> R.string.maxSpeed
@@ -50,36 +49,29 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
         Statistic.Name.MIN_ALTITUDE -> R.string.minAltitude
     })
 
-    override fun resolve(unit: AppUnit): String {
-        return context.getString(
-
-                when (unit) {
-
-                    is AppUnit.Speed -> when (unit) {
-
-                        AppUnit.Speed.M_S ->  R.string.unitSpeedMs
-                        AppUnit.Speed.KM_H ->  R.string.unitSpeedKmh
-                        AppUnit.Speed.MPH -> R.string.unitSpeedMph
-                    }
-
-                    is AppUnit.Distance -> when (unit) {
-
-                        AppUnit.Distance.M -> R.string.unitDistanceM
-                        AppUnit.Distance.KM -> R.string.unitDistanceKm
-                        AppUnit.Distance.MI -> R.string.unitDistanceMi
-                    }
-
-                    is AppUnit.Temperature -> when (unit) {
-
-                        AppUnit.Temperature.KELVIN -> R.string.unitTemperatureKelvin
-                        AppUnit.Temperature.CELSIUS -> R.string.unitTemperatureCelsius
-                        AppUnit.Temperature.FAHRENHEIT -> R.string.unitTemperatureFahrenheit
-                    }
-
-                    else -> throw IllegalArgumentException("Unknown implementation of Statistic.Unit")
+    override fun resolve(unit: AppUnit): String = context.getString(
+            when (unit) {
+                is AppUnit.Speed -> when (unit) {
+                    AppUnit.Speed.M_S ->  R.string.unitSpeedMs
+                    AppUnit.Speed.KM_H ->  R.string.unitSpeedKmh
+                    AppUnit.Speed.MPH -> R.string.unitSpeedMph
                 }
-        )
-    }
+
+                is AppUnit.Distance -> when (unit) {
+                    AppUnit.Distance.M -> R.string.unitDistanceM
+                    AppUnit.Distance.KM -> R.string.unitDistanceKm
+                    AppUnit.Distance.MI -> R.string.unitDistanceMi
+                }
+
+                is AppUnit.Temperature -> when (unit) {
+                    AppUnit.Temperature.KELVIN -> R.string.unitTemperatureKelvin
+                    AppUnit.Temperature.CELSIUS -> R.string.unitTemperatureCelsius
+                    AppUnit.Temperature.FAHRENHEIT -> R.string.unitTemperatureFahrenheit
+                }
+
+                else -> throw IllegalArgumentException("Unknown implementation of Statistic.Unit")
+            }
+    )
 
     override fun resolve(stat: TimeStatistic): String {
 
@@ -95,18 +87,16 @@ class AndroidResourceResolver(private val context: Context) : ResourceResolver {
     }
 
     override fun resolve(stat: UnitStatistic): String =
-            (Math.round(stat.unit.convertFunction.invoke(stat.value) * 100.0) / 100.0).toString() +
+            ((stat.unit.convertFunction.invoke(stat.value) * 100.0).roundToInt() / 100.0).toString() +
                     " " + resolve(stat.unit)
 
     override fun resolve(stat: StatusStatistic): String = context.getString(when (stat.value) {
-
         Status.LOCATION_WAIT -> R.string.waitingForLocation
         Status.PAUSE -> R.string.pause
         Status.RUNNING -> R.string.trackingInProgress
     })
 
     override fun resolve(stat: Statistic<*>): String = when (stat) {
-
         is UnitStatistic -> resolve(stat)
         is TimeStatistic -> resolve(stat)
         is StringStatistic -> stat.value
