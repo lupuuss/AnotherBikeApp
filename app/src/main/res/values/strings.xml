@@ -79,7 +79,7 @@
     <string name="prefTrackingUnitDistanceKey" translatable="false">trackingUnitDistanceKey</string>
     <string name="prefUnitDistanceTitle">Distance unit</string>
     <string name="prefUnitDistanceSummary">Change distance unit</string>
-    <string name="prefIsMapThemeEnableKey" translatable="false">isMapThemeEnable</string>
+    <string name="prefIsMapThemeEnableKey" translatable="false">isMapThemeEnableKey</string>
     <string name="prefIsMapThemeEnableTitle">Custom map theme</string>
     <string name="prefIsMapThemeEnableSummary">Enable custom map theme</string>
     <string name="prefWeatherUnitWindSpeedKey" translatable="false">weatherUnitWindSpeedKey</string>

@@ -35,6 +35,7 @@ class AndroidPreferencesInteractor(
     }
 
     init {
+
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
     }
 
@@ -53,7 +54,7 @@ class AndroidPreferencesInteractor(
     }
 
     private fun getPref(key: String, defaultValue: String) =
-            sharedPreferences.getString(key, defaultValue)
+            sharedPreferences.getString(key, defaultValue)!!
 
     private fun getPref(key: String, defaultValue: Boolean) =
             sharedPreferences.getBoolean(key, defaultValue)
