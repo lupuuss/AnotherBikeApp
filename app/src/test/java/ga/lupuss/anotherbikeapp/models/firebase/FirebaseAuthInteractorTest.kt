@@ -9,6 +9,7 @@ import com.google.firebase.auth.*
 import com.nhaarman.mockito_kotlin.*
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
 import org.junit.Test
+import org.mockito.Mockito
 
 class FirebaseAuthInteractorTest {
 
@@ -29,15 +30,13 @@ class FirebaseAuthInteractorTest {
     @Test
     fun login_shouldInvokeSuccessCallbackOnSuccessLogin() {
 
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { signInWithEmailAndPassword(any(), any()) }.then {
-                mock<Task<AuthResult>> {
-                    on { addOnSuccessListener(any<Activity>(), any()) }
-                            .then {
-                                (it.getArgument(1) as OnSuccessListener<AuthResult?>).onSuccess(mock{})
-                                mock<Task<AuthResult>> {}
-                            }
-                }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                signInWithEmailAndPassword(any(), any())
+                        .addOnSuccessListener(any<Activity>(), any())
+            }.then {
+                (it.getArgument(1) as OnSuccessListener<AuthResult?>).onSuccess(mock{})
+                    mock<Task<AuthResult>> {}
             }
         }
 
@@ -62,14 +61,9 @@ class FirebaseAuthInteractorTest {
 
         val taskMock: Task<AuthResult> =  taskOnFailTriggers(mock<FirebaseAuthInvalidCredentialsException> {})
 
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { signInWithEmailAndPassword(any(), any()) }.then {
-
-                mock<Task<AuthResult>> {
-
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
-                }
-            }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on { signInWithEmailAndPassword(any(), any()).addOnSuccessListener(any<Activity>(), any()) }
+                    .then { taskMock }
         }
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
@@ -93,15 +87,12 @@ class FirebaseAuthInteractorTest {
 
         val taskMock = taskOnFailTriggers(mock {})
 
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { signInWithEmailAndPassword(any(), any()) }.then {
-
-                mock<Task<AuthResult>> {
-
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
-                }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on { signInWithEmailAndPassword(any(), any()).addOnSuccessListener(any<Activity>(), any()) }.then {
+                taskMock
             }
         }
+
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
@@ -120,18 +111,13 @@ class FirebaseAuthInteractorTest {
     }
 
     @Test
-    fun login_shouldInvokeUserNotExistsCallbackOnNotExistingUser() {
+    fun login_whenUserNotExist_shouldInvokeUserNotExistsCallback() {
 
         val taskMock =  taskOnFailTriggers(mock<FirebaseAuthInvalidUserException> {})
 
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { signInWithEmailAndPassword(any(), any()) }.then {
-
-                mock<Task<AuthResult>> {
-
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
-                }
-            }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on { signInWithEmailAndPassword(any(), any())
+                    .addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
         }
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
@@ -153,30 +139,21 @@ class FirebaseAuthInteractorTest {
     @Test
     fun createAccount_shouldInvokeSuccessCallbackOnSuccessCreation() {
 
-        val userMock = mock<FirebaseUser> {
-            on { updateProfile(anyOrNull()) }.then {
-                mock<Task<Void>> {
+        val userMock = mock<FirebaseUser> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                updateProfile(anyOrNull())
+                        .continueWithTask(any<Continuation<Void, Task<Void>>>())
+                        .addOnSuccessListener(any<Activity>(), any())
+            }.then { mock<Task<Void>>{ } }
+        }.also { clearInvocations(it) }
 
-                    on { continueWithTask(any<Continuation<Void, Task<Void>>>()) }.then {
-                        mock <Task<Void>> {
-                            on { addOnSuccessListener(any<Activity>(), any()) }.then { mock<Task<Void>>{ } }
-                        }
-                    }
-                }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on { createUserWithEmailAndPassword(any(), any())
+                    .addOnSuccessListener(any<Activity>(), any())
+            }.then {
+                (it.getArgument(1) as OnSuccessListener<AuthResult?>).onSuccess(mock{})
+                mock<Task<AuthResult>> {}
             }
-        }
-
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { createUserWithEmailAndPassword(any(), any()) }.then {
-                mock<Task<AuthResult>> {
-                    on { addOnSuccessListener(any<Activity>(), any()) }
-                            .then {
-                                (it.getArgument(1) as OnSuccessListener<AuthResult?>).onSuccess(mock{})
-                                mock<Task<AuthResult>> {}
-                            }
-                }
-            }
-
             on { currentUser }.then { userMock }
         }
 
@@ -192,7 +169,7 @@ class FirebaseAuthInteractorTest {
                 mock { }
         )
 
-        val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
+        val mockListener = mock<AuthInteractor.OnAccountCreationDoneListener> { }
 
         firebaseAuthInteractor.createAccount(
                 "correct@email.com",
@@ -215,19 +192,16 @@ class FirebaseAuthInteractorTest {
 
         val taskMock =  taskOnFailTriggers(mock<FirebaseAuthInvalidCredentialsException>{})
 
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { createUserWithEmailAndPassword(any(), any()) }.then {
-
-                mock<Task<AuthResult>> {
-
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
-                }
-            }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                createUserWithEmailAndPassword(any(), any())
+                        .addOnSuccessListener(any<Activity>(), any())
+            }.then { taskMock }
         }
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
-        val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
+        val mockListener = mock<AuthInteractor.OnAccountCreationDoneListener> { }
 
         firebaseAuthInteractor.createAccount(
                 "any",
@@ -246,21 +220,16 @@ class FirebaseAuthInteractorTest {
     @Test
     fun createAccount_shouldInvokeUndefinedErrorCallbackOnUndefinedError() {
 
-        val taskMock =  taskOnFailTriggers(mock {})
-
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { createUserWithEmailAndPassword(any(), any()) }.then {
-
-                mock<Task<AuthResult>> {
-
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
-                }
-            }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                createUserWithEmailAndPassword(any(), any())
+                        .addOnSuccessListener(any<Activity>(), any())
+            }.then { taskOnFailTriggers(mock {}) }
         }
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
-        val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
+        val mockListener = mock<AuthInteractor.OnAccountCreationDoneListener> { }
 
         firebaseAuthInteractor.createAccount(
                 "any",
@@ -279,21 +248,16 @@ class FirebaseAuthInteractorTest {
     @Test
     fun createAccount_shouldInvokeUserExistCallbackOnExistingUser() {
 
-        val taskMock =  taskOnFailTriggers(mock<FirebaseAuthUserCollisionException> {})
-
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { createUserWithEmailAndPassword(any(), any()) }.then {
-
-                mock<Task<AuthResult>> {
-
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
-                }
-            }
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                createUserWithEmailAndPassword(any(), any())
+                        .addOnSuccessListener(any<Activity>(), any())
+            }.then { taskOnFailTriggers(mock<FirebaseAuthUserCollisionException> {}) }
         }
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
-        val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
+        val mockListener = mock<AuthInteractor.OnAccountCreationDoneListener> { }
 
         firebaseAuthInteractor.createAccount(
                 "correct@email.com",
@@ -312,21 +276,17 @@ class FirebaseAuthInteractorTest {
     @Test
     fun createAccount_shouldInvokeTooWeakPasswordCallbackOnWeakPassword() {
 
-        val taskMock =  taskOnFailTriggers(mock<FirebaseAuthWeakPasswordException> {})
+        val firebaseAuth = mock<FirebaseAuth> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                createUserWithEmailAndPassword(any(), any())
+                        .addOnSuccessListener(any<Activity>(), any())
 
-        val firebaseAuth = mock<FirebaseAuth> {
-            on { createUserWithEmailAndPassword(any(), any()) }.then {
-
-                mock<Task<AuthResult>> {
-
-                    on { addOnSuccessListener(any<Activity>(), any()) }.then { taskMock }
-                }
-            }
+            }.then { taskOnFailTriggers(mock<FirebaseAuthWeakPasswordException> {}) }
         }
 
         val firebaseAuthInteractor = FirebaseAuthInteractor(firebaseAuth, mock { }, mock { })
 
-        val mockListener = mock<AuthInteractor.OnAccountCreateDoneListener> { }
+        val mockListener = mock<AuthInteractor.OnAccountCreationDoneListener> { }
 
         firebaseAuthInteractor.createAccount(
                 "correct@email.com",
@@ -345,21 +305,17 @@ class FirebaseAuthInteractorTest {
     @Test
     fun setDisplayName_shouldInvokeSuccessCallbackOnSuccessChange() {
 
-        val userMock = mock<FirebaseUser> {
-            on { updateProfile(anyOrNull()) }.then {
-                mock<Task<Void>> {
-
-                    on { continueWithTask(any<Continuation<Void, Task<Void>>>()) }.then {
-                        mock <Task<Void>> {
-                            on { addOnSuccessListener(any<Activity>(), any()) }.then {
-                                (it.getArgument(1) as OnSuccessListener<Void>).onSuccess(mock {})
-                                mock<Task<Void>>{ }
-                            }
-                        }
-                    }
-                }
+        val userMock = mock<FirebaseUser> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                updateProfile(anyOrNull())
+                        .continueWithTask(any<Continuation<Void, Task<Void>>>())
+                        .addOnSuccessListener(any<Activity>(), any())
+            }.then {
+                (it.getArgument(1) as OnSuccessListener<Void>)
+                        .onSuccess(mock {})
+                mock<Task<Void>>{ }
             }
-        }
+        }.also { clearInvocations(it) }
 
         val firebaseAuth = mock<FirebaseAuth> { on { currentUser }.then { userMock } }
 
@@ -377,39 +333,28 @@ class FirebaseAuthInteractorTest {
                 mock<Activity> {}
         )
 
-        verify(mockListener, times(1)).onSuccessNameChange()
+        verify(mockListener, times(1)).onSuccessSettingDisplayName()
         verify(mockBuilder, times(1)).setDisplayName("name")
         verify(userMock, times(1)).updateProfile(anyOrNull())
+
     }
 
     @Test
     fun setDisplayName_shouldInvokeOnFailCallbackOnFailedChange() {
 
-        val taskMock = mock<Task<Void>>{
-            on { addOnFailureListener(any<Activity>(), any()) }
-                    .then {
-                        (it.getArgument(1) as OnFailureListener).onFailure(mock{})
-                        mock<Task<Void>>{}
-                    }
-        }
-
-        val userMock = mock<FirebaseUser> {
-            on { updateProfile(anyOrNull()) }.then {
-                mock<Task<Void>> {
-
-                    on { continueWithTask(any<Continuation<Void, Task<Void>>>()) }.then {
-                        mock <Task<Void>> {
-                            on { addOnSuccessListener(any<Activity>(), any()) }.then {
-                                taskMock
-                            }
-                        }
-                    }
-                }
+        val userMock = mock<FirebaseUser> (defaultAnswer = Mockito.RETURNS_DEEP_STUBS) {
+            on {
+                updateProfile(anyOrNull())
+                        .continueWithTask(any<Continuation<Void, Task<Void>>>())
+                        .addOnSuccessListener(any<Activity>(), any())
+                        .addOnFailureListener(any<Activity>(), any())
+            }.then {
+                (it.getArgument(1) as OnFailureListener).onFailure(mock{})
+                mock<Task<Void>>{}
             }
-        }
+        }.also { clearInvocations(it) }
 
         val firebaseAuth = mock<FirebaseAuth> { on { currentUser }.then { userMock } }
-
 
         val mockBuilder = mock<UserProfileChangeRequest.Builder> {
             on { setDisplayName(any()) }
@@ -424,12 +369,11 @@ class FirebaseAuthInteractorTest {
                 mock<Activity> {}
         )
 
-        verify(mockListener, never()).onSuccessNameChange()
-        verify(mockListener, times(1)).onSettingDisplayNameFail()
+        verify(mockListener, never()).onSuccessSettingDisplayName()
+        verify(mockListener, times(1)).onFailSettingDisplayName()
         verify(mockBuilder, times(1)).setDisplayName("name")
         verify(userMock, times(1)).updateProfile(anyOrNull())
     }
-
 
     @Test
     fun signOut_shouldDelegateToFirebaseAuth() {

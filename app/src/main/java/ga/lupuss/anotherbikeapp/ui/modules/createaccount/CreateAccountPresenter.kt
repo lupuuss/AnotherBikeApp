@@ -8,7 +8,7 @@ import javax.inject.Inject
 class CreateAccountPresenter @Inject constructor(private val authInteractor: AuthInteractor,
                                                  createAccountView: CreateAccountView)
 
-    : Presenter<CreateAccountView>(), AuthInteractor.OnAccountCreateDoneListener {
+    : Presenter<CreateAccountView>(), AuthInteractor.OnAccountCreationDoneListener {
 
 
     init {

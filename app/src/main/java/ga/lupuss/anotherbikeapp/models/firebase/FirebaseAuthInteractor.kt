@@ -22,6 +22,12 @@ class FirebaseAuthInteractor(
     override val userUid
         get() = firebaseAuth.currentUser?.uid
 
+    override val email: String?
+            get() = firebaseAuth.currentUser?.email
+
+    override val displayName: String?
+            get() = firebaseAuth.currentUser?.displayName
+
     override fun login(email: String,
                        password: String,
                        onLoginDone: AuthInteractor.OnLoginDoneListener?,
@@ -51,14 +57,10 @@ class FirebaseAuthInteractor(
 
     }
 
-    override fun getEmail(): String? = firebaseAuth.currentUser?.email
-
-    override fun getDisplayName(): String? = firebaseAuth.currentUser?.displayName
-
     override fun createAccount(email: String,
                                password: String,
                                displayName: String,
-                               onCreateAccountDone: AuthInteractor.OnAccountCreateDoneListener?,
+                               onCreateAccountDone: AuthInteractor.OnAccountCreationDoneListener?,
                                requestOwner: Any?) {
 
         if (requestOwner !is Activity)
@@ -72,6 +74,7 @@ class FirebaseAuthInteractor(
                 }
                 .addOnFailureListener(requestOwner) {
 
+                    Timber.e("Account creation failed!")
                     Timber.e(it)
 
                     when (it) {
@@ -104,6 +107,7 @@ class FirebaseAuthInteractor(
                 }
                 .addOnFailureListener(requestOwner) {
 
+                    Timber.e("Password reset failed!")
                     Timber.e(it)
 
                     when (it) {
@@ -135,13 +139,13 @@ class FirebaseAuthInteractor(
                 .continueWithTask {
 
                     it.exception?.let { exception ->
+                        Timber.e("Error occured while updateing profile!")
                         Timber.e(exception)
                     }
 
                     if (it.isSuccessful) {
 
-                        firebaseFirestore
-                                .collection(FirebaseRoutesManager.FIREB_USERS)
+                        firebaseFirestore.collection(FirebaseRoutesManager.FIREB_USERS)
                                 .document(firebaseAuth.currentUser!!.uid)
                                 .set(mutableMapOf<String, Any>(
                                         FIREB_USER_NAME to displayName
@@ -154,12 +158,13 @@ class FirebaseAuthInteractor(
                 }.addOnSuccessListener(requestOwner) {
 
                     Timber.i("Display name has been changed!")
-                    onDisplayNameSetDone?.onSuccessNameChange()
+                    onDisplayNameSetDone?.onSuccessSettingDisplayName()
                 }
                 .addOnFailureListener(requestOwner) {
 
+                    Timber.e("Display name could not be changed!")
                     Timber.e(it)
-                    onDisplayNameSetDone?.onSettingDisplayNameFail()
+                    onDisplayNameSetDone?.onFailSettingDisplayName()
                 }
     }
 

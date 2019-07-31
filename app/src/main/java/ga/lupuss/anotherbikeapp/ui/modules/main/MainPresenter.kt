@@ -27,7 +27,7 @@ class MainPresenter(private val routesManager: RoutesManager,
         super.notifyOnViewReady()
 
         view.setTrackingButtonState(trackingServiceGovernor.isServiceActive)
-        view.setDrawerHeaderInfo(authInteractor.getDisplayName(), authInteractor.getEmail())
+        view.setDrawerHeaderInfo(authInteractor.displayName, authInteractor.email)
 
         trackingServiceGovernor.addOnServiceActivityChangesListener(this, this)
     }

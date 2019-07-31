@@ -21,17 +21,21 @@ interface AuthInteractor {
         fun onUserNotExists()
     }
 
-    interface OnAccountCreateDoneListener : OnAuthTaskDoneListener {
+    interface OnAccountCreationDoneListener : OnAuthTaskDoneListener {
         fun onUserExist()
         fun onTooWeakPassword()
     }
 
     interface OnDisplayNameSetDoneListener {
-        fun onSettingDisplayNameFail()
-        fun onSuccessNameChange()
+        fun onFailSettingDisplayName()
+        fun onSuccessSettingDisplayName()
     }
 
     val userUid: String?
+
+    val email: String?
+
+    val displayName: String?
 
     fun login(email: String,
               password: String,
@@ -41,16 +45,12 @@ interface AuthInteractor {
     fun createAccount(email: String,
                       password: String,
                       displayName: String,
-                      onCreateAccountDone: OnAccountCreateDoneListener?,
+                      onCreateAccountDone: OnAccountCreationDoneListener?,
                       requestOwner: Any? = null)
 
     fun resetPassword(email: String,
                       onPasswordResetDone: OnPasswordResetDoneListener?,
-                      requestOwner: Any?)
-
-    fun getEmail(): String?
-
-    fun getDisplayName(): String?
+                      requestOwner: Any? = null)
 
     fun setDisplayName(displayName: String, onDisplayNameSetDone: OnDisplayNameSetDoneListener?, requestOwner: Any? = null)
 
