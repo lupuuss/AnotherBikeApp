@@ -21,7 +21,7 @@ class FirebasePhotosSynchronizer(
         private val pathsGenerator: PathsGenerator,
         private val gson: Gson,
         private val filesWrapper: FilesWrapper
-        ) : PhotosSynchronizer {
+) : PhotosSynchronizer {
 
     private val uploadTasks: MutableList<RoutePhotoUploadTask> = mutableListOf()
 
@@ -131,7 +131,10 @@ class FirebasePhotosSynchronizer(
                     val data = gson.fromJson(it, RoutePhotoSerializableData::class.java)
 
                     uploadTasks.add(
-                            RoutePhotoUploadTask(data.routePhoto, if (data.stringUri != null) Uri.parse(data.stringUri) else null)
+                            RoutePhotoUploadTask(
+                                    data.routePhoto,
+                                    if (data.stringUri != null) Uri.parse(data.stringUri) else null
+                            )
                     )
 
                 } catch (e: Exception) {
@@ -264,14 +267,14 @@ class FirebasePhotosSynchronizer(
         }
     }
 
-    fun getStorageReference(link: String): StorageReference {
-
-        return storage.getReference("images/$link")
-    }
-
     override fun getPathForPhotoLink(link: String): File {
 
         return pathsGenerator.getFileForPhotoLink(link)
+    }
+
+    fun getStorageReference(link: String): StorageReference {
+
+        return storage.getReference("images/$link")
     }
 }
 
