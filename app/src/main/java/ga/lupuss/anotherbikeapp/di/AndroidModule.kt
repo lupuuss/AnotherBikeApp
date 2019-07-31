@@ -4,11 +4,7 @@ import android.content.Context
 import androidx.core.os.ConfigurationCompat
 import dagger.Module
 import dagger.Provides
-import ga.lupuss.anotherbikeapp.models.android.AndroidFilesWrapper
-import ga.lupuss.anotherbikeapp.models.android.AndroidPathsGenerator
 import ga.lupuss.anotherbikeapp.models.android.AndroidResourceResolver
-import ga.lupuss.anotherbikeapp.models.base.FilesWrapper
-import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.ResourceResolver
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 
@@ -34,7 +30,4 @@ class AndroidModule(context: Context) {
     @AnotherBikeAppScope
     fun trackingNotification() = TrackingNotification()
 
-    @Provides
-    @AnotherBikeAppScope
-    fun filesWrapper(): FilesWrapper = AndroidFilesWrapper()
 }

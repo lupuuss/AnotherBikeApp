@@ -5,7 +5,7 @@ import android.os.Environment
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.base.FilesWrapper
+import ga.lupuss.anotherbikeapp.models.FilesWrapper
 import org.junit.Test
 
 import org.junit.Assert.*

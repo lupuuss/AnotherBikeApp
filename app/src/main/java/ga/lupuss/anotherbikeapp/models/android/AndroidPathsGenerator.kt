@@ -3,7 +3,7 @@ package ga.lupuss.anotherbikeapp.models.android
 import android.content.Context
 import android.os.Environment
 import ga.lupuss.anotherbikeapp.models.base.AuthInteractor
-import ga.lupuss.anotherbikeapp.models.base.FilesWrapper
+import ga.lupuss.anotherbikeapp.models.FilesWrapper
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import java.io.File
 

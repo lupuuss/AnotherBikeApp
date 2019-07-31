@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ga.lupuss.anotherbikeapp.kotlin.SchedulersPackage
+import ga.lupuss.anotherbikeapp.models.FilesWrapper
 import ga.lupuss.anotherbikeapp.models.android.AndroidPathsGenerator
 import ga.lupuss.anotherbikeapp.models.android.AndroidPreferencesInteractor
 import ga.lupuss.anotherbikeapp.models.base.*

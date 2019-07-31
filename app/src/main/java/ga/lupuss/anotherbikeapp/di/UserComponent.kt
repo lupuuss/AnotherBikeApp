@@ -3,6 +3,7 @@ package ga.lupuss.anotherbikeapp.di
 import android.content.Context
 import com.google.gson.Gson
 import dagger.Component
+import ga.lupuss.anotherbikeapp.models.FilesWrapper
 import ga.lupuss.anotherbikeapp.models.base.*
 import ga.lupuss.anotherbikeapp.ui.TrackingNotification
 import java.util.*
