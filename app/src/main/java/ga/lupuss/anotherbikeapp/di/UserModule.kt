@@ -47,8 +47,9 @@ class UserModule {
     @UserComponentScope
     fun providesPhotosSynchronizer(storage: FirebaseStorage,
                                    pathsGenerator: PathsGenerator,
-                                   gson: Gson): PhotosSynchronizer =
-            FirebasePhotosSynchronizer(storage, pathsGenerator, gson)
+                                   gson: Gson,
+                                   filesWrapper: FilesWrapper): PhotosSynchronizer =
+            FirebasePhotosSynchronizer(storage, pathsGenerator, gson, filesWrapper)
 
     @Provides
     @UserComponentScope
