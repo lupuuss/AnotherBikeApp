@@ -18,8 +18,6 @@ import ga.lupuss.anotherbikeapp.ui.modules.main.MainPresenter
 
 class TrackingNotification {
 
-
-
     private var builder: NotificationCompat.Builder? = null
 
     fun initNotificationChannelOreo(context: Context) {
@@ -29,12 +27,13 @@ class TrackingNotification {
             val name = context.getString(R.string.titleActivityTacking)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_STRING, name, importance)
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+
             channel.setSound(null, null)
             channel.description = context.getString(R.string.notification_description)
             channel.enableVibration(false)
             channel.enableLights(false)
 
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -53,21 +52,23 @@ class TrackingNotification {
 
     fun build(context: Context,
               resourceResolver: ResourceResolver,
-              statistic: Map<Statistic.Name, Statistic<*>>?,
+              statistics: Map<Statistic.Name, Statistic<*>>?,
               onClick: PendingIntent): Notification {
 
-        val content =
-                if (statistic != null)
-                    "${resourceResolver.resolve(statistic.getValue(Statistic.Name.DURATION))}  |  " +
-                            "${resourceResolver.resolve(statistic.getValue(Statistic.Name.DISTANCE))}  |  " +
-                            " ${resourceResolver.resolve(statistic.getValue(Statistic.Name.AVG_SPEED))}"
-                else ""
+        val content = if (statistics != null) {
+            "${resourceResolver.resolve(statistics.getValue(Statistic.Name.DURATION))}  |  " +
+                    "${resourceResolver.resolve(statistics.getValue(Statistic.Name.DISTANCE))}  |  " +
+                    " ${resourceResolver.resolve(statistics.getValue(Statistic.Name.AVG_SPEED))}"
+        } else  {
+            ""
+        }
 
-        val title =
-                if (statistic != null)
-                    resourceResolver.resolve(statistic.getValue(Statistic.Name.STATUS))
-                else
-                    context.getString(R.string.trackingInProgress)
+        val title = if (statistics != null) {
+
+            resourceResolver.resolve(statistics.getValue(Statistic.Name.STATUS))
+        } else {
+            context.getString(R.string.trackingInProgress)
+        }
 
         if (builder == null) {
 
