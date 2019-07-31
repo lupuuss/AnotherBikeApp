@@ -145,15 +145,7 @@ class AndroidTrackingServiceGovernor(
 
         serviceBinder!!.initNotification(
                 TrackingNotification.ID,
-                trackingNotification.build(
-                        serviceParentActivity,
-                        resourceResolver,
-                        serviceBinder!!.lastStats,
-                        trackingNotification.generatePendingIntent(
-                                MainActivity.newIntent(serviceParentActivity),
-                                serviceParentActivity
-                        )
-                )
+                buildNotification(serviceBinder!!.lastStats)
         )
 
         serviceBinder!!.addOnStatsUpdateListener(this)
@@ -173,18 +165,21 @@ class AndroidTrackingServiceGovernor(
         if (isServiceActive) {
 
             (serviceParentActivity.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager)
-                    .notify(TrackingNotification.ID, trackingNotification.build(
-                            serviceParentActivity,
-                            resourceResolver,
-                            stats,
-                            trackingNotification.generatePendingIntent(
-                                    MainActivity.newIntent(serviceParentActivity),
-                                    serviceParentActivity
-                            )
-                    ))
+                    .notify(TrackingNotification.ID, buildNotification(stats))
+
         }
 
     }
+
+    private fun buildNotification(stats: Map<Statistic.Name, Statistic<*>>?) = trackingNotification.build(
+            serviceParentActivity,
+            resourceResolver,
+            stats,
+            trackingNotification.generatePendingIntent(
+                    MainActivity.newIntent(serviceParentActivity),
+                    serviceParentActivity
+            )
+    )
 
     override fun onServiceDisconnected(p0: ComponentName?) {
         isServiceActive = false
@@ -232,6 +227,6 @@ class AndroidTrackingServiceGovernor(
     }
 
     companion object {
-        const val IS_SERVICE_ACTIVE_KEY = "mainPresenterState"
+        const val IS_SERVICE_ACTIVE_KEY = "isServiceActiveKey"
     }
 }

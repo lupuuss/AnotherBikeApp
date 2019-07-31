@@ -140,7 +140,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun startTracking_shouldTriggerCallback_whenUserRejectPermission() {
+    fun startTracking_whenUserRejectPermission_shouldTriggerCallback() {
 
         val parentActivity = mock<ThemedActivity> {
             on { provideLocationPermission(any()) }.then { (it.getArgument(0) as ((Boolean) -> Unit)?)?.invoke(false) }
@@ -187,7 +187,7 @@ class AndroidTrackingServiceGovernorTest {
     }
 
     @Test
-    fun onServiceConnected_shouldInitFields_whenServiceIsNotActive() {
+    fun onServiceConnected_whenServiceIsNotActive_shouldInitFields() {
 
         var callbackTriggered = 0
 
