@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.*
 import com.google.gson.Gson
+import ga.lupuss.anotherbikeapp.models.FilesWrapper
 import ga.lupuss.anotherbikeapp.models.base.PathsGenerator
 import ga.lupuss.anotherbikeapp.models.base.PhotosSynchronizer
 import ga.lupuss.anotherbikeapp.models.dataclass.MarkedRoutePhoto
@@ -18,7 +19,8 @@ import kotlin.concurrent.schedule
 class FirebasePhotosSynchronizer(
         private val storage: FirebaseStorage,
         private val pathsGenerator: PathsGenerator,
-        private val gson: Gson
+        private val gson: Gson,
+        private val filesWrapper: FilesWrapper
         ) : PhotosSynchronizer {
 
     private val uploadTasks: MutableList<RoutePhotoUploadTask> = mutableListOf()
@@ -122,7 +124,7 @@ class FirebasePhotosSynchronizer(
 
         if (file.exists()) {
 
-            file.readLines().forEach {
+            filesWrapper.forEachFileLine(file) {
 
                 try {
 
@@ -138,8 +140,6 @@ class FirebasePhotosSynchronizer(
                 }
             }
 
-            deleteUnusedFiles()
-
             Timber.d("Restored uploads: ")
 
             uploadTasks.forEach {
@@ -147,11 +147,9 @@ class FirebasePhotosSynchronizer(
                 Timber.d("${it.routePhoto} ${it.sessionUri}")
                 it.upload()
             }
-        } else {
-
-            deleteUnusedFiles()
         }
 
+        deleteUnusedFiles()
     }
 
     private fun deleteUnusedFiles() {
@@ -160,7 +158,7 @@ class FirebasePhotosSynchronizer(
 
         if (dir.isDirectory && dir.exists()) {
 
-            dir.listFiles().forEach { file ->
+            filesWrapper.forEachFileInDir(dir) { file ->
 
                 if (file.isFile && uploadTasks.find { it.photoFile == file } == null) {
 
@@ -174,18 +172,18 @@ class FirebasePhotosSynchronizer(
 
         val file = pathsGenerator.getPhotosSyncFile()
 
-        file.outputStream().bufferedWriter().use { outputStream ->
+        filesWrapper.useBufferedWriter(file) { bufferedWriter ->
 
 
             uploadTasks.forEach {
 
-                outputStream.append(gson.toJson(RoutePhotoSerializableData(it.routePhoto, it.sessionUri)))
-                outputStream.appendln()
+                bufferedWriter.append(gson.toJson(RoutePhotoSerializableData(it.routePhoto, it.sessionUri)))
+                bufferedWriter.appendln()
             }
         }
 
         Timber.d("Backup >>>")
-        Timber.d(file.readLines().toString())
+        Timber.d(filesWrapper.readLines(file).toString())
     }
 
     override fun rejectUpload(photo: MarkedRoutePhoto) {
