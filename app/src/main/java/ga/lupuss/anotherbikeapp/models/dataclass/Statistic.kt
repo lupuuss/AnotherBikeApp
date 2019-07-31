@@ -8,6 +8,7 @@ import java.util.*
  * Base class for any statistic.
  */
 sealed class Statistic<T> {
+
     /** Names of possible statistics */
     enum class Name {
 
@@ -41,11 +42,10 @@ sealed class Statistic<T> {
     override fun hashCode(): Int = Objects.hash(value)
 }
 
-/** [Statistic] subclass that can contain [value] as double.
- * [value] might be converted to any [unit].
- * */
-
 class UnitStatistic(override val value: Double, val unit: AppUnit) : Statistic<Double>()
+
 class TimeStatistic(override val value: Long) : Statistic<Long>()
+
 class StringStatistic(override val value: String) : Statistic<String>()
+
 class StatusStatistic(override val value: Status) : Statistic<Status>()
