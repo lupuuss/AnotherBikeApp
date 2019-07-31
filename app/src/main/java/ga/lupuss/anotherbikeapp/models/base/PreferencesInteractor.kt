@@ -22,10 +22,10 @@ abstract class PreferencesInteractor {
         fun onMapThemeEnable(isMapThemeEnable: Boolean)
     }
 
-    protected val themeListeners = mutableMapOf<Any, PreferencesInteractor.OnThemeChangedListener>()
-    protected val trackingUnitListeners = mutableMapOf<Any, PreferencesInteractor.OnTrackingUnitChangedListener>()
-    protected val mapThemeListeners = mutableMapOf<Any, PreferencesInteractor.OnMapThemeEnableListener>()
-    protected val weatherUnitListeners = mutableMapOf<Any, PreferencesInteractor.OnWeatherUnitChangedListener>()
+    protected val themeListeners = mutableMapOf<Any, OnThemeChangedListener>()
+    protected val trackingUnitListeners = mutableMapOf<Any, OnTrackingUnitChangedListener>()
+    protected val mapThemeListeners = mutableMapOf<Any, OnMapThemeEnableListener>()
+    protected val weatherUnitListeners = mutableMapOf<Any, OnWeatherUnitChangedListener>()
 
     abstract var appTheme: AppTheme
     abstract var trackingSpeedUnit: AppUnit.Speed
@@ -35,7 +35,7 @@ abstract class PreferencesInteractor {
     abstract var isMapThemeEnable: Boolean
 
     fun addOnThemeChangedListener(owner: Any,
-                                  onThemeChangedListener: PreferencesInteractor.OnThemeChangedListener) {
+                                  onThemeChangedListener: OnThemeChangedListener) {
 
         themeListeners[owner] = onThemeChangedListener
     }
@@ -46,7 +46,7 @@ abstract class PreferencesInteractor {
     }
 
     fun addOnTrackingUnitChangedListener(owner: Any,
-                                         onUnitChangedListener: PreferencesInteractor.OnTrackingUnitChangedListener) {
+                                         onUnitChangedListener: OnTrackingUnitChangedListener) {
 
         trackingUnitListeners[owner] = onUnitChangedListener
     }

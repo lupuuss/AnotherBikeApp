@@ -17,21 +17,21 @@ abstract class  WeatherManager {
 
     abstract fun refreshWeatherData(lat: Double, lng: Double, onWeatherRefreshFailureListener: OnWeatherRefreshFailureListener)
 
-    protected val weatherListeners: MutableList<WeatherManager.OnNewWeatherListener> = mutableListOf()
+    protected val weatherListeners: MutableList<OnNewWeatherListener> = mutableListOf()
 
-    protected val refreshFailure: MutableList<WeatherManager.OnWeatherRefreshFailureListener> = mutableListOf()
+    protected val refreshFailure: MutableList<OnWeatherRefreshFailureListener> = mutableListOf()
 
-    fun addOnNewWeatherListener(onNewWeatherListener: WeatherManager.OnNewWeatherListener) {
+    fun addOnNewWeatherListener(onNewWeatherListener: OnNewWeatherListener) {
 
         weatherListeners.add(onNewWeatherListener)
     }
 
-    fun removeOnNewWeatherListener(onNewWeatherListener: WeatherManager.OnNewWeatherListener) {
+    fun removeOnNewWeatherListener(onNewWeatherListener: OnNewWeatherListener) {
 
         weatherListeners.remove(onNewWeatherListener)
     }
 
-    fun removeOnWeatherRefreshFailureListener(onWeatherRefreshFailureListener: WeatherManager.OnWeatherRefreshFailureListener) {
+    fun removeOnWeatherRefreshFailureListener(onWeatherRefreshFailureListener: OnWeatherRefreshFailureListener) {
 
         refreshFailure.remove(onWeatherRefreshFailureListener)
     }
