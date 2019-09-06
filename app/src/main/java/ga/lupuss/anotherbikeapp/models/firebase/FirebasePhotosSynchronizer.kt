@@ -23,6 +23,7 @@ class FirebasePhotosSynchronizer(
         private val filesWrapper: FilesWrapper
 ) : PhotosSynchronizer {
 
+    private val retryDelay = 10_000L
     private val uploadTasks: MutableList<RoutePhotoUploadTask> = mutableListOf()
 
     init {
@@ -39,6 +40,7 @@ class FirebasePhotosSynchronizer(
 
         private val reference = getStorageReference(routePhoto.link)
         private var uploadTask: StorageTask<UploadTask.TaskSnapshot>? = null
+
         private val isInProgress: Boolean
             get() {
                 return uploadTask?.isInProgress ?: false
@@ -67,12 +69,14 @@ class FirebasePhotosSynchronizer(
         }
 
         override fun onFailure(p0: Exception) {
+
             Timber.e(p0)
+
             val errorCode = (p0 as StorageException).errorCode
 
             if (errorCode != StorageException.ERROR_CANCELED) {
 
-                Timer().schedule(10__000) {
+                Timer().schedule(retryDelay) {
 
                     sessionUri = null
                     uriSaved = false
@@ -129,13 +133,10 @@ class FirebasePhotosSynchronizer(
                 try {
 
                     val data = gson.fromJson(it, RoutePhotoSerializableData::class.java)
+                    val uri: Uri? =  if (data.stringUri != null) Uri.parse(data.stringUri) else null
 
-                    uploadTasks.add(
-                            RoutePhotoUploadTask(
-                                    data.routePhoto,
-                                    if (data.stringUri != null) Uri.parse(data.stringUri) else null
-                            )
-                    )
+
+                    uploadTasks.add(RoutePhotoUploadTask(data.routePhoto, uri))
 
                 } catch (e: Exception) {
 
